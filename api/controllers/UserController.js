@@ -3,7 +3,26 @@
 
 var mongoose = require('mongoose'),
   Usuario = mongoose.model('Usuario');
+  const AwtAuth = require('jsonwebtoken');
 
+  exports.verificarLogin = function(req, res) {    
+      Usuario.find({correo: req.body.correo, password: req.body.password}, function(err, usuario) {
+        if (err)
+          res.send(err);
+          if(usuario.length > 0) {
+            AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ (err,token)=>{              
+              res.json({
+                token: token
+              });
+            });
+        }else
+        res.json({
+          token: "No registro"
+        }) 
+      })
+  };
+
+  
 exports.lista_todos_usuarios = function(req, res) {
     Usuario.find({}, function(err, usuario) {
     if (err)
