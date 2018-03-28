@@ -62,14 +62,15 @@ routerGeneral.route('/login')
 
 routerAdm.route('/users')
     .get(userController.lista_todos_usuarios)
-    .post(userController.crear_usuario);
+    .post(userController.crear_usuario)
+    .delete(userController.borrar_usuario);
 
 
     routerAdm.route('/users/:correo')
     .get(userController.leer_usuario)
-    .put(userController.modificar_usuario)
-    .delete(userController.borrar_usuario);
+    .put(userController.modificar_usuario);
 
     app.use("/api", routerAdm);
     app.use("/", routerGeneral);
+    
 };
