@@ -8,7 +8,7 @@ var existeTokenGeneral = (SimbolosGlobales.indexOf(tokenGeneral) > -1);
 if(!existeTokenGeneral){
     global[tokenGeneral] = "d89fgk"    
 }
-    /*{
+    /*{ // Encaso de que se quiera utilizar un objeto JSON
         tokkenGlobal: "d89fgk"
     };*/
 
