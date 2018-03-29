@@ -33,7 +33,7 @@ let transporter = nodemailer.createTransport({
         secure: true, // true for 465, false for other ports
         auth: {
             user: "casasolalonso@gmail.com",
-            pass: "Passwordg00gl3"
+            pass: "*********"
         }
 });
 module.exports.emailTransporter = inicializarGLobal(emailTransporter, transporter);
