@@ -2,90 +2,71 @@
 
 
 var mongoose = require('mongoose'),
-  Usuario = mongoose.model('Usuario');
-  const AwtAuth = require('jsonwebtoken');
+Usuario = mongoose.model('Usuario');
+const AwtAuth = require('jsonwebtoken');
 
-  exports.verificarLogin = function(req, res) {    
+exports.verificarLogin = function(req, res) {    
       Usuario.find({correo: req.body.correo, password: req.body.password}, function(err, usuario) {
         if (err)
           res.send(err);
-          if(usuario.length > 0) {
+        if(usuario.length > 0) {
             AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ (err,token)=>{                            
               res.json({
                 token: token
               });
             });
-        }else
-        res.json({
-          token: "No registro"
-        }) 
+        }
+        else
+          res.json({
+            token: "No registro"
+          }) 
       })
   };
 
-  function mailSender(emailadress, subject, message,res){
-    'use strict';        
-    const nodemailer = require('nodemailer');    
-    
-    // Generate test SMTP service account from ethereal.email
-    // Only needed if you don't have a real mail account for testing
-    nodemailer.createTestAccount((err, account) => {
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',//'smtp.ethereal.email',
-            port: 465,
-           secure: true, // true for 465, false for other ports
-            auth: {
-                user:'casasolalonso@gmail.com',
-                pass: 'Passwordg00gl3'
-            }
-        });
-    
-        // setup email data with unicode symbols
-        let mailOptions = {
-            from: 'casasolalonso@gmail.com', // sender address
-            to: emailadress,
-            subject: subject, // Subject line
-            //text: message, // plain text body
-            html: message
-        };
-    
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              console.log("Adentro Error*****************");
-              Usuario.remove({correo: mailOptions.to}, (err, usuario)=> {
-                if (err)
-                console.log(error);
-              }) 
-              res.json({code: '2020'});             
-                return console.log(error);
-            }
-            res.send("Usuario " + mailOptions.to + " creado");
-            console.log('Message sent: %s', info.messageId);
-            // Preview only available when sending through an Ethereal account
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-            console.log("Adentro No Error------------------------");
-            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-        });
-    });
-    
-  }
+function mailSender(emailadress, subject, message, res, random){            
+  require("../Globales.js").emailTransporter.instance
+  .sendMail(
+          require("../Globales.js").emailOptions(emailadress, subject, message).instance,
+          (error, info) => {
+                  if (error) {              
+                    Usuario.remove({correo: emailadress}, (err, usuario)=> {
+                      if (err)
+                        console.log(error);
+                        res.json({code: '2021'});
+                    }) 
+                    res.json({code: '2020'});             
+                    return console.log(error);
+                  }
+          Usuario.findOneAndUpdate({correo: emailadress}, { $set: {"token": random }}, function(err, usuario) {
+            if (err)
+              res.send(err);
+              res.send("Usuario " + emailadress + " creado");
+          });                        
+          console.log('Message sent: %s', info.messageId);                                   
+  });        
+}
 
-
-
+exports.recuperarcontrasena = function(req, res){
+    if(/^([A-Za-z0-9]{15})$/.test(req.body.token)){
+      Usuario.find({token: req.body.token}, function(err, usuario) {
+        if (err)
+          res.send(err);
+          res.json(usuario);    
+          console.log(req.body.token + " token")
+      });
+    }
+    else{
+      res.send("No existe el token especificado");    
+    }
+}
 
 exports.lista_todos_usuarios = function(req, res) {
-    Usuario.find({}, function(err, usuario) {
+    Usuario.find({}, function(err, usuarios) {
     if (err)
       res.send(err);
-    res.json(usuario);
-    console.log(req.params.correo + "params get G")
+    res.json(usuarios);    
   });
 };
-
-
-
 
 exports.crear_usuario = function(req, res) {
   const randomstring = require('just.randomstring');                   
@@ -93,22 +74,27 @@ exports.crear_usuario = function(req, res) {
   nuevo_usuario.save(function(err, usuario) {
     if (err)
       res.send(err);
-    if(usuario)      
-      mailSender(usuario.correo,'Creación de contraseña','<p>Bienvenido ' +usuario.nombre + ' a SIRAR<p><link>localhost:3000/login/'+randomstring(15)+'</link>', res);              
+    else
+      if(usuario){      
+        var random = randomstring(15);
+        mailSender(usuario.correo,
+            'Creación de contraseña',
+              '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
+              '<p>Para crear su contraseña presione '+
+              '<a localhost:3000/rps/'+ random +'> Aquí </a>'+
+              ' o copie y pegue en un navegador el siguiente Link: localhost:3000/rps/'+ random + '</p>'
+          , res, random);              
+      }
   });
 };
-
 
 exports.leer_usuario = function(req, res) {
   Usuario.find({correo: req.params.correo}, function(err, usuario) {
     if (err)
       res.send(err);
-    res.json(usuario);
-    //res.json({b:"gok"});
-    console.log(req.params.correo + "params leer")
+    res.json(usuario);        
   });
 };
-
 
 exports.modificar_usuario = function(req, res) {
   Usuario.findOneAndUpdate({correo: req.params.correo}, req.body, {new: true}, function(err, usuario) {
@@ -117,7 +103,6 @@ exports.modificar_usuario = function(req, res) {
     res.json(usuario);
   });
 };
-
 
 exports.borrar_usuario = function(req, res) {
   Usuario.remove({

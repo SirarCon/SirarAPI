@@ -1,25 +1,49 @@
-
-const tokenGeneral = Symbol.for("SIRAR.GLOBAL.TOKEN_GENERAL");
-
 var SimbolosGlobales = Object.getOwnPropertySymbols(global);
+const nodemailer = require('nodemailer');
 
-var existeTokenGeneral = (SimbolosGlobales.indexOf(tokenGeneral) > -1);
+const nombreBD = Symbol.for("SIRAR.GLOBAL.NOMBREBD");
+const tokenGeneral = Symbol.for("SIRAR.GLOBAL.TOKENGENERAL");
+const emailTransporter = Symbol.for("SIRAR.GLOBAL.EMAILTRANSPORTER");
+const emailOptions = Symbol.for("SIRAR.GLOBAL.EMAILOPTIONS"); 
 
-if(!existeTokenGeneral){
-    global[tokenGeneral] = "d89fgk"    
+function inicializarGLobal(variableGlobal, valor){
+    var existeVarGlobal = (SimbolosGlobales.indexOf(variableGlobal) > -1);
+    
+    if(!existeVarGlobal)
+        global[variableGlobal] = valor;    
+
+        var singletonGeneral = {};
+
+        Object.defineProperty(singletonGeneral, "instance", {
+            get: function(){        
+                return global[variableGlobal];
+            }
+        });
+        
+        Object.freeze(singletonGeneral);
+        return singletonGeneral;
 }
-    /*{ // Encaso de que se quiera utilizar un objeto JSON
-        tokkenGlobal: "d89fgk"
-    };*/
 
-var singletonTokenGeneral = {};
+module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Tododb") 
+module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
 
-Object.defineProperty(singletonTokenGeneral, "instance", {
-    get: function(){        
-        return global[tokenGeneral];
-    }
+let transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',//'smtp.ethereal.email',
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+            user: "casasolalonso@gmail.com",
+            pass: "Passwordg00gl3"
+        }
 });
+module.exports.emailTransporter = inicializarGLobal(emailTransporter, transporter);
 
-Object.freeze(singletonTokenGeneral);
-
-module.exports.tokenGeneral = singletonTokenGeneral;
+module.exports.emailOptions = function(correo, subject, message){    
+                                    let mailOptions = {
+                                        from: "casasolalonso@gmail.com",
+                                        to: correo,
+                                        subject: subject,     
+                                        html: message
+                                    };
+                                    return inicializarGLobal(emailOptions, mailOptions);
+                                }

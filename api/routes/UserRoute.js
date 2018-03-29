@@ -55,22 +55,24 @@ function verify(req, res, next){
 });
 }
 
-
 //Routas POST, GET, PUT, DELETE
 routerGeneral.route('/login')  
-  .post(userController.verificarLogin);
+    .post(userController.verificarLogin);
 
-routerAdm.route('/users')
+routerGeneral.route('/rps')  
+    .post(userController.recuperarcontrasena); 
+
+routerAdm.route('/usuarios')
     .get(userController.lista_todos_usuarios)
     .post(userController.crear_usuario)
     .delete(userController.borrar_usuario);
 
 
-    routerAdm.route('/users/:correo')
+routerAdm.route('/usuarios/:correo')
     .get(userController.leer_usuario)
     .put(userController.modificar_usuario);
 
-    app.use("/api", routerAdm);
-    app.use("/", routerGeneral);
+app.use("/api", routerAdm);
+app.use("/", routerGeneral);
     
 };

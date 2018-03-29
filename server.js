@@ -7,7 +7,7 @@ var express = require('express'),
   
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Tododb'); 
+mongoose.connect(require('./api/Globales.js').nombreBD.instance); 
 
 
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -30,11 +30,17 @@ var UsuarioSchema = new Schema({
     required: 'Digite la contraseña por favor'
   },
   token: {
-    type: String    
+    type: String,
+    max:15
   },
   telefono: {
     type: String    
+  },
+  rol:{
+    type: String,
+    required: 'Seleccione el rol por favor'
   }
 });
+
 
 module.exports = mongoose.model('Usuario', UsuarioSchema);
