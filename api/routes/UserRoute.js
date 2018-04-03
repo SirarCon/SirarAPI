@@ -1,9 +1,34 @@
 'use strict';
 module.exports = function(app, express) {
-  const tokkenGlobal = require('../Globales.js').tokenGeneral.instance;
-  var userController = require('../controllers/UserController');
-  const AwtAuth = require('jsonwebtoken');
-  console.log(tokkenGlobal);
+const tokkenGlobal = require('../Globales.js').tokenGeneral.instance;
+var userController = require('../controllers/UserController');
+const AwtAuth = require('jsonwebtoken');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null, 'imagenes/imagenesPerfil/');
+  },
+  filename: function(req, file, cb){                   
+    cb(null, req.body.correo + "_imagen");
+  }
+  });
+
+  const fileFilter = (req, file, cb)=>{
+    if(file.mimetype  == 'image/jpeg' || file.mimetype  == 'image/png')
+      cb(null, true);
+      else
+    cb(new Error("No es el formato permitido para la imagen"), false);    
+  }
+
+const upload = multer({storage: storage, limits:
+  {filesize: 1024 * 1024 * 5},
+  fileFilter: fileFilter
+});  
+
+
+
+
 var routerAdm = express.Router()
 var routerGeneral = express.Router()
 
@@ -64,13 +89,13 @@ routerGeneral.route('/rps')
 
 routerAdm.route('/usuarios')
     .get(userController.lista_todos_usuarios)
-    .post(userController.crear_usuario)
-    .delete(userController.borrar_usuario);
+    .post(upload.single('imagenUsuario'), userController.crear_usuario);
 
 
 routerAdm.route('/usuarios/:correo')
     .get(userController.leer_usuario)
-    .put(userController.modificar_usuario);
+    .put(upload.single('imagenUsuario'), userController.modificar_usuario)
+    .delete(userController.borrar_usuario);
 
 app.use("/api", routerAdm);
 app.use("/", routerGeneral);

@@ -5,6 +5,23 @@ var mongoose = require('mongoose'),
 Usuario = mongoose.model('Usuario');
 const AwtAuth = require('jsonwebtoken');
 
+
+function borrarArchivo(ruta){
+  const fs =require("fs");
+  console.log("borrando");
+  fs.exists(ruta, function(exists) {
+    let uploadedFileName;
+    if (exists) {
+      fs.access(ruta, error => {
+        if(!error){
+          fs.unlinkSync(ruta);
+        }
+        else console.log(error);
+      })
+    }     
+});
+}
+
 exports.verificarLogin = function(req, res) {    
       Usuario.find({correo: req.body.correo, password: req.body.password}, function(err, usuario) {
         if (err)
@@ -23,24 +40,26 @@ exports.verificarLogin = function(req, res) {
       })
   };
 
-function mailSender(emailadress, subject, message, res, random){            
+function mailSender(emailAdress, subject, message, res, random){            
   require("../Globales.js").emailTransporter.instance
   .sendMail(
-          require("../Globales.js").emailOptions(emailadress, subject, message).instance,
+          require("../Globales.js").emailOptions(emailAdress, subject, message).instance,
           (error, info) => {
                   if (error) {              
-                    Usuario.remove({correo: emailadress}, (err, usuario)=> {
+                    Usuario.remove({correo: emailAdress}, (err, usuario)=> {
                       if (err)
                         console.log(error);
+                        if(usuario.fotoUrl)
+                        borrarArchivo(usuario.fotoUrl);                        
                         res.json({code: '2021'});
                     }) 
                     res.json({code: '2020'});             
                     return console.log(error);
                   }
-          Usuario.findOneAndUpdate({correo: emailadress}, { $set: {"token": random }}, function(err, usuario) {
+          Usuario.findOneAndUpdate({correo: emailAdress}, { $set: {"token": random }}, function(err, usuario) {
             if (err)
               res.send(err);
-              res.send("Usuario " + emailadress + " creado");
+              res.send("Usuario " + emailAdress + " creado");
           });                        
           console.log('Message sent: %s', info.messageId);                                   
   });        
@@ -68,10 +87,14 @@ exports.lista_todos_usuarios = function(req, res) {
   });
 };
 
-exports.crear_usuario = function(req, res) {
+exports.crear_usuario = function(req, res) {  
   const randomstring = require('just.randomstring');                   
-  var nuevo_usuario = new Usuario(req.body);
-  nuevo_usuario.save(function(err, usuario) {
+  var nuevoUsuario = new Usuario(req.body);
+  if(req.file){
+    console.log("Con imagen");
+    nuevoUsuario.fotoUrl = req.file.path
+  }
+  nuevoUsuario.save(function(err, usuario) {
     if (err)
       res.send(err);
     else
@@ -96,20 +119,30 @@ exports.leer_usuario = function(req, res) {
   });
 };
 
-exports.modificar_usuario = function(req, res) {
-  Usuario.findOneAndUpdate({correo: req.params.correo}, req.body, {new: true}, function(err, usuario) {
+exports.modificar_usuario = function(req, res) {    
+  Usuario.findOneAndUpdate({correo: req.params.correo},
+     {$set: {
+      "nombre": req.body.nombre,  
+      "password": req.body.password,
+      "token": req.body.token, 
+      "fotoUrl" : req.file ? req.file.path : undefined,
+      "telefono": req.body.telefono,
+      "rol": req.body.rol                                                                                                                         
+      }}, {new: false}, function(err, usuario) {
     if (err)
-      res.send(err);
-    res.json(usuario);
-  });
+      res.send(err);        
+        if(!req.file)
+        borrarArchivo(usuario.fotoUrl);   
+  res.json(usuario);
+});  
 };
 
 exports.borrar_usuario = function(req, res) {
   Usuario.remove({
-    correo: req.body.correo
+    correo: req.params.correo
   }, function(err, usuario) {
     if (err)
       res.send(err);
-    res.json({ message: 'EL usuario fue borrado' });
+    res.json({ message: 'EL usuario ' +req.params.correo +' fue borrado' });
   });
 };
