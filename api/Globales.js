@@ -5,6 +5,8 @@ const nombreBD = Symbol.for("SIRAR.GLOBAL.NOMBREBD");
 const tokenGeneral = Symbol.for("SIRAR.GLOBAL.TOKENGENERAL");
 const emailTransporter = Symbol.for("SIRAR.GLOBAL.EMAILTRANSPORTER");
 const emailOptions = Symbol.for("SIRAR.GLOBAL.EMAILOPTIONS"); 
+const rutaImagenesPerfil = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESPERFIL"); 
+const mensajesError = Symbol.for("SIRAR.GLOBAL.MENSAJESERROR");
 
 function inicializarGLobal(variableGlobal, valor){
     var existeVarGlobal = (SimbolosGlobales.indexOf(variableGlobal) > -1);
@@ -26,6 +28,7 @@ function inicializarGLobal(variableGlobal, valor){
 
 module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Tododb") 
 module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
+module.exports.rutaImagenesPerfil = inicializarGLobal(rutaImagenesPerfil, "imagenes/imagenesPerfil/")
 
 let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',//'smtp.ethereal.email',
@@ -47,3 +50,16 @@ module.exports.emailOptions = function(correo, subject, message){
                                     };
                                     return inicializarGLobal(emailOptions, mailOptions);
                                 }
+
+/*
+module.exports.mensajesError = function(mensajeError){
+                               var error = function (){
+                                switch(mensajeError){
+                                    case 84: return 10; break;
+                                    case 1: return 1; break;//No existe el usuario o contraseña
+                                    default: return 00; //Error no controlado
+                                }
+                            }
+                            console.log(error);
+                                return inicializarGLobal(mensajesError, error);
+                            }*/

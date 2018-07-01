@@ -2,6 +2,7 @@
 module.exports = function(app, express) {
 const tokkenGlobal = require('../Globales.js').tokenGeneral.instance;
 var userController = require('../controllers/UserController');
+//import * as userController from '../controllers/UserController';
 const AwtAuth = require('jsonwebtoken');
 const multer = require('multer');
 
@@ -89,12 +90,12 @@ routerGeneral.route('/rps')
 
 routerAdm.route('/usuarios')
     .get(userController.lista_todos_usuarios)
-    .post(upload.single('imagenUsuario'), userController.crear_usuario);
+    .post(/*upload.single('imagenUsuario'),*/ userController.crear_usuario);
 
 
 routerAdm.route('/usuarios/:correo')
     .get(userController.leer_usuario)
-    .put(upload.single('imagenUsuario'), userController.modificar_usuario)
+    .put(/*upload.single('imagenUsuario'),*/ userController.modificar_usuario)
     .delete(userController.borrar_usuario);
 
 app.use("/api", routerAdm);
