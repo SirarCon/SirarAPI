@@ -8,6 +8,15 @@ var globales = require("../Globales.js");
 const rutaImagenesPerfil = require('../Globales.js').rutaImagenesPerfil.instance;
 
 
+function convertir64bits(archivo){
+  console.log(archivo + "hey");
+  var fs = require('fs');
+      // read binary data
+      var bitmap = fs.readFileSync(archivo);
+      // convert binary data to base64 encoded string
+      return new Buffer(bitmap).toString('base64');
+  }
+
 function guardarImagenPerfil(ruta, usuario){
   const fs =require("fs");  //"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg==
   var extension= usuario.fotoUrl.match(/\/(.*);/);
@@ -127,6 +136,7 @@ exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el
   Usuario.find({correo: {$ne: req.headers["correo"]}}, function(err, usuarios) {
   if (err)
   res.json({exito: false, error: 2, mensaje: err});
+  usuarios.forEach((u, i, us) => us[i].fotoUrl = us[i].fotoUrl ? convertir64bits(u.fotoUrl) : u.fotoUrl);
   res.json({exito: true, error: -1, mensaje: usuarios});    
 });
 };
@@ -136,6 +146,7 @@ exports.leer_usuario = function(req, res) {
   Usuario.find({correo: req.params.correo}, function(err, usuario) {
     if (err)
     res.json({exito: false, error: 7 ,message: err});
+    usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;
     res.json({exito: true, error:-1, message: usuario});        
   });  
 };
@@ -152,12 +163,13 @@ exports.modificar_usuario = function(req, res) {
       "fotoUrl" : req.body.fotoUrl ? guardarImagenPerfil(rutaImagenesPerfil, usuarioTem) : undefined,
       "telefono": req.body.telefono,
       "rol": req.body.rol                                                                                                                         
-      }}, {new: false}, function(err, usuario) {
+      }}, {new: false}, function(err, usuarioAntiguo) {
     if (err)
       res.json({exito: false, error: 5 , message: err});        
-    if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuario.fotoUrl != null)
-       borrarArchivo(usuario.fotoUrl);   
-       res.json({exito: true, error: -1 ,message: usuario});
+    if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null)
+       borrarArchivo(usuarioAntiguo.fotoUrl);  
+
+       res.json({exito: true, error: -1 ,message: usuarioAntiguo});
 });  
 };
 
