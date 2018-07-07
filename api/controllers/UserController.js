@@ -143,11 +143,11 @@ exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el
 
 
 exports.leer_usuario = function(req, res) {  
-  Usuario.find({correo: req.params.correo}, function(err, usuario) {
+  Usuario.findOne({correo: req.params.correo}, function(err, usuario) {
     if (err)
     res.json({exito: false, error: 7 ,message: err});
-    usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;
-    res.json({exito: true, error:-1, message: usuario});        
+    usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;    
+    res.json({exito: true, error:-1, message: usuario });        
   });  
 };
 
