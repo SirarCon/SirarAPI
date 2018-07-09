@@ -140,7 +140,9 @@ exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el
   res.json({exito: true, error: -1, mensaje: usuarios});    
 });
 };
-//Prue
+//[remote "origin"]
+//	url = https://sirar2018.visualstudio.com/SIRAR/_git/SIRAR%20API
+//	fetch = +refs/heads/*:refs/remotes/origin/*
 
 exports.leer_usuario = function(req, res) {  
   Usuario.findOne({correo: req.params.correo}, function(err, usuario) {
