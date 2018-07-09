@@ -140,7 +140,7 @@ exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el
   res.json({exito: true, error: -1, mensaje: usuarios});    
 });
 };
-
+//Prueba
 
 exports.leer_usuario = function(req, res) {  
   Usuario.findOne({correo: req.params.correo}, function(err, usuario) {
