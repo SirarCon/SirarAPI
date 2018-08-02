@@ -12,6 +12,7 @@
     "nodemon": "^1.17.1"
   },
   "dependencies": {
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.2.0",
     "just.randomstring": "^0.1.1",

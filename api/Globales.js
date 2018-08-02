@@ -26,7 +26,7 @@ function inicializarGLobal(variableGlobal, valor){
         return singletonGeneral;
 }
 
-module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
+module.exports.nombreBD = inicializarGLobal(nombreBD, /*"mongodb://localhost/Sirar")*/"mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
 module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
 module.exports.rutaImagenesPerfil = inicializarGLobal(rutaImagenesPerfil, "imagenes/imagenesPerfil/")
 
@@ -35,8 +35,8 @@ let transporter = nodemailer.createTransport({
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: "casasolalonso@gmail.com",
-            pass: "*********"
+            user: "sirarconcr@gmail.com",
+            pass: "Sirar2018"
         }
 });
 module.exports.emailTransporter = inicializarGLobal(emailTransporter, transporter);

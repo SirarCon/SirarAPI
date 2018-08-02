@@ -7,6 +7,10 @@ const AwtAuth = require('jsonwebtoken');
 var globales = require("../Globales.js");
 const rutaImagenesPerfil = require('../Globales.js').rutaImagenesPerfil.instance;
 
+function crearRandom(){
+  const randomstring = require('just.randomstring');                   
+  return randomstring(15);
+}
 
 function convertir64bits(archivo){
   console.log(archivo + "hey");
@@ -66,29 +70,22 @@ exports.verificarLogin = function(req, res) {
       })
   };
 
-function mailSender(emailAdress, subject, message, res, random){            
-  require("../Globales.js").emailTransporter.instance
-  .sendMail(
+function mailSender(emailAdress, subject, message, res){            
+  require("../Globales.js").emailTransporter.instance.sendMail(
           require("../Globales.js").emailOptions(emailAdress, subject, message).instance,
           (error, info) => {
-                  if (error) { 
-                    console.log("Borrando " + emailAdress);
-                    Usuario.findOneAndRemove({correo: emailAdress}, (err, usuario)=> {
-                      if (err)
-                      res.json({exito: false, error: 3, mensaje: "Error borrando usuario no existe el usuario"});
-                      console.log(usuario.fotoUrl);
-                      if(usuario.fotoUrl){
-                          borrarArchivo(usuario.fotoUrl);                                               
-                        }
-                    });  
-                    res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + error });                                        
-                  }
-          Usuario.findOneAndUpdate({correo: emailAdress}, { $set: {"token": random }}, function(err, usuario) {
-            if (err)
-            res.json({exito: false, error: 5, mensaje: "Error guardando el token del nuevo usuario"});
-            res.json({exito: true, error: -1, mensaje: "Usuario " + emailAdress + " creado"});
-          });                                                                     
-  });        
+                            if (error) {                     
+                              Usuario.findOneAndRemove({correo: emailAdress}, (err, usuario)=> {
+                                if (err)
+                                res.json({exito: false, error: 3, mensaje: "Error borrando usuario no existe el usuario"});                      
+                                if(usuario.fotoUrl){
+                                    borrarArchivo(usuario.fotoUrl);                                               
+                                  }
+                              });  
+                              res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + error });                                        
+                            }                                                                           
+                          }
+  );        
 }
 
 exports.recuperarcontrasena = function(req, res){
@@ -106,28 +103,27 @@ exports.recuperarcontrasena = function(req, res){
 }
 
 //Necesita el checkbox application/x-www-form-urlencoded
-exports.crear_usuario = function(req, res) {  
-  console.log("Guardando" + req.body.fotoUrl);
-  const randomstring = require('just.randomstring');                   
+exports.crear_usuario = function(req, res) {    
   var nuevoUsuario = new Usuario(req.body);
-  
-    if(req.body.fotoUrl){
-    console.log("Con imagen");
+  nuevoUsuario.token = crearRandom(); 
+    if(req.body.fotoUrl){    
     nuevoUsuario.fotoUrl = guardarImagenPerfil(rutaImagenesPerfil, nuevoUsuario);    
-  }
+    }
   nuevoUsuario.save(function(err, usuario) {
-    if (err)
-    res.json({exito: false, error:1, message: err});
+    if (err){   
+      if(!err.code || !err.code == 11000) //Llave duplicada  
+      borrarArchivo(nuevoUsuario.fotoUrl); 
+    res.json({exito: false, error:1, mensaje: err});
+  }
     else
-      if(usuario){      
-        var random = randomstring(15);
+      if(usuario){              
         mailSender(usuario.correo,
             'Creación de contraseña',
               '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
               '<p>Para crear su contraseña presione '+
-              '<a localhost:3000/rps/'+ random +'> Aquí </a>'+
-              ' o copie y pegue en un navegador el siguiente Link: localhost:3000/rps/'+ random + '</p>'
-          , res, random);              
+              '<a https://sirarapp.herokuapp.com/reestablecer/reestablecer?'+ nuevoUsuario.token +'> Aquí </a>'+
+              ' o copie y pegue en un navegador el siguiente Link: https://sirarapp.herokuapp.com/reestablecer/reestablecer?'+ nuevoUsuario.token + '</p>'
+          , res);              
       }
   });
 };
@@ -147,9 +143,10 @@ exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el
 exports.leer_usuario = function(req, res) {  
   Usuario.findOne({correo: req.params.correo}, function(err, usuario) {
     if (err)
-    res.json({exito: false, error: 7 ,message: err});
+    res.json({exito: false, error: 7 ,mensaje: err});
     usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;    
-    res.json({exito: true, error:-1, message: usuario });        
+    console.log(usuario);
+    res.json({exito: true, error:-1, mensaje: usuario });        
   });  
 };
 
@@ -159,6 +156,7 @@ exports.modificar_usuario = function(req, res) {
   usuarioTem.fotoUrl = req.body.fotoUrl;  
   Usuario.findOneAndUpdate({correo: req.params.correo},
      {$set: {
+      "correo" : req.body.correo,
       "nombre": req.body.nombre,  
       "password": req.body.password,
       "token": req.body.token, 
@@ -167,11 +165,11 @@ exports.modificar_usuario = function(req, res) {
       "rol": req.body.rol                                                                                                                         
       }}, {new: false}, function(err, usuarioAntiguo) {
     if (err)
-      res.json({exito: false, error: 5 , message: err});        
+      res.json({exito: false, error: 5 , mensaje: err});        
     if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null)
        borrarArchivo(usuarioAntiguo.fotoUrl);  
 
-       res.json({exito: true, error: -1 ,message: usuarioAntiguo});
+       res.json({exito: true, error: -1 ,mensaje: usuarioAntiguo});
 });  
 };
 
@@ -180,11 +178,11 @@ exports.borrar_usuario = function(req, res) {
     correo: req.params.correo    
   }, function(err, usuario) {
     if (err)
-    res.json({exito: true, error: 2 ,message: "Error al borrar el usuario"});
+    res.json({exito: true, error: 2 ,mensaje: "Error al borrar el usuario"});
     
     if(usuario)
     if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
       borrarArchivo(usuario.fotoUrl)
-    res.json({exito: true, error: -1 ,message: 'EL usuario ' + req.params.correo +' fue borrado' + usuario});    
+    res.json({exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.correo +' fue borrado' + usuario});    
   });
 };
