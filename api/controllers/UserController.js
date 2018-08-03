@@ -59,13 +59,13 @@ exports.verificarLogin = function(req, res) {
           res.send(err);
         if(usuario.length > 0) {
             AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ (err,token)=>{                            
-              res.json({exito: true, error: -1, mensaje: token});
+              res.json({exito: true, error: -1, mensaje: {token: token, usuario: usuario}});
             });
         }
         else{
           //var x = require("../Globales.js").mensajesError(1);
           //console.log(x);
-          res.json({exito: false, error: 2, mensaje: "Error verificando login"});
+          res.json({exito: false, error: 2, mensaje: "Usuario o Contraseña erróneos"});
         }
       })
   };
