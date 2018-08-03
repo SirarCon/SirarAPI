@@ -59,9 +59,9 @@ function extraerToken(req, nombreHeader){
 routerAdm.use(cors());
 routerGeneral.use(cors());
 //Se le assignan los middleware a los usuarios adm antes del login
-//routerGeneral.use(verificarTokenGeneral);
+routerGeneral.use(verificarTokenGeneral);
 //Se le assignan los middleware a los router de Adm luego del Login
-//routerAdm.use(verificarTokenGeneral, verify);
+routerAdm.use(verificarTokenGeneral, verify);
 
 
 function verify(req, res, next){
