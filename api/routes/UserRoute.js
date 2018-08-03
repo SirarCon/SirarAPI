@@ -5,7 +5,7 @@ var userController = require('../controllers/UserController');
 //import * as userController from '../controllers/UserController';
 const AwtAuth = require('jsonwebtoken');
 const multer = require('multer');
-var cors = require('cors')
+
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb){
@@ -56,8 +56,7 @@ function extraerToken(req, nombreHeader){
   return bearerToken;
 }
 
-routerAdm.use(cors());
-routerGeneral.use(cors());
+
 //Se le assignan los middleware a los usuarios adm antes del login
 routerGeneral.use(verificarTokenGeneral);
 //Se le assignan los middleware a los router de Adm luego del Login
