@@ -35,9 +35,8 @@ function guardarImagenPerfil(ruta, usuario){
   var extension= usuario.fotoUrl.match(/\/(.*);/);
   // strip off the data: url prefix to get just the base64-encoded bytes
   var datosLimpios = usuario.fotoUrl.replace(/^data:image\/\w+;base64,/, "");
-
   var buf = new Buffer(datosLimpios, 'base64');
-  var fotoUrl = ruta + usuario.Identificacion + "." + extension[1]
+  var fotoUrl = ruta + usuario.identificacion + "." + extension[1]  
   if (!fs.existsSync(ruta)){
     var shell = require('shelljs');
     shell.mkdir('-p', ruta);//Si no sirve probar https://www.npmjs.com/package/fs-path para crear fullpath
@@ -103,12 +102,13 @@ function mailSender(emailAdress, subject, message, res){
 
 exports.recuperarcontrasena = function(req, res){
     if(/^([A-Za-z0-9]{15})$/.test(req.body.token)){
-      Usuario.find({token: req.body.token}, function(err, usuario) {
+      Usuario.findOneAndUpdate({token: req.body.token}, 
+      {$set: {"token" : null}}, function(err, usuario) {
         if (err)
-        res.json({exito: false, error: 2, mensaje: err.errmsg});
-        res.json({exito: true, error: -1, mensaje: usuario});    
-          console.log(req.body.token + " token")
-      });
+          res.json({exito: false, error: 2, mensaje: err.errmsg});
+        if(usuario)                  
+          res.json({exito: true, error: -1, mensaje: "Contraseña cambiada exitosamente"});            
+       });
     }
     else{
       res.json({exito: true, error: -1, mensaje: "No existe el token especificado"});    
@@ -116,7 +116,7 @@ exports.recuperarcontrasena = function(req, res){
 }
 
 //Necesita el checkbox application/x-www-form-urlencoded
-exports.crear_usuario = function(req, res) {    
+exports.crear_usuario = function(req, res) {   
   var nuevoUsuario = new Usuario(req.body);
   nuevoUsuario.token = crearRandom(); 
     if(req.body.fotoUrl){    
@@ -166,7 +166,7 @@ exports.leer_usuario = function(req, res) {
 
 exports.modificar_usuario = function(req, res) { 
  var usuarioTem = new Usuario();
-  usuarioTem.Identificacion = req.body.Identificacion;
+  usuarioTem.identificacion = req.body.identificacion;
   usuarioTem.fotoUrl = req.body.fotoUrl;  
   Usuario.findOneAndUpdate({identificacion: req.params.identificacion},
      {$set: {
@@ -179,7 +179,7 @@ exports.modificar_usuario = function(req, res) {
       "rol": req.body.rol                                                                                                                         
       }}, {projection:{password: 0, created_date : 0}, new: false}, function(err, usuarioAntiguo) {
   if (err){
-      res.json({exito: false, error: 5 , mensaje: err.errmsg});        
+      res.json({exito: false, error: 5 , mensaje: "Hubo un fallo al modificar los datos"});        
   }
   if(usuarioAntiguo){
     if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
