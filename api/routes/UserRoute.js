@@ -92,7 +92,7 @@ routerAdm.route('/usuarios')
     .post(/*upload.single('imagenUsuario'),*/ userController.crear_usuario);
 
 
-routerAdm.route('/usuarios/:correo')
+routerAdm.route('/usuarios/:identificacion')
     .get(userController.leer_usuario)
     .put(/*upload.single('imagenUsuario'),*/ userController.modificar_usuario)
     .delete(userController.borrar_usuario);

@@ -37,7 +37,7 @@ var UsuarioSchema = new Schema({
     type: String    
   },
   rol:{
-    type: String,
+    type: Number,
     required: 'Seleccione el rol por favor'
   }
 });

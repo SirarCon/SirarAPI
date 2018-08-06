@@ -17,7 +17,7 @@ function convertir64bits(archivo){
       // read binary data
       var bitmap = fs.readFileSync(archivo);
       // convert binary data to base64 encoded string
-      return new Buffer(bitmap).toString('base64');
+      return "data:image/png;base64," +  new Buffer(bitmap).toString('base64');
   }
 
 function cambiarNombreImagenPerfil(antiguoNombre, nuevoNombre){
@@ -37,7 +37,7 @@ function guardarImagenPerfil(ruta, usuario){
   var datosLimpios = usuario.fotoUrl.replace(/^data:image\/\w+;base64,/, "");
 
   var buf = new Buffer(datosLimpios, 'base64');
-  var fotoUrl = ruta + usuario.correo + "." + extension[1]
+  var fotoUrl = ruta + usuario.Identificacion + "." + extension[1]
   if (!fs.existsSync(ruta)){
     var shell = require('shelljs');
     shell.mkdir('-p', ruta);//Si no sirve probar https://www.npmjs.com/package/fs-path para crear fullpath
@@ -63,7 +63,10 @@ function borrarArchivo(ruta){
 }
 
 exports.verificarLogin = function(req, res) {    
-      Usuario.find({correo: req.body.correo, password: req.body.password}, {password: 0}, function(err, usuario) {
+      Usuario.find(
+      {correo: req.body.correo, password: req.body.password}, 
+      {password: 0, created_date : 0},
+      function(err, usuario) {
         if (err)
           res.send(err);
         if(usuario.length > 0) {
@@ -139,7 +142,7 @@ exports.crear_usuario = function(req, res) {
 };
 
 exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el correo 
-  Usuario.find({correo: {$ne: req.headers["correo"]}}, {password: 0}, function(err, usuarios) {
+  Usuario.find({identificacion: {$ne: req.headers["identificacion"]}}, {password: 0, created_date : 0}, function(err, usuarios) {
   if (err)
   res.json({exito: false, error: 2, mensaje: err.errmsg});
   usuarios.forEach((u, i, us) => us[i].fotoUrl = us[i].fotoUrl ? convertir64bits(u.fotoUrl) : u.fotoUrl);
@@ -151,7 +154,7 @@ exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el
 //	fetch = +refs/heads/*:refs/remotes/origin/*
 
 exports.leer_usuario = function(req, res) {  
-  Usuario.findOne({correo: req.params.correo}, {password: 0}, function(err, usuario) {
+  Usuario.findOne({identificacion: req.params.identificacion}, {password: 0, created_date : 0}, function(err, usuario) {
     if (err)
     res.json({exito: false, error: 7 ,mensaje: err});
     if(usuario){
@@ -163,9 +166,9 @@ exports.leer_usuario = function(req, res) {
 
 exports.modificar_usuario = function(req, res) { 
  var usuarioTem = new Usuario();
-  usuarioTem.correo = req.body.correo;
+  usuarioTem.Identificacion = req.body.Identificacion;
   usuarioTem.fotoUrl = req.body.fotoUrl;  
-  Usuario.findOneAndUpdate({correo: req.params.correo},
+  Usuario.findOneAndUpdate({identificacion: req.params.identificacion},
      {$set: {
       "correo" : req.body.correo,
       "nombre": req.body.nombre,  
@@ -174,19 +177,14 @@ exports.modificar_usuario = function(req, res) {
       "fotoUrl" : req.body.fotoUrl ? guardarImagenPerfil(rutaImagenesPerfil, usuarioTem) : undefined,
       "telefono": req.body.telefono,
       "rol": req.body.rol                                                                                                                         
-      }}, {projection:{ password: 0 }, new: false}, function(err, usuarioAntiguo) {
+      }}, {projection:{password: 0, created_date : 0}, new: false}, function(err, usuarioAntiguo) {
   if (err){
       res.json({exito: false, error: 5 , mensaje: err.errmsg});        
   }
   if(usuarioAntiguo){
     if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
         borrarArchivo(usuarioAntiguo.fotoUrl);
-    }
-    else{
-      if(usuarioAntiguo.correo !== req.body.correo){
-        borrarArchivo(usuarioAntiguo.fotoUrl);      
-      }
-    }    
+    }       
   }
   res.json({exito: true, error: -1 ,mensaje: usuarioAntiguo});
 });  
@@ -194,7 +192,7 @@ exports.modificar_usuario = function(req, res) {
 
 exports.borrar_usuario = function(req, res) {
   Usuario.findOneAndRemove({
-    correo: req.params.correo    
+    identificacion: req.params.identificacion    
   },function(err, usuario) {
     if (err)
     res.json({exito: true, error: 2 ,mensaje: "Error al borrar el usuario "+ err.errmsg});
@@ -202,6 +200,6 @@ exports.borrar_usuario = function(req, res) {
     if(usuario)
     if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
       borrarArchivo(usuario.fotoUrl)
-    res.json({exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.correo +' fue borrado'});    
+    res.json({exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.identificacion +' fue borrado'});    
   });
 };
