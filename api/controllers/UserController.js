@@ -12,14 +12,23 @@ function crearRandom(){
   return randomstring(15);
 }
 
-function convertir64bits(archivo){
-  console.log(archivo + "hey");
+function convertir64bits(archivo){  
   var fs = require('fs');
       // read binary data
       var bitmap = fs.readFileSync(archivo);
       // convert binary data to base64 encoded string
       return new Buffer(bitmap).toString('base64');
   }
+
+function cambiarNombreImagenPerfil(antiguoNombre, nuevoNombre){
+  const fs = require("fs");  
+  fs.rename(antiguoNombre, nuevoNombre, (err) =>{
+    if(err){
+      return false;
+    }
+  });
+  return true;
+}
 
 function guardarImagenPerfil(ruta, usuario){
   const fs =require("fs");  //"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg==
@@ -34,7 +43,7 @@ function guardarImagenPerfil(ruta, usuario){
     shell.mkdir('-p', ruta);//Si no sirve probar https://www.npmjs.com/package/fs-path para crear fullpath
   } 
 
-  fs.writeFileSync(fotoUrl, buf);
+  fs.writeFileSync(fotoUrl, buf);  
   return fotoUrl;
 }
 
@@ -54,7 +63,7 @@ function borrarArchivo(ruta){
 }
 
 exports.verificarLogin = function(req, res) {    
-      Usuario.find({correo: req.body.correo, password: req.body.password}, function(err, usuario) {
+      Usuario.find({correo: req.body.correo, password: req.body.password}, {password: 0}, function(err, usuario) {
         if (err)
           res.send(err);
         if(usuario.length > 0) {
@@ -82,8 +91,9 @@ function mailSender(emailAdress, subject, message, res){
                                     borrarArchivo(usuario.fotoUrl);                                               
                                   }
                               });  
-                              res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + error });                                        
-                            }                                                                           
+                              res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + err.errmsg });                                        
+                            }     
+                            res.json({exito: true, error: -1, mensaje: emailAdress + " creado." })                                                                      
                           }
   );        
 }
@@ -92,7 +102,7 @@ exports.recuperarcontrasena = function(req, res){
     if(/^([A-Za-z0-9]{15})$/.test(req.body.token)){
       Usuario.find({token: req.body.token}, function(err, usuario) {
         if (err)
-        res.json({exito: false, error: 2, mensaje: err});
+        res.json({exito: false, error: 2, mensaje: err.errmsg});
         res.json({exito: true, error: -1, mensaje: usuario});    
           console.log(req.body.token + " token")
       });
@@ -113,7 +123,7 @@ exports.crear_usuario = function(req, res) {
     if (err){   
       if(!err.code || !err.code == 11000) //Llave duplicada  
       borrarArchivo(nuevoUsuario.fotoUrl); 
-    res.json({exito: false, error:1, mensaje: err});
+    res.json({exito: false, error:1, mensaje: err.errmsg});
   }
     else
       if(usuario){              
@@ -129,9 +139,9 @@ exports.crear_usuario = function(req, res) {
 };
 
 exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el correo 
-  Usuario.find({correo: {$ne: req.headers["correo"]}}, function(err, usuarios) {
+  Usuario.find({correo: {$ne: req.headers["correo"]}}, {password: 0}, function(err, usuarios) {
   if (err)
-  res.json({exito: false, error: 2, mensaje: err});
+  res.json({exito: false, error: 2, mensaje: err.errmsg});
   usuarios.forEach((u, i, us) => us[i].fotoUrl = us[i].fotoUrl ? convertir64bits(u.fotoUrl) : u.fotoUrl);
   res.json({exito: true, error: -1, mensaje: usuarios});    
 });
@@ -141,18 +151,19 @@ exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el
 //	fetch = +refs/heads/*:refs/remotes/origin/*
 
 exports.leer_usuario = function(req, res) {  
-  Usuario.findOne({correo: req.params.correo}, function(err, usuario) {
+  Usuario.findOne({correo: req.params.correo}, {password: 0}, function(err, usuario) {
     if (err)
     res.json({exito: false, error: 7 ,mensaje: err});
-    usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;    
-    console.log(usuario);
-    res.json({exito: true, error:-1, mensaje: usuario });        
+    if(usuario){
+       usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;        
+    }
+    res.json({exito: true, error:-1, mensaje: usuario });            
   });  
 };
 
 exports.modificar_usuario = function(req, res) { 
  var usuarioTem = new Usuario();
-  usuarioTem.correo = req.params.correo;
+  usuarioTem.correo = req.body.correo;
   usuarioTem.fotoUrl = req.body.fotoUrl;  
   Usuario.findOneAndUpdate({correo: req.params.correo},
      {$set: {
@@ -163,26 +174,34 @@ exports.modificar_usuario = function(req, res) {
       "fotoUrl" : req.body.fotoUrl ? guardarImagenPerfil(rutaImagenesPerfil, usuarioTem) : undefined,
       "telefono": req.body.telefono,
       "rol": req.body.rol                                                                                                                         
-      }}, {new: false}, function(err, usuarioAntiguo) {
-    if (err)
-      res.json({exito: false, error: 5 , mensaje: err});        
-    if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null)
-       borrarArchivo(usuarioAntiguo.fotoUrl);  
-
-       res.json({exito: true, error: -1 ,mensaje: usuarioAntiguo});
+      }}, {projection:{ password: 0 }, new: false}, function(err, usuarioAntiguo) {
+  if (err){
+      res.json({exito: false, error: 5 , mensaje: err.errmsg});        
+  }
+  if(usuarioAntiguo){
+    if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
+        borrarArchivo(usuarioAntiguo.fotoUrl);
+    }
+    else{
+      if(usuarioAntiguo.correo !== req.body.correo){
+        borrarArchivo(usuarioAntiguo.fotoUrl);      
+      }
+    }    
+  }
+  res.json({exito: true, error: -1 ,mensaje: usuarioAntiguo});
 });  
 };
 
 exports.borrar_usuario = function(req, res) {
   Usuario.findOneAndRemove({
     correo: req.params.correo    
-  }, function(err, usuario) {
+  },function(err, usuario) {
     if (err)
-    res.json({exito: true, error: 2 ,mensaje: "Error al borrar el usuario"});
+    res.json({exito: true, error: 2 ,mensaje: "Error al borrar el usuario "+ err.errmsg});
     
     if(usuario)
     if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
       borrarArchivo(usuario.fotoUrl)
-    res.json({exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.correo +' fue borrado' + usuario});    
+    res.json({exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.correo +' fue borrado'});    
   });
 };
