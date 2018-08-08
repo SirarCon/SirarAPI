@@ -143,18 +143,16 @@ exports.crear_usuario = function(req, res) {
   });
 };
 
-exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el correo 
-  console.log("e")
+exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el correo   
   Usuario.find({identificacion: {$ne: req.headers["identificacion"]}}, {password: 0, created_date : 0}, function(err, usuarios) {
   if (err)
-  res.json({exito: false, error: 2, mensaje: err.errmsg});
-  console.log("ee")
+  res.json({exito: false, error: 2, mensaje: err.errmsg});  
   usuarios.forEach((u, i, us) => {console.log(us[i].fotoUrl); us[i].fotoUrl = us[i].fotoUrl ? convertir64bits(u.fotoUrl) : u.fotoUrl});
   if(usuarios.length > 0)
   res.json({exito: true, error: -1, mensaje: usuarios});    
   else
   res.json({exito: false, error:10, mensaje: "No hay usuarios registrados"});
-});
+}).sort({nombre : 1});
 };
 //[remote "origin"]
 //	url = https://sirar2018.visualstudio.com/SIRAR/_git/SIRAR%20API
@@ -180,22 +178,22 @@ exports.modificar_usuario = function(req, res) {
   Usuario.findOneAndUpdate({identificacion: req.params.identificacion},
      {$set: {
       "correo" : req.body.correo,
-      "nombre": req.body.nombre,  
-      "password": req.body.password,
+      "nombre": req.body.nombre,        
       "token": req.body.token, 
       "fotoUrl" : req.body.fotoUrl ? guardarImagenPerfil(rutaImagenesPerfil, usuarioTem) : undefined,
       "telefono": req.body.telefono,
       "rol": req.body.rol                                                                                                                         
       }}, {projection:{password: 0, created_date : 0}, new: false}, function(err, usuarioAntiguo) {
   if (err){
+    console.log(err);
       res.json({exito: false, error: 5 , mensaje: "Hubo un fallo al modificar los datos"});        
   }
   if(usuarioAntiguo){
     if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
         borrarArchivo(usuarioAntiguo.fotoUrl);
     }       
+    res.json({exito: true, error: -1 ,mensaje: "Usuario" + usuarioAntiguo.nombre +" modificado con éxito"});
   }
-  res.json({exito: true, error: -1 ,mensaje: "Usuario" + usuarioAntiguo.nombre +" modificado con éxito"});
 });  
 };
 
