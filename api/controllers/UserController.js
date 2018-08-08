@@ -13,22 +13,24 @@ function crearRandom(){
 }
 
 function convertir64bits(archivo){  
+  console.log(archivo)
   var fs = require('fs');
       // read binary data
-      var bitmap = fs.readFileSync(archivo);
-      // convert binary data to base64 encoded string
-      return "data:image/png;base64," +  new Buffer(bitmap).toString('base64');
+      
+      fs.readFile(archivo,(err, imagenEncontrada)=>{
+        if(err){
+          if(err.code === 'ENOENT')          
+          return  "Archivo no encontrado";
+          else
+          return "Error leyendo el archivo";
+        }
+        else{
+          console.log(imagenEncontrada)
+            return "data:image/jpeg;base64," +  new Buffer(imagenEncontrada).toString('base64');;
+        }        
+      });            
+      // convert binary data to base64 encoded string      
   }
-
-function cambiarNombreImagenPerfil(antiguoNombre, nuevoNombre){
-  const fs = require("fs");  
-  fs.rename(antiguoNombre, nuevoNombre, (err) =>{
-    if(err){
-      return false;
-    }
-  });
-  return true;
-}
 
 function guardarImagenPerfil(ruta, usuario){
   const fs =require("fs");  //"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg==
@@ -142,11 +144,16 @@ exports.crear_usuario = function(req, res) {
 };
 
 exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el correo 
+  console.log("e")
   Usuario.find({identificacion: {$ne: req.headers["identificacion"]}}, {password: 0, created_date : 0}, function(err, usuarios) {
   if (err)
   res.json({exito: false, error: 2, mensaje: err.errmsg});
-  usuarios.forEach((u, i, us) => us[i].fotoUrl = us[i].fotoUrl ? convertir64bits(u.fotoUrl) : u.fotoUrl);
+  console.log("ee")
+  usuarios.forEach((u, i, us) => {console.log(us[i].fotoUrl); us[i].fotoUrl = us[i].fotoUrl ? convertir64bits(u.fotoUrl) : u.fotoUrl});
+  if(usuarios.length > 0)
   res.json({exito: true, error: -1, mensaje: usuarios});    
+  else
+  res.json({exito: false, error:10, mensaje: "No hay usuarios registrados"});
 });
 };
 //[remote "origin"]
@@ -154,13 +161,15 @@ exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el
 //	fetch = +refs/heads/*:refs/remotes/origin/*
 
 exports.leer_usuario = function(req, res) {  
+  console.log("ee")
   Usuario.findOne({identificacion: req.params.identificacion}, {password: 0, created_date : 0}, function(err, usuario) {
     if (err)
     res.json({exito: false, error: 7 ,mensaje: err});
-    if(usuario){
-       usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;        
-    }
-    res.json({exito: true, error:-1, mensaje: usuario });            
+    if(usuario){      
+       usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;             
+       res.json({exito: true, error:-1, mensaje: usuario });
+    }    
+    res.json({exito: false, error: 10, mensaje: "No hay usuarios con la identificación: " + req.params.identificacion});
   });  
 };
 
@@ -186,7 +195,7 @@ exports.modificar_usuario = function(req, res) {
         borrarArchivo(usuarioAntiguo.fotoUrl);
     }       
   }
-  res.json({exito: true, error: -1 ,mensaje: usuarioAntiguo});
+  res.json({exito: true, error: -1 ,mensaje: "Usuario" + usuarioAntiguo.nombre +" modificado con éxito"});
 });  
 };
 
