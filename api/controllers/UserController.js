@@ -97,7 +97,7 @@ function mailSender(emailAdress, subject, message, res){
                                     borrarArchivo(usuario.fotoUrl);                                               
                                   }
                               });  
-                              res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + err.errmsg });                                        
+                              res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + error.errmsg });                                        
                             }     
                             res.json({exito: true, error: -1, mensaje: emailAdress + " creado." })                                                                      
                           }
