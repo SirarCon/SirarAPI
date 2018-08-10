@@ -163,14 +163,19 @@ exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el
 exports.leer_usuario = function(req, res) {  
   console.log("ee")
   Usuario.findOne({identificacion: req.params.identificacion}, {password: 0, created_date : 0}, function(err, usuario) {
-    if (err)
+    if (err){
     res.json({exito: false, error: 7 ,mensaje: err});
+    }
+    else{
     if(usuario){      
        usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;             
        res.json({exito: true, error:-1, mensaje: usuario });
-    }    
+    }
+    else {   
     res.json({exito: false, error: 10, mensaje: "No hay usuarios con la identificación: " + req.params.identificacion});
-  });  
+  }
+}
+  }); 
 };
 
 exports.modificar_usuario = function(req, res) { 
