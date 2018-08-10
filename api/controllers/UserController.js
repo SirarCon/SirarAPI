@@ -17,7 +17,7 @@ function convertir64bits(archivo){
   var fs = require('fs');
       // read binary data
       
-      fs.readFile(archivo,(err, imagenEncontrada)=>{
+      return fs.readFile(archivo,(err, imagenEncontrada)=>{
         if(err){
           if(err.code === 'ENOENT')          
           return  "Archivo no encontrado";
@@ -33,10 +33,12 @@ function convertir64bits(archivo){
   }
 
 function guardarImagenPerfil(ruta, usuario){
+  console.log("updti");
   const fs =require("fs");  //"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg==
   var extension= usuario.fotoUrl.match(/\/(.*);/);
   // strip off the data: url prefix to get just the base64-encoded bytes
   var datosLimpios = usuario.fotoUrl.replace(/^data:image\/\w+;base64,/, "");
+  console.log("g")
   var buf = new Buffer(datosLimpios, 'base64');
   var fotoUrl = ruta + usuario.identificacion + "." + extension[1]  
   if (!fs.existsSync(ruta)){
@@ -174,7 +176,8 @@ exports.leer_usuario = function(req, res) {
 exports.modificar_usuario = function(req, res) { 
  var usuarioTem = new Usuario();
   usuarioTem.identificacion = req.body.identificacion;
-  usuarioTem.fotoUrl = req.body.fotoUrl;  
+  usuarioTem.fotoUrl = req.body.fotoUrl;
+  console.log("u");  
   Usuario.findOneAndUpdate({identificacion: req.params.identificacion},
      {$set: {
       "correo" : req.body.correo,
@@ -188,12 +191,18 @@ exports.modificar_usuario = function(req, res) {
     console.log(err);
       res.json({exito: false, error: 5 , mensaje: "Hubo un fallo al modificar los datos"});        
   }
+  else{
   if(usuarioAntiguo){
+    console.log("k");
     if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
         borrarArchivo(usuarioAntiguo.fotoUrl);
     }       
     res.json({exito: true, error: -1 ,mensaje: "Usuario" + usuarioAntiguo.nombre +" modificado con éxito"});
   }
+  else{
+    res.json({exito: false, error: 9 ,mensaje: "Usuario" + req.params.identificacion +" no éxiste"});
+  }
+}
 });  
 };
 
