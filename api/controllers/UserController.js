@@ -12,6 +12,29 @@ function crearRandom(){
   return randomstring(15);
 }
 
+
+// make promise version of fs.readFile()
+function  readFileAsync(filename) {
+  var fs = require('fs');
+  return new Promise(function(resolve, reject) {
+      fs.readFile(filename, function(err, data){
+          if (err){ 
+              reject("");
+            } 
+          else{ 
+              resolve("data:image/jpeg;base64," +  new Buffer(data).toString('base64'));
+          }
+      });
+  });
+};
+
+function p(archivo) {
+  var fs = require('fs');
+  return new Promise(function(resolve, reject) {
+              resolve(archivo);
+          });
+};
+
 function convertir64bits(archivo){  
   console.log(archivo)
   var fs = require('fs');
@@ -67,7 +90,7 @@ function borrarArchivo(ruta){
 
 exports.verificarLogin = function(req, res) {    
       Usuario.find(
-      {correo: req.body.correo, password: req.body.password}, 
+      {correo: req.body.correo.toLowerCase(), password: req.body.password}, 
       {password: 0, created_date : 0},
       function(err, usuario) {
         if (err)
@@ -85,38 +108,105 @@ exports.verificarLogin = function(req, res) {
       })
   };
 
-function mailSender(emailAdress, subject, message, res){            
+function mailSenderCrear(emailAdress, subject, message, res){            
   require("../Globales.js").emailTransporter.instance.sendMail(
           require("../Globales.js").emailOptions(emailAdress, subject, message).instance,
-          (error, info) => {
-                            if (error) {                     
+          (error, info) => {                        
+                            if (error) {                                                 
                               Usuario.findOneAndRemove({correo: emailAdress}, (err, usuario)=> {
-                                if (err)
-                                res.json({exito: false, error: 3, mensaje: "Error borrando usuario no existe el usuario"});                      
-                                if(usuario.fotoUrl){
-                                    borrarArchivo(usuario.fotoUrl);                                               
+                                if (err){
+                                  res.json({exito: false, error: 3, mensaje: "Error borrando usuario no existe el usuario"});                      
+                                }
+                                else{
+                                  if(usuario && usuario.fotoUrl){
+                                      borrarArchivo(usuario.fotoUrl);                                               
                                   }
-                              });  
-                              res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + error.errmsg });                                        
-                            }     
-                            res.json({exito: true, error: -1, mensaje: emailAdress + " creado." })                                                                      
+                                  res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + error });                                        
+                                }
+                              });                                
+                            }  
+                            else{   
+                            res.json({exito: true, error: -1, mensaje: "El usuario " + emailAdress + " se a creado." })                                                                      
+                            }
                           }
   );        
 }
+
+
+function mailSenderRecuperar(emailAdress, subject, message, res){            
+  require("../Globales.js").emailTransporter.instance.sendMail(
+          require("../Globales.js").emailOptions(emailAdress, subject, message).instance,
+          (error, info) => {                        
+                            if (error) {                                                                       
+                                  res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + error });                                              
+                            }  
+                            else{   
+                            res.json({exito: true, error: -1, mensaje: "El correo a" + emailAdress + " se a enviado." }) 
+                            }
+                          }
+  );        
+}
+
+
+exports.solicitarRecuperacion = function(req, res){
+  Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()}, 
+    {$set: {"token": crearRandom()}}, 
+    (err, usuario) => {
+      if(err){
+      res.json({exito: false, error: 2, mensaje:"Ocurrió un error buscando el usuario " + req.body.correo.toLowerCase()})
+      }
+      else{
+        if(usuario){
+          mailSenderRecuperar(usuario.correo,
+            'Recupeación de contraseña',
+              '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
+              '<p>Este correo se le envnia para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
+              '<a https://sirarpwa.herokuapp.com/reestablecer?'+ usuario.token +'> Aquí </a>'+
+              ' o copie y pegue en un navegador el siguiente Link: https://sirarpwa.herokuapp.com/reestablecer?'+ usuario.token + '</p>'
+          , res);    
+        }
+        else{
+          res.json({exito: false, error: 2, mensaje: "El usuario con el correo " + req.body.correo.toLowerCase() + "no existe" })
+      }
+      }
+  });
+}
+
 
 exports.recuperarcontrasena = function(req, res){
     if(/^([A-Za-z0-9]{15})$/.test(req.body.token)){
       Usuario.findOneAndUpdate({token: req.body.token}, 
       {$set: {"token" : null}}, function(err, usuario) {
-        if (err)
+        if (err){
           res.json({exito: false, error: 2, mensaje: err.errmsg});
-        if(usuario)                  
-          res.json({exito: true, error: -1, mensaje: "Contraseña cambiada exitosamente"});            
+        }
+        else{
+          if(usuario)                  
+            res.json({exito: true, error: -1, mensaje: "Ususario puede cambiar contraseña"});            
+        }
        });
     }
     else{
       res.json({exito: true, error: -1, mensaje: "No existe el token especificado"});    
     }
+}
+
+exports.cambiarContrasena = function(req, res){
+  Usuario.findOneAndUpdate({identificacion : req.body.identificacion},
+    {$set: {"password": req.body.password}},
+    (err, usuario)=>{
+      if(err){
+        res.json({exito: false, error: 2, mensaje: "Error al cambiar contraseña"});
+      }
+      else{
+        if(usuario){
+          res.json({exito: true, error: -1, mensaje: "Contraseña de usuario: " + req.body.identificacion + " cambiada exitosamente."})
+        }
+        else{
+          res.json({exito: false, error: 2, mensaje: "No existe el usuario: " + req.body.identificacion });
+        }
+    }
+  });
 }
 
 //Necesita el checkbox application/x-www-form-urlencoded
@@ -134,34 +224,44 @@ exports.crear_usuario = function(req, res) {
   }
     else
       if(usuario){              
-        mailSender(usuario.correo,
+        mailSenderCrear(usuario.correo,
             'Creación de contraseña',
               '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
               '<p>Para crear su contraseña presione '+
-              '<a https://sirarapp.herokuapp.com/reestablecer/reestablecer?'+ nuevoUsuario.token +'> Aquí </a>'+
-              ' o copie y pegue en un navegador el siguiente Link: https://sirarapp.herokuapp.com/reestablecer/reestablecer?'+ nuevoUsuario.token + '</p>'
+              '<a https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.token +'> Aquí </a>'+
+              ' o copie y pegue en un navegador el siguiente Link: https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.token + '</p>'
           , res);              
       }
   });
 };
 
-exports.lista_todos_usuarios = function(req, res) {//Menos el que consulta en el correo   
+exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consulta en el correo   
+  try{
+    var s = [];
   Usuario.find({identificacion: {$ne: req.headers["identificacion"]}}, {password: 0, created_date : 0}, function(err, usuarios) {
-  if (err)
-  res.json({exito: false, error: 2, mensaje: err.errmsg});  
-  usuarios.forEach((u, i, us) => {console.log(us[i].fotoUrl); us[i].fotoUrl = us[i].fotoUrl ? convertir64bits(u.fotoUrl) : u.fotoUrl});
-  if(usuarios.length > 0)
-  res.json({exito: true, error: -1, mensaje: usuarios});    
-  else
-  res.json({exito: false, error:10, mensaje: "No hay usuarios registrados"});
+  if (err){
+    res.json({exito: false, error: 2, mensaje: err.errmsg});  
+  }
+  else{
+    if(usuarios.length > 0){
+        res.json({exito: true, error: -1, mensaje: usuarios});  
+    }  
+    else
+      res.json({exito: false, error:10, mensaje: "No hay usuarios registrados"});
+  }
 }).sort({nombre : 1});
+ 
+ 
+  
+}catch(e){
+    console.log(e);
+  }
 };
 //[remote "origin"]
 //	url = https://sirar2018.visualstudio.com/SIRAR/_git/SIRAR%20API
 //	fetch = +refs/heads/*:refs/remotes/origin/*
 
 exports.leer_usuario = function(req, res) {  
-  console.log("ee")
   Usuario.findOne({identificacion: req.params.identificacion}, {password: 0, created_date : 0}, function(err, usuario) {
     if (err){
     res.json({exito: false, error: 7 ,mensaje: err});
@@ -182,10 +282,9 @@ exports.modificar_usuario = function(req, res) {
  var usuarioTem = new Usuario();
   usuarioTem.identificacion = req.body.identificacion;
   usuarioTem.fotoUrl = req.body.fotoUrl;
-  console.log("u");  
   Usuario.findOneAndUpdate({identificacion: req.params.identificacion},
      {$set: {
-      "correo" : req.body.correo,
+      "correo" : req.body.correo.toLowerCase(),
       "nombre": req.body.nombre,        
       "token": req.body.token, 
       "fotoUrl" : req.body.fotoUrl ? guardarImagenPerfil(rutaImagenesPerfil, usuarioTem) : undefined,
@@ -198,7 +297,6 @@ exports.modificar_usuario = function(req, res) {
   }
   else{
   if(usuarioAntiguo){
-    console.log("k");
     if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
         borrarArchivo(usuarioAntiguo.fotoUrl);
     }       

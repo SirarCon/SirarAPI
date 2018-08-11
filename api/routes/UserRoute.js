@@ -85,7 +85,11 @@ routerGeneral.route('/login')
     .post(userController.verificarLogin);
 
 routerGeneral.route('/rps')  
-    .post(userController.recuperarcontrasena); 
+    .post(userController.solicitarRecuperacion)
+    .put(userController.recuperarcontrasena); 
+
+routerGeneral.route('/rps/cambiar')  
+    .post(userController.cambiarContrasena)
 
 routerAdm.route('/usuarios')
     .get(userController.lista_todos_usuarios)
