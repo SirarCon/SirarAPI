@@ -19,13 +19,13 @@ function  readFileAsync(filename) {
   return new Promise(function(resolve, reject) {
       fs.readFile(filename, function(err, data){
           if (err){ 
-              reject("");
+              reject("Hubo un error leyendo la foto");
             } 
           else{ 
-              resolve("data:image/jpeg;base64," +  new Buffer(data).toString('base64'));
+              resolve("data:image/jpeg;base64," + new Buffer(data).toString('base64'));
           }
       });
-  });
+  }).catch((e)=>{return "Hubo un error leyendo la foto" });
 };
 
 function p(archivo) {
@@ -234,16 +234,27 @@ exports.crear_usuario = function(req, res) {
       }
   });
 };
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
+}
+
 
 exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consulta en el correo   
   try{
     var s = [];
-  Usuario.find({identificacion: {$ne: req.headers["identificacion"]}}, {password: 0, created_date : 0}, function(err, usuarios) {
+  Usuario.find({identificacion: {$ne: req.headers["identificacion"]}}, {password: 0, created_date : 0}, async function(err, usuarios) {
   if (err){
     res.json({exito: false, error: 2, mensaje: err.errmsg});  
   }
   else{
+    await asyncForEach(usuarios ,async (element, indice, usuarios) => {
+      usuarios[indice].fotoUrl = await readFileAsync(element.fotoUrl);
+      console.log(usuarios[indice])
+    });
     if(usuarios.length > 0){
+      console.log(usuarios.length)
         res.json({exito: true, error: -1, mensaje: usuarios});  
     }  
     else
@@ -261,14 +272,14 @@ exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consult
 //	url = https://sirar2018.visualstudio.com/SIRAR/_git/SIRAR%20API
 //	fetch = +refs/heads/*:refs/remotes/origin/*
 
-exports.leer_usuario = function(req, res) {  
-  Usuario.findOne({identificacion: req.params.identificacion}, {password: 0, created_date : 0}, function(err, usuario) {
+exports.leer_usuario = async function(req, res) {  
+  Usuario.findOne({identificacion: req.params.identificacion}, {password: 0, created_date : 0}, async function(err, usuario) {
     if (err){
     res.json({exito: false, error: 7 ,mensaje: err});
     }
     else{
     if(usuario){      
-       usuario.fotoUrl = usuario.fotoUrl ? convertir64bits(usuario.fotoUrl) : usuario.fotoUrl;             
+      usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
        res.json({exito: true, error:-1, mensaje: usuario });
     }
     else {   
