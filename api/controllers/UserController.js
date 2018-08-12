@@ -19,13 +19,13 @@ function  readFileAsync(filename) {
   return new Promise(function(resolve, reject) {
       fs.readFile(filename, function(err, data){
           if (err){ 
-              reject("Hubo un error leyendo la foto");
+              reject("");
             } 
           else{ 
               resolve("data:image/jpeg;base64," + new Buffer(data).toString('base64'));
           }
       });
-  }).catch((e)=>{return "Hubo un error leyendo la foto" });
+  }).catch((e)=>{return "" });
 };
 
 function p(archivo) {
