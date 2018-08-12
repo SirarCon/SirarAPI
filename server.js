@@ -10,8 +10,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect(require('./api/Globales.js').nombreBD.instance); 
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+app.use(bodyParser.json({limit: '10mb'}));
 
 
 var routes = require('./api/routes/UserRoute'); //importing route

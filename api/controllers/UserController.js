@@ -35,40 +35,18 @@ function p(archivo) {
           });
 };
 
-function convertir64bits(archivo){  
-  console.log(archivo)
-  var fs = require('fs');
-      // read binary data
-      
-      return fs.readFile(archivo,(err, imagenEncontrada)=>{
-        if(err){
-          if(err.code === 'ENOENT')          
-          return  "Archivo no encontrado";
-          else
-          return "Error leyendo el archivo";
-        }
-        else{
-          console.log(imagenEncontrada)
-            return "data:image/jpeg;base64," +  new Buffer(imagenEncontrada).toString('base64');;
-        }        
-      });            
-      // convert binary data to base64 encoded string      
-  }
-
 function guardarImagenPerfil(ruta, usuario){
-  console.log("updti");
   const fs =require("fs");  //"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg==
-  var extension= usuario.fotoUrl.match(/\/(.*);/);
+  
   // strip off the data: url prefix to get just the base64-encoded bytes
   var datosLimpios = usuario.fotoUrl.replace(/^data:image\/\w+;base64,/, "");
-  console.log("g")
-  var buf = new Buffer(datosLimpios, 'base64');
-  var fotoUrl = ruta + usuario.identificacion + "." + extension[1]  
+  var buf = new Buffer.from(datosLimpios, 'base64');
+  var fotoUrl = ruta + usuario.identificacion + "." + 'jpeg'  
   if (!fs.existsSync(ruta)){
     var shell = require('shelljs');
     shell.mkdir('-p', ruta);//Si no sirve probar https://www.npmjs.com/package/fs-path para crear fullpath
   } 
-
+//console.log(fotoUrl)
   fs.writeFileSync(fotoUrl, buf);  
   return fotoUrl;
 }
