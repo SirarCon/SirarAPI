@@ -7,9 +7,9 @@ var express = require('express'),
   cors = require('cors');
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect(require('./api/Globales.js').nombreBD.instance); 
-
-app.use(cors());
+mongoose.connect(require('./api/Globales.js').nombreBD.instance)
+.then(() => {
+  app.use(cors());
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use(bodyParser.json({limit: '10mb'}));
 
@@ -26,3 +26,10 @@ app.use(function(req, res) {
 });
 
 console.log('todo list RESTful API server started on: ' + port);
+
+})
+.catch((err) => {
+  console.log('Error on start: ' + err);
+});
+
+

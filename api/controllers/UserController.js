@@ -221,25 +221,28 @@ async function asyncForEach(array, callback) {
 
 exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consulta en el correo   
   try{
-    var s = [];
-  Usuario.find({identificacion: {$ne: req.headers["identificacion"]}}, {password: 0, created_date : 0}, async function(err, usuarios) {
-  if (err){
-    res.json({exito: false, error: 2, mensaje: err.errmsg});  
-  }
-  else{
-    await asyncForEach(usuarios ,async (element, indice, usuarios) => {
-      usuarios[indice].fotoUrl = await readFileAsync(element.fotoUrl);
-      console.log(usuarios[indice])
-    });
-    if(usuarios.length > 0){
-      console.log(usuarios.length)
-        res.json({exito: true, error: -1, mensaje: usuarios});  
-    }  
-    else
-      res.json({exito: false, error:10, mensaje: "No hay usuarios registrados"});
-  }
-}).sort({nombre : 1});
- 
+    
+  Usuario.find()
+         .sort({nombre : 1})
+         .select({password: 0, created_date : 0})
+         .where({identificacion: {$ne: req.headers["identificacion"]}})
+         .exec()
+         .then(async (usuarios)=>{
+          await asyncForEach(usuarios ,async (element, indice, usuarios) => {
+            console.log(usuarios[indice])
+            usuarios[indice].fotoUrl = await readFileAsync(element.fotoUrl);
+            
+          });
+          if(usuarios.length > 0){
+            console.log(usuarios.length)
+              res.json({exito: true, error: -1, mensaje: usuarios});  
+          }  
+          else
+            res.json({exito: false, error:10, mensaje: "No hay usuarios registrados"});
+        })
+          .catch((err)=>{
+            res.json({exito: false, error: 2, mensaje: err.errmsg});  
+}) 
  
   
 }catch(e){
