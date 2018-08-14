@@ -28,12 +28,6 @@ function  readFileAsync(filename) {
   }).catch((e)=>{return "" });
 };
 
-function p(archivo) {
-  var fs = require('fs');
-  return new Promise(function(resolve, reject) {
-              resolve(archivo);
-          });
-};
 
 function guardarImagenPerfil(ruta, usuario){
   const fs =require("fs");  //"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg==
@@ -160,7 +154,7 @@ exports.recuperarcontrasena = function(req, res){
         }
         else{
           if(usuario)                  
-            res.json({exito: true, error: -1, mensaje: "Ususario puede cambiar contraseña"});            
+            res.json({exito: true, error: -1, mensaje: {correo: usuario.correo, nombre: usuario.nombre, identificacion: usuario.identificacion }});            
         }
        });
     }
