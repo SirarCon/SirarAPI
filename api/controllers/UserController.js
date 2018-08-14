@@ -243,8 +243,6 @@ exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consult
           .catch((err)=>{
             res.json({exito: false, error: 2, mensaje: err.errmsg});  
 }) 
- 
-  
 }catch(e){
     console.log(e);
   }
@@ -254,20 +252,21 @@ exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consult
 //	fetch = +refs/heads/*:refs/remotes/origin/*
 
 exports.leer_usuario = async function(req, res) {  
-  Usuario.findOne({identificacion: req.params.identificacion}, {password: 0, created_date : 0}, async function(err, usuario) {
-    if (err){
-    res.json({exito: false, error: 7 ,mensaje: err});
-    }
-    else{
+  Usuario.findOne()
+  .select({password: 0, created_date : 0})
+  .where({identificacion: req.params.identificacion})
+  .exec()
+  .then(async (usuario) => {
     if(usuario){      
       usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
-       res.json({exito: true, error:-1, mensaje: usuario });
+       res.json({exito: true, error: -1, mensaje: usuario });
     }
     else {   
     res.json({exito: false, error: 10, mensaje: "No hay usuarios con la identificación: " + req.params.identificacion});
   }
-}
-  }); 
+}).catch((err)=>{
+    res.json({exito: false, error: 7 ,mensaje: err});
+  }) 
 };
 
 exports.modificar_usuario = function(req, res) { 

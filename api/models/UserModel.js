@@ -26,8 +26,7 @@ var UsuarioSchema = new Schema({
     unique:true
   },
   password: {
-    type: String,
-    required: 'Digite la contraseña por favor'
+    type: String
   },
   token: {
     type: String,
