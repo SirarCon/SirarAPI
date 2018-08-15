@@ -178,8 +178,10 @@ exports.recuperarcontrasena = function(req, res){
 }
 
 exports.cambiarContrasena = function(req, res){
-  Usuario.findOneAndUpdate({identificacion : req.body.identificacion},
-    {$set: {"password": req.body.password}},
+  var filtro= {identificacion : req.body.identificacion};
+  if (req.body.passwordVieja)
+    filtro["password"] = req.body.passwordVieja;
+  Usuario.findOneAndUpdate(filtro,{$set: {"password": req.body.password}},
     (err, usuario)=>{
       if(err){
         res.json({exito: false, error: 2, mensaje: "Error al cambiar contraseña"});
