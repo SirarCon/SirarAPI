@@ -160,7 +160,7 @@ exports.recuperarcontrasena = function(req, res){
        });
     }
     else{
-      res.json({exito: true, error: -1, mensaje: "No existe el token especificado"});    
+      res.json({exito: false, error: -1, mensaje: "No existe el token especificado"});    
     }
 }
 
