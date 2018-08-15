@@ -61,22 +61,23 @@ function borrarArchivo(ruta){
 }
 
 exports.verificarLogin = function(req, res) {    
-      Usuario.findOne(
-      {correo: req.body.correo.toLowerCase(), password: req.body.password}, 
-      {password: 0, created_date : 0},
-      function(err, usuario) {
-        if (err)
-          res.send(err);
-        if(usuario.length > 0) {
+      Usuario.findOne()
+      .select({password: 0, created_date : 0})
+      .where({correo: req.body.correo.toLowerCase(), password: req.body.password})
+      .then((usuario)=>{
+        if(usuario) {
             AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ (err,token)=>{                            
-              res.json({exito: true, error: -1, mensaje: {token: token, usuario: usuario}});
-            });
+            res.json({exito: true, error: -1, mensaje: {token: token, usuario: usuario}});
+             });
         }
         else{
-          //var x = require("../Globales.js").mensajesError(1);
-          //console.log(x);
+        //var x = require("../Globales.js").mensajesError(1);
+        //console.log(x);
           res.json({exito: false, error: 2, mensaje: "Usuario o Contraseña erróneos"});
         }
+      })
+      .catch((err)=>{
+        res.send(err);
       })
   };
 
