@@ -41,5 +41,10 @@ var UsuarioSchema = new Schema({
   }
 });
 
+UsuarioSchema.method('datosRecuperarContrasena', function() {
+  
+      return {correo: this.correo, nombre: this.nombre, identificacion: this.identificacion };
+  
+});
 
 module.exports = mongoose.model('Usuario', UsuarioSchema);

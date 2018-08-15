@@ -67,7 +67,7 @@ exports.verificarLogin = function(req, res) {
       .then((usuario)=>{
         if(usuario) {
             AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ (err,token)=>{                            
-            res.json({exito: true, error: -1, mensaje: {token: token, usuario: usuario}});
+            res.json({exito: true, error: -1, mensaje: {token: "token " + token, usuario: usuario}});
              });
         }
         else{
@@ -155,7 +155,7 @@ exports.recuperarcontrasena = function(req, res){
         }
         else{
           if(usuario)                  
-            res.json({exito: true, error: -1, mensaje: {correo: usuario.correo, nombre: usuario.nombre, identificacion: usuario.identificacion }});            
+            res.json({exito: true, error: -1, mensaje: usuario.datosRecuperarContrasena()});            
         }
        });
     }
