@@ -148,7 +148,7 @@ exports.solicitarRecuperacion = function(req, res){
 exports.recuperarcontrasena = function(req, res){
     if(/^([A-Za-z0-9]{15})$/.test(req.body.token)){
       Usuario.findOneAndUpdate({token: req.body.token}, 
-      {$set: {"token" : null}}, function(err, usuario) {
+      {$set: {"token" : req.body.token}}, function(err, usuario) {
         if (err){
           res.json({exito: false, error: 2, mensaje: err.errmsg});
         }
