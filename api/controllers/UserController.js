@@ -60,15 +60,28 @@ function borrarArchivo(ruta){
 });
 }
 
-exports.verificarLogin = function(req, res) {    
+exports.crearTokenExportada= crearToken();
+
+function crearToken(usuario, callback, res){
+  AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ (err, token)=>{
+    if(err){
+      res.json({exito:false, error: 50, mensaje: "Hubo un error creando token"});
+      }
+      else
+    callback(token);
+  });
+}
+
+exports.verificarLogin = async function(req, res) {    
       Usuario.findOne()
       .select({password: 0, created_date : 0})
       .where({correo: req.body.correo.toLowerCase(), password: req.body.password})
       .then((usuario)=>{
         if(usuario) {
-            AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ (err,token)=>{                            
-            res.json({exito: true, error: -1, mensaje: {token: "token " + token, usuario: usuario}});
-             });
+            crearToken(usuario, async (token)=> {
+              usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
+              res.json({exito: true, error: -1, mensaje: {token: "token " + token, usuario: usuario}});
+            }, res)
         }
         else{
         //var x = require("../Globales.js").mensajesError(1);
