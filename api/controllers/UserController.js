@@ -61,7 +61,7 @@ function borrarArchivo(ruta){
 }
 
 exports.verificarLogin = function(req, res) {    
-      Usuario.find(
+      Usuario.findOne(
       {correo: req.body.correo.toLowerCase(), password: req.body.password}, 
       {password: 0, created_date : 0},
       function(err, usuario) {
