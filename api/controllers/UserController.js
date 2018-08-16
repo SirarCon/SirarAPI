@@ -179,8 +179,7 @@ exports.recuperarcontrasena = function(req, res){
 
 exports.cambiarContrasena = function(req, res){
   var filtro= {identificacion : req.body.identificacion};
-  if (req.body.passwordVieja)
-    filtro["password"] = req.body.passwordVieja;
+  var Passwordcoinciden = true ;
   Usuario.findOneAndUpdate(filtro,{$set: {"password": req.body.password}},
     (err, usuario)=>{
       if(err){
@@ -188,7 +187,14 @@ exports.cambiarContrasena = function(req, res){
       }
       else{
         if(usuario){
-          res.json({exito: true, error: -1, mensaje: "Contraseña de usuario: " + req.body.identificacion + " cambiada exitosamente."})
+            if(req.body.passwordVieja && usuario.password !== req.body.passwordVieja){
+              Passwordcoinciden= false
+            }
+            if(Passwordcoinciden){
+              res.json({exito: true, error: -1, mensaje: "Contraseña de usuario: " + req.body.identificacion + " cambiada exitosamente."})
+            }else{
+              res.json({exito: false, error: 5, mensaje: "Contraseña anterior no coincide."})
+            }
         }
         else{
           res.json({exito: false, error: 2, mensaje: "No existe el usuario: " + req.body.identificacion });
