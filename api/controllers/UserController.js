@@ -65,7 +65,7 @@ exports.crearTokenExportada= crearToken();
 function crearToken(usuario, callback, res){
   AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ (err, token)=>{
     if(err){
-      res.json({exito:false, error: 50, mensaje: "Hubo un error creando token"});
+      res.json({exito:false, error: 50, mensaje: "Hubo un error creando token."});
       }
       else
     callback(token);
@@ -79,7 +79,7 @@ exports.verificarLogin = async function(req, res) {
       .then((usuario)=>{
         if(usuario) {
           if(usuario.password !== req.body.password)
-            res.json({exito: false, error: 2, mensaje: "Contraseña errónea"});
+            res.json({exito: false, error: 2, mensaje: "Contraseña errónea."});
           else
             crearToken(usuario, async (token)=> {
               usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
@@ -87,7 +87,7 @@ exports.verificarLogin = async function(req, res) {
             }, res)
         }
         else{
-          res.json({exito: false, error: 2, mensaje: "Usuario no existe"});
+          res.json({exito: false, error: 2, mensaje: "Usuario no existe."});
         }
       })
       .catch((err)=>{
@@ -102,13 +102,13 @@ function mailSenderCrear(emailAdress, subject, message, res){
                             if (error) {                                                 
                               Usuario.findOneAndRemove({correo: emailAdress}, (err, usuario)=> {
                                 if (err){
-                                  res.json({exito: false, error: 3, mensaje: "Error borrando usuario no existe el usuario"});                      
+                                  res.json({exito: false, error: 3, mensaje: "Error borrando usuario no existe el usuario."});                      
                                 }
                                 else{
                                   if(usuario && usuario.fotoUrl){
                                       borrarArchivo(usuario.fotoUrl);                                               
                                   }
-                                  res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + error });                                        
+                                  res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo: " + error });                                        
                                 }
                               });                                
                             }  
@@ -125,10 +125,10 @@ function mailSenderRecuperar(emailAdress, subject, message, res){
           require("../Globales.js").emailOptions(emailAdress, subject, message).instance,
           (error, info) => {                        
                             if (error) {                                                                       
-                                  res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo" + error });                                              
+                                  res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo: " + error });                                              
                             }  
                             else{   
-                            res.json({exito: true, error: -1, mensaje: "El correo a" + emailAdress + " se a enviado." }) 
+                            res.json({exito: true, error: -1, mensaje: "El correo a " + emailAdress + " se a enviado." }) 
                             }
                           }
   );        
@@ -153,7 +153,7 @@ exports.solicitarRecuperacion = function(req, res){
           , res);    
         }
         else{
-          res.json({exito: false, error: 2, mensaje: "El usuario con el correo " + req.body.correo.toLowerCase() + "no existe" })
+          res.json({exito: false, error: 2, mensaje: "El usuario con el correo " + req.body.correo.toLowerCase() + " no existe." })
       }
       }
   });
@@ -174,7 +174,7 @@ exports.recuperarcontrasena = function(req, res){
        });
     }
     else{
-      res.json({exito: false, error: -1, mensaje: "No existe el token especificado"});    
+      res.json({exito: false, error: -1, mensaje: "No existe el token especificado."});    
     }
 }
 
@@ -184,7 +184,7 @@ exports.cambiarContrasena = function(req, res){
   Usuario.findOneAndUpdate(filtro,{$set: {"password": req.body.password}},
     (err, usuario)=>{
       if(err){
-        res.json({exito: false, error: 2, mensaje: "Error al cambiar contraseña"});
+        res.json({exito: false, error: 2, mensaje: "Error al cambiar contraseña."});
       }
       else{
         if(usuario){
@@ -241,20 +241,19 @@ exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consult
     
   Usuario.find()
          .sort({nombre : 1})
-         .select({password: 0, created_date : 0})
+         .select({password: 0, created_date: 0, token: 0})
          .where({identificacion: {$ne: req.headers["identificacion"]}})
          .exec()
          .then(async (usuarios)=>{
           await asyncForEach(usuarios ,async (element, indice, usuarios) => {
-            console.log(usuarios[indice])
             usuarios[indice].fotoUrl = await readFileAsync(element.fotoUrl);
             
           });
           if(usuarios.length > 0){
-              res.json({exito: true, error: -1, mensaje: usuarios});  
+              res.json({exito: true, error: -1, mensaje: usuarios.map(u => u.datosLogin())});  
           }  
           else
-            res.json({exito: false, error:10, mensaje: "No hay usuarios registrados"});
+            res.json({exito: false, error:10, mensaje: "No hay usuarios registrados."});
         })
           .catch((err)=>{
             res.json({exito: false, error: 2, mensaje: err.errmsg});  
@@ -299,17 +298,17 @@ exports.modificar_usuario = function(req, res) {
       }}, {projection:{password: 0, created_date : 0}, new: false}, function(err, usuarioAntiguo) {
   if (err){
     console.log(err);
-      res.json({exito: false, error: 5 , mensaje: "Hubo un fallo al modificar los datos"});        
+      res.json({exito: false, error: 5 , mensaje: "Hubo un fallo al modificar los datos."});        
   }
   else{
   if(usuarioAntiguo){
     if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
         borrarArchivo(usuarioAntiguo.fotoUrl);
     }       
-    res.json({exito: true, error: -1 ,mensaje: "Usuario" + usuarioAntiguo.nombre +" modificado con éxito"});
+    res.json({exito: true, error: -1 ,mensaje: "Usuario " + usuarioAntiguo.nombre +" modificado con éxito."});
   }
   else{
-    res.json({exito: false, error: 9 ,mensaje: "Usuario" + req.params.identificacion +" no éxiste"});
+    res.json({exito: false, error: 9 ,mensaje: "Usuario " + req.params.identificacion +" no éxiste."});
   }
 }
 });  
@@ -325,6 +324,6 @@ exports.borrar_usuario = function(req, res) {
     if(usuario)
     if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
       borrarArchivo(usuario.fotoUrl)
-    res.json({exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.identificacion +' fue borrado'});    
+    res.json({exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.identificacion +' fue borrado.'});    
   });
 };
