@@ -47,4 +47,17 @@ UsuarioSchema.method('datosRecuperarContrasena', function() {
   
 });
 
+UsuarioSchema.method('datosLogin', function() {
+  
+  return {correo: this.correo, 
+          nombre: this.nombre,
+          identificacion: this.identificacion,
+          fotoUrl : this.fotoUrl,
+          telefono: this.telefono,
+          rol: this.rol
+         };
+
+});
+
+
 module.exports = mongoose.model('Usuario', UsuarioSchema);

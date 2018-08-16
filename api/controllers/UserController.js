@@ -74,19 +74,20 @@ function crearToken(usuario, callback, res){
 
 exports.verificarLogin = async function(req, res) {    
       Usuario.findOne()
-      .select({password: 0, created_date : 0})
-      .where({correo: req.body.correo.toLowerCase(), password: req.body.password})
+      .select({created_date : 0})
+      .where({correo: req.body.correo.toLowerCase()})
       .then((usuario)=>{
         if(usuario) {
+          if(usuario.password !== req.body.password)
+            res.json({exito: false, error: 2, mensaje: "Contraseña errónea"});
+          else
             crearToken(usuario, async (token)=> {
               usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
-              res.json({exito: true, error: -1, mensaje: {token: "token " + token, usuario: usuario}});
+              res.json({exito: true, error: -1, mensaje: {token: "token " + token, usuario: usuario.datosLogin()}});
             }, res)
         }
         else{
-        //var x = require("../Globales.js").mensajesError(1);
-        //console.log(x);
-          res.json({exito: false, error: 2, mensaje: "Usuario o Contraseña erróneos"});
+          res.json({exito: false, error: 2, mensaje: "Usuario no existe"});
         }
       })
       .catch((err)=>{
@@ -250,7 +251,6 @@ exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consult
             
           });
           if(usuarios.length > 0){
-            console.log(usuarios.length)
               res.json({exito: true, error: -1, mensaje: usuarios});  
           }  
           else
@@ -269,13 +269,12 @@ exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consult
 
 exports.leer_usuario = async function(req, res) {  
   Usuario.findOne()
-  .select({password: 0, created_date : 0})
   .where({identificacion: req.params.identificacion})
   .exec()
   .then(async (usuario) => {
     if(usuario){      
       usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
-       res.json({exito: true, error: -1, mensaje: usuario });
+       res.json({exito: true, error: -1, mensaje: usuario.datosLogin() });
     }
     else {   
     res.json({exito: false, error: 10, mensaje: "No hay usuarios con la identificación: " + req.params.identificacion});
