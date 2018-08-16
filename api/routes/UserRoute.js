@@ -68,12 +68,19 @@ function verify(req, res, next){
   if(err){
       res.sendStatus(403);
   }else{
-    /*res.json({
-      message: 'message',
-      authData
-    });
-    */
-    next();
+    var payload = req.headers["authorization"]
+    AwtAuth.sign({payload}, 'secretKey', {expiresIn: "30s"}, 
+            (err, token)=>{
+               if(err){
+                 console.log(err);
+                 res.json({token: payload, exito: false, error: 50, mensaje: "Hubo un error creando token."});
+              }
+              else{
+                res.locals.token = token;
+                console.log(res.locals.token)
+                next();
+            }}
+    );
   }
 });
 }

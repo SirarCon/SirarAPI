@@ -102,18 +102,18 @@ function mailSenderCrear(emailAdress, subject, message, res){
                             if (error) {                                                 
                               Usuario.findOneAndRemove({correo: emailAdress}, (err, usuario)=> {
                                 if (err){
-                                  res.json({exito: false, error: 3, mensaje: "Error borrando usuario no existe el usuario."});                      
+                                  res.json({token: res.locals.token, exito: false, error: 3, mensaje: "Error borrando usuario no existe el usuario."});                      
                                 }
                                 else{
                                   if(usuario && usuario.fotoUrl){
                                       borrarArchivo(usuario.fotoUrl);                                               
                                   }
-                                  res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo: " + error });                                        
+                                  res.json({token: res.locals.token, exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo: " + error });                                        
                                 }
                               });                                
                             }  
                             else{   
-                            res.json({exito: true, error: -1, mensaje: "El usuario " + emailAdress + " se a creado." })                                                                      
+                            res.json({token: res.locals.token, exito: true, error: -1, mensaje: "El usuario " + emailAdress + " se a creado." })                                                                      
                             }
                           }
   );        
@@ -215,7 +215,7 @@ exports.crear_usuario = function(req, res) {
     if (err){   
       if(!err.code || !err.code == 11000) //Llave duplicada  
       borrarArchivo(nuevoUsuario.fotoUrl); 
-    res.json({exito: false, error:1, mensaje: err.errmsg});
+    res.json({token: res.locals.token, exito: false, error:1, mensaje: err.errmsg});
   }
     else
       if(usuario){              
@@ -237,8 +237,7 @@ async function asyncForEach(array, callback) {
 
 
 exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consulta en el correo   
-  try{
-    
+  try{ 
   Usuario.find()
          .sort({nombre : 1})
          .select({password: 0, created_date: 0, token: 0})
@@ -250,13 +249,13 @@ exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consult
             
           });
           if(usuarios.length > 0){
-              res.json({exito: true, error: -1, mensaje: usuarios.map(u => u.datosLogin())});  
+              res.json({token: res.locals.token, exito: true, error: -1, mensaje: usuarios.map(u => u.datosLogin())});  
           }  
           else
-            res.json({exito: false, error:10, mensaje: "No hay usuarios registrados."});
+            res.json({token: res.locals.token, exito: false, error:10, mensaje: "No hay usuarios registrados."});
         })
           .catch((err)=>{
-            res.json({exito: false, error: 2, mensaje: err.errmsg});  
+            res.json({token: res.locals.token, exito: false, error: 2, mensaje: err});  
 }) 
 }catch(e){
     console.log(e);
@@ -273,13 +272,13 @@ exports.leer_usuario = async function(req, res) {
   .then(async (usuario) => {
     if(usuario){      
       usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
-       res.json({exito: true, error: -1, mensaje: usuario.datosLogin() });
+       res.json({token: res.locals.token, exito: true, error: -1, mensaje: usuario.datosLogin() });
     }
     else {   
-    res.json({exito: false, error: 10, mensaje: "No hay usuarios con la identificación: " + req.params.identificacion});
+    res.json({token: res.locals.token, exito: false, error: 10, mensaje: "No hay usuarios con la identificación: " + req.params.identificacion});
   }
 }).catch((err)=>{
-    res.json({exito: false, error: 7 ,mensaje: err});
+    res.json({token: res.locals.token, exito: false, error: 7 ,mensaje: err});
   }) 
 };
 
@@ -298,17 +297,17 @@ exports.modificar_usuario = function(req, res) {
       }}, {projection:{password: 0, created_date : 0}, new: false}, function(err, usuarioAntiguo) {
   if (err){
     console.log(err);
-      res.json({exito: false, error: 5 , mensaje: "Hubo un fallo al modificar los datos."});        
+      res.json({token: res.locals.token, exito: false, error: 5 , mensaje: "Hubo un fallo al modificar los datos."});        
   }
   else{
   if(usuarioAntiguo){
     if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
         borrarArchivo(usuarioAntiguo.fotoUrl);
     }       
-    res.json({exito: true, error: -1 ,mensaje: "Usuario " + usuarioAntiguo.nombre +" modificado con éxito."});
+    res.json({token: res.locals.token, exito: true, error: -1 ,mensaje: "Usuario " + usuarioAntiguo.nombre +" modificado con éxito."});
   }
   else{
-    res.json({exito: false, error: 9 ,mensaje: "Usuario " + req.params.identificacion +" no éxiste."});
+    res.json({token: res.locals.token, exito: false, error: 9 ,mensaje: "Usuario " + req.params.identificacion +" no éxiste."});
   }
 }
 });  
@@ -319,11 +318,11 @@ exports.borrar_usuario = function(req, res) {
     identificacion: req.params.identificacion    
   },function(err, usuario) {
     if (err)
-    res.json({exito: true, error: 2 ,mensaje: "Error al borrar el usuario "+ err.errmsg});
+    res.json({token: res.locals.token, exito: true, error: 2 ,mensaje: "Error al borrar el usuario "+ err.errmsg});
     
     if(usuario)
     if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
       borrarArchivo(usuario.fotoUrl)
-    res.json({exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.identificacion +' fue borrado.'});    
+    res.json({token: res.locals.token, exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.identificacion +' fue borrado.'});    
   });
 };
