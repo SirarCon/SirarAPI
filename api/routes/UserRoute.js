@@ -91,12 +91,12 @@ routerGeneral.route('/rps')
 routerGeneral.route('/rps/cambiar')  
     .post(userController.cambiarContrasena)
 
-routerAdm.route('/usuarios')
+routerAdm.route('/usuarios/:identificacion?')
     .get(userController.lista_todos_usuarios)
     .post(/*upload.single('imagenUsuario'),*/ userController.crear_usuario);
 
 
-routerAdm.route('/usuarios/:identificacion')
+routerAdm.route('/usuario/:identificacion')
     .get(userController.leer_usuario)
     .put(/*upload.single('imagenUsuario'),*/ userController.modificar_usuario)
     .delete(userController.borrar_usuario);

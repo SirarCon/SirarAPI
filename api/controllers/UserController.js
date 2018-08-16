@@ -242,7 +242,7 @@ exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consult
   Usuario.find()
          .sort({nombre : 1})
          .select({password: 0, created_date: 0, token: 0})
-         .where({identificacion: {$ne: req.headers["identificacion"]}})
+         .where({identificacion: {$ne: req.params.identificacion}})
          .exec()
          .then(async (usuarios)=>{
           await asyncForEach(usuarios ,async (element, indice, usuarios) => {
