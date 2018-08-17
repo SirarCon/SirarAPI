@@ -62,13 +62,17 @@ routerGeneral.use(verificarTokenGeneral);
 //Se le assignan los middleware a los router de Adm luego del Login
 routerAdm.use(verificarTokenGeneral, verify);
 
+function crearRandom(){
+  const randomstring = require('just.randomstring');                   
+  return randomstring(50);//Todo: Pasar a globales
+}
 
 function verify(req, res, next){
   AwtAuth.verify(extraerToken(req, 'authorization'), 'secretKey', (err, authData)=>{
   if(err){
-      res.sendStatus(403);
+      res.json({token: "", exito: false, error: 403, mensaje: "Sesión expirada o usuario sin permisos"});
   }else{
-    var payload = req.headers["authorization"]
+    var payload = crearRandom()
     AwtAuth.sign({payload}, 'secretKey', {expiresIn: "30s"}, 
             (err, token)=>{
                if(err){
@@ -76,7 +80,7 @@ function verify(req, res, next){
                  res.json({token: payload, exito: false, error: 50, mensaje: "Hubo un error creando token."});
               }
               else{
-                res.locals.token = token;
+                res.locals.token = "token " + token;
                 console.log(res.locals.token)
                 next();
             }}
