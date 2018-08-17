@@ -222,10 +222,11 @@ exports.crear_usuario = function(req, res) {
         mailSenderCrear(usuario.correo,
             'Creación de contraseña',
               '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
-              '<p>Para crear su contraseña presione el botón: '+
-              '<form action="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.token +'">'+
-              '<input style="background-color: #008CBA;" type="submit" value="Crear Contraseña" /></form>' +
-              ' o copie y pegue en un navegador el siguiente Link: https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.token + '</p>'
+              '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
+              '<a class="button" href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.token +' class="btn btn-default">Reestablecer Contraseña</a>'+
+              '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
+              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.token +'</p>'+
+              '<style>a.button {-webkit-appearance: button; -moz-appearance: button;appearance: button;text-decoration: none;color: initial; }</style>'
           , res);              
       }
   });
