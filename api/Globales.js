@@ -43,28 +43,29 @@ let transporter = nodemailer.createTransport({
 module.exports.emailTransporter = inicializarGLobal(emailTransporter, transporter);
 
 module.exports.emailOptions = function(correo, subject, message){    
-                                    let mailOptions = {
-                                        from: "casasolalonso@gmail.com",
-                                        to: correo,
-                                        subject: subject,     
-                                        html: message
-                                    };
-                                    return inicializarGLobal(emailOptions, mailOptions);
-                                }
+    let mailOptions = {
+        from: "casasolalonso@gmail.com",
+        to: correo,
+        subject: subject,     
+        html: message
+    };
+    return inicializarGLobal(emailOptions, mailOptions);
+}
 
 module.exports.crearRandom = function(n){
     const randomstring = require('just.randomstring');                   
     return inicializarGLobal(crearRandom, randomstring(n));
-  }
-/*
-module.exports.mensajesError = function(mensajeError){
-                               var error = function (){
-                                switch(mensajeError){
-                                    case 84: return 10; break;
-                                    case 1: return 1; break;//No existe el usuario o contraseña
-                                    default: return 00; //Error no controlado
-                                }
-                            }
-                            console.log(error);
-                                return inicializarGLobal(mensajesError, error);
-                            }*/
+}
+
+var todosLosMensajes;
+
+module.exports.inicializarMensajes = async function(mongoose){
+    var Mensaje = mongoose.model('Mensaje');
+            await Mensaje.find({},(err,mensajes)=>{
+            todosLosMensajes= mensajes
+    });
+}
+
+module.exports.mensajesError = function(){
+        return inicializarGLobal(mensajesError, todosLosMensajes);
+}

@@ -3,9 +3,8 @@
 
 var mongoose = require('mongoose'),
 Usuario = mongoose.model('Usuario');
-var Mensaje = mongoose.model('Mensaje');
 const AwtAuth = require('jsonwebtoken');
-var globales = require("../Globales.js");
+var mensajesError =  require("../Globales.js").mensajesError().instance;
 const rutaImagenesPerfil = require('../Globales.js').rutaImagenesPerfil.instance;
 
 
@@ -235,9 +234,7 @@ async function asyncForEach(array, callback) {
 
 
 exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta en el correo   
-  try{ 
-    prueba ();
-  Mensaje.find().exec().then(m=> console.log(m)).catch(e=>console.log("error:" + e));  
+  try{  
   Usuario.find()
          .sort({nombre : 1})
          .select({password: 0, fechaCreacion: 0, tokenPassword: 0})
@@ -325,31 +322,3 @@ exports.borrarUsuario = function(req, res) {
   });
 };
 
-function prueba (){
-  var errores = 
-    // {"mensaje": "Usuario no encontrado", "codigo": 2},
-    // {"mensaje": "Contraseña errónea", "codigo": 1},
-    // {"mensaje": "Hubo un problema enviando correo", "codigo": 4},
-    // {"mensaje": "No tiene permisos", "codigo": 403},
-    // {"mensaje": "Hubo un problema borrando el usuario", "codigo": 3},
-    // {"mensaje": "Hubo un problema validando el token  de contraseña", "codigo": 6},
-    // {"mensaje": "El token  de contraseña no tiene el formato adecuado", "codigo": 7},
-    // {"mensaje": "Hubo un problema cambiando la contraseña", "codigo" : 8},
-    // {"mensaje": "Contraseñas no coinciden", "codigo" : 9},
-    // {"mensaje": "Hubo un problema creando usuario", "codigo" : 10},
-    // {"mensaje": "Hubo un problema buscando el usuario", "codigo" : 5},
-    // {"mensaje": "Hubo un problema leyendo el usuario", "codigo" : 13},
-    // {"mensaje": "Hubo un error modificando el usuario", "codigo" :14},
-    // {"mensaje": "No hay usuarios que listar", "codigo" : 11},
-    // {"mensaje": "Hubo un problema leyendo los usuarios", "codigo" : 12},
-    // {"mensaje": "Hubo un problema borrando la foto", "codigo" : 0 },
-    // {"mensaje": "Hubo un problema guardando la foto", "codigo" : 0},
-    {"mensaje": "Hubo un problema creando el token", "codigo" : 50};
-    
-    
-     var options = { upsert: true, new: true, setDefaultsOnInsert: true };
-     Mensaje.findOneAndUpdate(errores, errores, options, function(error, result) {
-      if (error) return;
-      });
-    
-}
