@@ -11,7 +11,7 @@ var UsuarioSchema = new Schema({
   fotoUrl: {
     type: String    
   },
-  created_date: {
+  fechaCreacion: {
     type: Date,
     default: Date.now
   },
@@ -43,7 +43,7 @@ var UsuarioSchema = new Schema({
 
 UsuarioSchema.method('datosRecuperarContrasena', function() {
   
-      return {correo: this.correo, nombre: this.nombre, identificacion: this.identificacion };
+  return {correo: this.correo, nombre: this.nombre, identificacion: this.identificacion };
   
 });
 

@@ -7,6 +7,7 @@ const emailTransporter = Symbol.for("SIRAR.GLOBAL.EMAILTRANSPORTER");
 const emailOptions = Symbol.for("SIRAR.GLOBAL.EMAILOPTIONS"); 
 const rutaImagenesPerfil = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESPERFIL"); 
 const mensajesError = Symbol.for("SIRAR.GLOBAL.MENSAJESERROR");
+const crearRandom = Symbol.for("SIRAR.GLOBAL.CREARRANDOM");
 
 function inicializarGLobal(variableGlobal, valor){
     var existeVarGlobal = (SimbolosGlobales.indexOf(variableGlobal) > -1);
@@ -51,6 +52,10 @@ module.exports.emailOptions = function(correo, subject, message){
                                     return inicializarGLobal(emailOptions, mailOptions);
                                 }
 
+module.exports.crearRandom = function(n){
+    const randomstring = require('just.randomstring');                   
+    return inicializarGLobal(crearRandom, randomstring(n));
+  }
 /*
 module.exports.mensajesError = function(mensajeError){
                                var error = function (){
