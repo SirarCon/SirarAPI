@@ -73,7 +73,7 @@ function verify(req, res, next){
       res.json({token: "", exito: false, error: 403, mensaje: "Sesión expirada o usuario sin permisos"});
   }else{
     var payload = crearRandom()
-    AwtAuth.sign({payload}, 'secretKey', {expiresIn: "30s"}, 
+    AwtAuth.sign({payload}, 'secretKey', {expiresIn: "60s"}, 
             (err, token)=>{
                if(err){
                  console.log(err);

@@ -28,7 +28,7 @@ var UsuarioSchema = new Schema({
   password: {
     type: String
   },
-  token: {
+  tokenPassword: {
     type: String,
     max:15
   },

@@ -13,8 +13,8 @@ function crearRandom(){
 }
 
 
-// make promise version of fs.readFile()
-function  readFileAsync(filename) {
+// crea la promesa para fs.readFile()
+function  leerArchivoAsync(filename) {
   var fs = require('fs');
   return new Promise(function(resolve, reject) {
       fs.readFile(filename, function(err, data){
@@ -30,9 +30,9 @@ function  readFileAsync(filename) {
 
 
 function guardarImagenPerfil(ruta, usuario){
-  const fs =require("fs");  //"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg==
+  const fs =require("fs");  
   
-  // strip off the data: url prefix to get just the base64-encoded bytes
+  // obtiene solo la imagen, le quita el prefijo base 64
   var datosLimpios = usuario.fotoUrl.replace(/^data:image\/\w+;base64,/, "");
   var buf = new Buffer.from(datosLimpios, 'base64');
   var fotoUrl = ruta + usuario.identificacion + "." + 'jpeg'  
@@ -40,7 +40,6 @@ function guardarImagenPerfil(ruta, usuario){
     var shell = require('shelljs');
     shell.mkdir('-p', ruta);//Si no sirve probar https://www.npmjs.com/package/fs-path para crear fullpath
   } 
-//console.log(fotoUrl)
   fs.writeFileSync(fotoUrl, buf);  
   return fotoUrl;
 }
@@ -74,7 +73,7 @@ exports.verificarLogin = async function(req, res) {
                 res.json({exito:false, error: 50, mensaje: "Hubo un error creando token."});
                 }
               else{
-                usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
+                usuario.fotoUrl = await leerArchivoAsync(usuario.fotoUrl);
                 res.json({token: "token " + token, exito: true, error: -1, mensaje: usuario.datosLogin()});
               }
             });
@@ -131,9 +130,9 @@ function mailSenderRecuperar(emailAdress, subject, message, res){
 
 
 exports.solicitarRecuperacion = function(req, res){
-  var token = crearRandom();
+  var tokenPassword = crearRandom();
   Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()}, 
-    {$set: {"token": token}}, 
+    {$set: {"tokenPassword": tokenPassword}}, 
     (err, usuario) => {
       if(err){
       res.json({exito: false, error: 2, mensaje:"Ocurrió un error buscando el usuario " + req.body.correo.toLowerCase()})
@@ -144,9 +143,9 @@ exports.solicitarRecuperacion = function(req, res){
             'Recupeación de contraseña',
               '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
               '<p>Este correo se le envía para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
-              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ token +'" class="button">Reestablecer Contraseña</a>'+
+              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ tokenPassword +'" class="button">Reestablecer Contraseña</a>'+
               '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
-              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + token +'</p>'+
+              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + tokenPassword +'</p>'+
               '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
           , res);    
         }
@@ -159,9 +158,9 @@ exports.solicitarRecuperacion = function(req, res){
 
 
 exports.recuperarcontrasena = function(req, res){
-    if(/^([A-Za-z0-9]{15})$/.test(req.body.token)){
-      Usuario.findOneAndUpdate({token: req.body.token}, 
-      {$set: {"token" : req.body.token}}, function(err, usuario) {
+    if(/^([A-Za-z0-9]{15})$/.test(req.body.tokenPassword)){
+      Usuario.findOneAndUpdate({tokenPassword: req.body.tokenPassword}, 
+      {$set: {"tokenPassword" : req.body.tokenPassword}}, function(err, usuario) {
         if (err){
           res.json({exito: false, error: 2, mensaje: err.errmsg});
         }
@@ -208,7 +207,7 @@ exports.cambiarContrasena = function(req, res){
 //Necesita el checkbox application/x-www-form-urlencoded
 exports.crear_usuario = function(req, res) {   
   var nuevoUsuario = new Usuario(req.body);
-  nuevoUsuario.token = crearRandom(); 
+  nuevoUsuario.tokenPassword = crearRandom(); 
     if(req.body.fotoUrl){    
     nuevoUsuario.fotoUrl = guardarImagenPerfil(rutaImagenesPerfil, nuevoUsuario);    
     }
@@ -224,9 +223,9 @@ exports.crear_usuario = function(req, res) {
             'Creación de contraseña',
               '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
               '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
-              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.token +'" class="button">Reestablecer Contraseña</a>'+
+              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.tokenPassword +'" class="button">Reestablecer Contraseña</a>'+
               '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
-              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.token +'</p>'+
+              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.tokenPassword +'</p>'+
               '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
           , res);              
       }
@@ -243,12 +242,12 @@ exports.lista_todos_usuarios =  async function(req, res) {//Menos el que consult
   try{ 
   Usuario.find()
          .sort({nombre : 1})
-         .select({password: 0, created_date: 0, token: 0})
+         .select({password: 0, created_date: 0, tokenPassword: 0})
          .where({identificacion: {$ne: req.params.identificacion}})
          .exec()
          .then(async (usuarios)=>{
           await asyncForEach(usuarios ,async (element, indice, usuarios) => {
-            usuarios[indice].fotoUrl = await readFileAsync(element.fotoUrl);
+            usuarios[indice].fotoUrl = await leerArchivoAsync(element.fotoUrl);
             
           });
           if(usuarios.length > 0){
@@ -274,7 +273,7 @@ exports.leer_usuario = async function(req, res) {
   .exec()
   .then(async (usuario) => {
     if(usuario){      
-      usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
+      usuario.fotoUrl = await leerArchivoAsync(usuario.fotoUrl);
        res.json({token: res.locals.token, exito: true, error: -1, mensaje: usuario.datosLogin() });
     }
     else {   
@@ -293,7 +292,6 @@ exports.modificar_usuario = function(req, res) {
      {$set: {
       "correo" : req.body.correo.toLowerCase(),
       "nombre": req.body.nombre,        
-      "token": req.body.token, 
       "fotoUrl" : req.body.fotoUrl ? guardarImagenPerfil(rutaImagenesPerfil, usuarioTem) : undefined,
       "telefono": req.body.telefono,
       "rol": req.body.rol                                                                                                                         
