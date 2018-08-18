@@ -60,18 +60,6 @@ function borrarArchivo(ruta){
 });
 }
 
-exports.crearTokenExportada= crearToken();
-
-function crearToken(usuario, callback, res){
-  AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ (err, token)=>{
-    if(err){
-      res.json({exito:false, error: 50, mensaje: "Hubo un error creando token."});
-      }
-      else
-    callback(token);
-  });
-}
-
 exports.verificarLogin = async function(req, res) {    
       Usuario.findOne()
       .select({created_date : 0})
@@ -143,8 +131,9 @@ function mailSenderRecuperar(emailAdress, subject, message, res){
 
 
 exports.solicitarRecuperacion = function(req, res){
+  var token = crearRandom();
   Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()}, 
-    {$set: {"token": crearRandom()}}, 
+    {$set: {"token": token}}, 
     (err, usuario) => {
       if(err){
       res.json({exito: false, error: 2, mensaje:"Ocurrió un error buscando el usuario " + req.body.correo.toLowerCase()})
@@ -154,10 +143,10 @@ exports.solicitarRecuperacion = function(req, res){
           mailSenderRecuperar(usuario.correo,
             'Recupeación de contraseña',
               '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
-              '<p>Este correo se le envìa para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
-              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ usuario.token +'" class="button">Reestablecer Contraseña</a>'+
+              '<p>Este correo se le envía para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
+              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ token +'" class="button">Reestablecer Contraseña</a>'+
               '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
-              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + usuario.token +'</p>'+
+              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + token +'</p>'+
               '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
           , res);    
         }
@@ -179,6 +168,9 @@ exports.recuperarcontrasena = function(req, res){
         else{
           if(usuario)                  
             res.json({exito: true, error: -1, mensaje: usuario.datosRecuperarContrasena()});            
+          else{
+            res.json({exito: false, error: -1, mensaje: "No usuario con el token enviado."});          
+          }
         }
        });
     }
