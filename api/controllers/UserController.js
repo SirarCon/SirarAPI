@@ -4,7 +4,7 @@
 var mongoose = require('mongoose'),
 Usuario = mongoose.model('Usuario');
 const AwtAuth = require('jsonwebtoken');
-var mensajesError =  require("../Globales.js").mensajesError().instance;
+var mensajesError =  require("../Globales.js").mensajesError(403).instance;
 const rutaImagenesPerfil = require('../Globales.js').rutaImagenesPerfil.instance;
 
 

@@ -66,6 +66,7 @@ module.exports.inicializarMensajes = async function(mongoose){
     });
 }
 
-module.exports.mensajesError = function(){
-        return inicializarGLobal(mensajesError, todosLosMensajes);
+module.exports.mensajesError = function(codigo){
+        var mensaje =todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje()
+        return inicializarGLobal(mensajesError, mensaje);
 }

@@ -1,7 +1,6 @@
 'use strict';
 module.exports = function(app, express) {
 const tokkenGlobal = require('../Globales.js').tokenGeneral.instance;
-var mensajesError = require("../Globales.js").mensajesError().instance;
 var userController = require('../controllers/UserController');
 //import * as userController from '../controllers/UserController';
 const AwtAuth = require('jsonwebtoken');
@@ -11,10 +10,9 @@ var routerAdm = express.Router()
 var routerGeneral = express.Router()
 
 function verificarTokenGeneral(req, res, next){  
-    console.log(mensajesError);
   //Set el Token
   req.token = extraerToken(req,'general');  
-  req.token === tokkenGlobal ? next() : res.json({token: "",  mensaje: mensajesError.find(m=>{return m.codigo == 403}).obtenerMensaje()});
+  req.token === tokkenGlobal ? next() : res.json({token: "",  mensaje: require("../Globales.js").mensajesError(403).instance});
 }
 
 
