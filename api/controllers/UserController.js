@@ -80,11 +80,18 @@ exports.verificarLogin = async function(req, res) {
         if(usuario) {
           if(usuario.password !== req.body.password)
             res.json({exito: false, error: 2, mensaje: "Contraseña errónea."});
-          else
-            crearToken(usuario, async (token)=> {
-              usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
-              res.json({exito: true, error: -1, mensaje: {token: "token " + token, usuario: usuario.datosLogin()}});
-            }, res)
+          else{
+            AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ async (err, token)=>{
+              if(err){
+                res.json({exito:false, error: 50, mensaje: "Hubo un error creando token."});
+                }
+              else{
+                usuario.fotoUrl = await readFileAsync(usuario.fotoUrl);
+                res.json({token: "token " + token, exito: true, error: -1, mensaje: usuario.datosLogin()});
+              }
+            });
+
+          }
         }
         else{
           res.json({exito: false, error: 2, mensaje: "Usuario no existe."});
@@ -147,9 +154,11 @@ exports.solicitarRecuperacion = function(req, res){
           mailSenderRecuperar(usuario.correo,
             'Recupeación de contraseña',
               '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
-              '<p>Este correo se le envnia para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
-              '<a https://sirarpwa.herokuapp.com/reestablecer?'+ usuario.token +'> Aquí </a>'+
-              ' o copie y pegue en un navegador el siguiente Link: https://sirarpwa.herokuapp.com/reestablecer?'+ usuario.token + '</p>'
+              '<p>Este correo se le envìa para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
+              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ usuario.token +'" class="button">Reestablecer Contraseña</a>'+
+              '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
+              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + usuario.token +'</p>'+
+              '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
           , res);    
         }
         else{
@@ -223,10 +232,10 @@ exports.crear_usuario = function(req, res) {
             'Creación de contraseña',
               '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
               '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
-              '<a class="button" href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.token +' class="btn btn-default">Reestablecer Contraseña</a>'+
+              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.token +'" class="button">Reestablecer Contraseña</a>'+
               '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
               '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.token +'</p>'+
-              '<style>a.button {-webkit-appearance: button; -moz-appearance: button;appearance: button;text-decoration: none;color: initial; }</style>'
+              '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
           , res);              
       }
   });
