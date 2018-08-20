@@ -6,10 +6,12 @@ var Schema = mongoose.Schema;
 var UsuarioSchema = new Schema({
   nombre: {
     type: String,
-    required: 'Digite un nombre por favor'
+    required: 'Digite un nombre por favor',
+    maxlength: 40
   },
   fotoUrl: {
-    type: String    
+    type: String,
+    maxlength: 400   
   },
   fechaCreacion: {
     type: Date,
@@ -18,22 +20,25 @@ var UsuarioSchema = new Schema({
   identificacion: {
     type: String,
     required: 'Digite el número de cédula por favor',
-    unique: true
+    unique: true,
+    mmaxlength: 15
   },
   correo: {
     type: String,
     required: 'Digite el correo por favor',
-    unique:true
+    unique:true,
+    maxlength: 40
   },
   password: {
     type: String
   },
   tokenPassword: {
     type: String,
-    max:15
+    maxlength: 15
   },
   telefono: {
-    type: String    
+    type: String,
+    maxlength: 8   
   },
   rol:{
     type: Number,

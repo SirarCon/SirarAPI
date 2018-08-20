@@ -6,7 +6,7 @@ const tokenGeneral = Symbol.for("SIRAR.GLOBAL.TOKENGENERAL");
 const emailTransporter = Symbol.for("SIRAR.GLOBAL.EMAILTRANSPORTER");
 const emailOptions = Symbol.for("SIRAR.GLOBAL.EMAILOPTIONS"); 
 const rutaImagenesPerfil = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESPERFIL"); 
-const mensajesError = Symbol.for("SIRAR.GLOBAL.MENSAJESERROR");
+const mensajes = Symbol.for("SIRAR.GLOBAL.MENSAJES");
 const crearRandom = Symbol.for("SIRAR.GLOBAL.CREARRANDOM");
 
 function inicializarGLobal(variableGlobal, valor){
@@ -66,7 +66,7 @@ module.exports.inicializarMensajes = async function(mongoose){
     });
 }
 
-module.exports.mensajesError = function(codigo){
-        var mensaje =todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje()
-        return inicializarGLobal(mensajesError, mensaje);
+module.exports.mensajes = function(codigo, id, nuevoMensaje, objeto){
+        var mensaje = todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( id, nuevoMensaje, objeto)
+        return inicializarGLobal(mensajes, mensaje);
 }

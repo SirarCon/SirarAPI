@@ -4,9 +4,23 @@
 var mongoose = require('mongoose'),
 Usuario = mongoose.model('Usuario');
 const AwtAuth = require('jsonwebtoken');
-var mensajesError =  require("../Globales.js").mensajesError(403).instance;
-const rutaImagenesPerfil = require('../Globales.js').rutaImagenesPerfil.instance;
+var globales =  require("../Globales.js");
+const rutaImagenesPerfil = globales.rutaImagenesPerfil.instance;
 
+
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
+}
+
+
+function validarEmail(email) {
+  return new Promise(function(resolve, reject){
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    resolve(re.test(String(email).toLowerCase()));
+  })
+}
 
 // crea la promesa para fs.readFile()
 function  leerArchivoAsync(filename) {
@@ -61,22 +75,22 @@ exports.verificarLogin = async function(req, res) {
       .then((usuario)=>{
         if(usuario) {
           if(usuario.password !== req.body.password)
-            res.json({exito: false, error: 1, mensaje: "Contraseña errónea."});
+            res.json({datos: globales.mensajes(1).instance});
           else{
             AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ async (err, token)=>{
               if(err){
-                res.json({exito:false, error: 50, mensaje: "Hubo un error creando token."});
+                res.json({datos: globales.mensajes(50).instance});
                 }
               else{
                 usuario.fotoUrl = await leerArchivoAsync(usuario.fotoUrl);
-                res.json({token: "token " + token, exito: true, error: -1, mensaje: usuario.datosLogin()});
+                res.json({token: "token " + token, datos: globales.mensajes(-1, null, null,usuario.datosLogin()).instance});
               }
             });
 
           }
         }
         else{
-          res.json({exito: false, error: 2, mensaje: "Usuario no existe."});
+          res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()).instance});
         }
       })
       .catch((err)=>{
@@ -85,24 +99,24 @@ exports.verificarLogin = async function(req, res) {
   };
 
 function mailSenderCrear(emailAdress, subject, message, res){            
-  require("../Globales.js").emailTransporter.instance.sendMail(
-          require("../Globales.js").emailOptions(emailAdress, subject, message).instance,
+  globales.emailTransporter.instance.sendMail(
+      globales.emailOptions(emailAdress, subject, message).instance,
           (error, info) => {                        
                             if (error) {                                                 
                               Usuario.findOneAndRemove({correo: emailAdress}, (err, usuario)=> {
                                 if (err){
-                                  res.json({token: res.locals.token, exito: false, error: 3, mensaje: "Error borrando usuario."});                      
+                                  res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", emailAdress).instance});                      
                                 }
                                 else{
                                   if(usuario && usuario.fotoUrl){
                                       borrarArchivo(usuario.fotoUrl);                                               
                                   }
-                                  res.json({token: res.locals.token, exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo: " + error });                                        
+                                  res.json({token: res.locals.token, datos: globales.mensajes(4, "correo", emailAdress).instance});                                        
                                 }
                               });                                
                             }  
                             else{   
-                            res.json({token: res.locals.token, exito: true, error: -1, mensaje: "El usuario " + emailAdress + " se a creado." })                                                                      
+                            res.json({token: res.locals.token, datos: globales.mensajes(-4, "usuario", emailAdress).instance})                                                                      
                             }
                           }
   );        
@@ -110,14 +124,14 @@ function mailSenderCrear(emailAdress, subject, message, res){
 
 
 function mailSenderRecuperar(emailAdress, subject, message, res){            
-  require("../Globales.js").emailTransporter.instance.sendMail(
-          require("../Globales.js").emailOptions(emailAdress, subject, message).instance,
+    globales.emailTransporter.instance.sendMail(
+      globales.emailOptions(emailAdress, subject, message).instance,
           (error, info) => {                        
                             if (error) {                                                                       
-                                  res.json({exito: false, error: 4, mensaje: "Ocurrió un error enviando el correo: " + error });                                              
+                                  res.json({datos: globales.mensajes(4, "correo", emailAdress).instance});                                              
                             }  
                             else{   
-                            res.json({exito: true, error: -1, mensaje: "El correo a " + emailAdress + " se a enviado." }) 
+                            res.json({datos: globales.mensajes(-5, "correo", emailAdress).instance }) 
                             }
                           }
   );        
@@ -125,12 +139,12 @@ function mailSenderRecuperar(emailAdress, subject, message, res){
 
 
 exports.solicitarRecuperacion = function(req, res){
-  var tokenPassword = require("../Globales.js").crearRandom(15).instance;
+  var tokenPassword = globales.crearRandom(15).instance;
   Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()}, 
     {$set: {"tokenPassword": tokenPassword}}, 
     (err, usuario) => {
       if(err){
-      res.json({exito: false, error: 5, mensaje:"Ocurrió un error buscando el usuario " + req.body.correo.toLowerCase()})
+      res.json({datos: globales.mensajes(5, "usuario", req.body.correo.toLowerCase()).instance })
       }
       else{
         if(usuario){
@@ -145,7 +159,7 @@ exports.solicitarRecuperacion = function(req, res){
           , res);    
         }
         else{
-          res.json({exito: false, error: 2, mensaje: "El usuario con el correo " + req.body.correo.toLowerCase() + " no existe." })
+          res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()).instance })//
       }
       }
   });
@@ -157,80 +171,89 @@ exports.recuperarcontrasena = function(req, res){
       Usuario.findOneAndUpdate({tokenPassword: req.body.tokenPassword}, 
       {$set: {"tokenPassword" : req.body.tokenPassword}}, function(err, usuario) {
         if (err){
-          res.json({exito: false, error: 6, mensaje: err.errmsg});
+          res.json({datos: globales.mensajes(6).instance});
         }
         else{
           if(usuario)                  
-            res.json({exito: true, error: -1, mensaje: usuario.datosRecuperarContrasena()});            
+            res.json({datos: globales.mensajes(-1, null, null, usuario.datosRecuperarContrasena()).instance});            
           else{
-            res.json({exito: false, error: 2, mensaje: "No usuario con el token enviado."});          
+            res.json({datos: globales.mensajes(2, "Usuario", "").instance});          
           }
         }
        });
     }
     else{
-      res.json({exito: false, error: 7, mensaje: "No existe el token especificado."});    
+      res.json({datos: globales.mensajes(7).instance});    
     }
 }
 
 exports.cambiarContrasena = function(req, res){
-  var filtro= {identificacion : req.body.identificacion};
-  var Passwordcoinciden = true ;
-  Usuario.findOneAndUpdate(filtro,{$set: {"password": req.body.password}},
-    (err, usuario)=>{
-      if(err){
-        res.json({exito: false, error: 8, mensaje: "Error al cambiar contraseña."});
-      }
-      else{
+var filtro= { identificacion : req.body.identificacion};
+
+Usuario.findOne()
+      .where(filtro)
+      .select({password: 1})
+      .exec()
+      .then((usuario)=>{
         if(usuario){
             if(req.body.passwordVieja && usuario.password !== req.body.passwordVieja){
-              Passwordcoinciden= false
+              res.json({datos: globales.mensajes(9).instance});
             }
-            if(Passwordcoinciden){
-              res.json({exito: true, error: -1, mensaje: "Contraseña de usuario: " + req.body.identificacion + " cambiada exitosamente."})
-            }else{
-              res.json({exito: false, error: 9, mensaje: "Contraseña anterior no coincide."})
+            else{
+            Usuario.findOneAndUpdate(filtro, {$set: {password: req.body.password}})
+                   .exec()
+                   .then(usuario =>res.json({datos: globales.mensajes(-6, "usuario", req.body.identificacion).instance}))
+                   .catch(err=>res.json({datos: globales.mensajes(8).instance}));    
             }
         }
         else{
-          res.json({exito: false, error: 2, mensaje: "No existe el usuario: " + req.body.identificacion });
-        }
+          res.json({datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
     }
-  });
+  }).catch(err=>res.json({datos: globales.mensajes(8).instance}));
 }
 
 //Necesita el checkbox application/x-www-form-urlencoded
-exports.crearUsuario = function(req, res) {   
-  var nuevoUsuario = new Usuario(req.body);
-  nuevoUsuario.tokenPassword = require("../Globales.js").crearRandom(15).instance;
-    if(req.body.fotoUrl){    
-    nuevoUsuario.fotoUrl = guardarImagenPerfil(rutaImagenesPerfil, nuevoUsuario);    
-    }
-  nuevoUsuario.save(function(err, usuario) {
-    if (err){   
-      if(!err.code || !err.code == 11000) //Llave duplicada  
-      borrarArchivo(nuevoUsuario.fotoUrl); 
-    res.json({token: res.locals.token, exito: false, error:10, mensaje: err.errmsg});
-  }
-    else
-      if(usuario){              
-        mailSenderCrear(usuario.correo,
-            'Creación de contraseña',
-              '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
-              '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
-              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.tokenPassword +'?0" class="button">Reestablecer Contraseña</a>'+
-              '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
-              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
-              '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
-          , res);              
+exports.crearUsuario = async function(req, res) {  
+  validarEmail(req.body.correo).then(valido=>{
+    if(valido == true){ 
+      var nuevoUsuario = new Usuario(req.body);
+      nuevoUsuario.tokenPassword = globales.crearRandom(15).instance;
+      if(req.body.fotoUrl){    
+          nuevoUsuario.fotoUrl = guardarImagenPerfil(rutaImagenesPerfil, nuevoUsuario);    
       }
-  });
+      nuevoUsuario.save().then(usuario=>{
+          if(usuario){
+                mailSenderCrear(usuario.correo,
+                    'Creación de contraseña',
+                      '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
+                      '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
+                      '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.tokenPassword +'?0" class="button">Reestablecer Contraseña</a>'+
+                      '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
+                      '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
+                      '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
+                  , res);  
+          }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance});
+          }          
+      }).catch(err=>{         
+                    if (err){   
+                      if(err.code || err.code == 11000){ //Llave duplicada  
+                          borrarArchivo(nuevoUsuario.fotoUrl);
+                          res.json({token: res.locals.token, datos: globales.mensajes(15).instance});
+                      }else{//Cualquier error
+                        console.log(err)
+                        res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance});
+                      }   
+                    }
+              });
+    }
+    else{
+      res.json({token: res.locals.token, datos: globales.mensajes(16).instance})
+    }
+  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance}));
+  
+  
 };
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
-  }
-}
 
 
 exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta en el correo   
@@ -246,13 +269,13 @@ exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta 
             
           });
           if(usuarios.length > 0){
-              res.json({token: res.locals.token, exito: true, error: -1, mensaje: usuarios.map(u => u.datosLogin())});  
+              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,usuarios.map(u => u.datosLogin())).instance});  
           }  
           else
-            res.json({token: res.locals.token, exito: false, error:11, mensaje: "No hay usuarios registrados."});
+            res.json({token: res.locals.token, datos: globales.mensajes(11).instance});
         })
           .catch((err)=>{
-            res.json({token: res.locals.token, exito: false, error: 12, mensaje: err});  
+            res.json({token: res.locals.token,datos: globales.mensajes(12).instance});  
 }) 
 }catch(e){
     console.log(e);
@@ -269,19 +292,19 @@ exports.leerUsuario = async function(req, res) {
   .then(async (usuario) => {
     if(usuario){      
       usuario.fotoUrl = await leerArchivoAsync(usuario.fotoUrl);
-       res.json({token: res.locals.token, exito: true, error: -1, mensaje: usuario.datosLogin() });
+       res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,usuario.datosLogin()).instance});
     }
     else {   
-    res.json({token: res.locals.token, exito: false, error: 2, mensaje: "No hay usuarios con la identificación: " + req.params.identificacion});
+    res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.params.identificacion).instance});
   }
 }).catch((err)=>{
-    res.json({token: res.locals.token, exito: false, error: 13 ,mensaje: err});
+    res.json({token: res.locals.token, datos: globales.mensajes(13, "usuario", req.params.identificacion).instance});
   }) 
 };
 
 exports.modificarUsuario = function(req, res) { 
  var usuarioTem = new Usuario();
-  usuarioTem.identificacion = req.body.identificacion;
+  usuarioTem.identificacion = req.params.identificacion;
   usuarioTem.fotoUrl = req.body.fotoUrl;
   Usuario.findOneAndUpdate({identificacion: req.params.identificacion},
      {$set: {
@@ -292,17 +315,21 @@ exports.modificarUsuario = function(req, res) {
       "rol": req.body.rol                                                                                                                         
       }}, {projection:{password: 0, fechaCreacion : 0}, new: false}, function(err, usuarioAntiguo) {
   if (err){
-      res.json({token: res.locals.token, exito: false, error: 14 , mensaje: "Hubo un fallo al modificar los datos."});        
+    if(err.code || err.code == 11000){ //Llave duplicada  
+      res.json({token: res.locals.token, datos: globales.mensajes(15).instance});
+    }else{ 
+      res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", req.params.identificacion).instance});        
+    }
   }
   else{
   if(usuarioAntiguo){
     if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
         borrarArchivo(usuarioAntiguo.fotoUrl);
     }       
-    res.json({token: res.locals.token, exito: true, error: -1 ,mensaje: "Usuario " + usuarioAntiguo.nombre +" modificado con éxito."});
+    res.json({token: res.locals.token, datos: globales.mensajes(-3, "usuario ", usuarioAntiguo.nombre).instance});
   }
   else{
-    res.json({token: res.locals.token, exito: false, error: 2 ,mensaje: "Usuario " + req.params.identificacion +" no éxiste."});
+    res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
   }
 }
 });  
@@ -313,12 +340,12 @@ exports.borrarUsuario = function(req, res) {
     identificacion: req.params.identificacion    
   },function(err, usuario) {
     if (err)
-    res.json({token: res.locals.token, exito: false, error: 3 ,mensaje: "Error al borrar el usuario "+ err.errmsg});
+    res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", req.params.identificacion).instance});
     
     if(usuario)
     if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
       borrarArchivo(usuario.fotoUrl)
-    res.json({token: res.locals.token, exito: true, error: -1 ,mensaje: 'EL usuario ' + req.params.identificacion +' fue borrado.'});    
+    res.json({token: res.locals.token, datos: globales.mensajes(-2, "Usuario", req.params.identificacion).instance});    
   });
 };
 

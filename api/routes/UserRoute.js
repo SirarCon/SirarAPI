@@ -1,7 +1,10 @@
 'use strict';
+
 module.exports = function(app, express) {
-const tokkenGlobal = require('../Globales.js').tokenGeneral.instance;
+const globales = require("../Globales.js");
+const tokkenGlobal = globales.tokenGeneral.instance;
 var userController = require('../controllers/UserController');
+
 //import * as userController from '../controllers/UserController';
 const AwtAuth = require('jsonwebtoken');
 
@@ -12,7 +15,7 @@ var routerGeneral = express.Router()
 function verificarTokenGeneral(req, res, next){  
   //Set el Token
   req.token = extraerToken(req,'general');  
-  req.token === tokkenGlobal ? next() : res.json({token: "",  mensaje: require("../Globales.js").mensajesError(403).instance});
+  req.token === tokkenGlobal ? next() : res.json({datos: globales.mensajes(403).instance});
 }
 
 
@@ -41,14 +44,14 @@ routerAdm.use(verificarTokenGeneral, verify);
 function verify(req, res, next){
   AwtAuth.verify(extraerToken(req, 'authorization'), 'secretKey', (err, authData)=>{
   if(err){
-      res.json({token: "", exito: false, error: 403, mensaje: "Sesión expirada o usuario sin permisos"});
+      res.json({datos: globales.mensajes(403).instance});
   }else{//Refresca el token
-    var payload = require("../Globales.js").crearRandom(50).instance;
+    var payload = globales.crearRandom(50).instance;
     AwtAuth.sign({payload}, 'secretKey', {expiresIn: "60s"}, 
             (err, token)=>{
                if(err){
                  console.log(err);
-                 res.json({token: payload, exito: false, error: 50, mensaje: "Hubo un error creando token."});
+                 res.json({token: payload, datos: globales.mensajes(50).instance});
               }
               else{
                 res.locals.token = "token " + token;
