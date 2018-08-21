@@ -42,7 +42,6 @@ var UsuarioSchema = new Schema({
   telefono: {
     type: String,
     maxlength: 8,
-    minlength: 2   
   },
   rol:{
     type: Number,
