@@ -147,7 +147,7 @@ exports.verificarLogin = async function(req, res) {
 
 exports.solicitarRecuperacion = async function(req, res){
    var tokenPassword = globales.crearRandom(15).instance;
-   Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()},{$set: {"tokenPassword": tokenPassword}})
+   Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()},{$set: {"tokenPassword": tokenPassword}}, {runValidators: true})
           .then(usuario => {
             if(usuario){
               mailSenderRecuperar(usuario.correo,
@@ -171,7 +171,7 @@ exports.solicitarRecuperacion = async function(req, res){
 exports.recuperarcontrasena = async function(req, res){
     if(/^([A-Za-z0-9]{15})$/.test(req.body.tokenPassword)){
       Usuario.findOneAndUpdate({tokenPassword: req.body.tokenPassword}, 
-      {$set: {"tokenPassword" : req.body.tokenPassword}})
+      {$set: {"tokenPassword" : req.body.tokenPassword}}, {runValidators: true})
       .then(usuario => {
         if(usuario)                  
             res.json({datos: globales.mensajes(-1, null, null, usuario.datosRecuperarContrasena()).instance});            
@@ -200,7 +200,7 @@ Usuario.findOne()
               res.json({datos: globales.mensajes(9).instance});
             }
             else{
-            Usuario.findOneAndUpdate(filtro, {$set: {password: req.body.password}})
+            Usuario.findOneAndUpdate(filtro, {$set: {password: req.body.password}}, {runValidators: true})
                    .exec()
                    .then(usuario =>res.json({datos: globales.mensajes(-6, "usuario", req.body.identificacion).instance}))
                    .catch(err=>res.json({datos: globales.mensajes(8).instance}));    
@@ -315,7 +315,7 @@ exports.modificarUsuario = async function(req, res) {
       "fotoUrl" : req.body.fotoUrl ? guardarImagenPerfil(rutaImagenesPerfil, usuarioTem) : undefined,
       "telefono": req.body.telefono,
       "rol": req.body.rol                                                                                                                         
-      }}, {projection:{password: 0, fechaCreacion : 0}, new: false})
+      }}, {projection:{password: 0, fechaCreacion : 0}, new: false, runValidators: true})
       .exec()
       .then(usuarioAntiguo=>{
           if(usuarioAntiguo){
