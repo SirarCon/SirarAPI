@@ -1,19 +1,19 @@
 'use strict';
 
-
+//#region Requires
 var mongoose = require('mongoose'),
 Usuario = mongoose.model('Usuario');
 const AwtAuth = require('jsonwebtoken');
 var globales =  require("../Globales.js");
 const rutaImagenesPerfil = globales.rutaImagenesPerfil.instance;
+//#endregion Requires
 
-
+//#region Funciones Auxiliares
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array)
   }
 }
-
 
 function validarEmail(email) {
   return new Promise(function(resolve, reject){
@@ -68,36 +68,6 @@ function borrarArchivo(ruta){
 });
 }
 
-exports.verificarLogin = async function(req, res) {    
-      Usuario.findOne()
-      .select({fechaCreacion : 0})
-      .where({correo: req.body.correo.toLowerCase()})
-      .then((usuario)=>{
-        if(usuario) {
-          if(usuario.password !== req.body.password)
-            res.json({datos: globales.mensajes(1).instance});
-          else{
-            AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ async (err, token)=>{
-              if(err){
-                res.json({datos: globales.mensajes(50).instance});
-                }
-              else{
-                usuario.fotoUrl = await leerArchivoAsync(usuario.fotoUrl);
-                res.json({token: "token " + token, datos: globales.mensajes(-1, null, null,usuario.datosLogin()).instance});
-              }
-            });
-
-          }
-        }
-        else{
-          res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()).instance});
-        }
-      })
-      .catch((err)=>{
-        res.send(err);
-      })
-  };
-
 function mailSenderCrear(emailAdress, subject, message, res){            
   globales.emailTransporter.instance.sendMail(
       globales.emailOptions(emailAdress, subject, message).instance,
@@ -136,58 +106,88 @@ function mailSenderRecuperar(emailAdress, subject, message, res){
                           }
   );        
 }
+//#endregion Funciones Auxiliares
 
 
-exports.solicitarRecuperacion = function(req, res){
-  var tokenPassword = globales.crearRandom(15).instance;
-  Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()}, 
-    {$set: {"tokenPassword": tokenPassword}}, 
-    (err, usuario) => {
-      if(err){
-      res.json({datos: globales.mensajes(5, "usuario", req.body.correo.toLowerCase()).instance })
+//#region Funciones de Respuesta
+exports.verificarLogin = async function(req, res) {
+  if(req.body.correo){  
+  Usuario.findOne()
+        .select({fechaCreacion : 0})
+        .where({correo: req.body.correo.toLowerCase()})
+        .then((usuario)=>{
+          if(usuario) {
+            if(usuario.password !== req.body.password)
+              res.json({datos: globales.mensajes(1).instance});
+            else{
+              AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ async (err, token)=>{
+                if(err){
+                  res.json({datos: globales.mensajes(50).instance});
+                  }
+                else{
+                  usuario.fotoUrl = await leerArchivoAsync(usuario.fotoUrl);
+                  res.json({token: "token " + token, datos: globales.mensajes(-1, null, null,usuario.datosLogin()).instance});
+                }
+              });
+  
+            }
+          }
+          else{
+            res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()).instance});
+          }
+        })
+        .catch((err)=>{
+          res.send(err);
+        })
       }
       else{
-        if(usuario){
-          mailSenderRecuperar(usuario.correo,
-            'Recupeación de contraseña',
-              '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
-              '<p>Este correo se le envía para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
-              '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ tokenPassword +'?1" class="button">Reestablecer Contraseña</a>'+
-              '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
-              '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + tokenPassword +'?1</p>'+
-              '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
-          , res);    
-        }
-        else{
-          res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()).instance })//
+        res.json({datos: globales.mensajes(2, "Usuario", "sin correo").instance});
       }
-      }
-  });
+};
+
+exports.solicitarRecuperacion = async function(req, res){
+   var tokenPassword = globales.crearRandom(15).instance;
+   Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()},{$set: {"tokenPassword": tokenPassword}})
+          .then(usuario => {
+            if(usuario){
+              mailSenderRecuperar(usuario.correo,
+                'Recupeación de contraseña',
+                  '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
+                  '<p>Este correo se le envía para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
+                  '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ tokenPassword +'?1" class="button">Reestablecer Contraseña</a>'+
+                  '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
+                  '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + tokenPassword +'?1</p>'+
+                  '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
+              , res);    
+            }
+            else{
+              res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()).instance })//
+          }
+          })
+          .catch(err=>{es.json({datos: globales.mensajes(5, "usuario", req.body.correo.toLowerCase()).instance })});              
 }
 
 
-exports.recuperarcontrasena = function(req, res){
+exports.recuperarcontrasena = async function(req, res){
     if(/^([A-Za-z0-9]{15})$/.test(req.body.tokenPassword)){
       Usuario.findOneAndUpdate({tokenPassword: req.body.tokenPassword}, 
-      {$set: {"tokenPassword" : req.body.tokenPassword}}, function(err, usuario) {
-        if (err){
-          res.json({datos: globales.mensajes(6).instance});
-        }
-        else{
-          if(usuario)                  
+      {$set: {"tokenPassword" : req.body.tokenPassword}})
+      .then(usuario => {
+        if(usuario)                  
             res.json({datos: globales.mensajes(-1, null, null, usuario.datosRecuperarContrasena()).instance});            
           else{
-            res.json({datos: globales.mensajes(2, "Usuario", "").instance});          
+            res.json({datos: globales.mensajes(2, "Token", "vencido:").instance});          
           }
-        }
-       });
+      })
+      .catch(err=>{res.json({datos: globales.mensajes(6).instance});});
     }
     else{
       res.json({datos: globales.mensajes(7).instance});    
     }
-}
+};
 
-exports.cambiarContrasena = function(req, res){
+exports.cambiarContrasena = async function(req, res){
+  if(req.body.identificacion){
 var filtro= { identificacion : req.body.identificacion};
 
 Usuario.findOne()
@@ -211,6 +211,10 @@ Usuario.findOne()
     }
   }).catch(err=>res.json({datos: globales.mensajes(8).instance}));
 }
+else{
+  res.json({datos: globales.mensajes(2, "Usuario", "sin identificación").instance});
+}
+}
 
 //Necesita el checkbox application/x-www-form-urlencoded
 exports.crearUsuario = async function(req, res) {  
@@ -227,7 +231,7 @@ exports.crearUsuario = async function(req, res) {
                     'Creación de contraseña',
                       '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
                       '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
-                      '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.tokenPassword +'?0" class="button">Reestablecer Contraseña</a>'+
+                      '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.tokenPassword +'?0" class="button">Crear Contraseña</a>'+
                       '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
                       '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
                       '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
@@ -250,9 +254,7 @@ exports.crearUsuario = async function(req, res) {
     else{
       res.json({token: res.locals.token, datos: globales.mensajes(16).instance})
     }
-  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance}));
-  
-  
+  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance})); 
 };
 
 
@@ -302,7 +304,7 @@ exports.leerUsuario = async function(req, res) {
   }) 
 };
 
-exports.modificarUsuario = function(req, res) { 
+exports.modificarUsuario = async function(req, res) { 
  var usuarioTem = new Usuario();
   usuarioTem.identificacion = req.params.identificacion;
   usuarioTem.fotoUrl = req.body.fotoUrl;
@@ -313,39 +315,37 @@ exports.modificarUsuario = function(req, res) {
       "fotoUrl" : req.body.fotoUrl ? guardarImagenPerfil(rutaImagenesPerfil, usuarioTem) : undefined,
       "telefono": req.body.telefono,
       "rol": req.body.rol                                                                                                                         
-      }}, {projection:{password: 0, fechaCreacion : 0}, new: false}, function(err, usuarioAntiguo) {
-  if (err){
-    if(err.code || err.code == 11000){ //Llave duplicada  
-      res.json({token: res.locals.token, datos: globales.mensajes(15).instance});
-    }else{ 
-      res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", req.params.identificacion).instance});        
-    }
-  }
-  else{
-  if(usuarioAntiguo){
-    if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
-        borrarArchivo(usuarioAntiguo.fotoUrl);
-    }       
-    res.json({token: res.locals.token, datos: globales.mensajes(-3, "usuario ", usuarioAntiguo.nombre).instance});
-  }
-  else{
-    res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
-  }
-}
-});  
+      }}, {projection:{password: 0, fechaCreacion : 0}, new: false})
+      .exec()
+      .then(usuarioAntiguo=>{
+          if(usuarioAntiguo){
+            if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
+                borrarArchivo(usuarioAntiguo.fotoUrl);
+            }       
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "usuario", req.body.nombre).instance});
+          }
+          else{
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
+          }
+      }).catch(err=>{
+        if(err.code || err.code == 11000){ //Llave duplicada  
+          res.json({token: res.locals.token, datos: globales.mensajes(15).instance});
+        }else{ 
+          res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", req.params.identificacion).instance});        
+        }
+      });  
 };
 
-exports.borrarUsuario = function(req, res) {
-  Usuario.findOneAndRemove({
-    identificacion: req.params.identificacion    
-  },function(err, usuario) {
-    if (err)
-    res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", req.params.identificacion).instance});
-    
-    if(usuario)
-    if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
-      borrarArchivo(usuario.fotoUrl)
-    res.json({token: res.locals.token, datos: globales.mensajes(-2, "Usuario", req.params.identificacion).instance});    
+exports.borrarUsuario = async function(req, res) {
+  Usuario.findOneAndRemove()
+        .where({identificacion: req.params.identificacion})
+        .exec().
+        then(usuario=> {
+                        if(usuario)
+                          if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
+                            borrarArchivo(usuario.fotoUrl)
+                        res.json({token: res.locals.token, datos: globales.mensajes(-2, "Usuario", req.params.identificacion).instance});    
+        }).catch(err=>{res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", req.params.identificacion).instance});
   });
 };
-
+//#endregion Funciones Respuesta

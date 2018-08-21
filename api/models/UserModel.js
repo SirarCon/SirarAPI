@@ -7,11 +7,11 @@ var UsuarioSchema = new Schema({
   nombre: {
     type: String,
     required: 'Digite un nombre por favor',
-    maxlength: 40
+    maxlength: 40,
+    minlength: 2
   },
   fotoUrl: {
-    type: String,
-    maxlength: 400   
+    type: String   
   },
   fechaCreacion: {
     type: Date,
@@ -21,24 +21,28 @@ var UsuarioSchema = new Schema({
     type: String,
     required: 'Digite el número de cédula por favor',
     unique: true,
-    mmaxlength: 15
+    mmaxlength: 15,
+    minlength: 2
   },
   correo: {
     type: String,
     required: 'Digite el correo por favor',
     unique:true,
-    maxlength: 40
+    maxlength: 40,
+    minlength: 2
   },
   password: {
     type: String
   },
   tokenPassword: {
     type: String,
-    maxlength: 15
+    maxlength: 15,
+    minlength: 15
   },
   telefono: {
     type: String,
-    maxlength: 8   
+    maxlength: 8,
+    minlength: 2   
   },
   rol:{
     type: Number,
