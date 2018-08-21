@@ -244,10 +244,11 @@ exports.crearUsuario = async function(req, res) {
                     if (err){   
                       if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta
                           borrarArchivo(nuevoUsuario.fotoUrl);
-                          res.json({token: res.locals.token, datos: globales.mensajes(15).instance});
-                      }else{//Cualquier error
-                        console.log(err)
-                        res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance});
+                          console.log(err)
+                          res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance});
+                      }else{//Error llave duplicada
+                         res.json({token: res.locals.token, datos: globales.mensajes(15).instance});
+                       
                       }   
                     }
               });
