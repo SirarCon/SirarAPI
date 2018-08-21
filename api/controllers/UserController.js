@@ -55,7 +55,7 @@ function guardarImagenPerfil(ruta, usuario){
 
 function borrarArchivo(ruta){
   const fs =require("fs");
-  console.log("borrando" + ruta);
+  if(ruta){
   fs.exists(ruta, function(exists) {    
     if (exists) {
       fs.access(ruta, error => {
@@ -66,6 +66,7 @@ function borrarArchivo(ruta){
       })
     }     
 });
+  }
 }
 
 function mailSenderCrear(emailAdress, subject, message, res){            
