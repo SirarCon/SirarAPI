@@ -61,7 +61,8 @@ UsuarioSchema.method('datosRecuperarContrasena', function() {
 
 UsuarioSchema.method('datosLogin', function() {
   
-  return {correo: this.correo, 
+  return {correo: this.correo,
+          identificacion: this.identificacion, 
           nombre: this.nombre,
           fotoUrl : this.fotoUrl,
           telefono: this.telefono,
