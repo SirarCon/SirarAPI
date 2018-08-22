@@ -10,6 +10,10 @@ var UsuarioSchema = new Schema({
     maxlength: 40,
     minlength: 2
   },
+  nombreNormalizado:{
+    type: String,
+    maxlength: 40
+  },
   fotoUrl: {
     type: String   
   },
@@ -22,14 +26,14 @@ var UsuarioSchema = new Schema({
     required: 'Digite el número de cédula por favor',
     unique: true,
     mmaxlength: 15,
-    minlength: 2
+    minlength: 8
   },
   correo: {
     type: String,
     required: 'Digite el correo por favor',
     unique:true,
     maxlength: 40,
-    minlength: 2
+    minlength: 10
   },
   password: {
     type: String
@@ -59,10 +63,9 @@ UsuarioSchema.method('datosLogin', function() {
   
   return {correo: this.correo, 
           nombre: this.nombre,
-          identificacion: this.identificacion,
           fotoUrl : this.fotoUrl,
           telefono: this.telefono,
-          rol: this.rol
+          rol: this.rol          
          };
 
 });

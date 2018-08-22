@@ -151,7 +151,7 @@ exports.solicitarRecuperacion = async function(req, res){
    Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()},{$set: {"tokenPassword": tokenPassword}}, {runValidators: true})
           .then(usuario => {
             if(usuario){
-              mailSenderRecuperar(usuario.correo,
+              mailSenderRecuperar(usuario.correo.toLowerCase(),
                 'Recupeación de contraseña',
                   '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
                   '<p>Este correo se le envía para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
@@ -226,9 +226,11 @@ exports.crearUsuario = async function(req, res) {
       if(req.body.fotoUrl){    
           nuevoUsuario.fotoUrl = guardarImagenPerfil(rutaImagenesPerfil, nuevoUsuario);    
       }
+      nuevoUsuario.correo = nuevoUsuario.correo.toLowerCase();
+      nuevoUsuario.nombreNormalizado = nuevoUsuario.nombre.toLowerCase();
       nuevoUsuario.save().then(usuario=>{
           if(usuario){
-                mailSenderCrear(usuario.correo,
+                mailSenderCrear(usuario.correo.toLowerCase(),
                     'Creación de contraseña',
                       '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
                       '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
@@ -238,14 +240,14 @@ exports.crearUsuario = async function(req, res) {
                       '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
                   , res);  
           }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance});
+                res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase()).instance});
           }          
       }).catch(err=>{         
                     if (err){   
                       if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta
                           borrarArchivo(nuevoUsuario.fotoUrl);
                           console.log(err)
-                          res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance});
+                          res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase()).instance});
                       }else{//Error llave duplicada
                          res.json({token: res.locals.token, datos: globales.mensajes(15).instance});
                        
@@ -256,14 +258,14 @@ exports.crearUsuario = async function(req, res) {
     else{
       res.json({token: res.locals.token, datos: globales.mensajes(16).instance})
     }
-  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo).instance})); 
+  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase()).instance})); 
 };
 
 
 exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta en el correo   
   try{  
   Usuario.find()
-         .sort({nombre : 1})
+         .sort({nombreNormalizado : 1})
          .select({password: 0, fechaCreacion: 0, tokenPassword: 0})
          .where({identificacion: {$ne: req.params.identificacion}})
          .exec()
@@ -313,7 +315,8 @@ exports.modificarUsuario = async function(req, res) {
   Usuario.findOneAndUpdate({identificacion: req.params.identificacion},
      {$set: {
       "correo" : req.body.correo.toLowerCase(),
-      "nombre": req.body.nombre,        
+      "nombre": req.body.nombre,   
+      "nombreNormalizado":  req.body.nombre.toLowerCase(),     
       "fotoUrl" : req.body.fotoUrl ? guardarImagenPerfil(rutaImagenesPerfil, usuarioTem) : undefined,
       "telefono": req.body.telefono,
       "rol": req.body.rol                                                                                                                         
