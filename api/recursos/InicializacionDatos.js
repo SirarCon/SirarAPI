@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 Mensaje = mongoose.model('Mensaje');
 
 exports.Errores = async function(){
- // Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+  //Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
   var mensajes = [
         {"mensaje": "", "codigo": -1, "exito": 1 },
         {"mensaje": "EL {sutantivoCambiar} {id} fue borrado.'", "codigo": -2, "exito": 1 },
@@ -19,7 +19,7 @@ exports.Errores = async function(){
         {"mensaje": "Hubo un problema validando el token  de contraseña", "codigo": 6, "exito": 0 },
         {"mensaje": "El token  de contraseña no tiene el formato adecuado", "codigo": 7, "exito": 0 },
         {"mensaje": "Hubo un problema cambiando la contraseña", "codigo" : 8, "exito": 0 },
-        {"mensaje": "Contraseñas no coinciden", "codigo" : 9, "exito": 0 },
+        {"mensaje": "Contraseña actual no coincide con la registrada", "codigo" : 9, "exito": 0 },
         {"mensaje": "Hubo un problema creando {sutantivoCambiar} {id}", "codigo" : 10, "exito": 0 }, 
         {"mensaje": "No hay usuarios que listar", "codigo" : 11, "exito": 0 },
         {"mensaje": "Hubo un problema leyendo los usuarios", "codigo" : 12, "exito": 0 },   
@@ -27,6 +27,7 @@ exports.Errores = async function(){
         {"mensaje": "Hubo un error modificando el {sutantivoCambiar} {id}", "codigo" :14, "exito": 0 },
         {"mensaje": "La identificación o correo enviados ya están siendo usados", "codigo" :15, "exito": 0 },
         {"mensaje": "El correo no tiene formato adecuado", "codigo" :16, "exito": 0 },
+        {"mensaje": "Debe digitar la nueva contraseña", "codigo" : 17, "exito": 0 },
         {"mensaje": "Hubo un problema borrando la foto", "codigo" : 0, "exito": 0 },
         {"mensaje": "Hubo un problema guardando la foto", "codigo" : 0, "exito": 0 },
         {"mensaje": "Hubo un problema creando el token", "codigo" : 50, "exito": 0 },

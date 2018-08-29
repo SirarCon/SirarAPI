@@ -188,7 +188,7 @@ exports.recuperarcontrasena = async function(req, res){
 };
 
 exports.cambiarContrasena = async function(req, res){
-  if(req.body.identificacion){
+  if(req.body.identificacion && req.body.password && req.body.password !== ""){
 var filtro= { identificacion : req.body.identificacion};
 
 Usuario.findOne()
@@ -213,7 +213,10 @@ Usuario.findOne()
   }).catch(err=>res.json({datos: globales.mensajes(8).instance}));
 }
 else{
+  if(req.body.identificacion == null || req.body.identificacion === "") 
   res.json({datos: globales.mensajes(2, "Usuario", "sin identificación").instance});
+  else
+  res.json({datos: globales.mensajes(17).instance});
 }
 }
 
