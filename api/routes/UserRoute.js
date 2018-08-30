@@ -37,6 +37,7 @@ function extraerToken(req, nombreHeader){
 
 //Se le assignan los middleware a los usuarios adm antes del login
 routerGeneral.use(verificarTokenGeneral);
+routerGeneral.use(verificarCambioContrasena);
 //Se le assignan los middleware a los router de Adm luego del Login
 routerAdm.use(verificarTokenGeneral, verify);
 
@@ -62,7 +63,14 @@ function verify(req, res, next){
 });
 }
 
-
+function verificarCambioContrasena(req, res, next){
+if(req.body.passwordVieja){
+    verify(req, res, next);
+}
+else{
+    next();
+}
+}
 
 //Rutas POST, GET, PUT, DELETE
 routerGeneral.route('/login')  

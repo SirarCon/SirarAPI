@@ -198,25 +198,50 @@ Usuario.findOne()
       .then((usuario)=>{
         if(usuario){
             if(req.body.passwordVieja && usuario.password !== req.body.passwordVieja){
-              res.json({datos: globales.mensajes(9).instance});
+              res.json({token: res.locals.token, datos: globales.mensajes(9).instance});
             }
             else{
             Usuario.findOneAndUpdate(filtro, {$set: {password: req.body.password}}, {runValidators: true})
                    .exec()
-                   .then(usuario =>res.json({datos: globales.mensajes(-6, "usuario", req.body.identificacion).instance}))
-                   .catch(err=>res.json({datos: globales.mensajes(8).instance}));    
+                   .then(usuario =>{
+                    if(req.body.passwordVieja){
+                      res.json({token: res.locals.token, datos: globales.mensajes(-6, "usuario", req.body.identificacion).instance})
+                      console.log("Si")
+                    }else{
+                      res.json({datos: globales.mensajes(-6, "usuario", req.body.identificacion).instance})
+                      console.log("no")
+                    }
+                    })
+                   .catch(err=>{
+                    if(req.body.passwordVieja)
+                    res.json({token: res.locals.token, datos: globales.mensajes(8).instance})
+                 else
+                    res.json({datos: globales.mensajes(8).instance});
+                   });    
             }
         }
         else{
-          res.json({datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
+          if(req.body.passwordVieja)
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
+          else
+            res.json({datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
     }
-  }).catch(err=>res.json({datos: globales.mensajes(8).instance}));
+  }).catch(err=>{
+    if(req.body.passwordVieja)
+       res.json({token: res.locals.token, datos: globales.mensajes(8).instance})
+    else
+       res.json({datos: globales.mensajes(8).instance});
+    });
 }
 else{
   if(req.body.identificacion == null || req.body.identificacion === "") 
   res.json({datos: globales.mensajes(2, "Usuario", "sin identificación").instance});
-  else
-  res.json({datos: globales.mensajes(17).instance});
+  else{
+    if(req.body.passwordVieja)
+    res.json({token: res.locals.token, datos: globales.mensajes(17).instance});
+    else
+      res.json({datos: globales.mensajes(17).instance});
+  }
 }
 }
 
