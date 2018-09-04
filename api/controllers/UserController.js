@@ -155,7 +155,11 @@ exports.solicitarRecuperacion = async function(req, res){
                 'Recupeación de contraseña',
                   '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
                   '<p>Este correo se le envía para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
-                  '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ tokenPassword +'?1" class="button">Reestablecer Contraseña</a>'+
+                  '<table> <tr> '+
+                             '<td style="background-color: rgb(78, 186, 205);border-color: rgb(69, 161, 183);border: 2px solid #45b7af;padding: 10px;text-align: center;">'+
+                               '<a style=" border-radius: 50px 50px; display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" href="https://sirarpwa.herokuapp.com/reestablecer?' + tokenPassword +'?1">'+
+                                'Recuperar Contraseña </a>'+
+                                '</td> </tr></table>'+
                   '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
                   '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + tokenPassword +'?1</p>'+
                   '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
@@ -165,7 +169,7 @@ exports.solicitarRecuperacion = async function(req, res){
               res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()).instance })//
           }
           })
-          .catch(err=>{es.json({datos: globales.mensajes(5, "usuario", req.body.correo.toLowerCase()).instance })});              
+          .catch(err=>{console.log(err); res.json({datos: globales.mensajes(5, "usuario", req.body.correo.toLowerCase()).instance })});              
 }
 
 
@@ -262,7 +266,12 @@ exports.crearUsuario = async function(req, res) {
                     'Creación de contraseña',
                       '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
                       '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
-                      '<a  href="https://sirarpwa.herokuapp.com/reestablecer?'+ nuevoUsuario.tokenPassword +'?0" class="button">Crear Contraseña</a>'+
+                      '<table> <tr> '+
+                        '<td style=" background-color: rgb(78, 186, 205);border-color: rgb(69, 161, 183); border: 2px solid #45b7af;padding: 10px;text-align: center;">'+
+                            '<a style="display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" href="https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.tokenPassword +'?0">'+
+                                'Crear Contraseña'+
+                            '</a>'+
+                        '</td> </tr></table>'+
                       '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
                       '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
                       '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
