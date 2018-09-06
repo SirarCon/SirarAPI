@@ -1,6 +1,7 @@
 'use strict';
 var mongoose = require('mongoose'),
-Mensaje = mongoose.model('Mensaje');
+Mensaje = mongoose.model('Mensaje'),
+Usuario = mongoose.model('Usuario');
 
 exports.Errores = async function(){
   //Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
@@ -31,7 +32,7 @@ exports.Errores = async function(){
         {"mensaje": "Hubo un problema borrando la foto", "codigo" : 0, "exito": 0 },
         {"mensaje": "Hubo un problema guardando la foto", "codigo" : 0, "exito": 0 },
         {"mensaje": "Hubo un problema creando el token", "codigo" : 50, "exito": 0 },
-        {"mensaje": "No tiene permisos o su sesión expiró", "codigo": 403, "exito": 0 }
+        {"mensaje": "Su sesión expiró", "codigo": 403, "exito": 0 }
 ]
 
 var opciones = { upsert: true, new: true, setDefaultsOnInsert: true };
@@ -41,5 +42,15 @@ mensajes.forEach(elemento => {
         });  
 });
 
+var usuario = {
+        "nombre" : "William",
+        "nombreNormalizado" : "william",
+        "identificacion" : "115780376",
+        "correo" : "wacvillalobos@hotmail.es",
+        "password" : "P123456p",
+        "rol" : "1" }
+Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
+        if (err) return;
+        }); 
 
 }

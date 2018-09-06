@@ -27,7 +27,12 @@ function inicializarGLobal(variableGlobal, valor){
         return singletonGeneral;
 }
 
-module.exports.nombreBD = inicializarGLobal(nombreBD, /*"mongodb://localhost/Sirar")*/"mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
+//local:
+//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Sirar")
+//desarrollo:
+//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
+//pruebas:
+module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds245132.mlab.com:45132/sirardbpruebas") 
 module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
 module.exports.rutaImagenesPerfil = inicializarGLobal(rutaImagenesPerfil, "imagenes/imagenesPerfil/")
 
