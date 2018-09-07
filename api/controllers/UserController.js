@@ -82,7 +82,7 @@ function mailSenderCrear(emailAdress, subject, message, res){
                                   if(usuario && usuario.fotoUrl){
                                       borrarArchivo(usuario.fotoUrl);                                               
                                   }
-                                  res.json({token: res.locals.token, datos: globales.mensajes(4, "correo", emailAdress).instance});                                        
+                                  res.json({token: res.locals.token, datos: globales.mensajes(4, "correo electrónico", emailAdress).instance});                                        
                                 }
                               });                                
                             }  
@@ -99,10 +99,10 @@ function mailSenderRecuperar(emailAdress, subject, message, res){
       globales.emailOptions(emailAdress, subject, message).instance,
           (error, info) => {                        
                             if (error) {                                                                       
-                                  res.json({datos: globales.mensajes(4, "correo", emailAdress).instance});                                              
+                                  res.json({datos: globales.mensajes(4, "correo electrónico", emailAdress).instance});                                              
                             }  
                             else{   
-                            res.json({datos: globales.mensajes(-5, "correo", emailAdress).instance }) 
+                            res.json({datos: globales.mensajes(-5, "correo electrónico", emailAdress).instance }) 
                             }
                           }
   );        
@@ -142,7 +142,7 @@ exports.verificarLogin = async function(req, res) {
         })
       }
       else{
-        res.json({datos: globales.mensajes(2, "Usuario", "sin correo").instance});
+        res.json({datos: globales.mensajes(2, "Usuario", "sin correo electrónico").instance});
       }
 };
 
@@ -154,14 +154,14 @@ exports.solicitarRecuperacion = async function(req, res){
               mailSenderRecuperar(usuario.correo.toLowerCase(),
                 'Recupeación de contraseña',
                   '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
-                  '<p>Este correo se le envía para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
+                  '<p>Este correo electrónico se le envía para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
                   '<table> <tr> '+
                              '<td style="background-color: rgb(78, 186, 205);border-color: rgb(69, 161, 183);border: 2px solid #45b7af;padding: 10px;text-align: center;">'+
-                               '<a style=" border-radius: 50px 50px; display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" href="https://sirarpwa.herokuapp.com/reestablecer?' + tokenPassword +'?1">'+
+                               '<a style=" border-radius: 50px 50px; display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" href="https://sirarpwa.herokuapp.com/restablecer?' + tokenPassword +'?1">'+
                                 'Recuperar Contraseña </a>'+
                                 '</td> </tr></table>'+
                   '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
-                  '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + tokenPassword +'?1</p>'+
+                  '<p style="color: blue; ">https://sirarpwa.herokuapp.com/restablecer?' + tokenPassword +'?1</p>'+
                   '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
               , res);    
             }
@@ -176,7 +176,7 @@ exports.solicitarRecuperacion = async function(req, res){
 exports.recuperarcontrasena = async function(req, res){
     if(/^([A-Za-z0-9]{15})$/.test(req.body.tokenPassword)){
       Usuario.findOneAndUpdate({tokenPassword: req.body.tokenPassword}, 
-      {$set: {"tokenPassword" : req.body.tokenPassword}}, {runValidators: true})
+      {$set: {"tokenPassword" : null}}, {runValidators: true})
       .then(usuario => {
         if(usuario)                  
             res.json({datos: globales.mensajes(-1, null, null, usuario.datosRecuperarContrasena()).instance});            
@@ -268,12 +268,12 @@ exports.crearUsuario = async function(req, res) {
                       '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
                       '<table> <tr> '+
                         '<td style=" background-color: rgb(78, 186, 205);border-color: rgb(69, 161, 183); border: 2px solid #45b7af;padding: 10px;text-align: center;">'+
-                            '<a style="display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" href="https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.tokenPassword +'?0">'+
+                            '<a style="display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" href="https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0">'+
                                 'Crear Contraseña'+
                             '</a>'+
                         '</td> </tr></table>'+
                       '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
-                      '<p style="color: blue; ">https://sirarpwa.herokuapp.com/reestablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
+                      '<p style="color: blue; ">https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
                       '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
                   , res);  
           }else{

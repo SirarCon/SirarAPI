@@ -7,10 +7,10 @@ exports.Errores = async function(){
   //Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
   var mensajes = [
         {"mensaje": "", "codigo": -1, "exito": 1 },
-        {"mensaje": "EL {sutantivoCambiar} {id} fue borrado.'", "codigo": -2, "exito": 1 },
+        {"mensaje": "EL {sutantivoCambiar} {id} fue borrado.", "codigo": -2, "exito": 1 },
         {"mensaje": "EL {sutantivoCambiar} {id} fue modificado con exito.", "codigo": -3, "exito": 1 },
         {"mensaje": "El {sutantivoCambiar} {id} se a creado.", "codigo": -4, "exito": 1 },
-        {"mensaje": "El {sutantivoCambiar} a {id} se a enviado.", "codigo": -5, "exito": 1 },
+        {"mensaje": "El {sutantivoCambiar} a {id} se ha enviado.", "codigo": -5, "exito": 1 },
         {"mensaje": "Contraseña de {sutantivoCambiar}: {id} cambiada exitosamente.", "codigo": -6, "exito": 1},
         {"mensaje": "Contraseña errónea", "codigo": 1, "exito": 0 },
         {"mensaje": "{sutantivoCambiar} {id} no encontrado", "codigo": 2, "exito": 0 },
@@ -26,8 +26,8 @@ exports.Errores = async function(){
         {"mensaje": "Hubo un problema leyendo los usuarios", "codigo" : 12, "exito": 0 },   
         {"mensaje": "Hubo un problema leyendo el {sutantivoCambiar} {id}", "codigo" : 13, "exito": 0 },
         {"mensaje": "Hubo un error modificando el {sutantivoCambiar} {id}", "codigo" :14, "exito": 0 },
-        {"mensaje": "La identificación o correo enviados ya están siendo usados", "codigo" :15, "exito": 0 },
-        {"mensaje": "El correo no tiene formato adecuado", "codigo" :16, "exito": 0 },
+        {"mensaje": "La identificación o correo electrónico enviados ya están siendo usados", "codigo" :15, "exito": 0 },
+        {"mensaje": "El correo electrónico no tiene formato adecuado", "codigo" :16, "exito": 0 },
         {"mensaje": "Debe digitar la nueva contraseña", "codigo" : 17, "exito": 0 },
         {"mensaje": "Hubo un problema borrando la foto", "codigo" : 0, "exito": 0 },
         {"mensaje": "Hubo un problema guardando la foto", "codigo" : 0, "exito": 0 },
