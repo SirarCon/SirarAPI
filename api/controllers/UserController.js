@@ -152,17 +152,43 @@ exports.solicitarRecuperacion = async function(req, res){
           .then(usuario => {
             if(usuario){
               mailSenderRecuperar(usuario.correo.toLowerCase(),
-                'Recupeación de contraseña',
-                  '<p><H2>Hola ' + usuario.nombre + ' </H2></p>'+
-                  '<p>Este correo electrónico se le envía para recuperar su contraseña. En caso de que no halla solicitado un cambio de contraseña omita el mensaje. Para recuperar su contraseña presione '+
-                  '<table> <tr> '+
-                             '<td style="background-color: rgb(78, 186, 205);border-color: rgb(69, 161, 183);border: 2px solid #45b7af;padding: 10px;text-align: center;">'+
-                               '<a style=" border-radius: 50px 50px; display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" href="https://sirarpwa.herokuapp.com/restablecer?' + tokenPassword +'?1">'+
-                                'Recuperar Contraseña </a>'+
-                                '</td> </tr></table>'+
-                  '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
-                  '<p style="color: blue; ">https://sirarpwa.herokuapp.com/restablecer?' + tokenPassword +'?1</p>'+
-                  '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
+                'Restablecer contraseña',
+                '<!DOCTYPE html PUBLIC>'+
+                    '<html style="background-color: white">'+
+                        '<head>'+
+                            '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />'+
+                            '<style type="text/css">'+
+                                '@font-face{'+
+                                  'font-family: "Raleway";'+
+                                  'font-style:normal;'+
+                                  'font-weight:400;'+
+                                  'src:local("Raleway"), local("Raleway"), url("https://fonts.googleapis.com/css?family=Raleway") format("woff");'+
+                                '}'+
+                            '</style>'+
+                        '</head>'+
+                        '<body style="background-color: white">'+
+                        '<div style="width: 100%; font-family: ' + "'Raleway'" + ', sans-serif;border: 0px solid #C91D32; border-width: 0 0 5px 0; background-color: white">'+
+                                '<div style="background-color: #00478A; color: white; padding: 30px; margin: 0 auto">'+
+                                '<h2 style="margin: 0px;letter-spacing: 3px">SIRAR</h2>'+
+                                '<h3 style="margin-bottom: 5px;letter-spacing: 1px">Hola</h3>'+
+                                '<h4 style="margin: 0px;letter-spacing: 2px">' + usuario.nombre + '</h4>'+
+                                '</div>'+
+                                '<div style="text-align: center; letter-spacing: 1px">'+
+                                '<br>'+
+                                '<p style="margin-bottom: 10px; color: black;">Este correo electrónico se generó por una solicitud para recuperar su contraseña.</p>'+
+                                '<p style="margin: 10px; color: black;">Omita este mensaje en caso de que usted no haya realizado la solicitud o ya no lo requiera.</p>'+
+                                '<p style="margin: 10px 0 40px 0; color: black;">Para restablecer su contraseña presione el botón</p> '+
+                                '<a '+
+                                'style="color: #00478A; font-size: 12px;background-color: white; '+
+                                'border-radius: 5px; font-family: ' + "'Raleway'" + ', sans-serif; border: 2px solid #00478A; letter-spacing: 2px; padding: 12px 45px; text-decoration: none"'+
+                                'href="https://sirarpwa.herokuapp.com/restablecer?' + tokenPassword +'?1"'+
+                                '>RESTABLECER CONTRASEÑA</a>'+
+                                '<p style="margin-top: 40px; color: black;">O copie y pegue en su navegador el siguiente enlace</p>'+
+                                '<p style="color: #00478A; ">https://sirarpwa.herokuapp.com/restablecer?' + tokenPassword +'?1</p>'+
+                                '</div>'+
+                                '</div>'+
+                                '</body>'+
+                                    '</html>'
               , res);    
             }
             else{
