@@ -181,10 +181,10 @@ exports.solicitarRecuperacion = async function(req, res){
                                 '<a '+
                                 'style="color: #00478A; font-size: 12px;background-color: white; '+
                                 'border-radius: 5px; font-family: ' + "'Raleway'" + ', sans-serif; border: 2px solid #00478A; letter-spacing: 2px; padding: 12px 45px; text-decoration: none"'+
-                                'href="https://sirarpwa.herokuapp.com/restablecer?' + tokenPassword +'?1"'+
+                                'href="https://sirartest.herokuapp.com/restablecer?' + tokenPassword +'?1"'+
                                 '>RESTABLECER CONTRASEÑA</a>'+
                                 '<p style="margin-top: 40px; color: black;">O copie y pegue en su navegador el siguiente enlace</p>'+
-                                '<p style="color: #00478A; ">https://sirarpwa.herokuapp.com/restablecer?' + tokenPassword +'?1</p>'+
+                                '<p style="color: #00478A; ">https://sirartest.herokuapp.com/restablecer?' + tokenPassword +'?1</p>'+
                                 '</div>'+
                                 '</div>'+
                                 '</body>'+
@@ -316,10 +316,10 @@ exports.crearUsuario = async function(req, res) {
                                     '<a '+
                                     'style="color: #00478A; font-size: 12px;background-color: white; '+
                                     'border-radius: 5px; font-family: ' + "'Raleway'" + ', sans-serif; border: 2px solid #00478A; letter-spacing: 2px; padding: 12px 45px; text-decoration: none"'+
-                                    'href="https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0"'+
+                                    'href="https://sirartest.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0"'+
                                     '>CREAR CONTRASEÑA</a>'+
                                     '<p style="margin-top: 40px; color: black;">O copie y pegue en su navegador el siguiente enlace</p>'+
-                                    '<p style="color: #00478A; ">https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
+                                    '<p style="color: #00478A; ">https://sirartest.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
                                     '</div>'+
                                     '</div>'+
                                     '</body>'+
