@@ -263,18 +263,26 @@ exports.crearUsuario = async function(req, res) {
       nuevoUsuario.save().then(usuario=>{
           if(usuario){
                 mailSenderCrear(usuario.correo.toLowerCase(),
-                    'Creación de contraseña',
-                      '<p><H2>Bienvenido ' + usuario.nombre + ' a SIRAR</H2></p>'+
-                      '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n:</p>' + 
-                      '<table> <tr> '+
-                        '<td style=" background-color: rgb(78, 186, 205);border-color: rgb(69, 161, 183); border: 2px solid #45b7af;padding: 10px;text-align: center;">'+
-                            '<a style="display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" href="https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0">'+
-                                'Crear Contraseña'+
-                            '</a>'+
-                        '</td> </tr></table>'+
-                      '<p>O copie y pegue en un navegador el siguiente Link:</p>' +
-                      '<p style="color: blue; ">https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
-                      '<style>a.button {border: 2px solid red; text-decoration: none;color: white; background-color: blue;}</style>'
+                    'Registro en SIRAR',
+                      '<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">'+
+                      '<div style="width: 100%; font-family: ' + "'" + 'Raleway' + "'" + ', sans-serif;border: 0px solid #C91D32; border-width: 0 0 5px 0; background-color: white">'+
+                          '<div style="background-color: #00478A; color: white; padding: 30px 0 30px 30px; width: 90%; margin: 0 auto">'+
+                              '<h2 style="margin: 0px;letter-spacing: 3px">SIRAR</h2>'+
+                              '<h3 style="margin-bottom: 5px;letter-spacing: 1px">Bienvenido (a)</h3>'+
+                              '<h4 style="margin: 0px;letter-spacing: 2px">' + usuario.nombre + '</h4>'+
+                          '</div>'+
+                          '<div style="text-align: center; letter-spacing: 1px">'+
+                              '<br>'+
+                              '<p>Para crear su contrase&ntilde;a presione el bot&oacute;n</p>'+
+                              '<button'+
+                                  'style="color: #00478A; font-size: 12px;height: 40px; width: 220px; background-color: white;'+
+                                  'border-radius: 5px; margin: 30px 0;font-family: ' + "'" + 'Raleway' + "'" + ', sans-serif; border: 2px solid #00478A; letter-spacing: 2px"'+
+                                  'href="https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0"'+
+                              '>CREAR CONTRASEÑA</button>'+
+                              '<p>O copie y pegue en su navegador el siguiente enlace</p>'+
+                              '<p style="color: #00478A; ">https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
+                          '</div>'+
+                      '</div>'
                   , res);  
           }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase()).instance});
