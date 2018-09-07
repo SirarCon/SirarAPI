@@ -286,13 +286,13 @@ exports.crearUsuario = async function(req, res) {
                                     '</div>'+
                                     '<div style="text-align: center; letter-spacing: 1px">'+
                                     '<br>'+
-                                    '<p style="margin-bottom: 40px">Para crear su contrase&ntilde;a presione el bot&oacute;n</p>'+
+                                    '<p style="margin-bottom: 40px; color: black;">Para crear su contrase&ntilde;a presione el bot&oacute;n</p>'+
                                     '<a '+
                                     'style="color: #00478A; font-size: 12px;background-color: white; '+
                                     'border-radius: 5px; font-family: ' + "'Raleway'" + ', sans-serif; border: 2px solid #00478A; letter-spacing: 2px; padding: 12px 45px; text-decoration: none"'+
                                     'href="https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0"'+
                                     '>CREAR CONTRASEÑA</a>'+
-                                    '<p style="margin-top: 40px">O copie y pegue en su navegador el siguiente enlace</p>'+
+                                    '<p style="margin-top: 40px; color: black;">O copie y pegue en su navegador el siguiente enlace</p>'+
                                     '<p style="color: #00478A; ">https://sirarpwa.herokuapp.com/restablecer?' + nuevoUsuario.tokenPassword +'?0</p>'+
                                     '</div>'+
                                     '</div>'+
