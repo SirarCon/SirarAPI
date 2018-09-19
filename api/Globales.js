@@ -6,6 +6,9 @@ const tokenGeneral = Symbol.for("SIRAR.GLOBAL.TOKENGENERAL");
 const emailTransporter = Symbol.for("SIRAR.GLOBAL.EMAILTRANSPORTER");
 const emailOptions = Symbol.for("SIRAR.GLOBAL.EMAILOPTIONS"); 
 const rutaImagenesPerfil = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESPERFIL"); 
+const rutaImagenesAtletas = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESATLETAS"); 
+const rutaImagenesDeportes = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESDEPORTES");
+const rutaImagenesFederaciones = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESFEDERACIONES"); 
 const mensajes = Symbol.for("SIRAR.GLOBAL.MENSAJES");
 const crearRandom = Symbol.for("SIRAR.GLOBAL.CREARRANDOM");
 
@@ -28,13 +31,16 @@ function inicializarGLobal(variableGlobal, valor){
 }
 
 //local:
-//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Sirar")
+module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Sirar")
 //desarrollo:
 //module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
 //pruebas:
-module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds245132.mlab.com:45132/sirardbpruebas") 
+//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds245132.mlab.com:45132/sirardbpruebas") 
 module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
-module.exports.rutaImagenesPerfil = inicializarGLobal(rutaImagenesPerfil, "imagenes/imagenesPerfil/")
+module.exports.rutaImagenesPerfil = inicializarGLobal(rutaImagenesPerfil, "imagenes/imagenesPerfil/");
+module.exports.rutaImagenesAtletas= inicializarGLobal(rutaImagenesAtletas, "imagenes/imagenesAtletas/");
+module.exports.rutaImagenesDeportes = inicializarGLobal(rutaImagenesDeportes, "imagenes/imagenesDeportes/");
+module.exports.rutaImagenesFederaciones = inicializarGLobal(rutaImagenesFederaciones, "imagenes/imagenesFederaciones/");
 
 let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',//'smtp.ethereal.email',

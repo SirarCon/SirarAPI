@@ -1,71 +1,25 @@
 'use strict';
 
 module.exports = function(app, express) {
-const globales = require("../Globales.js");
-const tokkenGlobal = globales.tokenGeneral.instance;
+
 var userController = require('../controllers/UserController');
-
+var seguridad= require("./Seguridad.js");
 //import * as userController from '../controllers/UserController';
-const AwtAuth = require('jsonwebtoken');
 
- 
 var routerAdm = express.Router()
 var routerGeneral = express.Router()
 
-function verificarTokenGeneral(req, res, next){  
-  //Set el Token
-  req.token = extraerToken(req,'general');  
-  req.token === tokkenGlobal ? next() : res.json({datos: globales.mensajes(403).instance});
-}
-
-
-//Authorization: Bearer <acceess_token>
-function extraerToken(req, nombreHeader){
-  var bearerToken = "";
-  const bearerHEader = req.headers[nombreHeader];
-  //check si bearer es undefined
-  if(typeof bearerHEader !== 'undefined') {
-    //divide el texto en el espacio en blanco
-    const bearer = bearerHEader.split(' ');
-    //Gettoken desde array    
-    bearerToken = bearer[1];
-  }
-  
-  return bearerToken;
-}
-
 
 //Se le assignan los middleware a los usuarios adm antes del login
-routerGeneral.use(verificarTokenGeneral);
+routerGeneral.use(seguridad.verificarTokenGeneral);
 routerGeneral.use(verificarCambioContrasena);
 //Se le assignan los middleware a los router de Adm luego del Login
-routerAdm.use(verificarTokenGeneral, verify);
+routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
 
-
-function verify(req, res, next){
-  AwtAuth.verify(extraerToken(req, 'authorization'), 'secretKey', (err, authData)=>{
-  if(err){
-      res.json({datos: globales.mensajes(403).instance});
-  }else{//Refresca el token
-    var payload = globales.crearRandom(50).instance;
-    AwtAuth.sign({payload}, 'secretKey', {expiresIn: "300s"}, 
-            (err, token)=>{
-               if(err){
-                 console.log(err);
-                 res.json({token: payload, datos: globales.mensajes(50).instance});
-              }
-              else{
-                res.locals.token = "token " + token;
-                next();
-            }}
-    );
-  }
-});
-}
 
 function verificarCambioContrasena(req, res, next){
 if(req.body.passwordVieja){
-    verify(req, res, next);
+    seguridad.verify(req, res, next);
 }
 else{
     next();

@@ -1,11 +1,24 @@
+function cargarModelos(){
+  require('./api/models/MensajeModel');
+  require('./api/models/UserModel'); //created model loading here
+  require('./api/models/DisciplinaModel');
+  require('./api/models/AtletaModel');
+}
+
+function registrarRutas(app, express){
+  //importing routes
+var routes = [require('./api/routes/UserRoute'), require('./api/routes/AtletaRoute'), require('./api/routes/DisciplinaRoute')]; 
+   //register the route
+   routes.forEach((ruta) =>{ ruta(app, express)});
+}
+
 var express = require('express'),
   app = express(),
   port = process.env.PORT || 3000,
   mongoose = require('mongoose'),
   bodyParser = require('body-parser'),
   cors = require('cors');
-  require('./api/models/MensajeModel');
-  require('./api/models/UserModel'); //created model loading here
+  cargarModelos();
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 mongoose.connect(require('./api/Globales.js').nombreBD.instance)
@@ -16,10 +29,7 @@ app.use(bodyParser.json({limit: '10mb'}));
 
 await require('./api/recursos/InicializacionDatos').Errores();
 await require('./api/Globales').inicializarMensajes(mongoose);
-var routes = require('./api/routes/UserRoute'); //importing route
-
-routes(app, express); //register the route
-
+registrarRutas(app, express);
 //sfs2e4ui7jq6b2qyglwhvgmsncgt46eumi2yddctdtg2rdmjb3qa
 app.listen(port);
 

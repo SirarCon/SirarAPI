@@ -49,8 +49,37 @@ var usuario = {
         "correo" : "wacvillalobos@hotmail.es",
         "password" : "P123456p",
         "rol" : "1" }
+
 Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
         if (err) return;
         }); 
 
+
+ var deportes = [
+        {
+                nombre: "FEDERACIÓN CENTRAL DE AJEDREZ",
+                deporte: "Ajedrez",
+                paginaWeb: "www.fcacostarica.com",
+                ubicacion: "Oficina 1036, Estadio Nacional, La Sábana, San José",
+                telefonos: [25490964, 70823378],
+                correoFederacion: "info@fcacostarica.com", 
+                presidente : "Stanley Gómez Huertas",
+                correoPresidente: "presidencia@fcacostarica.com",
+                escudoUrl: "",
+                imagenUrl: "" 
+                }, 
+                
+                {
+                nombre: "FEDERACIÓN COSTARRICENSE DE ATLETISMO",
+                deporte: "Atletismo",
+                paginaWeb: "www.fcacostarica.com" ,
+                ubicacion: "Oficina 1023, Estadio Nacional, La Sábana, San José",
+                telefonos: [5490950, 25490949],
+                correoFederacion: "info@fcacostarica.com", 
+                presidente : "Geen Clarkes",
+                correoPresidente: "presidencia@fcacostarica.com",
+                escudoUrl: "",
+                imagenUrl: "" 
+                }             
+        ]        
 }

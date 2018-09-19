@@ -26,7 +26,7 @@ var UsuarioSchema = new Schema({
     required: 'Digite el número de cédula por favor',
     unique: true,
     mmaxlength: 15,
-    minlength: 8
+    minlength: 9
   },
   correo: {
     type: String,

@@ -1,41 +1,16 @@
 'use strict';
 
 //#region Requires
-var mongoose = require('mongoose'),
-Usuario = mongoose.model('Usuario');
+var mongoose = require('mongoose');
+var Usuario = mongoose.model('Usuario');
 const AwtAuth = require('jsonwebtoken');
 var globales =  require("../Globales.js");
+var funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesPerfil = globales.rutaImagenesPerfil.instance;
 //#endregion Requires
 
 //#region Funciones Auxiliares
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
-  }
-}
 
-function validarEmail(email) {
-  return new Promise(function(resolve, reject){
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    resolve(re.test(String(email).toLowerCase()));
-  })
-}
-
-// crea la promesa para fs.readFile()
-function  leerArchivoAsync(filename) {
-  var fs = require('fs');
-  return new Promise(function(resolve, reject) {
-      fs.readFile(filename, function(err, data){
-          if (err){ 
-              reject("");
-            } 
-          else{ 
-              resolve("data:image/jpeg;base64," + new Buffer(data).toString('base64'));
-          }
-      });
-  }).catch((e)=>{return "" });
-};
 
 
 function guardarImagenPerfil(ruta, usuario){
@@ -53,21 +28,7 @@ function guardarImagenPerfil(ruta, usuario){
   return fotoUrl;
 }
 
-function borrarArchivo(ruta){
-  const fs =require("fs");
-  if(ruta){
-  fs.exists(ruta, function(exists) {    
-    if (exists) {
-      fs.access(ruta, error => {
-        if(!error){
-          fs.unlinkSync(ruta);
-        }
-        else console.log(error);
-      })
-    }     
-});
-  }
-}
+
 
 function mailSenderCrear(emailAdress, subject, message, res){            
   globales.emailTransporter.instance.sendMail(
@@ -80,7 +41,7 @@ function mailSenderCrear(emailAdress, subject, message, res){
                                 }
                                 else{
                                   if(usuario && usuario.fotoUrl){
-                                      borrarArchivo(usuario.fotoUrl);                                               
+                                     funcionesGlobales.borrarArchivo(usuario.fotoUrl);                                               
                                   }
                                   res.json({token: res.locals.token, datos: globales.mensajes(4, "correo electrónico", emailAdress).instance});                                        
                                 }
@@ -126,7 +87,7 @@ exports.verificarLogin = async function(req, res) {
                   res.json({datos: globales.mensajes(50).instance});
                   }
                 else{
-                  usuario.fotoUrl = await leerArchivoAsync(usuario.fotoUrl);
+                  usuario.fotoUrl = await funcionesGlobales.leerArchivoAsync(usuario.fotoUrl);
                   res.json({token: "token " + token, datos: globales.mensajes(-1, null, null,usuario.datosLogin()).instance});
                 }
               });
@@ -277,7 +238,7 @@ else{
 
 //Necesita el checkbox application/x-www-form-urlencoded
 exports.crearUsuario = async function(req, res) {  
-  validarEmail(req.body.correo).then(valido=>{
+   funcionesGlobales.validarEmail(req.body.correo).then(valido=>{
     if(valido == true){ 
       var nuevoUsuario = new Usuario(req.body);
       nuevoUsuario.tokenPassword = globales.crearRandom(15).instance;
@@ -331,7 +292,7 @@ exports.crearUsuario = async function(req, res) {
       }).catch(err=>{         
                     if (err){   
                       if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta
-                          borrarArchivo(nuevoUsuario.fotoUrl);
+                        funcionesGlobales.borrarArchivo(nuevoUsuario.fotoUrl);
                           console.log(err)
                           res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase()).instance});
                       }else{//Error llave duplicada
@@ -356,8 +317,8 @@ exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta 
          .where({identificacion: {$ne: req.params.identificacion}})
          .exec()
          .then(async (usuarios)=>{
-          await asyncForEach(usuarios ,async (element, indice, usuarios) => {
-            usuarios[indice].fotoUrl = await leerArchivoAsync(element.fotoUrl);
+          await funcionesGlobales.asyncForEach(usuarios ,async (element, indice, usuarios) => {
+            usuarios[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);
             
           });
           if(usuarios.length > 0){
@@ -383,7 +344,7 @@ exports.leerUsuario = async function(req, res) {
   .exec()
   .then(async (usuario) => {
     if(usuario){      
-      usuario.fotoUrl = await leerArchivoAsync(usuario.fotoUrl);
+      usuario.fotoUrl = await funcionesGlobales.leerArchivoAsync(usuario.fotoUrl);
        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,usuario.datosLogin()).instance});
     }
     else {   
@@ -411,7 +372,7 @@ exports.modificarUsuario = async function(req, res) {
       .then(usuarioAntiguo=>{
           if(usuarioAntiguo){
             if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
-                borrarArchivo(usuarioAntiguo.fotoUrl);
+              funcionesGlobales.borrarArchivo(usuarioAntiguo.fotoUrl);
             }       
             res.json({token: res.locals.token, datos: globales.mensajes(-3, "usuario", req.body.nombre).instance});
           }
@@ -434,7 +395,7 @@ exports.borrarUsuario = async function(req, res) {
         then(usuario=> {
                         if(usuario)
                           if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
-                            borrarArchivo(usuario.fotoUrl)
+                          funcionesGlobales.borrarArchivo(usuario.fotoUrl)
                         res.json({token: res.locals.token, datos: globales.mensajes(-2, "Usuario", req.params.identificacion).instance});    
         }).catch(err=>{res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", req.params.identificacion).instance});
   });
