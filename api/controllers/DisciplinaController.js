@@ -9,11 +9,38 @@ const rutaImagenesDeportes = globales.rutaImagenesDeportes.instance;
 const rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
 //#endregion Requires
 
-exports.listarDisciplinasGeneral = async function(req, res){}
+exports.listarDisciplinasGeneral = async function(req, res){
 
-exports.listarDisciplinas = async function(req, res){}
-exports.crearDisciplina = async function(req, res){}
+};
 
-exports.leerDisciplina = async function(req, res){}
-exports.modificarDisciplina = async function(req, res){}
-exports.borrarDisciplina = async function(req, res){}
+exports.listarDisciplinas = async function(req, res){
+
+};
+exports.crearDisciplina = async function(req, res){
+
+};
+
+exports.leerDisciplina = async function(req, res){
+
+};
+exports.modificarDisciplina = async function(req, res){
+
+};
+exports.borrarDisciplina = async function(req, res){
+
+};
+
+//#region Pruebas
+exports.listarPruebas = async function(req, res){
+    
+};
+
+exports.insertarPrueba = async function(req, res){
+
+};
+
+exports.editarPruebas = function(req, res){
+
+};
+
+//#endregion Pruebas

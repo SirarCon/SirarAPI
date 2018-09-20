@@ -55,12 +55,9 @@ var DisciplinaSchema = new Schema({
         maxlength: 40,
         minlength: 10,
     },
-    disciplinas:{
+    pruebas:{
       type: [
               {
-                codigo: {
-                  type:  Schema.Types.ObjectId,
-                 },
                 nombre: {
                         type: String,
                         maxlength: 30,
@@ -73,11 +70,17 @@ var DisciplinaSchema = new Schema({
 });
 
 
-DisciplinaSchema.method('datosDeporte', function() {
+DisciplinaSchema.method("datosDeporte", function() {
   
     return {nombre: this.nombre, 
             fotoUrl : this.fotoUrl      
            };
   
   });
-  module.exports = mongoose.model('Disciplina', DisciplinaSchema);
+
+  DisciplinaSchema.method("", function(){
+      return {
+
+      }
+  });
+  module.exports = mongoose.model("Disciplina", DisciplinaSchema);

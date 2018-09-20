@@ -117,16 +117,8 @@ var AtletaSchema = new Schema({
         maxlength: 10,
       },
       deporte:{
-        type: {
-              deporteId: {
-                type: Schema.Types.ObjectId,
-                ref: "Disciplina",
-              },
-              nombre:{
-                type: String,
-                maxlength: 40,
-                minlength: 2
-              }
+        type: { type: Schema.Types.ObjectId,
+                ref: "Disciplina",             
         }
       }
 });
