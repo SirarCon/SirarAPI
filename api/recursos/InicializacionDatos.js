@@ -1,7 +1,8 @@
 'use strict';
 var mongoose = require('mongoose'),
 Mensaje = mongoose.model('Mensaje'),
-Usuario = mongoose.model('Usuario');
+Usuario = mongoose.model('Usuario'),
+Disciplina = mongoose.model('Disciplina');
 
 exports.Errores = async function(){
   //Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
@@ -55,9 +56,9 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
         }); 
 
 
- var deportes = [
+ var disciplinas = [
         {
-                nombre: "FEDERACIÓN CENTRAL DE AJEDREZ",
+                federacion: "FEDERACIÓN CENTRAL DE AJEDREZ",
                 deporte: "Ajedrez",
                 paginaWeb: "www.fcacostarica.com",
                 ubicacion: "Oficina 1036, Estadio Nacional, La Sábana, San José",
@@ -66,11 +67,11 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Stanley Gómez Huertas",
                 correoPresidente: "presidencia@fcacostarica.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" ,
                 }, 
                 
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE ATLETISMO",
+                federacion: "FEDERACIÓN COSTARRICENSE DE ATLETISMO",
                 deporte: "Atletismo",
                 paginaWeb: "www.fecoa.org" ,
                 ubicacion: "Oficina 1023, Estadio Nacional, La Sábana, San José",
@@ -79,11 +80,39 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Geen Clarke",
                 correoPresidente: "gclarke_4@yahoo.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas: [   
+                        {nombre: "AT 100 m"},
+                        {nombre: "AT 200 m"},
+                        {nombre: "AT 400 m"},
+                        {nombre: "AT 800 m"},
+                        {nombre: "AT 1500 m"},
+                        {nombre: "AT 5000 m"},
+                        {nombre: "AT 10000 m"},
+                        {nombre: "AT 100 m con vallas"},
+                        {nombre: "AT 110 m con vallas"},
+                        {nombre: "AT 400 m con vallas"},
+                        {nombre: "AT 3000 m con obstáculos"},
+                        {nombre: "AT Relevo 4x100 m"},
+                        {nombre: "AT Relevo 4x400 m"},
+                        {nombre: "AT Salto de altura"},
+                        {nombre: "AT Salto de longitud"},
+                        {nombre: "AT Salto Triple"},
+                        {nombre: "AT Salto con Garrocha"},
+                        {nombre: "AT Lanzamiento de Bala"},
+                        {nombre: "AT Lanzamiento de Disco"},
+                        {nombre: "AT Lanzamiento de Jabalina"},
+                        {nombre: "AT Lanzamiento de Martillo"}, 
+                        {nombre: "AT 20 Km Marcha"},
+                        {nombre: "AT 50 Km Marcha"},
+                        {nombre: "AT Maratón"},
+                        {nombre: "AT Héptatlón"},
+                        {nombre: "AT Decatlón"},                                       
+                        ]
         },
         
         {
-                nombre: "ASOCIACIÓN DE DESARROLLO DEL BÁDMINTON",
+                federacion: "ASOCIACIÓN DE DESARROLLO DEL BÁDMINTON",
                 deporte: "Bádminton",
                 paginaWeb: null ,
                 ubicacion: null,
@@ -92,10 +121,11 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Adrian Gómez",
                 correoPresidente: "adriangomezcr@yahoo.es",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas: [{nombre: "BD Individual"}]
         }, 
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE BALONCESTO",
+                federacion: "FEDERACIÓN COSTARRICENSE DE BALONCESTO",
                 deporte: "Baloncesto",
                 paginaWeb: "www.fecobacr.com" ,
                 ubicacion: "Gimnasio Nacional, La Sabana",
@@ -104,10 +134,14 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Luis Blanco",
                 correoPresidente: "lblancoromero@hotmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas: 
+                        [{nombre: "BK Masc"},
+                        {nombre: "BK Fem"}
+                        ]                        
         },  
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE BALONMANO",
+                federacion: "FEDERACIÓN COSTARRICENSE DE BALONMANO",
                 deporte: "Balonmano",
                 paginaWeb: null,
                 ubicacion: "Dentro del Gimnasio Nacional, La Sábana, San José",
@@ -116,10 +150,14 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Juan Carlos Gutiérrez",
                 correoPresidente: null,
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" ,
+                pruebas: 
+                        [{nombre: "HB Fem"},
+                        {nombre: "HB Masc"}
+                        ]
         },  
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE BÉISBOL AFICIONADO",
+                federacion: "FEDERACIÓN COSTARRICENSE DE BÉISBOL AFICIONADO",
                 deporte: "Béisbol",
                 paginaWeb: "www.fcbeisbol.org",
                 ubicacion: "Oficina S1001, Estadio Nacional, La Sábana, San José",
@@ -128,10 +166,10 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Rodrigo Chaves",
                 correoPresidente: "fecobeisa@hotmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" 
         }, 
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE BILLAR",
+                federacion: "FEDERACIÓN COSTARRICENSE DE BILLAR",
                 deporte: "Billar",
                 paginaWeb: null,
                 ubicacion: "400 mts sur de la Iglesia Católica de San Francisco de Dos Ríos, San José ",
@@ -140,10 +178,10 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Ronald Avalos",
                 correoPresidente: "avalosronald@gmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" 
         },  
         {
-                nombre: "ASOCIACIÓN COSTARRICENSE DE BOLICHE",
+                federacion: "ASOCIACIÓN COSTARRICENSE DE BOLICHE",
                 deporte: "Boliche",
                 paginaWeb: "www.acobol.com",
                 ubicacion: "Oficina 1010, Estadio Nacional, La Sábana, San José",
@@ -152,10 +190,19 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Alvaro Castro",
                 correoPresidente: "acobol@gmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas: 
+                        [
+                                {nombre:"BW Individual"},
+                                {nombre:"BW Dobles"},
+                                {nombre:"BW Tríos"},
+                                {nombre: "BW Quintetos"},
+                                {nombre: "BW Todo evento"},
+                                {nombre: "BW Final Maestros"}
+                        ] 
         },
         {
-                nombre: "ASOCIACIÓN COSTARRICENSE DE BOXEO AFICIONADO",
+                federacion: "ASOCIACIÓN COSTARRICENSE DE BOXEO AFICIONADO",
                 deporte: "Boxeo",
                 paginaWeb: "www.boxeocostarica.org",
                 ubicacion: "Oficinas dentro del Gimnasio Nacional en la Sabana, quinta puerta a mano derecha",
@@ -164,10 +211,26 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Rafael Vega",
                 correoPresidente: "vegaboxcr@gmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "BX 51 Kg Mosca"},
+                                {nombre: "BX Kg Ligero"},
+                                {nombre: "BX 75 Kg Medio"},
+                                {nombre: "BX 46 a 49 Kg Mini mosca"},
+                                {nombre: "BX 52 Kg Mosca"},
+                                {nombre: "BX 56 Kg Pluma"},
+                                {nombre: "BX 60 Kg Ligero"},
+                                {nombre: "BX 64 Kg Welter Ligero"},
+                                {nombre: "BX 69 Kg Welter"},
+                                {nombre: "BX 75 Kg Medio"},
+                                {nombre: "BX 81 Kg Semipesado"},
+                                {nombre: "BX 91 Kg Pesado"},
+                                {nombre: "BX Más de 91 Kg Superpesado"}   
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE KAYAK Y CANOTAJE",
+                federacion: "FEDERACIÓN COSTARRICENSE DE KAYAK Y CANOTAJE",
                 deporte: "Canotaje",
                 paginaWeb: "www.fecoka-costarica.com",
                 ubicacion: "Instalaciones del Estadio Rafael A. Camacho, gradería de sombra, cubículo Asoc. Dptva Kayak, Remo y Canoa.",
@@ -176,10 +239,15 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Eliecer Céspedes",
                 correoPresidente: "lluviaisol@hotmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "", 
+                pruebas:
+                        [
+                                {nombre: "CAN C1"},
+                                {nombre: "CAN K1"}      
+                        ]
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE CICLISMO",
+                federacion: "FEDERACIÓN COSTARRICENSE DE CICLISMO",
                 deporte: "Ciclismo",
                 paginaWeb: "www.fecoci.net",
                 ubicacion: "La Sábana Costado Suroeste, frente al restaurante La Princesa Marina, San José",
@@ -188,10 +256,28 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "William Corrales",
                 correoPresidente: null,
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "CBMX Individual"},
+                                {nombre: "CBMX Individual"},
+                                {nombre: "CP 500 m contra reloj"},
+                                {nombre: "CP Velocidad"},
+                                {nombre: "CP Keirin"},
+                                {nombre: "CP Velocidad por equipo"},
+                                {nombre: "CP Persecución por equipo"},
+                                {nombre: "CP Persecución individual"},
+                                {nombre: "CP Carrera por puntos"},
+                                {nombre: "CP Scratch"},
+                                {nombre: "CP Omnium"},
+                                {nombre: "CP 1 Km"},
+                                {nombre: "CR Contra Reloj Individual"},
+                                {nombre: "CR Ruta individual"},
+                                {nombre: "CM Montaña - Cross Country Olympic"}
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN DE CRICKET DE COSTA RICA",
+                federacion: "FEDERACIÓN DE CRICKET DE COSTA RICA",
                 deporte: "Cricket",
                 paginaWeb: "www.costaricacricket.org",
                 ubicacion: "Estadio Nacional, Of. S.1006, La Sabana, San José",
@@ -200,10 +286,10 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Sam Oswald Arthur",
                 correoPresidente: "bksm777@hotmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" 
         },
         {
-                nombre: "FEDERACIÓN ECUESTRE DE COSTA RICA",
+                federacion: "FEDERACIÓN ECUESTRE DE COSTA RICA",
                 deporte: "Ecuestre",
                 paginaWeb: "www.ecuestrecr.com",
                 ubicacion: null,
@@ -212,10 +298,22 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Rocío Echeverri",
                 correoPresidente: "recheverri@gmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "EQS Velocidad"},
+                                {nombre: "EQS Equipos"},
+                                {nombre: "EQS Acumulado"},
+                                {nombre: "EQS Individual"},
+                                {nombre: "EQA Equipos"},
+                                {nombre: "EQA Acumulado"},
+                                {nombre: "EQA Individual"},
+                                {nombre: "EQPC Equipos"},
+                                {nombre: "EQPC Individual"}      
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE ESGRIMA",
+                federacion: "FEDERACIÓN COSTARRICENSE DE ESGRIMA",
                 deporte: "Esgrima",
                 paginaWeb: "www.esgrimacostarica.net",
                 ubicacion: null,
@@ -224,10 +322,19 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Luis A. Cruz",
                 correoPresidente: "luiscruz.crc@gmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "ESG Espada individual"},
+                                {nombre: "ESG Espada equipo"},
+                                {nombre: "ESG Florete Individual"},
+                                {nombre: "ESG Florete equipo"},
+                                {nombre: "ESG Sable Individual"},
+                                {nombre: "ESG Sable equipo"}
+                        ] 
         },
         {
-                nombre: "ASOCIACIÓN DE FÍSICO CULTURISMO Y FITNESS DE COSTA RICA",
+                federacion: "ASOCIACIÓN DE FÍSICO CULTURISMO Y FITNESS DE COSTA RICA",
                 deporte: "Fisiculturismo",
                 paginaWeb: "www.fecofidea.com",
                 ubicacion: "Estadio Nacioanal oficina 1016",
@@ -236,10 +343,10 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Edgar Sánchez",
                 correoPresidente: "ifbb_costarica@hotmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE FUTBOL",
+                federacion: "FEDERACIÓN COSTARRICENSE DE FUTBOL",
                 deporte: "Futbol",
                 paginaWeb: "www.fedefutbol.com",
                 ubicacion: "Proyecto Goal, Santa Ana",
@@ -248,10 +355,15 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Rodolfo Villalobos",
                 correoPresidente: "ejecutivo@fedefutbol.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "FUT Femenino"},
+                                {nombre: "FUT Masc"}        
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN DEPORTIVA GIMNASIA Y AFINES DE COSTA RICA",
+                federacion: "FEDERACIÓN DEPORTIVA GIMNASIA Y AFINES DE COSTA RICA",
                 deporte: "Gimnasia",
                 paginaWeb: "www.gimnasia-costarica.com",
                 ubicacion: "Detrás del Gimnasio Nacional, La Sábana, San José",
@@ -260,10 +372,29 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Javier Gonzáles",
                 correoPresidente: null,
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas: 
+                        [
+                                {nombre: "GA Equipo"},
+                                {nombre: "GA All Around"}, 
+                                {nombre: "GA Piso"},
+                                {nombre: "GA Salto"},
+                                {nombre: "GA Barras Asimétricas"},
+                                {nombre: "GA Viga de equilibrio"},
+                                {nombre: "GA Anillos"},
+                                {nombre: "GA Caballo con Arzones"},
+                                {nombre: "GA Barra Fija"},
+                                {nombre: "GA Barras Paralelas"},
+                                {nombre: "GR Aro"},
+                                {nombre: "GR Pelota"},
+                                {nombre: "GR Mazas"},
+                                {nombre: "GR Cinta"},
+                                {nombre: "GR All Around"},
+                                {nombre: "GR Equipos"}
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE GOLF",
+                federacion: "FEDERACIÓN COSTARRICENSE DE GOLF",
                 deporte: "Golf",
                 paginaWeb: "www.anagolf.org",
                 ubicacion: "Oficina No. 1002 en el Estadio Nacional, La Sabana San José Costa Rica",
@@ -272,10 +403,15 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Maurizio Musmanni",
                 correoPresidente: "mmusmanni@pastasromas.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "Individual a 54 hoyos"}, 
+                                {nombre: "3 rondas de 18 hoyos"}       
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN HALTEROFILICA COSTARRICENSE",
+                federacion: "FEDERACIÓN HALTEROFILICA COSTARRICENSE",
                 deporte: "Halterofilia",
                 paginaWeb: "www.facebook.com/Federacion-Halterofilica-Costarricense-1188110614619287",
                 ubicacion: "De la parte baja del Hospital 75 metros sur, San Ramón, Alajuela",
@@ -284,10 +420,43 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Steven Esquivel",
                 correoPresidente: "ferhaltero@hotmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [ 
+                                {nombre: "WL 48 Kg Arranque"},
+                                {nombre: "WL 53 Kg Arranque"},
+                                {nombre: "WL 58 Kg Arranque"},
+                                {nombre: "WL 63 Kg Arranque"},
+                                {nombre: "WL 69 Kg Arranque"},
+                                {nombre: "WL 75 Kg Arranque"},
+                                {nombre: "WL más de 75 Kg Arranque"},
+                                {nombre: "WL 48 Kg Envión"},
+                                {nombre: "WL 53 Kg Envión"},
+                                {nombre: "WL 58 Kg Envión"},
+                                {nombre: "WL 63 Kg Envión"},
+                                {nombre: "WL 69 Kg Envión"},
+                                {nombre: "WL 75 Kg Envión"},
+                                {nombre: "WL más de 75 Kg Envión"},
+                                {nombre: "WL 56 Kg Arranque"},
+                                {nombre: "WL 62 Kg Arranque"},
+                                {nombre: "WL 69 Kg Arranque"},
+                                {nombre: "WL 77 Kg Arranque"},
+                                {nombre: "WL 85 Kg Arranque"},
+                                {nombre: "WL 94 Kg Arranque"},
+                                {nombre: "WL 105 Kg Arranque"},
+                                {nombre: "WL más de 105 Kg Arranque"},
+                                {nombre: "WL 56 Kg Envión"},
+                                {nombre: "WL 62 Kg Envión"},
+                                {nombre: "WL 69 Kg Envión"},
+                                {nombre: "WL 77 Kg Envión"},
+                                {nombre: "WL 85 Kg Envión"},
+                                {nombre: "WL 94 Kg Envión"},
+                                {nombre: "WL 105 Kg Envión"},
+                                {nombre: "WL más de 105 Kg Envión"}  
+                        ] 
         },
         {
-                nombre: "ASOCIACIÓN HOCKEY SOBRE CÉSPED Y PISTA",
+                federacion: "ASOCIACIÓN HOCKEY SOBRE CÉSPED Y PISTA",
                 deporte: "Hockey césped",
                 paginaWeb: "www.hockeydecostarica.wixsite.com/hockeylike",
                 ubicacion: "Centro comercial Paseo del Sol, San Nicolás (Taras) Cartago, local 15.",
@@ -296,10 +465,10 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Bernardo Picado",
                 correoPresidente: "hockeydecostarica@gmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE JUDO",
+                federacion: "FEDERACIÓN COSTARRICENSE DE JUDO",
                 deporte: "Judo",
                 paginaWeb: "www.fecojudo.com",
                 ubicacion: "Oficina 1030, Estadio Nacional, La Sábana, San José",
@@ -308,10 +477,30 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Dudley López",
                 correoPresidente: "dlopez@dlingenieria.net",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "JU menos de 44 Kg"},
+                                {nombre: "JU menos de 48 Kg"},
+                                {nombre:  "JU menos de 52 Kg"},
+                                {nombre: "JU menos de 57 Kg"},
+                                {nombre: "JU menos de 63 Kg"},
+                                {nombre: "JU menos de 70 Kg"},
+                                {nombre: "JU menos de 78 Kg"},
+                                {nombre: "JU más de 78 Kg"},
+                                {nombre: "JU equipo"},
+                                {nombre: "JU menos de 55 Kg"},
+                                {nombre: "JU menos de 60 Kg"},
+                                {nombre: "JU menos de 66 Kg"},
+                                {nombre: "JU menos de 73 Kg"},
+                                {nombre: "JU menos de 81 Kg"},
+                                {nombre: "JU menos de 90 Kg"},
+                                {nombre: "JU menos de 100 Kg"},
+                                {nombre:  "JU más de 100 Kg"}
+                        ]
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE KARATE DO",
+                federacion: "FEDERACIÓN COSTARRICENSE DE KARATE DO",
                 deporte: "Karate",
                 paginaWeb: null,
                 ubicacion: "La Sábana, frente a las canchas de tenis, San José",
@@ -320,10 +509,25 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Julio Alvarado",
                 correoPresidente: "jlvm79@yahoo.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "KA menos de 60 Kg"},
+                                {nombre: "KA menos de 67 Kg"},
+                                {nombre: "KA 75 Kg"},
+                                {nombre: "KA menos de 84 Kg"},
+                                {nombre: "KA más de 84 Kg"},
+                                {nombre: "KA Kata individual"},
+                                {nombre: "KA Kata equipo"},
+                                {nombre: "KA menos de 50 Kg"},
+                                {nombre: "KA menos de 55 Kg"},
+                                {nombre: "KA 61 Kg"},
+                                {nombre: "KA menos de 68 Kg"},
+                                {nombre: "KA más de 68 Kg"}     
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE NATACIÓN Y AFINES",
+                federacion: "FEDERACIÓN COSTARRICENSE DE NATACIÓN Y AFINES",
                 deporte: "Natación",
                 paginaWeb: "www.fecona.co.cr",
                 ubicacion: "La Sábana, frente a las canchas de tenis, San José",
@@ -332,10 +536,55 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Angel Herrera",
                 correoPresidente: "fecona@ice.co.cr",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "NAT Marantón 10 Km"},
+                                {nombre: "NAT 50 m libre"},
+                                {nombre: "NAT 100 m libre"},
+                                {nombre: "NAT 200 m libre"},
+                                {nombre: "NAT 400 m libre"},
+                                {nombre: "NAT 800 m libre"},
+                                {nombre: "NAT 1500 m libre"},
+                                {nombre: "NAT 50 m dorso"},
+                                {nombre: "NAT 100 m dorso"},
+                                {nombre: "NAT 200 m dorso"},
+                                {nombre: "NAT 50 m pecho"},
+                                {nombre: "NAT 100 m pecho"},
+                                {nombre: "NAT 200 m pecho"},
+                                {nombre: "NAT 50 m pecho"},
+                                {nombre: "NAT 100 m pecho"},
+                                {nombre: "NAT 200 m pecho"},
+                                {nombre: "NAT 50 m mariposa"},
+                                {nombre: "NAT 100 m mariposa"},
+                                {nombre: "NAT 200 m mariposa"},
+                                {nombre: "NAT 200 m Combinado Individual"},
+                                {nombre: "NAT 400 m Combinado Individual"},
+                                {nombre: "NAT 4x100 Relevo Libre"},
+                                {nombre: "NAT 4x100 Relevo Combinado"},
+                                {nombre: "NAT Sincronizado Dueto Técnico"},
+                                {nombre: "NAT Sincronizado Dueto Libre"},
+                                {nombre: "NAT Sincronizado Solo Técnico"},
+                                {nombre: "NAT Sincronizado Solo Libre"},
+                                {nombre: "NAT Sincronizado Equipo Técnico"},
+                                {nombre: "NAT Sincronizado Equipo Libre"},
+                                {nombre: "NAT Sincronizado Rutina Libre Combinada"}
+                        ] 
         },
         {
-                nombre: "ASOCIACIÓN DE PELOTA VASCA A.D.",
+                federacion: "FEDERACIÓN COSTARRICENSE DE PATINAJE Y DEPORTES AFINES",
+                deporte: "Patinaje",
+                paginaWeb: "www.facebook.com/fedepat",
+                ubicacion: null,
+                telefonos: null,
+                correoFederacion: "secretario@fedepat.com", 
+                presidente : null,
+                correoPresidente: null,
+                escudoUrl: "",
+                imagendeporteUrl: "" 
+        },
+        {
+                federacion: "ASOCIACIÓN DE PELOTA VASCA A.D.",
                 deporte: "Pelota Vasca",
                 paginaWeb: null,
                 ubicacion: "San José, Colima de Tibas 300 metros norte y 50 oeste entrada a mano izquierda casa amarilla portón blanco",
@@ -344,10 +593,27 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Jorge Luis López",
                 correoPresidente: "dissantafe2007@yahoo.es",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE RACQUETBALL",
+                federacion: "FEDERACIÓN DE PENTATLÓN MODERNO",
+                deporte: "Pentatlón Moderno",
+                paginaWeb: null,
+                ubicacion: null,
+                telefonos: null,
+                correoFederacion: null, 
+                presidente : null, 
+                correoPresidente: null,
+                escudoUrl: "",
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "PM Individual"},
+                                {nombre: "PM Relevo"}
+                        ] 
+        },
+        {
+                federacion: "FEDERACIÓN COSTARRICENSE DE RACQUETBALL",
                 deporte: "Racquetball",
                 paginaWeb: "www.racquetballcr.com",
                 ubicacion: "Oficina 1007 Estadio Nacional, La Sábana, San José",
@@ -356,10 +622,16 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Marcelo Gómez",
                 correoPresidente: "marcelogomez@racsa.co.cr",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "RQ Individual"},
+                                {nombre: "RQ Dobles"},
+                                {nombre: "RQ Equipos"}     
+                        ] 
         },
         {
-                nombre: "ASOCIACIÓN DE DEPORTE AVENTURA Y REMO",
+                federacion: "ASOCIACIÓN DE DEPORTE AVENTURA Y REMO",
                 deporte: "Remo",
                 paginaWeb: null,
                 ubicacion: "Paseo Colón, de la esquina NE del Edificio Colón 50 Norte",
@@ -368,10 +640,10 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Rafael Gallo",
                 correoPresidente: "rgallo@riostropicales.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE RUGBY",
+                federacion: "FEDERACIÓN COSTARRICENSE DE RUGBY",
                 deporte: "Rugby",
                 paginaWeb: "www.federacionrugbycr.com",
                 ubicacion: "Estadio Nacional",
@@ -380,10 +652,15 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Ramón Cole De Temple",
                 correoPresidente: "presidencia@federacionrugbycr.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "" ,
+                pruebas:
+                        [
+                                {nombre: "RU Femenino"},
+                                {nombre: "RU Masculino"}   
+                        ]
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE SOFTBOL (BOLA SUAVE)",
+                federacion: "FEDERACIÓN COSTARRICENSE DE SOFTBOL (BOLA SUAVE)",
                 deporte: "Softbol",
                 paginaWeb: null,
                 ubicacion: "Oficina S 1003 Estadio Nacional, La Sábana, San José",
@@ -392,10 +669,16 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Roberto Castro",
                 correoPresidente: "roberto.castroas@yahoo.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "SOF Masculino"},
+                                {nombre: "SOF Femenino"}       
+                        ]
+
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE SURF",
+                federacion: "FEDERACIÓN COSTARRICENSE DE SURF",
                 deporte: "Surf",
                 paginaWeb: "www.SurfingCR.net",
                 ubicacion: "Estadio Nacional, oficina #1003",
@@ -404,10 +687,15 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Randall Chaves",
                 correoPresidente: "randchaves@gmail.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "SUR Masculino"},
+                                {nombre: "SUR Femenino"}      
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE TAEKWONDO",
+                federacion: "FEDERACIÓN COSTARRICENSE DE TAEKWONDO",
                 deporte: "Taekwondo",
                 paginaWeb: "www.tkdcr.com",
                 ubicacion: "De la Iglesia María Reina 200 sur Complejo de Bodegas Morepark la num.13, Pavas, San José",
@@ -416,10 +704,29 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Wilmar Alvarado",
                 correoPresidente: "presidente@tkdcr.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "TKD 46 Kg"},
+                                {nombre: "TKD 49 Kg"},
+                                {nombre: "TKD 53 Kg"},
+                                {nombre: "TKD 57 Kg"},
+                                {nombre: "TKD 62 Kg"},
+                                {nombre: "TKD 67 Kg"},
+                                {nombre: "TKD 73 Kg"},
+                                {nombre: "TKD más de 73 Kg"},
+                                {nombre: "TKD 54 Kg"},
+                                {nombre: "TKD 58 Kg"},
+                                {nombre: "TKD 63 Kg"},
+                                {nombre: "TKD 68 Kg"},
+                                {nombre: "TKD 74 Kg"},
+                                {nombre: "TKD 80 Kg"},
+                                {nombre: "TKD 87 Kg"},
+                                {nombre: "TKD más de 87 Kg"}     
+                        ]  
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE TENIS",
+                federacion: "FEDERACIÓN COSTARRICENSE DE TENIS",
                 deporte: "Tenis",
                 paginaWeb: "www.fctenis.com",
                 ubicacion: "Parque de La Paz, primer oficina a mano derecha",
@@ -428,10 +735,17 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Carlos Bravo",
                 correoPresidente: "presidencia@fctenis.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                                {nombre: "TE Individual"},
+                                {nombre: "TE Dobles"}, 
+                                {nombre: "TE Copa de Naciones"},
+                                {nombre: "TE Mixtos "}
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE TENIS MESA",
+                federacion: "FEDERACIÓN COSTARRICENSE DE TENIS MESA",
                 deporte: "Tenis de Mesa",
                 paginaWeb: "www.fecoteme.com",
                 ubicacion: "Oficina 6 Estadio Nacional, La Sábana, San José",
@@ -440,10 +754,17 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Alexander Zamora",
                 correoPresidente: "azamoracr19@yahoo.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas: 
+                        [
+                                {nombre: "TT Individual"},
+                                {nombre: "TT Dobles"},
+                                {nombre: "TT Equipos"},
+                                {nombre: "TT Mixto"}
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN DE TIRO - COSTA RICA",
+                federacion: "FEDERACIÓN DE TIRO - COSTA RICA",
                 deporte: "Tiro Al Blanco",
                 paginaWeb: null,
                 ubicacion: null,
@@ -452,10 +773,15 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Hugo Chamberlain",
                 correoPresidente: "h_chamberlain_cr@yahoo.com",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas: [
+                        {nombre: "TRI Individual"}, 
+                        {nombre: "TRI Equipos"},
+                        {nombre: "TRI Relevo Mixto"}
+                ]
         },
         {
-                nombre: "ASOCIACIÓN DEPORTIVA TIRO CON ARCO (ARQUERÍA)",
+                federacion: "ASOCIACIÓN DEPORTIVA TIRO CON ARCO (ARQUERÍA)",
                 deporte: "Tiro Con Arco",
                 paginaWeb: "www.archerycrc.org",
                 ubicacion: "Oficina 1025, Estadio Nacional, La Sábana, San José",
@@ -464,10 +790,19 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Pablo Bonilla",
                 correoPresidente: "presidencia@archerycrc.org",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas: 
+                        [
+                                {nombre: "TA Recurvo Ronda Olímpica ind. 70 m"},
+                                {nombre: "TA Recurvo Ronda Olímpica equipos a 50 m"},
+                                {nombre: "TA Compuesto Ronda Olímpica ind. 50 m"},
+                                {nombre: "TA Compuesto Ronda Olímpica equipos 50 m"},
+                                {nombre: "TA Recurvo Mixta Ronda Olímpica Ind. 70 m"},
+                                {nombre: "TA Compuesto Mixto Ronda Olímpica 50 m"}
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN UNIDA DE TRIATLÓN",
+                federacion: "FEDERACIÓN UNIDA DE TRIATLÓN",
                 deporte: "Triatlón",
                 paginaWeb: "www.feutri.org",
                 ubicacion: "Oficina 1004 Estadio Nacional, La Sábana, San José",
@@ -476,20 +811,40 @@ Usuario.findOneAndUpdate(usuario, usuario, opciones, function(err, elemento) {
                 presidente : "Cristina González",
                 correoPresidente: "cgonzalez@seguros.co.cr",
                 escudoUrl: "",
-                imagenUrl: "" 
+                imagendeporteUrl: "",
+                pruebas: 
+                        [
+                                {nombre: "TRI Individual"}, 
+                                {nombre: "TRI Equipos"}     
+                        ] 
         },
         {
-                nombre: "FEDERACIÓN COSTARRICENSE DE VOLEIBOL",
+                federacion: "FEDERACIÓN COSTARRICENSE DE VOLEIBOL",
                 deporte: "Voleibol",
-                paginaWeb: "www.fecovol.co.cr/",
+                paginaWeb: "www.fecovol.co.cr",
                 ubicacion: "Dentro del Gimnasio Nacional, San José",
                 telefonos: [22330414],
                 correoFederacion: "fecovol@gmail.com", 
                 presidente : "Edgar Alvarado",
                 correoPresidente: "presidente@fecovol.co.cr",
                 escudoUrl: "",
-                imagenUrl: "" 
-        },
+                imagendeporteUrl: "",
+                pruebas:
+                        [
+                        {nombre: "VOL Femenino"},
+                        {nombre: "VOL Masculino"},
+                        {nombre: "VOL Playa Femenino"},
+                        {nombre: "VOL Playa Masculino"}
+                        ]
+        }
 
-        ]        
-}
+        ];        
+
+disciplinas.forEach(elemento => {
+        //console.log(elemento);
+        Disciplina.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
+        if (err) console.log(err);
+        });  
+});
+
+};

@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 
 var DisciplinaSchema = new Schema({
-    nombre: {
+    deporte: {
         type: String,
         required: 'Digite un nombre por favor',
         maxlength: 40,
@@ -39,7 +39,6 @@ var DisciplinaSchema = new Schema({
       },
       correoFederacion: {
           type: String,
-          unique:true,
           maxlength: 40,
           minlength: 10
       },
@@ -51,7 +50,6 @@ var DisciplinaSchema = new Schema({
      },
       correoPresidente:{
         type: String,
-        unique:true,
         maxlength: 40,
         minlength: 10,
     },
