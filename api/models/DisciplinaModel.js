@@ -4,81 +4,59 @@ var Schema = mongoose.Schema;
 
 
 var DisciplinaSchema = new Schema({
-    deporte: {
+    nombre: {
         type: String,
         required: 'Digite un nombre por favor',
         maxlength: 40,
-        minlength: 2
+        minlength: 2,
+        unique: true
       },
       nombreNormalizado:{
         type: String,
         maxlength: 40
       },
-      imagendeporteUrl: {
-        type: String   
-      },
-      escudoUrl: {
+      imagenDisciplinaUrl: {
         type: String   
       },
       federacion: {
-        type: String,
-        required: 'Digite una federación por favor',
-        maxlength: 40,
-        minlength: 2
-      },   
-      paginaWeb: {
-        type: String,
-        maxlength: 40,
-      },
-      ubicacion: {
-        type: String,
-        maxlength: 100,
-      },
-      telefonos: {
-        type:[Number],
-      },
-      correoFederacion: {
-          type: String,
-          maxlength: 40,
-          minlength: 10
-      },
-      presidente : {
-      type: String,
-      required: 'Digite un nombre por favor',
-      maxlength: 40,
-      minlength: 2,
-     },
-      correoPresidente:{
-        type: String,
-        maxlength: 40,
-        minlength: 10,
-    },
-    pruebas:{
-      type: [
-              {
-                nombre: {
-                        type: String,
-                        maxlength: 30,
-                },
-              }
-            ]
-    }
-
-      
+            type: {
+                    type: Schema.Types.ObjectId,
+                     ref: 'Federacion'
+            }               
+          },
+      activo:{
+        type: Boolean
+      },                    
+      pruebas:{
+        type: [
+                {
+                  nombre: {
+                          type: String,
+                          maxlength: 30,
+                  },
+                  activo: {
+                          type: Boolean,
+                  }
+                }
+              ]
+      }
 });
 
-
-DisciplinaSchema.method("datosDeporte", function() {
+DisciplinaSchema.pre('findOneAndUpdate', function(next) {
   
-    return {nombre: this.nombre, 
-            fotoUrl : this.fotoUrl      
-           };
-  
+  next();
   });
 
-  DisciplinaSchema.method("", function(){
-      return {
-
-      }
+DisciplinaSchema.method('datosAtleta', function() {
+  
+    return {
+      id: this._id,
+      nombre: this.nombre, 
+      fotoUrl : this.fotoUrl      
+    };
+  
   });
-  module.exports = mongoose.model("Disciplina", DisciplinaSchema);
+  
+  
+  module.exports = mongoose.model('Disciplina', DisciplinaSchema);
+  

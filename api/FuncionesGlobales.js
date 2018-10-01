@@ -4,10 +4,32 @@ module.exports ={
     validarEmail : function(email) {
     return new Promise(function(resolve, reject){
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      resolve(re.test(String(email).toLowerCase()));
+      var exito = re.test(String(email).toLowerCase())
+      if(exito)
+        resolve(true);
+      else
+        reject(email);
     })
   },
   
+  validarEmails: function(emails) {
+   return Promise.all(emails.map(e=>this.validarEmail(e)));
+  },
+
+  guardarImagen: function(ruta, fotoUrl, id){
+    const fs =require("fs");  
+    // obtiene solo la imagen, le quita el prefijo base 64
+    var datosLimpios = fotoUrl.replace(/^data:image\/\w+;base64,/, "");
+    var buf = new Buffer.from(datosLimpios, 'base64');
+    var fotoUrl = ruta + id + "." + 'jpeg'  
+    if (!fs.existsSync(ruta)){
+      var shell = require('shelljs');
+      shell.mkdir('-p', ruta);//Si no sirve probar https://www.npmjs.com/package/fs-path para crear fullpath
+    } 
+    fs.writeFileSync(fotoUrl, buf);  
+    return fotoUrl;
+  },
+
   // crea la promesa para fs.readFile()
   leerArchivoAsync: function (filename) {
     var fs = require('fs');
@@ -43,7 +65,13 @@ module.exports ={
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
-  }
+  },
   
+formatoNombreNormalizado : function (nombre){
+  if(nombre)
+    return nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "");
+  else
+  return "";
+},
 
 }

@@ -7,7 +7,7 @@ const emailTransporter = Symbol.for("SIRAR.GLOBAL.EMAILTRANSPORTER");
 const emailOptions = Symbol.for("SIRAR.GLOBAL.EMAILOPTIONS"); 
 const rutaImagenesPerfil = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESPERFIL"); 
 const rutaImagenesAtletas = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESATLETAS"); 
-const rutaImagenesDeportes = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESDEPORTES");
+const rutaImagenesDisciplinas = Symbol.for("SIRAR.GLOBAL.rutaImagenesDisciplinas");
 const rutaImagenesFederaciones = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESFEDERACIONES"); 
 const mensajes = Symbol.for("SIRAR.GLOBAL.MENSAJES");
 const crearRandom = Symbol.for("SIRAR.GLOBAL.CREARRANDOM");
@@ -39,7 +39,7 @@ module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Sirar
 module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
 module.exports.rutaImagenesPerfil = inicializarGLobal(rutaImagenesPerfil, "imagenes/imagenesPerfil/");
 module.exports.rutaImagenesAtletas= inicializarGLobal(rutaImagenesAtletas, "imagenes/imagenesAtletas/");
-module.exports.rutaImagenesDeportes = inicializarGLobal(rutaImagenesDeportes, "imagenes/imagenesDeportes/");
+module.exports.rutaImagenesDisciplinas = inicializarGLobal(rutaImagenesDisciplinas, "imagenes/imagenesDeportes/");
 module.exports.rutaImagenesFederaciones = inicializarGLobal(rutaImagenesFederaciones, "imagenes/imagenesFederaciones/");
 
 let transporter = nodemailer.createTransport({
@@ -77,7 +77,7 @@ module.exports.inicializarMensajes = async function(mongoose){
     });
 }
 
-module.exports.mensajes = function(codigo, id, nuevoMensaje, objeto){
-        var mensaje = todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( id, nuevoMensaje, objeto)
+module.exports.mensajes = function(codigo, sustantivo, identificador, objeto){
+        var mensaje = todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( sustantivo, identificador, objeto)
         return inicializarGLobal(mensajes, mensaje);
 }

@@ -48,7 +48,7 @@ function mailSenderCrear(emailAdress, subject, message, res){
                               });                                
                             }  
                             else{   
-                            res.json({token: res.locals.token, datos: globales.mensajes(-4, "usuario", emailAdress).instance})                                                                      
+                            res.json({token: res.locals.token, datos: globales.mensajes(-4, "Usuario", emailAdress).instance})                                                                      
                             }
                           }
   );        
@@ -63,7 +63,7 @@ function mailSenderRecuperar(emailAdress, subject, message, res){
                                   res.json({datos: globales.mensajes(4, "correo electrónico", emailAdress).instance});                                              
                             }  
                             else{   
-                            res.json({datos: globales.mensajes(-5, "correo electrónico", emailAdress).instance }) 
+                            res.json({datos: globales.mensajes(-5, "Correo electrónico", emailAdress).instance }) 
                             }
                           }
   );        
@@ -239,7 +239,6 @@ else{
 //Necesita el checkbox application/x-www-form-urlencoded
 exports.crearUsuario = async function(req, res) {  
    funcionesGlobales.validarEmail(req.body.correo).then(valido=>{
-    if(valido == true){ 
       var nuevoUsuario = new Usuario(req.body);
       nuevoUsuario.tokenPassword = globales.crearRandom(15).instance;
       if(req.body.fotoUrl){    
@@ -296,16 +295,17 @@ exports.crearUsuario = async function(req, res) {
                           console.log(err)
                           res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase()).instance});
                       }else{//Error llave duplicada
-                         res.json({token: res.locals.token, datos: globales.mensajes(15).instance});
-                       
+                         res.json({token: res.locals.token, datos: globales.mensajes(15, "La identificación o correo electrónico", " ").instance});
                       }   
                     }
-              });
+              });  
+  }).catch(e=> {
+    if(typeof(e) === "string"){
+       res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance});
+    }else{
+      res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", req.body.correo.toLowerCase()).instance});
     }
-    else{
-      res.json({token: res.locals.token, datos: globales.mensajes(16).instance})
-    }
-  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase()).instance})); 
+  }); 
 };
 
 
@@ -328,7 +328,7 @@ exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta 
             res.json({token: res.locals.token, datos: globales.mensajes(11).instance});
         })
           .catch((err)=>{
-            res.json({token: res.locals.token,datos: globales.mensajes(12).instance});  
+            res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los usuarios").instance});  
 }) 
 }catch(e){
     console.log(e);
@@ -374,14 +374,14 @@ exports.modificarUsuario = async function(req, res) {
             if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
               funcionesGlobales.borrarArchivo(usuarioAntiguo.fotoUrl);
             }       
-            res.json({token: res.locals.token, datos: globales.mensajes(-3, "usuario", req.body.nombre).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Usuario", req.body.nombre).instance});
           }
           else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
           }
       }).catch(err=>{
         if(err.code || err.code == 11000){ //Llave duplicada  
-          res.json({token: res.locals.token, datos: globales.mensajes(15).instance});
+          res.json({token: res.locals.token, datos: globales.mensajes(15, "La identificación o correo electrónico"," ").instance});
         }else{ 
           res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", req.params.identificacion).instance});        
         }
