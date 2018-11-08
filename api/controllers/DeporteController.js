@@ -211,9 +211,9 @@ exports.modificarDeporte = async function(req, res){
 exports.listarDeportes = async function(req, res){
   Deporte.find()
   .sort({nombreNormalizado : 1})
-  .populate('federacion' ['nombre'])
+  .populate('federacion', ['nombre'])
   .exec()
-  .then(async (deportes) => {   
+  .then(async (deportes) => {  
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {     
       deportes[indice].imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(element.imagenDeporteUrl);     
     });
@@ -227,7 +227,7 @@ exports.listarDeportesXFederacion = async function(req, res){
   Deporte.find()
   .sort({nombreNormalizado : 1})
   .where({federacion: req.params.id})
-  .populate('federacion' ['nombre'])
+  .populate('federacion', ['nombre'])
   .exec()
   .then(async (deportes) => {   
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {     
