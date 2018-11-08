@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = function(app, express) {
-    var disciplinaController = require('../controllers/DisciplinaController');
 var userController = require('../controllers/UserController');
 var seguridad= require("./Seguridad.js");
 //import * as userController from '../controllers/UserController';

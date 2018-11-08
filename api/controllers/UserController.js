@@ -383,7 +383,7 @@ exports.modificarUsuario = async function(req, res) {
         if(err.code || err.code == 11000){ //Llave duplicada  
           res.json({token: res.locals.token, datos: globales.mensajes(15, "La identificación o correo electrónico"," ").instance});
         }else{ 
-          res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", req.params.identificacion).instance});        
+          res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", funcionesGlobales.manejarError(err, req.params.identificacion)).instance});        
         }
       });  
 };

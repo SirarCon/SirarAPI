@@ -7,12 +7,11 @@ var UsuarioSchema = new Schema({
   nombre: {
     type: String,
     required: 'Digite un nombre por favor',
-    maxlength: 40,
-    minlength: 2
+    maxlength: [40, "El nombre tiene que ser menor a 40 caracteres"],
+    minlength: [2, "El nombre tiene que ser mayor a 1 caracteres"],
   },
   nombreNormalizado:{
     type: String,
-    maxlength: 40
   },
   fotoUrl: {
     type: String   
@@ -25,15 +24,15 @@ var UsuarioSchema = new Schema({
     type: String,
     required: 'Digite el número de cédula por favor',
     unique: true,
-    mmaxlength: 15,
-    minlength: 9
+    maxlength: [15, "El nombre tiene que ser menor a 15 caracteres"],
+    minlength: [9, "El nombre tiene que ser mayor a 8 caracteres"], 
   },
   correo: {
     type: String,
     required: 'Digite el correo por favor',
     unique:true,
-    maxlength: 40,
-    minlength: 10
+    maxlength: [40, "El correo tiene que ser menor a 41 caracteres"],
+    minlength: [10, "El correo tiene que ser mayor a 9 caracteres"],
   },
   password: {
     type: String
@@ -45,7 +44,7 @@ var UsuarioSchema = new Schema({
   },
   telefono: {
     type: String,
-    maxlength: 8,
+    maxlength: [8, "El teléfono tiene que ser menor a 9 caracteres"],
   },
   rol:{
     type: Number,

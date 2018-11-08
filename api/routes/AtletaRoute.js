@@ -6,21 +6,28 @@ var seguridad= require("./Seguridad.js");
 var routerAdm = express.Router()
 var routerGeneral = express.Router()
 
+
+//Se le assignan los middleware a los usuarios adm antes del login
+routerGeneral.use(seguridad.verificarTokenGeneral);
+
+//Se le assignan los middleware a los router de Adm luego del Login
+routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
+
+
 //Rutas POST, GET, PUT, DELETE
 routerGeneral.route('/atletas')  
-    .get((req,res)=>{
-        res.json({p:"prueba"});
-    }); 
+    .get(atletaController.listarAtletasActivos);
 
-routerAdm.route('api/atletas')
+routerGeneral.route('/atleta/:id')
+    .get(atletaController.leerAtletaActivo)
+
+routerAdm.route('/atletas')
     .get(atletaController.listarAtletas)
     .post(atletaController.crearAtleta);
 
-
-routerAdm.route('api/atleta/:id')
+routerAdm.route('/atleta/:id')
     .get(atletaController.leerAtleta)
-    .put(atletaController.modificarAtleta)
-    .delete(atletaController.borrarAtleta);
+    .put(atletaController.modificarAtleta);
 
 
 

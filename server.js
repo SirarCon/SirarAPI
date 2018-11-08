@@ -2,13 +2,13 @@ function cargarModelos(){
   require('./api/models/MensajeModel');
   require('./api/models/UserModel'); //created model loading here
   require('./api/models/FederacionModel');
-  require('./api/models/DisciplinaModel');
+  require('./api/models/DeporteModel');
   require('./api/models/AtletaModel');
 }
 
 function registrarRutas(app, express){
   //importing routes
-var routes = [require('./api/routes/UserRoute'), require('./api/routes/AtletaRoute'), require('./api/routes/DisciplinaRoute')]; 
+var routes = [require('./api/routes/UserRoute'), require('./api/routes/AtletaRoute'), require('./api/routes/DeporteRoute')]; 
    //register the route
    routes.forEach((ruta) =>{ ruta(app, express)});
 }

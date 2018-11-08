@@ -2,8 +2,12 @@
 var mongoose = require('mongoose'),
 Mensaje = mongoose.model('Mensaje'),
 Usuario = mongoose.model('Usuario'),
-Disciplina = mongoose.model('Disciplina'),
-Federacion = mongoose.model('Federacion');
+Deporte = mongoose.model('Deporte'),
+Federacion = mongoose.model('Federacion'),
+funcionesGlobales = require("../FuncionesGlobales.js");
+var globales =  require("../Globales.js");
+var funcionesGlobales = require("../FuncionesGlobales.js");
+const rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
 
 exports.Errores = async function(){
  //Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
@@ -381,7 +385,7 @@ var pentatlon = new Federacion({
                         activo: true
         });
 
-var racketball = new Federacion({
+var racquetball = new Federacion({
                         nombre: "FEDERACIÓN COSTARRICENSE DE RACQUETBALL",
                         paginaWeb: "www.racquetballcr.com",
                         ubicacion: "Oficina 1007 Estadio Nacional, La Sábana, San José",
@@ -521,13 +525,54 @@ var voleibol = new Federacion({
                         escudoUrl: "",
                         activo: true
         });
+      ajedrez.escudoUrl = rutaImagenesFederaciones + "FAjedrez.jpg";      
+      atletismo.escudoUrl = rutaImagenesFederaciones + "FAtletismo.png";
+     // badminton.escudoUrl = rutaImagenesFederaciones  +  "F.jpg";
+      baloncesto.escudoUrl = rutaImagenesFederaciones  +  "FBaloncesto.jpg";
+      balonmano.escudoUrl = rutaImagenesFederaciones  +  "FBalonmano.jpg";
+      beisbol.escudoUrl = rutaImagenesFederaciones  +  "FBeisbol.png";
+      billar.escudoUrl = rutaImagenesFederaciones  +  "FBillar.jpg";
+      boliche.escudoUrl = rutaImagenesFederaciones  +  "FBoliche.jpg";
+      boxeo.escudoUrl = rutaImagenesFederaciones  +  "FBoxeo.jpg";
+      canotaje.escudoUrl = rutaImagenesFederaciones  +  "FKayakCanotaje.jpg";
+      ciclismo.escudoUrl = rutaImagenesFederaciones  +  "FCiclismo.png";
+      circket.escudoUrl = rutaImagenesFederaciones  +  "FCricket.jpg";
+      ecuestre.escudoUrl = rutaImagenesFederaciones  +  "FEcuestre.jpg";
+      esgrima.escudoUrl = rutaImagenesFederaciones  +  "FEsgrima.jpg";
+      fisicoculturismo.escudoUrl = rutaImagenesFederaciones  +  "FFisiculturismo.png";
+      futbol.escudoUrl = rutaImagenesFederaciones  +  "FFutbol.png";
+      gimnasia.escudoUrl = rutaImagenesFederaciones  +  "FGimnasia.png";
+      golf.escudoUrl = rutaImagenesFederaciones  +  "FGolf.jpg";
+     // halterofilia.escudoUrl = rutaImagenesFederaciones  +  "F.jpg";
+      hockey.escudoUrl = rutaImagenesFederaciones  +  "FHockey.jpg";
+      judo.escudoUrl = rutaImagenesFederaciones  +  "FJudo.jpg";
+      karate.escudoUrl = rutaImagenesFederaciones  +  "FKarate-do.jpg";
+    //  lucha.escudoUrl = rutaImagenesFederaciones  +  "F.jpg";
+      natacion.escudoUrl = rutaImagenesFederaciones  +  "FNatacion.jpg";
+      patinaje.escudoUrl = rutaImagenesFederaciones  +  "FPatinaje.png";
+      pelotaVasca.escudoUrl = rutaImagenesFederaciones  +  "FPelotaVasca.jpg";
+      //pentatlon.escudoUrl = rutaImagenesFederaciones  +  "F.jpg";
+      racquetball.escudoUrl = rutaImagenesFederaciones  +  "FRacquetbol.jpg";
+      remo.escudoUrl = rutaImagenesFederaciones  +  "FRemo.png";
+      rugby.escudoUrl = rutaImagenesFederaciones  +  "FRugby.jpg";
+      softbol.escudoUrl = rutaImagenesFederaciones  +  "FSoftbol.jpg";
+      surf.escudoUrl = rutaImagenesFederaciones  +  "FSurf.jpg";
+      taekwondo.escudoUrl = rutaImagenesFederaciones  +  "FTaekwondo.jpg";
+      tenis.escudoUrl = rutaImagenesFederaciones  +  "FTenis.jpg";
+      tenisMesa.escudoUrl = rutaImagenesFederaciones  +  "FTenisMesa.png";
+     // tiroBlanco.escudoUrl = rutaImagenesFederaciones  +  "F.jpg";
+      tiroArco.escudoUrl = rutaImagenesFederaciones  +  "FTiroArco.jpg";
+      triatlon.escudoUrl = rutaImagenesFederaciones  +  "FTriatlon.jpg";
+      voleibol.escudoUrl = rutaImagenesFederaciones  +  "FVoleibol.jpg";
+
+
 //  var opciones2 = {strict:false, upsert: true, new: true, setDefaultsOnInsert: true };
-var federaciones = [ajedrez, atletismo, badminton, baloncesto, balonmano,
+var federaciones = [ajedrez/*, atletismo, badminton, baloncesto, balonmano,
                     beisbol, billar, boliche, boxeo, canotaje, ciclismo, circket, 
                     ecuestre, esgrima, fisicoculturismo, futbol, gimnasia,
                     golf, halterofilia, hockey, judo, karate, lucha, natacion, patinaje, pelotaVasca,
-                    pentatlon, racketball, remo, rugby, softbol, surf, taekwondo, tenis,
-                    tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol];
+                    pentatlon, racquetball, remo, rugby, softbol, surf, taekwondo, tenis,
+tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
         federaciones.forEach(elemento => {             
                 Federacion.update(elemento, elemento, opciones, function(err, elemento) {
                 if (err){/*console.log(err);*/ return};
@@ -535,12 +580,12 @@ var federaciones = [ajedrez, atletismo, badminton, baloncesto, balonmano,
         });
 
 console.log("F: " + federaciones.length)
-    var disciplinas =
+    var deportes =
     [
         {
                 nombre: "Ajedrez",
                 nombreNormalizado: "ajedrez",
-                imagenDisciplinaUrl: "",
+                imagenDeporteUrl: "",
                 federacion: ajedrez._id,
                 activo: true,                    
                 pruebas: 
@@ -548,10 +593,10 @@ console.log("F: " + federaciones.length)
                         {nombre:"Individual"},
                         ]                 
         },
-        {
+       /* {
                 nombre: "Atletismo",
                 nombreNormalizado: "atletismo",
-                imagenDisciplinaUrl: "",
+                imagenDeporteUrl: "",
                 federacion: atletismo._id,
                 activo: true, 
                 pruebas: [   
@@ -585,7 +630,7 @@ console.log("F: " + federaciones.length)
         },
         {
          nombre: "Bádminton",
-         imagenDisciplinaUrl: "",
+         imagenDeporteUrl: "",
          nombreNormalizado: "badminton",
          federacion: badminton._id,
          activo: true, 
@@ -593,7 +638,7 @@ console.log("F: " + federaciones.length)
         },
         {
                 nombre: "Baloncesto",
-                imagenDisciplinaUrl: "",
+                imagenDeporteUrl: "",
                 nombreNormalizado: "baloncesto",
                 federacion: baloncesto._id,
                 activo: true,
@@ -605,7 +650,7 @@ console.log("F: " + federaciones.length)
         },
 {
         nombre: "Balonmano",
-        imagenDisciplinaUrl: "" ,
+        imagenDeporteUrl: "" ,
         nombreNormalizado: "balonmano",
         federacion: balonmano._id,
         activo: true,
@@ -617,7 +662,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Béisbol",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "beisbol",
         federacion: beisbol._id,
         activo: true, 
@@ -628,7 +673,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Billar",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "billar",
         federacion: billar._id,
         activo: true, 
@@ -639,7 +684,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Boliche",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "boliche",
         federacion: boliche._id,
         activo: true,
@@ -655,7 +700,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Boxeo",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "boxeo",
         federacion: boxeo._id,
         activo: true,
@@ -678,7 +723,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Canotaje",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "canotaje",
         federacion: canotaje._id,
         activo: true, 
@@ -690,7 +735,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Ciclismo CBMX",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "ciclismo cbmx",
         federacion: ciclismo._id,
         activo: true,
@@ -701,7 +746,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Ciclismo CP",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "ciclismo cp",
         federacion: ciclismo._id,
         activo: true,
@@ -721,7 +766,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Ciclismo CR",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "ciclismo cr",
         federacion: ciclismo._id,
         activo: true,
@@ -733,7 +778,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Ciclismo CM Montaña",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "ciclismo cm montaña",
         federacion: ciclismo._id,
         activo: true,
@@ -744,7 +789,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Cricket",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "cricket",
         federacion: circket._id,
         activo: true, 
@@ -755,7 +800,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Ecuestre EQS",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "ecuestre eqs",
         federacion: ecuestre._id,
         activo: true,
@@ -769,7 +814,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Ecuestre EQA",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "ecuestre eqa",
         federacion: ecuestre._id,
         activo: true,
@@ -782,7 +827,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Ecuestre EQPC",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "ecuestre eqpc",
         federacion: ecuestre._id,
         activo: true,
@@ -794,7 +839,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Esgrima",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "esgrima",
         federacion: esgrima._id,
         activo: true,
@@ -810,7 +855,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Fisiculturismo",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "fisiculturismo",
         federacion: fisicoculturismo._id,
         activo: true, 
@@ -821,7 +866,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Futbol",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "futbol",
         federacion: futbol._id,
         activo: true,
@@ -833,7 +878,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Gimnasia Artistica",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "gimnasia artistica",
         federacion: gimnasia._id,
         activo: true,
@@ -853,7 +898,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Gimnasia Ritmica",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "gimnasia ritmica",
         federacion: gimnasia._id,
         activo: true,
@@ -869,7 +914,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Golf",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "golf",
         federacion: golf._id,
         activo: true,
@@ -881,7 +926,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Halterofilia",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "halterofilia",
         federacion: halterofilia._id,
         activo: true,
@@ -921,7 +966,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Hockey Césped",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "hockey cesped",
         federacion: hockey._id,
         activo: true, 
@@ -932,7 +977,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Judo",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "judo",
         federacion: judo._id,
         activo: true,
@@ -959,7 +1004,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Karate",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "karate",
         federacion: karate._id,
         activo: true,
@@ -981,7 +1026,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Lucha LUL",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "lucha lul",
         federacion: lucha._id,
         activo: true,
@@ -1003,7 +1048,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Lucha LUG",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "lucha lug",
         federacion: lucha._id,
         activo: true,
@@ -1019,7 +1064,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Natación",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "natación",
         federacion: natacion._id,
         activo: true,
@@ -1052,7 +1097,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Natación Sincronizado",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "natación sincronizado",
         federacion: natacion._id,
         activo: true,
@@ -1069,7 +1114,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Patinaje",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "patinaje",
         federacion: patinaje._id,
         activo: true,
@@ -1083,7 +1128,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Pelota Vasca",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "pelota vasca",
         federacion: pelotaVasca._id,
         activo: true,
@@ -1094,7 +1139,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Pentatlón Moderno",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "pentatlón moderno",
         federacion: pentatlon._id,
         activo: true,
@@ -1106,9 +1151,9 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Racquetball",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "racquetball",
-        federacion: racketball._id,
+        federacion: racquetball._id,
         activo: true,
         pruebas:
                 [
@@ -1119,7 +1164,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Remo",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "remo",
         federacion: remo._id,
         activo: true, 
@@ -1130,7 +1175,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Rugby",
-        imagenDisciplinaUrl: "" ,
+        imagenDeporteUrl: "" ,
         nombreNormalizado: "rugby",
         federacion: rugby._id,
         activo: true,
@@ -1142,7 +1187,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Softbol",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "softbol",
         federacion: softbol._id,
         activo: true,
@@ -1154,7 +1199,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Surf",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "surf",
         federacion: surf._id,
         activo: true,
@@ -1166,7 +1211,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Taekwondo",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "taekwondo",
         federacion: taekwondo._id,
         activo: true,
@@ -1195,7 +1240,7 @@ console.log("F: " + federaciones.length)
         nombreNormalizado: "tenis",
         federacion: tenis._id,
         activo: true,
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
                 pruebas:
                         [
                                 {nombre: "Individual"},
@@ -1206,7 +1251,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Tenis de Mesa",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "tenis de mesa",
         federacion: tenisMesa._id,
         activo: true,
@@ -1221,7 +1266,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Tiro Al Blanco",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "tiro al blanco",
         federacion: tiroBlanco._id,
         activo: true,
@@ -1232,7 +1277,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Tiro Con Arco",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "tiro con arco",
         federacion: tiroArco._id,
         activo: true,
@@ -1248,7 +1293,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Triatlón",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "triatlón",
         federacion: triatlon._id,
         activo: true,
@@ -1261,7 +1306,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Voleibol",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "voleibol",
         federacion: voleibol._id,
         activo: true,
@@ -1273,7 +1318,7 @@ console.log("F: " + federaciones.length)
 },
 {
         nombre: "Voleibol Playa",
-        imagenDisciplinaUrl: "",
+        imagenDeporteUrl: "",
         nombreNormalizado: "voleibol plya",
         federacion: voleibol._id,
         activo: true,
@@ -1283,14 +1328,18 @@ console.log("F: " + federaciones.length)
                 {nombre: "Masculino"}
                 ]
 }
-
+*/
 
     ]
 
       
-console.log("D: " + disciplinas.length)
-disciplinas.forEach(elemento => {
-        Disciplina.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
+console.log("D: " + deportes.length)
+deportes.forEach(elemento => {
+        elemento.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(elemento.nombre);
+        elemento.pruebas.forEach((ele, indice, arreglo)=>{ 
+                arreglo[indice].nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(ele.nombre);
+        });
+        Deporte.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
         if (err) {/*console.log(err);*/ return};
         });  
 });

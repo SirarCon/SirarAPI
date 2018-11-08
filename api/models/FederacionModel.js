@@ -9,22 +9,20 @@ var FederacionSchema = new Schema({
     nombre: {
         type: String,
         required: 'Digite un nombre por favor',
-        unique:true,
-        maxlength: 40,
-        minlength: 2
+        unique: true,
+        maxlength: [40, "El nombre tiene que ser menor a 41 caracteres"],
+        minlength: [2, "El nombre tiene que ser mayor a 1 caracteres"],
       },
       nombreNormalizado:{
         type: String,
-        maxlength: 40
       },
       escudoUrl: {
         type: String   
       },
       correoFederacion: {
-        type: String,
-        
-        maxlength: 40,
-        minlength: 10
+        type: String,        
+        maxlength: [40, "El correo de la federación tiene que ser menor a 41 caracteres"],
+        minlength: [10, "El correo de la federación tiene que ser mayor a 9 caracteres"],
       },
       activo:{
         type: Boolean
@@ -32,24 +30,24 @@ var FederacionSchema = new Schema({
 
       paginaWeb: {
         type: String,
-        maxlength: 40,
+        maxlength: [40, "La página Web es de máximo 40 caracteres" ],
       },
       ubicacion: {
         type: String,
-        maxlength: 100,
+        maxlength: [100, "La ubicación es de máximo 100 caracteres" ],
       },
       telefonos: {
         type:[Number],
       },
       presidente : {
       type: String,
-      maxlength: 40,
-      minlength: 2,
+      maxlength: [40, "El nombre del presidente es de máximo 40 caracteres" ],
+      minlength: [2, "El nombre del presidente tiene que ser mayor a 1 caracteres"],
     },
       correoPresidente:{
         type: String,
-        maxlength: 40,
-        minlength: 10,
+        maxlength: [40, "El correo del presidente tiene que ser menor a 41 caracteres"],
+        minlength: [10, "El correo del presidente tiene que ser mayor a 9 caracteres"],
     }
 });
 
@@ -75,7 +73,7 @@ FederacionSchema.pre('findOneAndUpdate', function(next) {
   });
 
 
-FederacionSchema.method('datosFederacion', function() {
+FederacionSchema.method('todaInformacion', function() {
   
   return {
     id: this._id,
@@ -88,12 +86,11 @@ FederacionSchema.method('datosFederacion', function() {
     presidente : this.presidente,
     correoPresidente: this.correoPresidente,
     activo: this.activo,    
-    nombreNormalizado : this.nombreNormalizado 
    };
   
   });
 
-  FederacionSchema.method('consultaFederacion', function() {
+  FederacionSchema.method('infoPublica', function() {
   
     return {
       id: this._id,
@@ -104,8 +101,7 @@ FederacionSchema.method('datosFederacion', function() {
       telefonos: this.telefonos, 
       correoFederacion: this.correoFederacion,
       presidente : this.presidente,
-      correoPresidente: this.correoPresidente,
-      nombreNormalizado : this.nombreNormalizado  
+      correoPresidente: this.correoPresidente, 
      };
     
     });

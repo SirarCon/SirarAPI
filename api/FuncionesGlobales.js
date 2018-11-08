@@ -4,7 +4,7 @@ module.exports ={
     validarEmail : function(email) {
     return new Promise(function(resolve, reject){
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      var exito = re.test(String(email).toLowerCase())
+      var exito= email ? re.test(String(email).toLowerCase()) : true;
       if(exito)
         resolve(true);
       else
@@ -32,17 +32,24 @@ module.exports ={
 
   // crea la promesa para fs.readFile()
   leerArchivoAsync: function (filename) {
+   // console.log(filename);
     var fs = require('fs');
     return new Promise(function(resolve, reject) {
-        fs.readFile(filename, function(err, data){
+      if(filename || filename !== "") {
+      fs.readFile(filename, function(err, data){
             if (err){ 
+              console.log(err+ " " + filename);
                 reject("");
               } 
             else{ 
                 resolve("data:image/jpeg;base64," + new Buffer(data).toString('base64'));
             }
         });
-    }).catch((e)=>{return "" });
+      }
+        else{
+          reject("");
+        }
+    }).catch((e)=>{ console.log(e); return "" });
   },
 
   borrarArchivo: function (ruta){
@@ -74,4 +81,35 @@ formatoNombreNormalizado : function (nombre){
   return "";
 },
 
+ordenarPorNombre : function(a, b){
+  if(a.nombreNormalizado < b.nombreNormalizado) return -1;
+  if(a.nombreNormalizado > b.nombreNormalizado) return 1;
+  return 0;
+},
+
+manejarError : function(err, mensajeDefecto = ""){
+  var errorM;
+  switch (err.name) {
+    case 'ValidationError':
+      for (let field in err.errors) {
+        switch (err.errors[field].kind) {
+          case 'exists':
+          errorM=err.errors[field].message
+            break;
+          case 'invalid':
+          errorM=err.errors[field].message
+          break;
+          case 'minlength':
+          errorM=err.errors[field].message
+          case 'maxlength':
+          errorM=err.errors[field].message
+          break;
+          default:
+          errorM = mensajeDefecto
+          break              
+       }
+      }
+  }
+  return errorM;
+}
 }
