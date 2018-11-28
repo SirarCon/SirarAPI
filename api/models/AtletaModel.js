@@ -12,7 +12,7 @@ var AtletaSchema = new Schema({
       },
       apellido1: {
         type: String,
-        required: 'Digite un apellido1 por favor',
+        required: 'Digite el primer apellido por favor',
         maxlength: [20, "El apellido 1 tiene que ser menor a 21 caracteres"],
         minlength: [2, "El apellido 1 tiene que ser mayor a 1 caracteres"],
       },

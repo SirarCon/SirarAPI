@@ -17,7 +17,7 @@ routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
 routerGeneral.route('/deportes')  
 .get(deporteController.listarDeportesActivas);
 
-routerGeneral.route("/deportes/:id")
+routerGeneral.route("/deportes/:idFederacion")
 .get(deporteController.listarDeportesActivasXFederacion);
 
 routerGeneral.route("/deporte/:id")
@@ -36,7 +36,7 @@ routerAdm.route('/deportes')
 .get(deporteController.listarDeportes)
 .post(deporteController.crearDeporte);
 
-routerAdm.route("/deportes/:id")
+routerAdm.route("/deportes/:idFederacion")
 .get(deporteController.listarDeportesXFederacion);
 
 routerAdm.route('/deporte/pruebas/:idDeporte')

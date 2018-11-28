@@ -94,22 +94,18 @@ manejarError : function(err, mensajeDefecto = ""){
       for (let field in err.errors) {
         switch (err.errors[field].kind) {
           case 'exists':
-          errorM=err.errors[field].message
-            break;
-          case 'invalid':
-          errorM=err.errors[field].message
-          break;
-          case 'minlength':
-          errorM=err.errors[field].message
+          case 'invalid':          
+          case 'minlength':         
           case 'maxlength':
+          case 'required':
           errorM=err.errors[field].message
-          break;
+          break;          
           default:
           errorM = mensajeDefecto
           break              
        }
       }
-  }
+  }  
   return errorM;
 }
 }

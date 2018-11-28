@@ -16,15 +16,11 @@ exports.crearAtleta = async function(req, res){
         Deporte.findOne().where({_id: req.body.deporte}).exec()
         .then(function(deporte) {
           if(deporte){
-                var nuevoAtleta = new Atleta(req.body);  
-                console.log(nuevoAtleta.deporte);
-                var t= mongoose.Types.ObjectId(req.body.deporte);
-                console.log(t);
+                var nuevoAtleta = new Atleta(req.body);   
                 nuevoAtleta.fotoUrl = req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesAtletas, req.body.fotoUrl , nuevoAtleta._id) : undefined,
                 nuevoAtleta.save().then(atleta =>{
                     res.json({token: res.locals.token, datos: globales.mensajes(-4, "Atleta", req.body.nombre ).instance});}
-                    ).catch(err=>{ 
-                        console.log(err);        
+                    ).catch(err=>{       
                         if (err){  
                             funcionesGlobales.borrarArchivo(nuevoAtleta.fotoUrl);  
                             if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
@@ -35,7 +31,7 @@ exports.crearAtleta = async function(req, res){
                         }
                     });
                 }else{
-                        res.json({token: res.locals.token, datos: globales.mensajes(18, "la deporte ingresada", " ").instance}); //Todo modificar mensaje
+                        res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ").instance}); //Todo modificar mensaje
                       }    
                     }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance})); //Todo modificar mensaje              
     }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance}));
@@ -94,11 +90,11 @@ exports.modificarAtleta  = async function(req, res){
                     if(err.code || err.code == 11000){ //Llave duplicada  
                         res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre Atleta", " ").instance});
                     }else{ 
-                        res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta", funcionesGlobales.manejarError(err)).instance});        
+                        res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err)).instance});        
                     };
                 });
             }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(18, "la deporte ingresada", " ").instance}); //Todo modificar mensaje
+                res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresada", " ").instance}); //Todo modificar mensaje
             }    
         }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte).instance});}); //Todo modificar mensaje
     }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance}) 

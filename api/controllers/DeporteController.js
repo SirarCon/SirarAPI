@@ -226,7 +226,7 @@ exports.listarDeportes = async function(req, res){
 exports.listarDeportesXFederacion = async function(req, res){
   Deporte.find()
   .sort({nombreNormalizado : 1})
-  .where({federacion: req.params.id})
+  .where({federacion: req.params.idFederacion})
   .populate('federacion', ['nombre'])
   .exec()
   .then(async (deportes) => {   
@@ -294,7 +294,7 @@ exports.listarDeportesActivas = async function(req, res){
 exports.listarDeportesActivasXFederacion = async function(req, res){
   Deporte.find()
   .sort({nombreNormalizado : 1})
-  .where({activo: true, federacion: req.params.id })
+  .where({activo: true, federacion: req.params.idFederacion })
   .populate('federacion', ['nombre'])
   .exec()
   .then(async (deportes) => {
