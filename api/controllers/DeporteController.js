@@ -64,7 +64,7 @@ exports.modificarFederacion = async function(req, res){
       res.json({token: res.locals.token, datos: globales.mensajes(14, "federacion", funcionesGlobales.manejarError(err)).instance});        
     }
   });
-}).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance}));
+}).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", "(s)").instance}));
 };
 
 exports.leerFederacion = async function(req, res) {  

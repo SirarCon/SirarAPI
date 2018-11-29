@@ -27,7 +27,6 @@ var FederacionSchema = new Schema({
       activo:{
         type: Boolean
       },
-
       paginaWeb: {
         type: String,
         maxlength: [40, "La página Web es de máximo 40 caracteres" ],

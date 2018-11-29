@@ -80,7 +80,7 @@ exports.modificarAtleta  = async function(req, res){
                 .then(atletaAntiguo=>{
                 if(atletaAntiguo){
                 if((!req.body.fotoUrl || req.body.fotoUrl === "") && atletaAntiguo.fotoUrl != null){
-                    funcionesGlobales.borrarArchivo(atletaAntiguo.imagenDeporteUrl);
+                    funcionesGlobales.borrarArchivo(atletaAntiguo.fotoUrl);
                 }       
                 res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", req.body.nombre).instance});
                 }else{
@@ -90,11 +90,12 @@ exports.modificarAtleta  = async function(req, res){
                     if(err.code || err.code == 11000){ //Llave duplicada  
                         res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre Atleta", " ").instance});
                     }else{ 
+                        console.log(err);
                         res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err)).instance});        
                     };
                 });
             }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresada", " ").instance}); //Todo modificar mensaje
+                res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ").instance}); //Todo modificar mensaje
             }    
         }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte).instance});}); //Todo modificar mensaje
     }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance}) 

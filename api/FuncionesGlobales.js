@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports ={
-    validarEmail : function(email) {
+    validarEmail : function(email, obligatorio = false) {
     return new Promise(function(resolve, reject){
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      var exito= email ? re.test(String(email).toLowerCase()) : true;
+      var exito= email ? re.test(String(email).toLowerCase()) : !obligatorio;
       if(exito)
         resolve(true);
       else

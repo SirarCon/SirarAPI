@@ -356,6 +356,8 @@ exports.leerUsuario = async function(req, res) {
 };
 
 exports.modificarUsuario = async function(req, res) { 
+  funcionesGlobales.validarEmail(req.body.correo, true)
+  .then(function(values) {
  var usuarioTem = new Usuario();
   usuarioTem.identificacion = req.params.identificacion;
   usuarioTem.fotoUrl = req.body.fotoUrl;
@@ -385,7 +387,9 @@ exports.modificarUsuario = async function(req, res) {
         }else{ 
           res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", funcionesGlobales.manejarError(err, req.params.identificacion)).instance});        
         }
-      });  
+      }); 
+    }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", req.body.correo ? req.body.correo : " ").instance}) 
+}) 
 };
 
 exports.borrarUsuario = async function(req, res) {
