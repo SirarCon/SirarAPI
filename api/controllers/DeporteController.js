@@ -320,6 +320,7 @@ exports.insertarPrueba = async function(req, res){
   .then(deporte=>{ 
     if(deporte){
        if(req.body.nombre && !deporte.pruebas.some((p)=> p.nombre === req.body.nombre)){
+        req.body.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(req.body.nombre)
           deporte.pruebas.push(req.body);
           deporte.save();       
           res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deporte.pruebas.sort(funcionesGlobales.ordenarPorNombre)).instance});
@@ -350,7 +351,7 @@ exports.editarPrueba = function(req, res){
                 "pruebas.$.nombreNormalizado": funcionesGlobales.formatoNombreNormalizado(req.body.nuevoNombre),
                 "pruebas.$.activo": req.body.activo
               }
-          }, {projection:{}, new: false, runValidators: true})
+          }, {projection:{}, new: true, runValidators: true})
           .exec()
           .then(deporte=>{
             if(deporte){
