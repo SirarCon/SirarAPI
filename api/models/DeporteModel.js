@@ -32,6 +32,7 @@ var DeporteSchema = new Schema({
                   nombre: {
                           type: String,
                           maxlength: [40, "El correo de la federación tiene que ser menor a 41 caracteres"],
+                          required: 'Digite el nombre de la prueba',
                   },
                   nombreNormalizado: {
                     type: String,

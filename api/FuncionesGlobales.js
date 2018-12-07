@@ -87,7 +87,7 @@ ordenarPorNombre : function(a, b){
   return 0;
 },
 
-manejarError : function(err, mensajeDefecto = ""){
+manejarError : function(err, mensajeDefecto = " "){
   var errorM;
   switch (err.name) {
     case 'ValidationError':
