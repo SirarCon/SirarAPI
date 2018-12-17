@@ -1,5 +1,6 @@
 'use strict';
 var mongoose = require('mongoose');
+var funcionesGlobales = require("../FuncionesGlobales.js");
 var Schema = mongoose.Schema;
 
 
@@ -51,6 +52,27 @@ var UsuarioSchema = new Schema({
     required: 'Seleccione el rol por favor'
   }
 });
+
+UsuarioSchema.pre('save', function(next) {
+  this.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')); 
+  next();
+});
+
+UsuarioSchema.pre('update', function(next) {
+this.update({},{
+               $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
+              } 
+            });
+next();
+});
+
+UsuarioSchema.pre('findOneAndUpdate', function(next) {
+  this.update({},{
+                 $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre) 
+                } 
+              });
+  next();
+  });
 
 UsuarioSchema.method('datosRecuperarContrasena', function() {
   

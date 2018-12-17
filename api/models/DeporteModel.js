@@ -26,25 +26,29 @@ var DeporteSchema = new Schema({
       activo:{
         type: Boolean
       },                    
-      pruebas:{
-        type: [
-                {
-                  nombre: {
-                          type: String,
-                          maxlength: [40, "El correo de la federación tiene que ser menor a 41 caracteres"],
-                          required: 'Digite el nombre de la prueba',
-                  },
-                  nombreNormalizado: {
-                    type: String,
-                  },
-                  activo: {
-                          type: Boolean,
-                  }
-                }
-              ]
-      }
 });
 
+
+DeporteSchema.pre('save', function(next) {
+  this.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')); 
+  next();
+});
+
+DeporteSchema.pre('update', function(next) {
+this.update({},{
+               $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
+              } 
+            });
+next();
+});
+
+DeporteSchema.pre('findOneAndUpdate', function(next) {
+  this.update({},{
+                 $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre) 
+                } 
+              });
+  next();
+  });
 
 DeporteSchema.method('todaInformacion', function() {
     return {

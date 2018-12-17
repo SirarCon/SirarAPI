@@ -1,5 +1,6 @@
 'use strict';
 var mongoose = require('mongoose');
+var funcionesGlobales = require("../FuncionesGlobales.js");
 var Schema = mongoose.Schema;
 
 
@@ -121,6 +122,28 @@ var AtletaSchema = new Schema({
                 ref: "Deporte",                     
       }
 });
+
+AtletaSchema.pre('save', function(next) {
+  this.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')); 
+  next();
+});
+
+AtletaSchema.pre('update', function(next) {
+this.update({},{
+               $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
+              } 
+            });
+next();
+});
+
+AtletaSchema.pre('findOneAndUpdate', function(next) {
+  this.update({},{
+                 $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre) 
+                } 
+              });
+  next();
+  });
+
 
 AtletaSchema.method('todaInformacion', function() {
     return {

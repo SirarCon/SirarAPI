@@ -46,7 +46,7 @@ routerAdm.route('/deporte/prueba/:idDeporte')
 .post(deporteController.insertarPrueba);
 
 routerAdm.route('/deporte/prueba/:idDeporte/:idPrueba')
-.put(deporteController.editarPrueba);
+.put(deporteController.modificarPrueba);
 
 routerAdm.route('/deporte/:id')
 .get(deporteController.leerDeporte)

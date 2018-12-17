@@ -311,10 +311,10 @@ exports.crearUsuario = async function(req, res) {
 
 exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta en el correo   
   try{  
-  Usuario.find()
-         .sort({nombreNormalizado : 1})
+  Usuario.find()         
          .select({password: 0, fechaCreacion: 0, tokenPassword: 0})
          .where({identificacion: {$ne: req.params.identificacion}})
+         .sort({nombreNormalizado : 1})
          .exec()
          .then(async (usuarios)=>{
           await funcionesGlobales.asyncForEach(usuarios ,async (element, indice, usuarios) => {
@@ -345,7 +345,7 @@ exports.leerUsuario = async function(req, res) {
   .then(async (usuario) => {
     if(usuario){      
       usuario.fotoUrl = await funcionesGlobales.leerArchivoAsync(usuario.fotoUrl);
-       res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,usuario.datosLogin()).instance});
+       res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, usuario.datosLogin()).instance});
     }
     else {   
     res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.params.identificacion).instance});

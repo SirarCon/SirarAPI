@@ -587,11 +587,7 @@ console.log("F: " + federaciones.length)
                 nombreNormalizado: "ajedrez",
                 imagenDeporteUrl: "",
                 federacion: ajedrez._id,
-                activo: true,                    
-                pruebas: 
-                        [
-                        {nombre:"Individual"},
-                        ]                 
+                activo: true,                                
         },
        /* {
                 nombre: "Atletismo",
@@ -1334,13 +1330,9 @@ console.log("F: " + federaciones.length)
 
       
 console.log("D: " + deportes.length)
-deportes.forEach(elemento => {
-        elemento.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(elemento.nombre);
-        elemento.pruebas.forEach((ele, indice, arreglo)=>{ 
-                arreglo[indice].nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(ele.nombre);
-        });
-        Deporte.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
-        if (err) {/*console.log(err);*/ return};
+deportes.forEach(elemento => {       
+        Deporte.update(elemento, elemento, opciones, function(err, elemento) {
+        if (err) {console.log(err); return};
         });  
 });
 

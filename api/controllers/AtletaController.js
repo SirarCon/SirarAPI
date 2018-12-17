@@ -49,7 +49,6 @@ exports.modificarAtleta  = async function(req, res){
                     nombre: req.body.nombre,
                     apellido1: req.body.apellido1,
                     apellido2: req.body.apellido2,
-                    nombreNormalizado: req.body.nombre,
                     fotoUrl: req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesAtletas, req.body.fotoUrl , req.params.id) : undefined,
                     correo: req.body.correo,
                     telefono: req.body.telefono,
@@ -141,9 +140,9 @@ exports.leerAtleta  = async function(req, res){
 //#region Usuariopúblico
 exports.listarAtletasActivos = async function(req, res){
     Atleta.find()
-    .sort({nombreNormalizado : 1})
-    .populate({path: "deporte", slect: "nombre", populate:{path: "federacion", select: "nombre"}})  
     .where({activo: true})  
+    .sort({nombreNormalizado : 1})
+    .populate({path: "deporte", slect: "nombre", populate:{path: "federacion", select: "nombre"}})      
     .exec()
     .then(async (atletas)=>{
           await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {

@@ -8,7 +8,8 @@ const emailOptions = Symbol.for("SIRAR.GLOBAL.EMAILOPTIONS");
 const rutaImagenesPerfil = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESPERFIL"); 
 const rutaImagenesAtletas = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESATLETAS"); 
 const rutaImagenesDeportes = Symbol.for("SIRAR.GLOBAL.rutaImagenesDeportes");
-const rutaImagenesFederaciones = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESFEDERACIONES"); 
+const rutaImagenesFederaciones = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESFEDERACIONES");
+const rutaImagenesEventos = Symbol.for("SISRAR.GLOBAL.RUTAIMAGENESEVENTOS"); 
 const mensajes = Symbol.for("SIRAR.GLOBAL.MENSAJES");
 const crearRandom = Symbol.for("SIRAR.GLOBAL.CREARRANDOM");
 
@@ -41,6 +42,7 @@ module.exports.rutaImagenesPerfil = inicializarGLobal(rutaImagenesPerfil, "image
 module.exports.rutaImagenesAtletas= inicializarGLobal(rutaImagenesAtletas, "imagenes/imagenesAtletas/");
 module.exports.rutaImagenesDeportes = inicializarGLobal(rutaImagenesDeportes, "imagenes/imagenesDeportes/");
 module.exports.rutaImagenesFederaciones = inicializarGLobal(rutaImagenesFederaciones, "imagenes/imagenesFederaciones/");
+module.exports.rutaImagenesEventos = inicializarGLobal(rutaImagenesEventos, "imagenes/imagenesEventos/");
 
 let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',//'smtp.ethereal.email',
