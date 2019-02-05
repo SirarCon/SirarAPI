@@ -325,7 +325,7 @@ exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta 
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,usuarios.map(u => u.datosLogin())).instance});  
           }  
           else
-            res.json({token: res.locals.token, datos: globales.mensajes(11).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "usuarios", " ").instance});
         })
           .catch((err)=>{
             res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los usuarios").instance});  
@@ -401,7 +401,8 @@ exports.borrarUsuario = async function(req, res) {
                           if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
                           funcionesGlobales.borrarArchivo(usuario.fotoUrl)
                         res.json({token: res.locals.token, datos: globales.mensajes(-2, "Usuario", req.params.identificacion).instance});    
-        }).catch(err=>{res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", req.params.identificacion).instance});
+        }).catch(err=>{
+          res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", req.params.identificacion).instance});
   });
 };
 //#endregion Funciones Respuesta

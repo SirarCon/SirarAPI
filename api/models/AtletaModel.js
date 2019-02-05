@@ -31,6 +31,7 @@ var AtletaSchema = new Schema({
       correo: {
         type: String,
         unique:true,
+        required: 'Digite un correo electrónico',
         maxlength: [40, "El correo de la federación tiene que ser menor a 41 caracteres"],
         minlength: [10, "El correo de la federación tiene que ser mayor a 9 caracteres"],
       },
@@ -116,9 +117,10 @@ var AtletaSchema = new Schema({
         maxlength: [10, "El código del país tiene que ser menor a 11 caracteres"],
       },
       activo: {
-        type: Boolean
+        type: Boolean,
+        required: "Seleccione si el atleta está activo"
       },
-      Deporte:{ type: Schema.Types.ObjectId,
+      deporte:{ type: Schema.Types.ObjectId,
                 ref: "Deporte",                     
       }
 });

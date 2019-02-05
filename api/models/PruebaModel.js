@@ -11,25 +11,40 @@ var PruebaSchema = new Schema({
     },
     nombreNormalizado: {
       type: String,
+      unique: true,
     },
     deporte:{
         type: Schema.Types.ObjectId,
         ref: 'Deporte',
-        required: 'Digite una federación por favor',
+        required: 'Digite un deporte por favor',
     },
     activo: {
-            type: Boolean,
+        type: Boolean,
+        required: "Seleccione si la prueba es activa"
+    },
+    tipo:{
+        type: Number,
+    },
+    fases: {
+        type:[{
+            posicion:{
+              type: Number,
+            },
+            descripcion: {
+              type: String, 
+            }, 
+        }]
     }
   });
 
   PruebaSchema.pre('save', function(next) {
-    this.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')); 
+    this.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')) + this._id; 
     next();
   });
   
   PruebaSchema.pre('update', function(next) {
   this.update({},{
-                 $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
+                 $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre + this._id) 
                 } 
               });
     next();
@@ -37,7 +52,7 @@ var PruebaSchema = new Schema({
   
   PruebaSchema.pre('findOneAndUpdate', function(next) {
     this.update({},{
-                   $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre) 
+                   $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre)  + this._id
                   } 
                 });
     next();
@@ -48,6 +63,7 @@ var PruebaSchema = new Schema({
       id: this._id,
       nombre: this.nombre, 
       deporte: this.deporte,
+      fases: this.fases.sort((a, b)=>{ return a.posicion - b.posicion}),
       activo: this.activo
     };
   
@@ -58,6 +74,7 @@ var PruebaSchema = new Schema({
       id: this._id,
       nombre: this.nombre, 
       deporte: this.deporte,
+      fases: this.fases.sort((a, b)=>{ return a.posicion - b.posicion}),
     };
   
   });

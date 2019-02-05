@@ -6,6 +6,9 @@ function cargarModelos(){
   require('./api/models/AtletaModel');
   require('./api/models/EventoModel');
   require('./api/models/PruebaModel');
+  require('./api/models/CompetenciaAtletaModel')
+  require('./api/models/AtletaCompetidorModel');
+  
 }
 
 function registrarRutas(app, express){
@@ -14,6 +17,7 @@ var routes = [require('./api/routes/UserRoute'),
              require('./api/routes/AtletaRoute'), 
              require('./api/routes/DeporteRoute'),
              require('./api/routes/EventoRoute'),
+             require('./api/routes/CompetenciaAtletaRoute'),
               ]; 
    //register the route
    routes.forEach((ruta) =>{ ruta(app, express)});

@@ -56,7 +56,6 @@ DeporteSchema.method('todaInformacion', function() {
       nombre: this.nombre, 
       imagenDeporteUrl : this.imagenDeporteUrl,
       activo: this.activo,
-      pruebas: this.pruebas.sort(funcionesGlobales.ordenarPorNombre),
       federacion: this.federacion
     };
   
@@ -67,7 +66,6 @@ DeporteSchema.method('todaInformacion', function() {
       id: this._id,
       nombre: this.nombre, 
       imagenDeporteUrl : this.imagenDeporteUrl,
-      pruebas: this.pruebas.sort(funcionesGlobales.ordenarPorNombre),
       federacion: this.federacion
     };
   

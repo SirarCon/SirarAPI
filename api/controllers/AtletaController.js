@@ -26,6 +26,7 @@ exports.crearAtleta = async function(req, res){
                             if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
                                 res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", funcionesGlobales.manejarError(err)).instance});
                             }else{//Error llave duplicada
+                                console.log(err)
                             res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre atleta", " ").instance});
                             }   
                         }
@@ -104,7 +105,7 @@ exports.modificarAtleta  = async function(req, res){
   exports.listarAtletas = async function(req, res){
     Atleta.find()
     .sort({nombreNormalizado : 1})
-    .populate({path: "deporte", slect: "nombre", populate:{path: "federacion", select: "nombre"}})  
+    .populate({path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}})  
     .exec()
     .then(async (atletas)=>{
           await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
@@ -113,17 +114,17 @@ exports.modificarAtleta  = async function(req, res){
           if(atletas.length > 0){
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a=> a.todaInformacion())).instance});  
           }else{
-              res.json({token: res.locals.token, datos: globales.mensajes(11).instance});
+              res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ").instance});
           }
       }).catch((err)=>{
-          res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los atletas").instance}); 
+          res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas").instance}); 
      });
   };
   
 exports.leerAtleta  = async function(req, res){
     Atleta.findOne()
     .where({_id: req.params.id})
-    .populate({path: "deporte", slect: "nombre", populate:{path: "federacion", select: "nombre"}})  
+    .populate({path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}})  
     .exec()
     .then(async (atleta) => {
         if(atleta){            
@@ -142,7 +143,7 @@ exports.listarAtletasActivos = async function(req, res){
     Atleta.find()
     .where({activo: true})  
     .sort({nombreNormalizado : 1})
-    .populate({path: "deporte", slect: "nombre", populate:{path: "federacion", select: "nombre"}})      
+    .populate({path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}})      
     .exec()
     .then(async (atletas)=>{
           await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
@@ -151,7 +152,7 @@ exports.listarAtletasActivos = async function(req, res){
           if(atletas.length > 0){
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a =>a.infoPublica())).instance});  
           }else{
-              res.json({token: res.locals.token, datos: globales.mensajes(11).instance});
+              res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ").instance});
             }
       }).catch((err)=>{
           res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los atletas").instance}); 
@@ -161,7 +162,7 @@ exports.listarAtletasActivos = async function(req, res){
 exports.leerAtletaActivo  = async function(req, res){
     Atleta.findOne()
     .where({_id: req.params.id})
-    .populate({path: "deporte", slect: "nombre", populate:{path: "federacion", select: "nombre"}})  
+    .populate({path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}})  
     .exec()
     .then(async (atleta) => {
         if(atleta){

@@ -18,6 +18,7 @@ exports.Errores = async function(){
         {"mensaje": "{sutantivoCambiar} {id} se ha creado.", "codigo": -4, "exito": 1 },
         {"mensaje": "{sutantivoCambiar} a {id} se ha enviado.", "codigo": -5, "exito": 1 },
         {"mensaje": "Contraseña de {sutantivoCambiar}: {id} cambiada exitosamente.", "codigo": -6, "exito": 1},
+        {"mensaje": "{sutantivoCambiar} {id} se ha ingresado.", "codigo": -7, "exito": 1 },
         {"mensaje": "Contraseña errónea", "codigo": 1, "exito": 0 },
         {"mensaje": "{sutantivoCambiar} {id} no encontrado", "codigo": 2, "exito": 0 },
         {"mensaje": "Hubo un problema borrando {sutantivoCambiar} {id}", "codigo": 3, "exito": 0 },
@@ -28,7 +29,7 @@ exports.Errores = async function(){
         {"mensaje": "Hubo un problema cambiando la contraseña", "codigo" : 8, "exito": 0 },
         {"mensaje": "Contraseña actual no coincide con la indicada", "codigo" : 9, "exito": 0 },
         {"mensaje": "Hubo un problema creando {sutantivoCambiar} {id}", "codigo" : 10, "exito": 0 }, 
-        {"mensaje": "No hay usuarios que listar", "codigo" : 11, "exito": 0 },
+        {"mensaje": "No hay {sutantivoCambiar} que listar", "codigo" : 11, "exito": 0 },
         {"mensaje": "Hubo un problema leyendo {sutantivoCambiar}", "codigo" : 12, "exito": 0 },   
         {"mensaje": "Hubo un problema leyendo {sutantivoCambiar} {id}", "codigo" : 13, "exito": 0 },
         {"mensaje": "Hubo un error modificando {sutantivoCambiar} {id}", "codigo" :14, "exito": 0 },
@@ -36,6 +37,8 @@ exports.Errores = async function(){
         {"mensaje": "{sutantivoCambiar} {id} no tiene formato adecuado", "codigo" :16, "exito": 0 },
         {"mensaje": "Debe digitar la nueva contraseña", "codigo" : 17, "exito": 0 },
         {"mensaje": "No existe {sutantivoCambiar}", "codigo" : 18, "exito": 0 },
+        {"mensaje": "Hubo un problema ingresando {sutantivoCambiar} {id}", "codigo" : 19, "exito": 0 },
+        {"mensaje": "Hubo un problema borrando {sutantivoCambiar} {id}", "codigo" : 20, "exito": 0 },
         {"mensaje": "Hubo un problema borrando la foto", "codigo" : 0, "exito": 0 },
         {"mensaje": "Hubo un problema guardando la foto", "codigo" : 0, "exito": 0 },
         {"mensaje": "Hubo un problema creando el token", "codigo" : 50, "exito": 0 },
@@ -567,7 +570,7 @@ var voleibol = new Federacion({
 
 
 //  var opciones2 = {strict:false, upsert: true, new: true, setDefaultsOnInsert: true };
-var federaciones = [ajedrez/*, atletismo, badminton, baloncesto, balonmano,
+var federaciones = [ajedrez, atletismo, badminton/*, baloncesto, balonmano,
                     beisbol, billar, boliche, boxeo, canotaje, ciclismo, circket, 
                     ecuestre, esgrima, fisicoculturismo, futbol, gimnasia,
                     golf, halterofilia, hockey, judo, karate, lucha, natacion, patinaje, pelotaVasca,
@@ -589,13 +592,13 @@ console.log("F: " + federaciones.length)
                 federacion: ajedrez._id,
                 activo: true,                                
         },
-       /* {
+        {
                 nombre: "Atletismo",
                 nombreNormalizado: "atletismo",
                 imagenDeporteUrl: "",
                 federacion: atletismo._id,
                 activo: true, 
-                pruebas: [   
+                /*pruebas: [   
                         {nombre: "100 m"},
                         {nombre: "200 m"},
                         {nombre: "400 m"},
@@ -622,7 +625,7 @@ console.log("F: " + federaciones.length)
                         {nombre: "Maratón"},
                         {nombre: "Héptatlón"},
                         {nombre: "Decatlón"},                                       
-                        ]
+                        ]*/
         },
         {
          nombre: "Bádminton",
@@ -630,9 +633,9 @@ console.log("F: " + federaciones.length)
          nombreNormalizado: "badminton",
          federacion: badminton._id,
          activo: true, 
-         pruebas: [{nombre: "Individual"}]
+        /* pruebas: [{nombre: "Individual"}]*/
         },
-        {
+        /*{
                 nombre: "Baloncesto",
                 imagenDeporteUrl: "",
                 nombreNormalizado: "baloncesto",
@@ -1332,7 +1335,7 @@ console.log("F: " + federaciones.length)
 console.log("D: " + deportes.length)
 deportes.forEach(elemento => {       
         Deporte.update(elemento, elemento, opciones, function(err, elemento) {
-        if (err) {console.log(err); return};
+        if (err) {/*console.log(err); */return};
         });  
 });
 

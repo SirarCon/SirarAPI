@@ -18,8 +18,8 @@ exports.crearEvento = async function (req, res) {
         res.json({token: res.locals.token, datos: globales.mensajes(-4, "Evento", req.body.nombre).instance});
     }).catch(err => {
         funcionesGlobales.borrarArchivo(nuevoEvento.fotoUrl);                   
-        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta               
-            res.json({token: res.locals.token, datos: globales.mensajes(10, "Evento", funcionesGlobales.manejarError(err)).instance});
+        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta             
+            res.json({token: res.locals.token, datos: globales.mensajes(10, "Evento.", funcionesGlobales.manejarError(err)).instance});
         }else{//Error llave duplicada
            res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre evento", " ").instance});
         }
@@ -82,16 +82,17 @@ exports.listarTodosEventos = async function(req, res){
      .sort({fechaInicio : 1, fechaFinal: 1})
      .exec()
      .then(async (eventos) => {
-        await funcionesGlobales.asyncForEach(event ,async (element, indice, eventos) => {
+        await funcionesGlobales.asyncForEach(eventos ,async (element, indice, eventos) => {
             eventos[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);                      
           });
-          if(federaciones.length > 0){
+          if(eventos.length > 0){
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion())).instance});  
           }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
           }
      }).catch((err)=>{
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , "").instance});  
+         console.log(err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , " ").instance});  
     });
 }
 //#endregion UsuarioAdm
@@ -103,13 +104,13 @@ exports.listarEventosActivos = async function(req, res){
     .sort({fechaInicio : 1, fechaFinal: 1})     
     .exec()
     .then(async (eventos) => {
-        await funcionesGlobales.asyncForEach(event ,async (element, indice, eventos) => {
+        await funcionesGlobales.asyncForEach(eventos ,async (element, indice, eventos) => {
             eventos[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);                      
           });
-          if(federaciones.length > 0){
+          if(eventos.length > 0){
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion())).instance});  
           }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
           }
      }).catch((err)=>{
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , "").instance});  

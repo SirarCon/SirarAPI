@@ -60,6 +60,9 @@ routerAdm.route('/federacion/:id')
 .get(deporteController.leerFederacion)
 .put(deporteController.modificarFederacion);
 
+routerAdm.route('/prueba/:idPrueba')
+.get(deporteController.listarDeporteXPruebasActivas);
+
 app.use("/api", routerAdm);
 app.use("/", routerGeneral);
     

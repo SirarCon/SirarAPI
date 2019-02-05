@@ -95,7 +95,7 @@ exports.listaTodasFederaciones =  async function(req, res) {
       if(federaciones.length > 0){
           res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,federaciones.map(f => f.todaInformacion())).instance});  
       }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(11).instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ").instance});
       }
   }).catch((err)=>{
       res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones" , "").instance});  
@@ -132,7 +132,7 @@ exports.listaFederacionesActivas =  async function(req, res) {//Menos el que con
       if(federaciones.length > 0){
           res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.infoPublica())).instance});  
       }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(11).instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ").instance});
       }
   }).catch((err)=>{
     console.log(err);
@@ -215,8 +215,8 @@ exports.listarDeportes = async function(req, res){
       deportes[indice].imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(element.imagenDeporteUrl);     
     });
     res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.todaInformacion())).instance})
-  }).catch((err)=>{             
-      res.json({token: res.locals.token,datos: globales.mensajes(12, "las deportes ", " ").instance});  
+  }).catch((err)=>{           
+      res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes ", " ").instance});  
     });
 };
 
@@ -324,11 +324,13 @@ exports.insertarPrueba = async function(req, res){
         if(prueba){
           res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre de prueba " + req.body.nombre, " ").instance}); 
         }else{
-          var nuevaPrueba = new Deporte(req.body);
+          var nuevaPrueba = new Prueba(req.body);
           nuevaPrueba.deporte = req.params.idDeporte;
           nuevaPrueba.save();
+          res.json({token: res.locals.token, datos: globales.mensajes(-4, "Prueba", req.body.nombre).instance});
         }
       }).catch(err=>{
+        console.log(err);
       res.json({token: res.locals.token, datos: globales.mensajes(13, "pruebas", " ").instance});
        });
       }else{
@@ -365,7 +367,7 @@ exports.modificarPrueba = function(req, res){
                   res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte o prueba", "especificada").instance});
               }
             }).catch(err=>{
-              res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ").instance});
+              res.json({token: res.locals.token,datos: globales.mensajes(12, "la prueba", " ").instance});
             })
           }
         }).catch(err=> {
@@ -391,6 +393,7 @@ exports.listarPruebas = async function(req, res){
       res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ").instance});
     }
   }).catch(err=>{
+    console.log(err);
     res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ").instance});  
   });
 };
@@ -405,12 +408,31 @@ exports.listarPruebasActivas = async function(req, res){
   .exec()
   .then(pruebas=>{
     if(pruebas){
-      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, pruebas.map(infoPublica)).instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, pruebas.map(p=>p.infoPublica())).instance});
     }else{
       res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte", " ").instance});
     }
   }).catch(err=>{
+    console.log(err);
     res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ").instance});  
+  });
+};
+
+
+exports.listarDeporteXPruebasActivas = async function(req, res){
+  Prueba.findOne()
+  .where({_id: req.params.idPrueba})
+  .populate("deporte",["_id", "nombre"])
+  .exec()
+  .then(async (prueba)=>{
+    if(prueba){
+      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, prueba.todaInformacion()).instance});
+    }else{
+      res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", " ").instance});
+    }
+  }).catch(err=>{
+console.log(err);
+    res.json({token: res.locals.token,datos: globales.mensajes(12, "la prueba", " ").instance});  
   });
 };
 //#endregion Usuariopúblico
