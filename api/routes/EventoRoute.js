@@ -18,6 +18,9 @@ routerGeneral.route('/eventos')
 routerGeneral.route('/evento/:idEvento')
 .get(eventoController.leerEventoActivo);
 
+routerGeneral.route('/eventosPorAtletas/:idAtleta')
+.get(eventoController.listarEventosActivosAtleta)
+
 routerAdm.route('/eventos')
 .get(eventoController.listarTodosEventos)
 .post(eventoController.crearEvento);

@@ -3,6 +3,7 @@
 //#region Requires
 var mongoose = require('mongoose');
 var Evento = mongoose.model('Evento');
+var AtletaC = mongoose.model('AtletaCompetidor');
 var globales =  require("../Globales.js");
 var funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesEventos = globales.rutaImagenesEventos.instance;
@@ -133,6 +134,57 @@ exports.leerEventoActivo = async function(req, res){
           res.json({token: res.locals.token, datos: globales.mensajes(13, "evento", req.params.idEvento).instance});
     })
 }
+
+exports.listarEventosActivosAtleta = async function(req, res){
+AtletaC.aggregate([
+   {
+       $match: { 
+           atleta: mongoose.Types.ObjectId(req.params.idAtleta),
+       }
+    },
+     {  $lookup: {
+            "localField": "competencia",
+            "from": "competenciaatletas",
+            "foreignField": "_id",
+            "as":  "competencias"
+       }
+    },
+    {
+        $group: {
+           _id: "$competencias.evento",
+       }       
+    },
+    {
+        $lookup:{
+            "localField": "_id",
+            "from": "eventos",
+            "foreignField": "_id",
+            "as": "eventos"
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            eventos: {
+                _id: 1,
+                nombre: 1,                
+            }            
+        }
+    }
+    
+]).exec().then(eventos=> {
+    if(eventos.length > 0){                                               
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos).instance});  
+ }else{
+        res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
+ }
+}).catch(err => {
+res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ").instance});  
+});
+}
+
+
+
 //#endregion Usuariopúblico
 
 //#endregion Eventos
