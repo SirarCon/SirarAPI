@@ -135,7 +135,7 @@ exports.leerEventoActivo = async function(req, res){
     })
 }
 
-exports.listarEventosActivosAtleta = async function(req, res){
+exports.listarEventosAtleta = async function(req, res){
 AtletaC.aggregate([
    {
        $match: { 
@@ -171,7 +171,6 @@ AtletaC.aggregate([
             }            
         }
     }
-    
 ]).exec().then(eventos=> {
     if(eventos.length > 0){                                               
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos).instance});  

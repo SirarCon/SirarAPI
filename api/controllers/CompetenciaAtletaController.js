@@ -239,6 +239,85 @@ exports.listarCompetenciasEventoPruebaFase = function(req, res){
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias", " ").instance});  
     })
 }
+
+//Lista los deportes de un evento seleccionado donde participó un atleta específico
+exports.listarDeportesEventosAtleta = async function(req, res){
+    AtletaC.aggregate([
+       {
+           $match: { 
+               atleta: mongoose.Types.ObjectId(req.params.idAtleta),
+           }
+        },
+         {  $lookup: {
+                "localField": "competencia",
+                "from": "competenciaatletas",
+                "foreignField": "_id",
+                "as":  "competencias"
+           }
+        },
+        {
+            $match: {
+                "competencias.evento" : mongoose.Types.ObjectId(req.params.idEvento)
+            }
+        },
+        {
+            $project: {
+                competencias: {
+                    prueba: 1
+                },
+                _id: 0
+            }
+        },
+        {
+            $unwind: "$competencias"
+         },
+        {
+            $lookup: {
+                "localField": "competencias.prueba",
+                "from": "pruebas",
+                "foreignField": "_id",
+                "as": "pruebas"
+            }
+        },
+        {
+            $project: {
+                pruebas: { 
+                    deporte: 1
+                }
+            }
+        },
+        {
+            $lookup: {
+                "localField": "pruebas.deporte",
+                "from": "deportes",
+                "foreignField": "_id",
+                "as": "deportes" 
+                }            
+        },{
+            $unwind: "$deportes"
+        },
+        {
+            $group:  { 
+                _id: {
+                    _id: "$deportes._id",
+                    nombre: "$deportes.nombre"
+                }
+            }
+        }
+    ]).exec().then(eventos=> {
+        if(eventos.length > 0){                                               
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos).instance});  
+     }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
+     }
+    }).catch(err => {
+    res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ").instance});  
+    });
+    }
+    
+
+
+
 // var groupBy = function(xs, key, key2) {
 //     return xs.reduce(function(rv, x) {
 //       ((rv[x[key]] = rv[x[key]] && rv[x[key2]] = rv[x[key2]]) || []).push(x);

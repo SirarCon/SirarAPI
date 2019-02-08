@@ -27,6 +27,11 @@ routerGeneral.route('/listarFasesPruebaEvento/:idEvento/:idPrueba/:genero')
 
 routerGeneral.route('/listarCompetenciasEventoPruebaFase/:idEvento/:idPrueba/:genero/:fase')    
     .get(competenciaAController.listarCompetenciasEventoPruebaFase)
+
+routerGeneral.route('/listarDeportePorEventoAtleta/:idAtleta/:idEvento')
+    .get(competenciaAController.listarDeportesEventosAtleta)
+
+
 routerAdm.route('/competenciaAtleta')
     .post(competenciaAController.crearCompetenciaAtleta)
 
