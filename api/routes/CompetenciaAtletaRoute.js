@@ -31,6 +31,11 @@ routerGeneral.route('/listarCompetenciasEventoPruebaFase/:idEvento/:idPrueba/:ge
 routerGeneral.route('/listarDeportePorEventoAtleta/:idAtleta/:idEvento')
     .get(competenciaAController.listarDeportesEventosAtleta)
 
+routerGeneral.route('/listarPruebasPorDeporteYEventoAtleta/:idAtleta/:idEvento/:idDeporte')
+    .get(competenciaAController.listarPruebasDeporteEventosAtleta)
+
+routerGeneral.route('/listarPruebasPorPruebaAtleta/:idAtleta/:idEvento/:idPrueba')
+    .get(competenciaAController.listarCompetenciasPorPruebaAtleta)
 
 routerAdm.route('/competenciaAtleta')
     .post(competenciaAController.crearCompetenciaAtleta)

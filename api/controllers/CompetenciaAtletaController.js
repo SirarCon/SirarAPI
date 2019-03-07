@@ -317,6 +317,129 @@ exports.listarDeportesEventosAtleta = async function(req, res){
     
 
 
+//Lista las pruebas según deporte de un evento seleccionado donde participó un atleta específico
+exports.listarPruebasDeporteEventosAtleta = async function(req, res){
+    AtletaC.aggregate([
+       {
+           $match: { 
+               atleta: mongoose.Types.ObjectId(req.params.idAtleta),
+           }
+        },
+         {  $lookup: {
+                "localField": "competencia",
+                "from": "competenciaatletas",
+                "foreignField": "_id",
+                "as":  "competencias"
+           }
+        },
+        {
+            $match: {
+                "competencias.evento" : mongoose.Types.ObjectId(req.params.idEvento)
+            }
+        },
+        {
+            $project: {
+                competencias: {
+                    prueba: 1
+                },
+                _id: 0
+            }
+        },
+        {
+            $unwind: "$competencias"
+         },
+        {
+            $lookup: {
+                "localField": "competencias.prueba",
+                "from": "pruebas",
+                "foreignField": "_id",
+                "as": "pruebas"
+            }
+        },
+        {
+            $project: {
+                pruebas: { 
+                    _id: 1,
+                    nombre: 1,
+                    nombreNormalizado: 1,
+                    deporte: 1
+                }
+            },
+        },
+        {
+            $match:{
+                "pruebas.deporte": mongoose.Types.ObjectId(req.params.idDeporte)
+            }
+        },
+        {
+            $unwind: "$pruebas"
+         },
+        {
+            $group: {
+                _id: {
+                _id: "$pruebas._id",
+                nombre: "$pruebas.nombre",
+                nombreNormalizado: "$pruebas.nombreNormalizado"
+            }
+            }
+        }
+    ]).exec().then(eventos=> {
+        if(eventos.length > 0){                                               
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos).instance});  
+     }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
+     }
+    }).catch(err => {
+        console.log(err)
+    res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ").instance});  
+    });
+    }
+    
+//Lista las pruebas según deporte de un evento seleccionado donde participó un atleta específico
+exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
+    AtletaC.aggregate([
+       {
+           $match: { 
+               atleta: mongoose.Types.ObjectId(req.params.idAtleta),
+           }
+        },
+         {  $lookup: {
+                "localField": "competencia",
+                "from": "competenciaatletas",
+                "foreignField": "_id",
+                "as":  "competencias"
+           }
+        },
+        {
+            $match: {
+                "competencias.evento" : mongoose.Types.ObjectId(req.params.idEvento),
+                "competencias.prueba" : mongoose.Types.ObjectId(req.params.idPrueba)
+            }
+        },
+        {
+            $project: {
+                competencias: { 
+                    _id: 1,
+                    descripcion: 1,
+                    fase: 1,
+                },
+                _id: 0
+                
+            },
+        },
+    ]).exec().then(competencias=> {
+        if(competencias.length > 0){                                               
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias).instance});  
+     }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "competencias", " ").instance});
+     }
+    }).catch(err => {
+        console.log(err)
+    res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias del atleta", " ").instance});  
+    });
+    }
+
+
 
 // var groupBy = function(xs, key, key2) {
 //     return xs.reduce(function(rv, x) {

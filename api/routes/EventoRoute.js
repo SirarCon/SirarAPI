@@ -19,7 +19,7 @@ routerGeneral.route('/evento/:idEvento')
 .get(eventoController.leerEventoActivo);
 
 routerGeneral.route('/eventosPorAtletas/:idAtleta')
-.get(eventoController.listarEventosActivosAtleta)
+.get(eventoController.listarEventosAtleta)
 
 routerAdm.route('/eventos')
 .get(eventoController.listarTodosEventos)
