@@ -27,7 +27,7 @@ var express = require('express'),
   app = express(),
   port = process.env.PORT || 3000,
   mongoose = require('mongoose'),
-  compression = require('compression'),
+  //compression = require('compression'),
   bodyParser = require('body-parser'),
   cors = require('cors');
   cargarModelos();
@@ -38,7 +38,7 @@ mongoose.connect(require('./api/Globales.js').nombreBD.instance)
     app.use(cors());
     app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
     app.use(bodyParser.json({limit: '10mb'}));
-    app.use(compression());
+   // app.use(compression());
   
     await require('./api/recursos/InicializacionDatos').Errores();
     await require('./api/Globales').inicializarMensajes(mongoose);
