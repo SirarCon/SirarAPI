@@ -81,5 +81,6 @@ module.exports.inicializarMensajes = async function(mongoose){
 
 module.exports.mensajes = function(codigo, sustantivo, identificador, objeto){
         var mensaje = todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( sustantivo, identificador, objeto)
+        mensaje = mensaje.replace(/\s+/g, ' ').trim();
         return inicializarGLobal(mensajes, mensaje);
 }
