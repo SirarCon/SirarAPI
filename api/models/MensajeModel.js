@@ -20,7 +20,9 @@ var MensajeSchema = new Schema({
 MensajeSchema.method("obtenerMensaje" , function(nuevoMensaje, id , objeto){
   if(id && nuevoMensaje){
     if(!objeto){
-    return {exito: this.exito,codigo: this.codigo, mensaje: this.mensaje.replace("{sutantivoCambiar}", nuevoMensaje).replace("{id}", id)};
+    return {exito: this.exito,codigo: this.codigo, mensaje: this.mensaje
+                                                                  .replace("{sutantivoCambiar}", nuevoMensaje).replace("{id}", id)
+                                                                  .replace(/\s+/g, ' ').trim()};
     }
     else{
     return {exito: this.exito,codigo: this.codigo, mensaje: objeto};
@@ -28,7 +30,7 @@ MensajeSchema.method("obtenerMensaje" , function(nuevoMensaje, id , objeto){
   }
   else{
     if(!objeto){
-      return {exito: this.exito, codigo: this.codigo, mensaje: this.mensaje};
+      return {exito: this.exito, codigo: this.codigo, mensaje: this.mensaje.replace(/\s+/g, ' ').trim()};
     }
     else{
       return {exito: this.exito, codigo: this.codigo, mensaje: objeto};
