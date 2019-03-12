@@ -22,7 +22,7 @@ var PruebaSchema = new Schema({
         type: Boolean,
         required: "Seleccione si la prueba es activa"
     },
-    tipo:{
+    tipo:{//Definir
         type: Number,
     },
     fases: {
