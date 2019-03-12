@@ -15,6 +15,9 @@ var AtletaCompetidorSchema = new Schema({
         ref: 'CompetenciaAtleta',
         required:'Seleccione una competencia por favor'
     },
+    esUltimoRegistro: {
+        type: Boolean,
+    },
     marcadores:{
         type:[{
             set: {
