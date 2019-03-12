@@ -63,6 +63,16 @@ routerAdm.route('/federacion/:id')
 routerAdm.route('/prueba/:idPrueba')
 .get(deporteController.listarDeporteXPruebasActivas);
 
+    
+// production error handler
+const HTTP_SERVER_ERROR = 500;
+app.use(function(err, req, res, next) {
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  return res.status(err.status || HTTP_SERVER_ERROR).render('500');
+})    
 app.use("/api", routerAdm);
 app.use("/", routerGeneral);
     
