@@ -72,6 +72,7 @@ exports.modificarAtleta  = async function(req, res){
                     instagramUrl: req.body.instagramUrl,
                     twitterUrl: req.body.twitterUrl,
                     altura: req.body.altura,
+                    peso: req.body.peso,
                     codigoPais: req.body.codigoPais,
                     deporte: req.body.deporte,
                     activo: req.body.activo

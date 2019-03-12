@@ -112,6 +112,9 @@ var AtletaSchema = new Schema({
       altura:{
         type: Number,
       },
+      peso:{
+        type: Number
+      },
       codigoPais: {
         type: String,
         maxlength: [10, "El código del país tiene que ser menor a 11 caracteres"],
