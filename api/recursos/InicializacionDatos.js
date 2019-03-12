@@ -10,7 +10,7 @@ var funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
 
 exports.Errores = async function(){
- Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+ //Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
   var mensajes = [
         {"mensaje": "", "codigo": -1, "exito": 1 },
         {"mensaje": "{sutantivoCambiar} {id} fue borrado.", "codigo": -2, "exito": 1 },

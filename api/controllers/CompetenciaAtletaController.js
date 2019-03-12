@@ -74,13 +74,13 @@ CompetenciaA.findOneAndUpdate({_id: req.params.idCompetencia},
 //todo Revisar mensaje y validación de repetidos, ver update de atleta (deporte no cambia)
 exports.ingresarAtletaACompetencia = async function(req, res){
 CompetenciaA.findOne()
-.where({_id : req.body.competencia})
+.where({_id : mongoose.Types.ObjectId(req.body.competencia)})
 .exec()
 .then(competencia =>{
     if(competencia){
         var nuevoAtelta = new AtletaC(req.body);
         nuevoAtelta.save(); //Todo cambiar a -7 no -2
-        res.json({token: res.locals.token, datos: globales.mensajes(-2, "Atleta a Competencia", " ").instance});    
+        res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ").instance});    
     }else{
         res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ").instance});
     }
