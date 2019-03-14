@@ -106,16 +106,48 @@ exports.eliminarAtletaDeCompetencia = async function(req, res){
 };
 
 exports.listarAtletasCompetencia = async function(req, res){ 
-AtletaC.find()
-.where({competencia: req.params.idCompetencia})
-.populate("atleta", ["_id", "nombre"], null, { sort:{ "nombreNormalizado" : 1 }})
-.exec().then(atletas =>{
+AtletaC.aggregate([
+    {
+        $match:{
+            competencia: mongoose.Types.ObjectId(req.params.idCompetencia),                               
+        }
+    },
+    {
+        $group:{
+            _id: {
+                atleta: "$atleta",
+                marcadores: "$marcadores"
+            }
+    }
+    },
+    {
+        $lookup: {
+            "localField": "_id.atleta",
+            "from": "atletas",
+            "foreignField": "_id",
+            "as": "atletainfo"
+        }
+    },
+    {
+        $unwind: "$atletainfo"
+    },
+    {
+        $project:{
+                _id:{
+                    _idAtleta : "$atletainfo._id",
+                    nombre : "$atletainfo.nombre", 
+                    marcadores : 1 
+            }         
+        }
+    }
+]).exec().then(atletas =>{
     if(atletas.length > 0){
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas).instance});  
     }else{
       res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ").instance});
     }
   }).catch(err=>{
+      console.log(err)
     res.json({token: res.locals.token,datos: globales.mensajes(12, "los atletas", " ").instance});  
 });
 };

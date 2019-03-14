@@ -1,14 +1,14 @@
 function cargarModelos(){
   require('./api/models/MensajeModel');
+  require('./api/models/BanderaModel');
   require('./api/models/UserModel'); //created model loading here
   require('./api/models/FederacionModel');
   require('./api/models/DeporteModel');
   require('./api/models/AtletaModel');
   require('./api/models/EventoModel');
   require('./api/models/PruebaModel');
-  require('./api/models/CompetenciaAtletaModel')
-  require('./api/models/AtletaCompetidorModel');
-  
+  require('./api/models/CompetenciaAtletaModel');
+  require('./api/models/AtletaCompetidorModel');  
 }
 
 function registrarRutas(app, express){
@@ -18,6 +18,7 @@ var routes = [require('./api/routes/UserRoute'),
              require('./api/routes/DeporteRoute'),
              require('./api/routes/EventoRoute'),
              require('./api/routes/CompetenciaAtletaRoute'),
+             require('./api/routes/RecursoRoute')
               ]; 
    //register the route
    routes.forEach((ruta) =>{ ruta(app, express)});
@@ -27,7 +28,7 @@ var express = require('express'),
   app = express(),
   port = process.env.PORT || 3000,
   mongoose = require('mongoose'),
-  //compression = require('compression'),
+  compression = require('compression'),
   bodyParser = require('body-parser'),
   cors = require('cors');
   cargarModelos();
@@ -38,7 +39,7 @@ mongoose.connect(require('./api/Globales.js').nombreBD.instance)
     app.use(cors());
     app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
     app.use(bodyParser.json({limit: '10mb'}));
-   // app.use(compression());
+   app.use(compression());
   
     await require('./api/recursos/InicializacionDatos').Errores();
     await require('./api/Globales').inicializarMensajes(mongoose);

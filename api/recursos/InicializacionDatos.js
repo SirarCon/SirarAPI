@@ -4,6 +4,7 @@ Mensaje = mongoose.model('Mensaje'),
 Usuario = mongoose.model('Usuario'),
 Deporte = mongoose.model('Deporte'),
 Federacion = mongoose.model('Federacion'),
+Bandera = mongoose.model('Bandera'),
 funcionesGlobales = require("../FuncionesGlobales.js");
 var globales =  require("../Globales.js");
 var funcionesGlobales = require("../FuncionesGlobales.js");
@@ -45,9 +46,529 @@ exports.Errores = async function(){
         {"mensaje": "Por su seguridad la sesión ha expirado", "codigo": 403, "exito": 0 }
 ]
 
+var banderas = [
+        {
+            "name": "Antigua y Barbuda",
+            "numericCode": "028",
+            "flag": "https://restcountries.eu/data/atg.svg"
+        },
+        {
+            "name": "Argentina",
+            "numericCode": "032",
+            "flag": "https://restcountries.eu/data/arg.svg"
+        },
+        {
+            "name": "Aruba",
+            "numericCode": "533",
+            "flag": "https://restcountries.eu/data/abw.svg"
+        },
+        {
+            "name": "Australia",
+            "numericCode": "036",
+            "flag": "https://restcountries.eu/data/aus.svg"
+        },
+        {
+            "name": "Austria",
+            "numericCode": "040",
+            "flag": "https://restcountries.eu/data/aut.svg"
+        },
+        {
+            "name": "Bahamas",
+            "numericCode": "044",
+            "flag": "https://restcountries.eu/data/bhs.svg"
+        },
+        {
+            "name": "Barbados",
+            "numericCode": "052",
+            "flag": "https://restcountries.eu/data/brb.svg"
+        },
+        {
+            "name": "Bélgica",
+            "numericCode": "056",
+            "flag": "https://restcountries.eu/data/bel.svg"
+        },
+        {
+            "name": "Belice",
+            "numericCode": "084",
+            "flag": "https://restcountries.eu/data/blz.svg"
+        },
+        {
+            "name": "Bermuda",
+            "numericCode": "060",
+            "flag": "https://restcountries.eu/data/bmu.svg"
+        },
+        {
+            "name": "Bolivia",
+            "numericCode": "068",
+            "flag": "https://restcountries.eu/data/bol.svg"
+        },
+        {
+            "name": "Bosnia y Herzegovina",
+            "numericCode": "070",
+            "flag": "https://restcountries.eu/data/bih.svg"
+        },
+        {
+            "name": "Brasil",
+            "numericCode": "076",
+            "flag": "https://restcountries.eu/data/bra.svg"
+        },
+        {
+            "name": "Bulgaria",
+            "numericCode": "100",
+            "flag": "https://restcountries.eu/data/bgr.svg"
+        },
+        {
+            "name": "Camerún",
+            "numericCode": "120",
+            "flag": "https://restcountries.eu/data/cmr.svg"
+        },
+        {
+            "name": "Canadá",
+            "numericCode": "124",
+            "flag": "https://restcountries.eu/data/can.svg"
+        },
+        {
+            "name": "Cabo Verde",
+            "numericCode": "132",
+            "flag": "https://restcountries.eu/data/cpv.svg"
+        },
+        {
+            "name": "Islas Caimán",
+            "numericCode": "136",
+            "flag": "https://restcountries.eu/data/cym.svg"
+        },
+        {
+            "name": "Chile",
+            "numericCode": "152",
+            "flag": "https://restcountries.eu/data/chl.svg"
+        },
+        {
+            "name": "China",
+            "numericCode": "156",
+            "flag": "https://restcountries.eu/data/chn.svg"
+        },
+        {
+            "name": "Colombia",
+            "numericCode": "170",
+            "flag": "https://restcountries.eu/data/col.svg"
+        },
+        {
+            "name": "Congo",
+            "numericCode": "178",
+            "flag": "https://restcountries.eu/data/cog.svg"
+        },
+        {
+            "name": "Costa Rica",
+            "numericCode": "188",
+            "flag": "https://restcountries.eu/data/cri.svg"
+        },
+        {
+            "name": "Croacia",
+            "numericCode": "191",
+            "flag": "https://restcountries.eu/data/hrv.svg"
+        },
+        {
+            "name": "Cuba",
+            "numericCode": "192",
+            "flag": "https://restcountries.eu/data/cub.svg"
+        },
+        {
+            "name": "Curazao",
+            "numericCode": "531",
+            "flag": "https://restcountries.eu/data/cuw.svg"
+        },
+        {
+            "name": "República Checa",
+            "numericCode": "203",
+            "flag": "https://restcountries.eu/data/cze.svg"
+        },
+        {
+            "name": "Dinamarca",
+            "numericCode": "208",
+            "flag": "https://restcountries.eu/data/dnk.svg"
+        },
+        {
+            "name": "República Dominicana",
+            "numericCode": "214",
+            "flag": "https://restcountries.eu/data/dom.svg"
+        },
+        {
+            "name": "Ecuador",
+            "numericCode": "218",
+            "flag": "https://restcountries.eu/data/ecu.svg"
+        },
+        {
+            "name": "Egipto",
+            "numericCode": "818",
+            "flag": "https://restcountries.eu/data/egy.svg"
+        },
+        {
+            "name": "El Salvador",
+            "numericCode": "222",
+            "flag": "https://restcountries.eu/data/slv.svg"
+        },
+        {
+            "name": "Finlandia",
+            "numericCode": "246",
+            "flag": "https://restcountries.eu/data/fin.svg"
+        },
+        {
+            "name": "Francia",
+            "numericCode": "250",
+            "flag": "https://restcountries.eu/data/fra.svg"
+        },
+        {
+            "name": "Alemania",
+            "numericCode": "276",
+            "flag": "https://restcountries.eu/data/deu.svg"
+        },
+        {
+            "name": "Ghana",
+            "numericCode": "288",
+            "flag": "https://restcountries.eu/data/gha.svg"
+        },
+        {
+            "name": "Grecia",
+            "numericCode": "300",
+            "flag": "https://restcountries.eu/data/grc.svg"
+        },
+        {
+            "name": "Granada",
+            "numericCode": "308",
+            "flag": "https://restcountries.eu/data/grd.svg"
+        },
+        {
+            "name": "Guadalupe",
+            "numericCode": "312",
+            "flag": "https://restcountries.eu/data/glp.svg"
+        },
+        {
+            "name": "Guatemala",
+            "numericCode": "320",
+            "flag": "https://restcountries.eu/data/gtm.svg"
+        },
+        {
+            "name": "Guinea",
+            "numericCode": "324",
+            "flag": "https://restcountries.eu/data/gin.svg"
+        },
+        {
+            "name": "Guyana",
+            "numericCode": "328",
+            "flag": "https://restcountries.eu/data/guy.svg"
+        },
+        {
+            "name": "Haití",
+            "numericCode": "332",
+            "flag": "https://restcountries.eu/data/hti.svg"
+        },
+        {
+            "name": "Honduras",
+            "numericCode": "340",
+            "flag": "https://restcountries.eu/data/hnd.svg"
+        },
+        {
+            "name": "Hong Kong",
+            "numericCode": "344",
+            "flag": "https://restcountries.eu/data/hkg.svg"
+        },
+        {
+            "name": "Hungría",
+            "numericCode": "348",
+            "flag": "https://restcountries.eu/data/hun.svg"
+        },
+        {
+            "name": "Islandia",
+            "numericCode": "352",
+            "flag": "https://restcountries.eu/data/isl.svg"
+        },
+        {
+            "name": "India",
+            "numericCode": "356",
+            "flag": "https://restcountries.eu/data/ind.svg"
+        },
+        {
+            "name": "Indonesia",
+            "numericCode": "360",
+            "flag": "https://restcountries.eu/data/idn.svg"
+        },
+        {
+            "name": "Costa de Marfil",
+            "numericCode": "384",
+            "flag": "https://restcountries.eu/data/civ.svg"
+        },
+        {
+            "name": "Irán",
+            "numericCode": "364",
+            "flag": "https://restcountries.eu/data/irn.svg"
+        },
+        {
+            "name": "Irak",
+            "numericCode": "368",
+            "flag": "https://restcountries.eu/data/irq.svg"
+        },
+        {
+            "name": "Irlanda",
+            "numericCode": "372",
+            "flag": "https://restcountries.eu/data/irl.svg"
+        },
+        {
+            "name": "Israel",
+            "numericCode": "376",
+            "flag": "https://restcountries.eu/data/isr.svg"
+        },
+        {
+            "name": "Italia",
+            "numericCode": "380",
+            "flag": "https://restcountries.eu/data/ita.svg"
+        },
+        {
+            "name": "Jamaica",
+            "numericCode": "388",
+            "flag": "https://restcountries.eu/data/jam.svg"
+        },
+        {
+            "name": "Japón",
+            "numericCode": "392",
+            "flag": "https://restcountries.eu/data/jpn.svg"
+        },
+        {
+            "name": "Kenia",
+            "numericCode": "404",
+            "flag": "https://restcountries.eu/data/ken.svg"
+        },
+        {
+            "name": "Malasia",
+            "numericCode": "548",
+            "flag": "https://restcountries.eu/data/mys.svg"
+        },
+        {
+            "name": "Martinica",
+            "numericCode": "474",
+            "flag": "https://restcountries.eu/data/mtq.svg"
+        },
+        {
+            "name": "México",
+            "numericCode": "484",
+            "flag": "https://restcountries.eu/data/mex.svg"
+        },
+        {
+            "name": "Holanda",
+            "numericCode": "528",
+            "flag": "https://restcountries.eu/data/nld.svg"
+        },
+        {
+            "name": "Nueva Zelanda",
+            "numericCode": "554",
+            "flag": "https://restcountries.eu/data/nzl.svg"
+        },
+        {
+            "name": "Nicaragüa",
+            "numericCode": "558",
+            "flag": "https://restcountries.eu/data/nic.svg"
+        },
+        {
+            "name": "Nigeria",
+            "numericCode": "566",
+            "flag": "https://restcountries.eu/data/nga.svg"
+        },
+        {
+            "name": "Corea del Norte",
+            "numericCode": "408",
+            "flag": "https://restcountries.eu/data/prk.svg"
+        },
+        {
+            "name": "Noruega",
+            "numericCode": "578",
+            "flag": "https://restcountries.eu/data/nor.svg"
+        },
+        {
+            "name": "Omán",
+            "numericCode": "512",
+            "flag": "https://restcountries.eu/data/omn.svg"
+        },
+        {
+            "name": "Pakistán",
+            "numericCode": "586",
+            "flag": "https://restcountries.eu/data/pak.svg"
+        },
+        {
+            "name": "Panamá",
+            "numericCode": "591",
+            "flag": "https://restcountries.eu/data/pan.svg"
+        },
+        {
+            "name": "Paraguay",
+            "numericCode": "600",
+            "flag": "https://restcountries.eu/data/pry.svg"
+        },
+        {
+            "name": "Perú",
+            "numericCode": "604",
+            "flag": "https://restcountries.eu/data/per.svg"
+        },
+        {
+            "name": "Polonia",
+            "numericCode": "616",
+            "flag": "https://restcountries.eu/data/pol.svg"
+        },
+        {
+            "name": "Portugal",
+            "numericCode": "620",
+            "flag": "https://restcountries.eu/data/prt.svg"
+        },
+        {
+            "name": "Puerto Rico",
+            "numericCode": "630",
+            "flag": "https://restcountries.eu/data/pri.svg"
+        },
+        {
+            "name": "Qatar",
+            "numericCode": "634",
+            "flag": "https://restcountries.eu/data/qat.svg"
+        },
+        {
+            "name": "Rumania",
+            "numericCode": "642",
+            "flag": "https://restcountries.eu/data/rou.svg"
+        },
+        {
+            "name": "Rusia",
+            "numericCode": "643",
+            "flag": "https://restcountries.eu/data/rus.svg"
+        },
+        {
+            "name": "Ruanda",
+            "numericCode": "646",
+            "flag": "https://restcountries.eu/data/rwa.svg"
+        },
+        {
+            "name": "Arabia Saudita",
+            "numericCode": "682",
+            "flag": "https://restcountries.eu/data/sau.svg"
+        },
+        {
+            "name": "Senegal",
+            "numericCode": "686",
+            "flag": "https://restcountries.eu/data/sen.svg"
+        },
+        {
+            "name": "Serbia",
+            "numericCode": "688",
+            "flag": "https://restcountries.eu/data/srb.svg"
+        },
+        {
+            "name": "Eslovenia",
+            "numericCode": "705",
+            "flag": "https://restcountries.eu/data/svn.svg"
+        },
+        {
+            "name": "Sudáfrica",
+            "numericCode": "710",
+            "flag": "https://restcountries.eu/data/zaf.svg"
+        },
+        {
+            "name": "Corea del Sur",
+            "numericCode": "410",
+            "flag": "https://restcountries.eu/data/kor.svg"
+        },
+        {
+            "name": "España",
+            "numericCode": "724",
+            "flag": "https://restcountries.eu/data/esp.svg"
+        },
+        {
+            "name": "Surinam",
+            "numericCode": "740",
+            "flag": "https://restcountries.eu/data/sur.svg"
+        },
+        {
+            "name": "Suecia",
+            "numericCode": "752",
+            "flag": "https://restcountries.eu/data/swe.svg"
+        },
+        {
+            "name": "Suiza",
+            "numericCode": "756",
+            "flag": "https://restcountries.eu/data/che.svg"
+        },
+        {
+            "name": "Taiwan",
+            "numericCode": "158",
+            "flag": "https://restcountries.eu/data/twn.svg"
+        },
+        {
+            "name": "Tailandia",
+            "numericCode": "764",
+            "flag": "https://restcountries.eu/data/tha.svg"
+        },
+        {
+            "name": "Trinidad y Tobago",
+            "numericCode": "780",
+            "flag": "https://restcountries.eu/data/tto.svg"
+        },
+        {
+            "name": "Túnez",
+            "numericCode": "788",
+            "flag": "https://restcountries.eu/data/tun.svg"
+        },
+        {
+            "name": "Turquía",
+            "numericCode": "792",
+            "flag": "https://restcountries.eu/data/tur.svg"
+        },
+        {
+            "name": "Uganda",
+            "numericCode": "800",
+            "flag": "https://restcountries.eu/data/uga.svg"
+        },
+        {
+            "name": "Emiratos Arabes",
+            "numericCode": "784",
+            "flag": "https://restcountries.eu/data/are.svg"
+        },
+        {
+            "name": "Reino Unido",
+            "numericCode": "826",
+            "flag": "https://restcountries.eu/data/gbr.svg"
+        },
+        {
+            "name": "Estados Unidos",
+            "numericCode": "840",
+            "flag": "https://restcountries.eu/data/usa.svg"
+        },
+        {
+            "name": "Uruguay",
+            "numericCode": "858",
+            "flag": "https://restcountries.eu/data/ury.svg"
+        },
+        {
+            "name": "Uzbekistán",
+            "numericCode": "860",
+            "flag": "https://restcountries.eu/data/uzb.svg"
+        },
+        {
+            "name": "Venezuela",
+            "numericCode": "862",
+            "flag": "https://restcountries.eu/data/ven.svg"
+        },
+        {
+            "name": "Otro",
+            "numericCode": "999",
+            "flag": ""
+        }
+    ]
+
+
 var opciones = { upsert: true, new: true, setDefaultsOnInsert: true };
 mensajes.forEach(elemento => {
         Mensaje.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
+        if (err) return;
+        });  
+});
+
+banderas.forEach(elemento => {
+        Bandera.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
         if (err) return;
         });  
 });

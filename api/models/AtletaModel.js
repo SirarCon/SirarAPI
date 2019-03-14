@@ -8,19 +8,8 @@ var AtletaSchema = new Schema({
     nombre: {
         type: String,
         required: 'Digite un nombre por favor',
-        maxlength: [20, "El nombre tiene que ser menor a 21 caracteres"],
+        maxlength: [60, "El nombre tiene que ser menor a 21 caracteres"],
         minlength: [2, "El nombre tiene que ser mayor a 1 caracteres"],
-      },
-      apellido1: {
-        type: String,
-        required: 'Digite el primer apellido por favor',
-        maxlength: [20, "El apellido 1 tiene que ser menor a 21 caracteres"],
-        minlength: [2, "El apellido 1 tiene que ser mayor a 1 caracteres"],
-      },
-      apellido2: {
-        type: String,
-        maxlength: [20, "El apellido 2 tiene que ser menor a 21 caracteres"],
-        minlength: [2, "El apellido 2 tiene que ser mayor a 1 caracteres"],
       },
       nombreNormalizado:{
         type: String,
@@ -114,18 +103,18 @@ var AtletaSchema = new Schema({
       },
       peso:{
         type: Number
-      },
-      codigoPais: {
-        type: String,
-        maxlength: [10, "El código del país tiene que ser menor a 11 caracteres"],
-      },
+      },      
       activo: {
         type: Boolean,
         required: "Seleccione si el atleta está activo"
       },
       deporte:{ type: Schema.Types.ObjectId,
                 ref: "Deporte",                     
-      }
+      },
+      pais: {
+        type: Schema.Types.ObjectId,
+        ref: "Bandera",
+      },
 });
 
 AtletaSchema.pre('save', function(next) {
@@ -154,8 +143,6 @@ AtletaSchema.method('todaInformacion', function() {
     return {
       id: this._id,
       nombre: this.nombre,
-      apellido1: this.apellido1,
-      apellido2: this.apellido2,
       fotoUrl: this.fotoUrl,
       correo: this.correo,
       telefono: this.telefono,
@@ -188,8 +175,6 @@ AtletaSchema.method('infoPublica', function() {
   return {
     id: this._id,
     nombre: this.nombre,
-    apellido1: this.apellido1,
-    apellido2: this.apellido2,
     fotoUrl: this.fotoUrl,
     correo: this.correo,
     telefono: this.telefono,

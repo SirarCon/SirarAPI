@@ -29,12 +29,12 @@ var EventoSchema = new Schema({
         type: String,
         required: "Digite la ciudad del evento"
       },
-      pais:{
-        type: String,
-        required: "Digite el país del evento"
-      },
       activo: {
         type: Boolean,
+    },
+    pais: {
+      type: Schema.Types.ObjectId,
+      ref: "Bandera",
     },
   });
 

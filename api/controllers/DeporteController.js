@@ -232,7 +232,7 @@ exports.listarDeportesXFederacion = async function(req, res){
     });
     res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.todaInformacion())).instance})
   }).catch((err)=>{             
-      res.json({token: res.locals.token,datos: globales.mensajes(12, "las deportes ", " ").instance});  
+      res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes ", " ").instance});  
     });
 };
 

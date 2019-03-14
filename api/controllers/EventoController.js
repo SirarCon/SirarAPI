@@ -65,6 +65,7 @@ exports.modificarEvento = async function(req, res){
 exports.leerEvento = async function(req, res){
     Evento.findOne()
     .where({_id: req.params.idEvento})
+    .populate("pais","name flag")
     .exec()
     .then(async evento => {
         if(evento){
@@ -81,6 +82,7 @@ exports.leerEvento = async function(req, res){
 exports.listarTodosEventos = async function(req, res){
     Evento.find()
      .sort({fechaInicio : 1, fechaFinal: 1})
+     .populate("pais","name flag")
      .exec()
      .then(async (eventos) => {
         await funcionesGlobales.asyncForEach(eventos ,async (element, indice, eventos) => {
@@ -102,7 +104,8 @@ exports.listarTodosEventos = async function(req, res){
 exports.listarEventosActivos = async function(req, res){
     Evento.find()
     .where({activo: true })
-    .sort({fechaInicio : 1, fechaFinal: 1})     
+    .sort({fechaInicio : 1, fechaFinal: 1})   
+    .populate("pais","name flag")
     .exec()
     .then(async (eventos) => {
         await funcionesGlobales.asyncForEach(eventos ,async (element, indice, eventos) => {
@@ -114,6 +117,7 @@ exports.listarEventosActivos = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
           }
      }).catch((err)=>{
+         console.log(err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , "").instance});  
     });
 }
@@ -122,6 +126,7 @@ exports.listarEventosActivos = async function(req, res){
 exports.leerEventoActivo = async function(req, res){
     Evento.findOne()
     .where({_id: req.params.idEvento, activo: true})
+    .populate("pais","name flag")
     .exec()
     .then(async evento => {
         if(evento){

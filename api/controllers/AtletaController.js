@@ -48,8 +48,6 @@ exports.modificarAtleta  = async function(req, res){
                 Atleta.findOneAndUpdate({_id: req.params.id},
                 {$set: {
                     nombre: req.body.nombre,
-                    apellido1: req.body.apellido1,
-                    apellido2: req.body.apellido2,
                     fotoUrl: req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesAtletas, req.body.fotoUrl , req.params.id) : undefined,
                     correo: req.body.correo,
                     telefono: req.body.telefono,
@@ -73,7 +71,7 @@ exports.modificarAtleta  = async function(req, res){
                     twitterUrl: req.body.twitterUrl,
                     altura: req.body.altura,
                     peso: req.body.peso,
-                    codigoPais: req.body.codigoPais,
+                    pais: req.body.pais,
                     deporte: req.body.deporte,
                     activo: req.body.activo
                 }}, {projection:{}, new: false, runValidators: true})
@@ -106,7 +104,7 @@ exports.modificarAtleta  = async function(req, res){
   exports.listarAtletas = async function(req, res){
     Atleta.find()
     .sort({nombreNormalizado : 1})
-    .populate({path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}})  
+    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}}, {path: "pais", select: "name flag" }])  
     .exec()
     .then(async (atletas)=>{
           await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
@@ -125,7 +123,7 @@ exports.modificarAtleta  = async function(req, res){
 exports.leerAtleta  = async function(req, res){
     Atleta.findOne()
     .where({_id: req.params.id})
-    .populate({path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}})  
+    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}}, {path: "pais", select: "name flag" }])  
     .exec()
     .then(async (atleta) => {
         if(atleta){            
@@ -144,7 +142,7 @@ exports.listarAtletasActivos = async function(req, res){
     Atleta.find()
     .where({activo: true})  
     .sort({nombreNormalizado : 1})
-    .populate({path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}})      
+    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}}, {path: "pais", select: "name flag" }])      
     .exec()
     .then(async (atletas)=>{
           await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
@@ -163,7 +161,7 @@ exports.listarAtletasActivos = async function(req, res){
 exports.leerAtletaActivo  = async function(req, res){
     Atleta.findOne()
     .where({_id: req.params.id})
-    .populate({path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}})  
+    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}}, {path: "pais", select: "name flag" }])  
     .exec()
     .then(async (atleta) => {
         if(atleta){
