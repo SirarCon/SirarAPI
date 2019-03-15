@@ -113,7 +113,7 @@ var AtletaSchema = new Schema({
       },
       pais: {
         type: Schema.Types.ObjectId,
-        ref: "Bandera",
+        ref: "Pais",
       },
 });
 

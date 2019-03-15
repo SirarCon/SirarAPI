@@ -8,8 +8,11 @@ module.exports = function(app, express) {
 //Se le assignan los middleware a los usuarios adm antes del login
 routerGeneral.use(seguridad.verificarTokenGeneral);
 
-routerGeneral.route('/banderas')
-.get(recursoController.obtenerBanderas);
+routerGeneral.route('/paises')
+.get(recursoController.obtenerPaises);
+
+routerGeneral.route('/fases')
+.get(recursoController.obtenerFases);
 
 app.use("/", routerGeneral);
 };

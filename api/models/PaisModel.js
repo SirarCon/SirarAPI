@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Bandera = new Schema({
+var Pais = new Schema({
     name: {
         type: String
     },
@@ -12,6 +12,6 @@ var Bandera = new Schema({
     flag: {
         type: String
     }
-});
+}, {collection: "paises"});
 
-module.exports = mongoose.model("Bandera", Bandera)
+module.exports = mongoose.model("Pais", Pais)

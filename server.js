@@ -1,6 +1,7 @@
 function cargarModelos(){
   require('./api/models/MensajeModel');
-  require('./api/models/BanderaModel');
+  require('./api/models/PaisModel');
+  require('./api/models/FaseModel');
   require('./api/models/UserModel'); //created model loading here
   require('./api/models/FederacionModel');
   require('./api/models/DeporteModel');

@@ -34,7 +34,7 @@ var EventoSchema = new Schema({
     },
     pais: {
       type: Schema.Types.ObjectId,
-      ref: "Bandera",
+      ref: "Pais",
     },
   });
 

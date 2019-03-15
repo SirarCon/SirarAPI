@@ -3,28 +3,25 @@ var mongoose = require("mongoose");
 var funcionesGlobales = require("../FuncionesGlobales.js");
 var Schema = mongoose.Schema;
 
-var EquipoSchema = new Schema({
-    nombre: {
-        type: String,
-        required: 'Digite un nombre por favor',
-        maxlength: [40,  "El nombre tiene que ser menor a 41 caracteres"],
-        minlength: [2, "El nombre tiene que ser mayor a 1 caracteres"],
-      },
-      nombreNormalizado:{
-        type: String,
-      },
-      fotoUrl: {
-        type: String   
-      },
-      activo: {
-          type: Boolean
-      },
-      atletas: {
-        type:[
-              {
-                 type: Schema.Types.ObjectId,
-                 ref: "Atleta"
-              }
-            ]
-        }
-    })
+var Equipo = new Schema({            
+  prueba: {
+    type: Schema.Types.ObjectId,              
+    ref: 'Prueba'
+  },
+  pais: {
+    type: Schema.Types.ObjectId,
+    ref: 'Pais',
+    required: "Seleccione el país del equipo"
+  },
+  atletas: {
+    type: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: "Atleta"
+            }
+    ]
+  }
+}) ;
+
+
+module.exports = mongoose.model('Equipo', Equipo);

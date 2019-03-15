@@ -4,7 +4,8 @@ Mensaje = mongoose.model('Mensaje'),
 Usuario = mongoose.model('Usuario'),
 Deporte = mongoose.model('Deporte'),
 Federacion = mongoose.model('Federacion'),
-Bandera = mongoose.model('Bandera'),
+Pais = mongoose.model('Pais'),
+Fase = mongoose.model('Fase'),
 funcionesGlobales = require("../FuncionesGlobales.js");
 var globales =  require("../Globales.js");
 var funcionesGlobales = require("../FuncionesGlobales.js");
@@ -46,7 +47,7 @@ exports.Errores = async function(){
         {"mensaje": "Por su seguridad la sesión ha expirado", "codigo": 403, "exito": 0 }
 ]
 
-var banderas = [
+var paises = [
         {
             "name": "Antigua y Barbuda",
             "numericCode": "028",
@@ -560,6 +561,15 @@ var banderas = [
     ]
 
 
+var fases = [
+    { "posicion": 1, "descripcion" : "Final", "siglas": "F" },
+    { "posicion": 2, "descripcion" : "Semifinal", "siglas": "SF"}, 
+    { "posicion": 3, "descripcion" : "Cuartos de Final", "siglas": "QF"},
+    { "posicion": 4, "descripcion" : "Octavos de Final", "siglas": "8 F"},
+    { "posicion": 5, "descripcion" : "Dieciseisavos de Final", "siglas": "16 F"},
+    { "posicion": 4, "descripcion" : "Fase de Grupos", "siglas": "Grupos"},
+]
+
 var opciones = { upsert: true, new: true, setDefaultsOnInsert: true };
 mensajes.forEach(elemento => {
         Mensaje.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
@@ -567,10 +577,16 @@ mensajes.forEach(elemento => {
         });  
 });
 
-banderas.forEach(elemento => {
-        Bandera.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
+paises.forEach(elemento => {
+        Pais.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
         if (err) return;
         });  
+});
+
+fases.forEach(elemento => {
+    Fase.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
+    if (err) return;
+    });  
 });
 
 var usuario = {

@@ -22,19 +22,10 @@ var PruebaSchema = new Schema({
         type: Boolean,
         required: "Seleccione si la prueba es activa"
     },
-    tipo:{//Definir
+    tipo:{//Tipo: Individual o por Equipo
         type: Number,
+        required: "Seleccione si la prueba es individual o por equipo"
     },
-    fases: {
-        type:[{
-            posicion:{
-              type: Number,
-            },
-            descripcion: {
-              type: String, 
-            }, 
-        }]
-    }
   });
 
   PruebaSchema.pre('save', function(next) {
