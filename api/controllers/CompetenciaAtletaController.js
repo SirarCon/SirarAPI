@@ -238,6 +238,31 @@ exports.listarFasesxPruebaEvento= function(req, res){
                             fase: "$fase"
                         }
                 }
+           },
+          {              
+                $lookup:{
+                    "localField": "_id.fase",
+                    "from": "fases",
+                    "foreignField": "_id",                         
+                    "as": "fase"
+                }               
+           },
+            {
+               $unwind: "$fase"
+           },
+           {
+               $sort: {
+                    "fase.posicion" : -1
+               }
+           },
+           {
+               $project: {
+                    fase: {
+                        _id: 1,
+                        descripcion: 1
+                    },
+                    _id: 0
+               }
            }
         ])
         .exec().then(fases=>{
@@ -246,7 +271,8 @@ exports.listarFasesxPruebaEvento= function(req, res){
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(11, "fases", " ").instance});
             }
-        }).catch(err=>{            
+        }).catch(err=>{     
+            console.log(err)       
             res.json({token: res.locals.token,datos: globales.mensajes(12, "las fases de las competencias", " ").instance});  
         })
 }
@@ -439,21 +465,40 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
                 "localField": "competencia",
                 "from": "competenciaatletas",
                 "foreignField": "_id",
-                "as":  "competencias"
-           }
+                "as":  "competencia"
+           },
         },
         {
             $match: {
-                "competencias.evento" : mongoose.Types.ObjectId(req.params.idEvento),
-                "competencias.prueba" : mongoose.Types.ObjectId(req.params.idPrueba)
+                "competencia.evento" : mongoose.Types.ObjectId(req.params.idEvento),
+                "competencia.prueba" : mongoose.Types.ObjectId(req.params.idPrueba)
             }
         },
         {
+            $unwind: "$competencia"
+        },
+        {
+           $lookup: {
+            "localField": "competencia.fase",
+            "from": "fases",
+            "foreignField": "_id",
+            "as": "competencia.fase"
+            }
+        },
+        {
+            $unwind: "$competencia.fase"
+        },
+        {
             $project: {
-                competencias: { 
+                competencia: { 
                     _id: 1,
                     descripcion: 1,
-                    fase: 1,
+                    fase: {
+                        _id: 1,
+                        descripcion: 1,
+                        posicion: 1,
+                        siglas: 1
+                    }
                 },
                 _id: 0
                 
