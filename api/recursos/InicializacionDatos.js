@@ -581,7 +581,7 @@ var paises = [
   cuartosfinal = new Fase({ "posicion": 3, "descripcion" : "Cuartos de Final", "siglas": "QF"}),
   octavosfinal = new Fase({ "posicion": 4, "descripcion" : "Octavos de Final", "siglas": "8 F"}),
   dieciseisavosfinal =  new Fase({ "posicion": 5, "descripcion" : "Dieciseisavos de Final", "siglas": "16 F"}),
-  grupos =  new Fase({ "posicion": 4, "descripcion" : "Fase de Grupos", "siglas": "Grupos"});
+  grupos =  new Fase({ "posicion": 6, "descripcion" : "Fase de Grupos", "siglas": "Grupos"});
  
   var fases = [
    final, semiFinal, cuartosfinal, octavosfinal, dieciseisavosfinal, grupos
