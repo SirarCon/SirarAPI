@@ -6,7 +6,7 @@ var Pais = new Schema({
     name: {
         type: String
     },
-    numericCode: {
+    _id: {
         type: String,
         unique: true,
     },
