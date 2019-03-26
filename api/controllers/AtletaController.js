@@ -11,8 +11,6 @@ const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 
 //#region UsuarioAdm
 exports.crearAtleta = async function(req, res){
-    funcionesGlobales.validarEmail(req.body.correo)
-    .then(function(values) {
         Deporte.findOne().where({_id: req.body.deporte}).exec()
         .then(function(deporte) {
           if(deporte){
@@ -34,14 +32,11 @@ exports.crearAtleta = async function(req, res){
                 }else{
                         res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ").instance}); //Todo modificar mensaje
                       }    
-                    }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance})); //Todo modificar mensaje              
-    }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance}));
+                    }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", req.body.nombre).instance})); //Todo modificar mensaje                  
   };
 
 
-exports.modificarAtleta  = async function(req, res){
-    funcionesGlobales.validarEmail(req.body.correo)
-    .then(function(values) {
+exports.modificarAtleta  = async function(req, res){    
         Deporte.findOne().where({_id: req.body.deporte}).exec()
         .then(function(deporte) {
             if(deporte){
@@ -96,9 +91,7 @@ exports.modificarAtleta  = async function(req, res){
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ").instance}); //Todo modificar mensaje
             }    
-        }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte).instance});}); //Todo modificar mensaje
-    }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance}) 
-});
+        }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte).instance});}); //Todo modificar mensaje    
 };
 
   exports.listarAtletas = async function(req, res){

@@ -18,18 +18,18 @@ var funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
 
 exports.Errores = async function(){
- Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Usuario.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Deporte.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Atleta.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Prueba.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Usuario.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Competencia.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-AtletaCompetidor.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Evento.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Federacion.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Pais.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-Fase.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Usuario.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Deporte.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Atleta.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Prueba.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Usuario.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Competencia.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// AtletaCompetidor.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Evento.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Federacion.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Pais.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+// Fase.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
   var mensajes = [
         {"mensaje": "", "codigo": -1, "exito": 1 },
         {"mensaje": "{sutantivoCambiar} {id} fue borrado.", "codigo": -2, "exito": 1 },
