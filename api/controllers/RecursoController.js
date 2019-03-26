@@ -31,7 +31,7 @@ exports.borrarPais = function(req, res){
 }
 
 exports.obtenerPaises = function(req, res){
-    Pais.find().sort({nombre : 1}).exec().then(paises =>{
+    Pais.find().sort({name : 1}).exec().then(paises =>{
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, paises).instance});          
     }).catch(err =>{
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los paises ", " ").instance});  
