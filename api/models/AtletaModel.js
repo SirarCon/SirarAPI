@@ -36,7 +36,7 @@ var AtletaSchema = new Schema({
         type: Number,
       },
       lateralidad: {
-        type: Boolean,
+        type: String,
       },
       beneficiario: { //Beneficiario de Póliza
         type: String,
