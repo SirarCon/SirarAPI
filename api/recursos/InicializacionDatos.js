@@ -3,6 +3,12 @@ var mongoose = require('mongoose'),
 Mensaje = mongoose.model('Mensaje'),
 Usuario = mongoose.model('Usuario'),
 Deporte = mongoose.model('Deporte'),
+Atleta = mongoose.model('Atleta'),
+Prueba = mongoose.model('Prueba'),
+Usuario = mongoose.model('Usuario'),
+Competencia = mongoose.model('CompetenciaAtleta'),
+AtletaCompetidor = mongoose.model('AtletaCompetidor'),
+Evento = mongoose.model('Evento'),
 Federacion = mongoose.model('Federacion'),
 Pais = mongoose.model('Pais'),
 Fase = mongoose.model('Fase'),
@@ -12,7 +18,18 @@ var funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
 
 exports.Errores = async function(){
- //Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+ Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Usuario.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Deporte.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Atleta.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Prueba.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Usuario.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Competencia.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+AtletaCompetidor.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Evento.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Federacion.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Pais.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+Fase.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
   var mensajes = [
         {"mensaje": "", "codigo": -1, "exito": 1 },
         {"mensaje": "{sutantivoCambiar} {id} fue borrado.", "codigo": -2, "exito": 1 },
@@ -48,526 +65,526 @@ exports.Errores = async function(){
 ]
 
 var paises = [
-        {
+        new Pais({
             "name": "Antigua y Barbuda",
             "numericCode": "028",
             "flag": "https://restcountries.eu/data/atg.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Argentina",
             "numericCode": "032",
             "flag": "https://restcountries.eu/data/arg.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Aruba",
             "numericCode": "533",
             "flag": "https://restcountries.eu/data/abw.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Australia",
             "numericCode": "036",
             "flag": "https://restcountries.eu/data/aus.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Austria",
             "numericCode": "040",
             "flag": "https://restcountries.eu/data/aut.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Bahamas",
             "numericCode": "044",
             "flag": "https://restcountries.eu/data/bhs.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Barbados",
             "numericCode": "052",
             "flag": "https://restcountries.eu/data/brb.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Bélgica",
             "numericCode": "056",
             "flag": "https://restcountries.eu/data/bel.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Belice",
             "numericCode": "084",
             "flag": "https://restcountries.eu/data/blz.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Bermuda",
             "numericCode": "060",
             "flag": "https://restcountries.eu/data/bmu.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Bolivia",
             "numericCode": "068",
             "flag": "https://restcountries.eu/data/bol.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Bosnia y Herzegovina",
             "numericCode": "070",
             "flag": "https://restcountries.eu/data/bih.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Brasil",
             "numericCode": "076",
             "flag": "https://restcountries.eu/data/bra.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Bulgaria",
             "numericCode": "100",
             "flag": "https://restcountries.eu/data/bgr.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Camerún",
             "numericCode": "120",
             "flag": "https://restcountries.eu/data/cmr.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Canadá",
             "numericCode": "124",
             "flag": "https://restcountries.eu/data/can.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Cabo Verde",
             "numericCode": "132",
             "flag": "https://restcountries.eu/data/cpv.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Islas Caimán",
             "numericCode": "136",
             "flag": "https://restcountries.eu/data/cym.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Chile",
             "numericCode": "152",
             "flag": "https://restcountries.eu/data/chl.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "China",
             "numericCode": "156",
             "flag": "https://restcountries.eu/data/chn.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Colombia",
             "numericCode": "170",
             "flag": "https://restcountries.eu/data/col.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Congo",
             "numericCode": "178",
             "flag": "https://restcountries.eu/data/cog.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Costa Rica",
             "numericCode": "188",
             "flag": "https://restcountries.eu/data/cri.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Croacia",
             "numericCode": "191",
             "flag": "https://restcountries.eu/data/hrv.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Cuba",
             "numericCode": "192",
             "flag": "https://restcountries.eu/data/cub.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Curazao",
             "numericCode": "531",
             "flag": "https://restcountries.eu/data/cuw.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "República Checa",
             "numericCode": "203",
             "flag": "https://restcountries.eu/data/cze.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Dinamarca",
             "numericCode": "208",
             "flag": "https://restcountries.eu/data/dnk.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "República Dominicana",
             "numericCode": "214",
             "flag": "https://restcountries.eu/data/dom.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Ecuador",
             "numericCode": "218",
             "flag": "https://restcountries.eu/data/ecu.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Egipto",
             "numericCode": "818",
             "flag": "https://restcountries.eu/data/egy.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "El Salvador",
             "numericCode": "222",
             "flag": "https://restcountries.eu/data/slv.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Finlandia",
             "numericCode": "246",
             "flag": "https://restcountries.eu/data/fin.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Francia",
             "numericCode": "250",
             "flag": "https://restcountries.eu/data/fra.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Alemania",
             "numericCode": "276",
             "flag": "https://restcountries.eu/data/deu.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Ghana",
             "numericCode": "288",
             "flag": "https://restcountries.eu/data/gha.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Grecia",
             "numericCode": "300",
             "flag": "https://restcountries.eu/data/grc.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Granada",
             "numericCode": "308",
             "flag": "https://restcountries.eu/data/grd.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Guadalupe",
             "numericCode": "312",
             "flag": "https://restcountries.eu/data/glp.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Guatemala",
             "numericCode": "320",
             "flag": "https://restcountries.eu/data/gtm.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Guinea",
             "numericCode": "324",
             "flag": "https://restcountries.eu/data/gin.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Guyana",
             "numericCode": "328",
             "flag": "https://restcountries.eu/data/guy.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Haití",
             "numericCode": "332",
             "flag": "https://restcountries.eu/data/hti.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Honduras",
             "numericCode": "340",
             "flag": "https://restcountries.eu/data/hnd.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Hong Kong",
             "numericCode": "344",
             "flag": "https://restcountries.eu/data/hkg.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Hungría",
             "numericCode": "348",
             "flag": "https://restcountries.eu/data/hun.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Islandia",
             "numericCode": "352",
             "flag": "https://restcountries.eu/data/isl.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "India",
             "numericCode": "356",
             "flag": "https://restcountries.eu/data/ind.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Indonesia",
             "numericCode": "360",
             "flag": "https://restcountries.eu/data/idn.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Costa de Marfil",
             "numericCode": "384",
             "flag": "https://restcountries.eu/data/civ.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Irán",
             "numericCode": "364",
             "flag": "https://restcountries.eu/data/irn.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Irak",
             "numericCode": "368",
             "flag": "https://restcountries.eu/data/irq.svg"
-        },
-        {
+        }),
+        new Pais( {
             "name": "Irlanda",
             "numericCode": "372",
             "flag": "https://restcountries.eu/data/irl.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Israel",
             "numericCode": "376",
             "flag": "https://restcountries.eu/data/isr.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Italia",
             "numericCode": "380",
             "flag": "https://restcountries.eu/data/ita.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Jamaica",
             "numericCode": "388",
             "flag": "https://restcountries.eu/data/jam.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Japón",
             "numericCode": "392",
             "flag": "https://restcountries.eu/data/jpn.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Kenia",
             "numericCode": "404",
             "flag": "https://restcountries.eu/data/ken.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Malasia",
             "numericCode": "548",
             "flag": "https://restcountries.eu/data/mys.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Martinica",
             "numericCode": "474",
             "flag": "https://restcountries.eu/data/mtq.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "México",
             "numericCode": "484",
             "flag": "https://restcountries.eu/data/mex.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Holanda",
             "numericCode": "528",
             "flag": "https://restcountries.eu/data/nld.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Nueva Zelanda",
             "numericCode": "554",
             "flag": "https://restcountries.eu/data/nzl.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Nicaragüa",
             "numericCode": "558",
             "flag": "https://restcountries.eu/data/nic.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Nigeria",
             "numericCode": "566",
             "flag": "https://restcountries.eu/data/nga.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Corea del Norte",
             "numericCode": "408",
             "flag": "https://restcountries.eu/data/prk.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Noruega",
             "numericCode": "578",
             "flag": "https://restcountries.eu/data/nor.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Omán",
             "numericCode": "512",
             "flag": "https://restcountries.eu/data/omn.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Pakistán",
             "numericCode": "586",
             "flag": "https://restcountries.eu/data/pak.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Panamá",
             "numericCode": "591",
             "flag": "https://restcountries.eu/data/pan.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Paraguay",
             "numericCode": "600",
             "flag": "https://restcountries.eu/data/pry.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Perú",
             "numericCode": "604",
             "flag": "https://restcountries.eu/data/per.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Polonia",
             "numericCode": "616",
             "flag": "https://restcountries.eu/data/pol.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Portugal",
             "numericCode": "620",
             "flag": "https://restcountries.eu/data/prt.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Puerto Rico",
             "numericCode": "630",
             "flag": "https://restcountries.eu/data/pri.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Qatar",
             "numericCode": "634",
             "flag": "https://restcountries.eu/data/qat.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Rumania",
             "numericCode": "642",
             "flag": "https://restcountries.eu/data/rou.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Rusia",
             "numericCode": "643",
             "flag": "https://restcountries.eu/data/rus.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Ruanda",
             "numericCode": "646",
             "flag": "https://restcountries.eu/data/rwa.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Arabia Saudita",
             "numericCode": "682",
             "flag": "https://restcountries.eu/data/sau.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Senegal",
             "numericCode": "686",
             "flag": "https://restcountries.eu/data/sen.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Serbia",
             "numericCode": "688",
             "flag": "https://restcountries.eu/data/srb.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Eslovenia",
             "numericCode": "705",
             "flag": "https://restcountries.eu/data/svn.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Sudáfrica",
             "numericCode": "710",
             "flag": "https://restcountries.eu/data/zaf.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Corea del Sur",
             "numericCode": "410",
             "flag": "https://restcountries.eu/data/kor.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "España",
             "numericCode": "724",
             "flag": "https://restcountries.eu/data/esp.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Surinam",
             "numericCode": "740",
             "flag": "https://restcountries.eu/data/sur.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Suecia",
             "numericCode": "752",
             "flag": "https://restcountries.eu/data/swe.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Suiza",
             "numericCode": "756",
             "flag": "https://restcountries.eu/data/che.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Taiwan",
             "numericCode": "158",
             "flag": "https://restcountries.eu/data/twn.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Tailandia",
             "numericCode": "764",
             "flag": "https://restcountries.eu/data/tha.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Trinidad y Tobago",
             "numericCode": "780",
             "flag": "https://restcountries.eu/data/tto.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Túnez",
             "numericCode": "788",
             "flag": "https://restcountries.eu/data/tun.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Turquía",
             "numericCode": "792",
             "flag": "https://restcountries.eu/data/tur.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Uganda",
             "numericCode": "800",
             "flag": "https://restcountries.eu/data/uga.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Emiratos Arabes",
             "numericCode": "784",
             "flag": "https://restcountries.eu/data/are.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Reino Unido",
             "numericCode": "826",
             "flag": "https://restcountries.eu/data/gbr.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Estados Unidos",
             "numericCode": "840",
             "flag": "https://restcountries.eu/data/usa.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Uruguay",
             "numericCode": "858",
             "flag": "https://restcountries.eu/data/ury.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Uzbekistán",
             "numericCode": "860",
             "flag": "https://restcountries.eu/data/uzb.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Venezuela",
             "numericCode": "862",
             "flag": "https://restcountries.eu/data/ven.svg"
-        },
-        {
+        }),
+        new Pais({
             "name": "Otro",
             "numericCode": "999",
             "flag": ""
-        }
+        })
     ]
 
 
 var fases = [
-    { "posicion": 1, "descripcion" : "Final", "siglas": "F" },
-    { "posicion": 2, "descripcion" : "Semifinal", "siglas": "SF"}, 
-    { "posicion": 3, "descripcion" : "Cuartos de Final", "siglas": "QF"},
-    { "posicion": 4, "descripcion" : "Octavos de Final", "siglas": "8 F"},
-    { "posicion": 5, "descripcion" : "Dieciseisavos de Final", "siglas": "16 F"},
-    { "posicion": 4, "descripcion" : "Fase de Grupos", "siglas": "Grupos"},
+    new Fase({ "posicion": 1, "descripcion" : "Final", "siglas": "F" }),
+    new Fase({ "posicion": 2, "descripcion" : "Semifinal", "siglas": "SF"}), 
+    new Fase({ "posicion": 3, "descripcion" : "Cuartos de Final", "siglas": "QF"}),
+    new Fase({ "posicion": 4, "descripcion" : "Octavos de Final", "siglas": "8 F"}),
+    new Fase({ "posicion": 5, "descripcion" : "Dieciseisavos de Final", "siglas": "16 F"}),
+    new Fase({ "posicion": 4, "descripcion" : "Fase de Grupos", "siglas": "Grupos"}),
 ]
 
 var opciones = { upsert: true, new: true, setDefaultsOnInsert: true };
@@ -1120,16 +1137,15 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
         });
 
 console.log("F: " + federaciones.length)
-    var deportes =
-    [
-        {
+    
+    var DAjedrez = new Deporte({
                 nombre: "Ajedrez",
                 nombreNormalizado: "ajedrez",
                 imagenDeporteUrl: "",
                 federacion: ajedrez._id,
                 activo: true,                                
-        },
-        {
+        });
+     var DAtletismo = new Deporte({
                 nombre: "Atletismo",
                 nombreNormalizado: "atletismo",
                 imagenDeporteUrl: "",
@@ -1163,15 +1179,15 @@ console.log("F: " + federaciones.length)
                         {nombre: "Héptatlón"},
                         {nombre: "Decatlón"},                                       
                         ]*/
-        },
-        {
+        });
+       var DBadminton = new Deporte({
          nombre: "Bádminton",
          imagenDeporteUrl: "",
          nombreNormalizado: "badminton",
          federacion: badminton._id,
          activo: true, 
         /* pruebas: [{nombre: "Individual"}]*/
-        },
+        });
         /*{
                 nombre: "Baloncesto",
                 imagenDeporteUrl: "",
@@ -1866,7 +1882,7 @@ console.log("F: " + federaciones.length)
 }
 */
 
-    ]
+var deportes =[DAjedrez, DAtletismo, DBadminton]
 
       
 console.log("D: " + deportes.length)
@@ -1875,5 +1891,254 @@ deportes.forEach(elemento => {
         if (err) {/*console.log(err); */return};
         });  
 });
+
+var usuarios = [
+    new Usuario({ 
+        "nombre": "Jonathan Varela Barrantes",
+        "password": "Clave1234",
+        "fotoUrl": "imagenes/imagenesPerfil/115670126.jpeg",
+        "correo": "varela.b@hotmail.com",
+        "identificacion": "115670126",
+        "telefono": "70889619",
+        "rol": 1,
+        "created_date": {
+            "$date": "2018-08-15T06:59:50.463Z"
+        },
+        "token": "6tm7GIM6qGtTAmF",        
+        "tokenPassword": "ZScdYdUuPFbqwUN",
+        "nombreNormalizado": "jonathan varela barrantes"
+    }),
+    new Usuario({       
+        "nombre": "William Casasola Villalobos",
+        "fotoUrl": "",
+        "correo": "wacvillalobos@hotmail.es",
+        "identificacion": "112233445566",
+        "telefono": "",
+        "rol": 1,
+        "fechaCreacion": {
+            "$date": "2018-09-07T15:06:27.967Z"
+        },
+        "tokenPassword": "OuFiYTZ5kbDWiF6",
+        "nombreNormalizado": "william casasola villalobos",
+    }),
+    new Usuario({    
+        "nombre": "Will",
+        "correo": "casasolalonso@gmail.com",
+        "identificacion": "115780376",
+        "password": "una",
+        "telefono": "222222",
+        "fotoUrl": "imagenes/imagenesPerfil/115780376.jpeg",
+        "rol": 0,
+        "fechaCreacion": {
+            "$date": "2018-09-15T18:54:28.458Z"
+        },
+        "tokenPassword": "TpTbF1cRyNlmV9s",
+        "nombreNormalizado": "will",
+    })
+];
+
+
+usuarios.forEach(elemento => {       
+    Usuario.update(elemento, elemento, opciones, function(err, elemento) {
+    if (err) {/*console.log(err); */return};
+    });  
+});
+console.log("U: " + usuarios.length)
+
+
+
+var atletas = [
+    new Atleta({
+        "nombre": "Nery Brenes",
+        "correo": "nery@hotmail.es",
+        "apellido1": "Brenes",
+        "deporte": DAtletismo._id,
+        "pais": paises.find(p => p.name ==="Costa Rica")._id,
+        "activo": true,
+        "nombreNormalizado": "nerybrenes",
+    }),
+    new Atleta({
+        "nombre": "Usain ",
+        "correo": "uBolt@hotmail.es",
+        "apellido1": "Bolt",
+        "deporte": DAtletismo._id,
+        "pais": paises.find(p => p.name ==="Jamaica")._id,
+        "activo": true,
+        "nombreNormalizado": "usain",
+    }),
+    new Atleta({
+        "nombre": "Saina",
+        "correo": "sNehwal@hotmail.es",
+        "apellido1": "Nehwal",
+        "deporte": DBadminton._id,        
+        "pais": paises.find(p => p.name ==="India")._id,
+        "activo": true,
+        "nombreNormalizado": "saina",
+    }),
+    new Atleta({
+        "nombre": "Carolina",
+        "correo": "Marin@hotmail.es",
+        "apellido1": "Marin",
+        "deporte": DBadminton._id,
+        "pais": paises.find(p => p.name ==="España")._id,
+        "activo": true,
+        "nombreNormalizado": "carolina",
+    }),
+    new Atleta({
+        "nombre": "Bobby",
+        "correo": "Bob@hotmail.es",
+        "apellido1": "Fischer",
+        "deporte": DAjedrez._id,
+        "pais": paises.find(p => p.name ==="Estados Unidos")._id,
+        "activo": true,
+        "nombreNormalizado": "bobby",
+    }),
+    new Atleta({
+        "nombre": "Fabiano",
+        "correo": "FCaruna@hotmail.es",
+        "apellido1": "Caruana",
+        "deporte": DAjedrez._id,
+        "pais": paises.find(p => p.name ==="Estados Unidos")._id,
+        "activo": true,
+        "nombreNormalizado": "fabiano",
+    }),
+    new Atleta({
+        "nombre": "Dafne",
+        "correo": "dafne@hotmail.es",
+        "apellido1": "Schippers",
+        "apellido2": "Schip",
+        "telefono": "22660139",
+        "deporte": DAtletismo._id,
+        "fotoUrl": "imagenes/imagenesAtletas/5c87158dd3cb6b0015814b90.jpeg",
+        "activo": true,
+        "fechaNacimiento": {
+            "$date": "1992-06-15T00:00:00.000Z"
+        },
+        "pasaporte": "123456789",
+        "genero": false,
+        "lateralidad": true,
+        "beneficiario": "Padre",
+        "cedulaBeneficiario": "123456789012",
+        "visaAmericana": "12345678",
+        "venceVisa": {
+            "$date": "2022-08-08T00:00:00.000Z"
+        },
+        "tallaCamisa": "L",
+        "pantaloneta": "38",
+        "tallaJacket": "L",
+        "tallaBuzo": "38",
+        "tallaTenis": "40",
+        "infoPersonal": "She is a Dutch track and field athlete. She competes primarily in the sprints, having previously participated in the heptathlon. She is the 2015 and 2017 World Champion and won silver at the 2016 Summer Olympics in the 200 metres.",
+        "fechaDebut": {
+            "$date": "2009-05-05T00:00:00.000Z"
+        },
+        "facebookUrl": "https://www.facebook.com/dafneschippersfanpage/",
+        "instagramUrl": "https://www.instagram.com/dafne_schippers/",
+        "twitterUrl": "https://twitter.com/dafneschippers",
+        "altura": 1.79,
+        "pais": paises.find(p => p.name ==="Holanda")._id,
+        "peso": 68,
+        "nombreNormalizado": "dafne",
+    })
+]; 
+
+console.log("A: " + atletas.length)
+atletas.forEach(elemento => {       
+    Atleta.update(elemento, elemento, opciones, function(err, elemento) {
+    if (err) {/*console.log(err); */return};
+    });  
+});
+
+
+var pruebaAtletismo = new Prueba({
+        "nombre": "200 mts",
+        "tipo": 1,
+        "activo": true,
+        "deporte": DAtletismo._id,
+        "nombreNormalizado": "200mts5c872185d3cb6b0015814b94",
+});
+
+var pruebas = [pruebaAtletismo];
+
+console.log("P: " + pruebas.length)
+pruebas.forEach(elemento => {       
+    Prueba.update(elemento, elemento, opciones, function(err, elemento) {
+    if (err) {/*console.log(err); */return};
+    });  
+});
+
+
+var Rio = new Evento({
+        "nombre": "Juegos Olímpicos de Río de Janeiro 2016",
+        "fechaInicio": {
+            "$date": "2016-08-05T00:00:00.000Z"
+        },
+        "fechaFinal": {
+            "$date": "2016-08-21T00:00:00.000Z"
+        },
+        "ciudad": "Río",
+        "pais": paises.find(p => p.name ==="Brasil")._id,
+        "fotoUrl": "imagenes/imagenesEventos/5c8719d7d3cb6b0015814b91.jpeg",
+        "activo": true,
+        "nombreNormalizado": "juegosolimpicosderiodejaneiro2016",
+});
+
+var eventos = [Rio];
+
+console.log("E: " + eventos.length)
+eventos.forEach(elemento => {       
+    Evento.update(elemento, elemento, opciones, function(err, elemento) {
+    if (err) {/*console.log(err); */return};
+    });  
+});
+
+var competencia = new Competencia({    
+    "evento": Rio._id,
+    "prueba": pruebaAtletismo._id,
+    "fechaHora": {
+        "$date": "2016-08-18T00:00:00.000Z"
+    },
+    "lugar": "Estadio Río",
+    "genero": false,
+    "descripcion": "Hit 1",
+    "fase": fases.find(f=> f.posicion == 1)._id,
+    "activo": true,
+});
+
+var competencias = [competencia];
+
+
+console.log("C: " + competencias.length)
+competencias.forEach(elemento => {       
+    Competencia.update(elemento, elemento, opciones, function(err, elemento) {
+    if (err) {/*console.log(err); */return};
+    });  
+});
+
+var atletaCompetidor = new AtletaCompetidor({
+    "atleta": atletas[6]._id,
+    "competencia": competencia._id,
+    "esUltimoRegistro": true,
+    "marcadores": [
+        {
+            "set": 1,
+            "tiempo": {
+                "segundo": 21,
+                "milisegundo": 88
+            },
+            "tipo": 2,            
+        }
+    ],
+});
+
+var atletasCompetidores = [atletaCompetidor];
+
+console.log("AC: " + atletasCompetidores.length)
+atletasCompetidores.forEach(elemento => {       
+    AtletaCompetidor.update(elemento, elemento, opciones, function(err, elemento) {
+    if (err) {/*console.log(err); */return};
+    });  
+});
+
 
 };
