@@ -1,6 +1,8 @@
 'use strict';
 var mongoose = require('mongoose'),
 Mensaje = mongoose.model('Mensaje'),
+Pais = mongoose.model('Pais'),
+Fase = mongoose.model('Fase'),
 Usuario = mongoose.model('Usuario'),
 Deporte = mongoose.model('Deporte'),
 Atleta = mongoose.model('Atleta'),
@@ -10,11 +12,7 @@ Competencia = mongoose.model('CompetenciaAtleta'),
 AtletaCompetidor = mongoose.model('AtletaCompetidor'),
 Evento = mongoose.model('Evento'),
 Federacion = mongoose.model('Federacion'),
-Pais = mongoose.model('Pais'),
-Fase = mongoose.model('Fase'),
-funcionesGlobales = require("../FuncionesGlobales.js");
-var globales =  require("../Globales.js");
-var funcionesGlobales = require("../FuncionesGlobales.js");
+globales =  require("../Globales.js");
 const rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
 
 exports.Errores = async function(){
@@ -29,7 +27,7 @@ exports.Errores = async function(){
 // Evento.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
 // Federacion.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
 // Pais.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
-// Fase.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+//Fase.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
   var mensajes = [
         {"mensaje": "", "codigo": -1, "exito": 1 },
         {"mensaje": "{sutantivoCambiar} {id} fue borrado.", "codigo": -2, "exito": 1 },
@@ -578,13 +576,15 @@ var paises = [
     ]
 
 
-var fases = [
-    new Fase({ "posicion": 1, "descripcion" : "Final", "siglas": "F" }),
-    new Fase({ "posicion": 2, "descripcion" : "Semifinal", "siglas": "SF"}), 
-    new Fase({ "posicion": 3, "descripcion" : "Cuartos de Final", "siglas": "QF"}),
-    new Fase({ "posicion": 4, "descripcion" : "Octavos de Final", "siglas": "8 F"}),
-    new Fase({ "posicion": 5, "descripcion" : "Dieciseisavos de Final", "siglas": "16 F"}),
-    new Fase({ "posicion": 4, "descripcion" : "Fase de Grupos", "siglas": "Grupos"}),
+ var final = new Fase({ "posicion": 1, "descripcion" : "Final", "siglas": "F" }),
+  semiFinal = new Fase({ "posicion": 2, "descripcion" : "Semifinal", "siglas": "SF"}),
+  cuartosfinal = new Fase({ "posicion": 3, "descripcion" : "Cuartos de Final", "siglas": "QF"}),
+  octavosfinal = new Fase({ "posicion": 4, "descripcion" : "Octavos de Final", "siglas": "8 F"}),
+  dieciseisavosfinal =  new Fase({ "posicion": 5, "descripcion" : "Dieciseisavos de Final", "siglas": "16 F"}),
+  grupos =  new Fase({ "posicion": 4, "descripcion" : "Fase de Grupos", "siglas": "Grupos"});
+ 
+  var fases = [
+   final, semiFinal, cuartosfinal, octavosfinal, dieciseisavosfinal, grupos
 ]
 
 var opciones = { upsert: true, new: true, setDefaultsOnInsert: true };
@@ -595,16 +595,16 @@ mensajes.forEach(elemento => {
 });
 
 paises.forEach(elemento => {
-        Pais.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
-        if (err) return;
+        Pais.update(elemento, elemento, opciones, function(err, elemento) {
+            if (err){/*console.log(err);*/ return};
+            })
         });  
-});
 
 fases.forEach(elemento => {
-    Fase.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
-    if (err) return;
+    Fase.update(elemento, elemento, opciones, function(err, elemento) {
+        if (err){/*console.log(err);*/ return};
+        })
     });  
-});
 
 var usuario = {
         "nombre" : "William",
