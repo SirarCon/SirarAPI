@@ -20,11 +20,12 @@ exports.crearAtleta = async function(req, res){
                     res.json({token: res.locals.token, datos: globales.mensajes(-4, "Atleta", req.body.nombre ).instance});}
                     ).catch(err=>{       
                         if (err){  
+                            console.log(err)
                             funcionesGlobales.borrarArchivo(nuevoAtleta.fotoUrl);  
                             if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
                                 res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", funcionesGlobales.manejarError(err)).instance});
                             }else{//Error llave duplicada
-                                console.log(err)
+                               
                             res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre atleta", " ").instance});
                             }   
                         }
@@ -32,7 +33,7 @@ exports.crearAtleta = async function(req, res){
                 }else{
                         res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ").instance}); //Todo modificar mensaje
                       }    
-                    }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", req.body.nombre).instance})); //Todo modificar mensaje                  
+                    }).catch(e=> { console.log(e); res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", req.body.nombre).instance})}); //Todo modificar mensaje                  
   };
 
 
