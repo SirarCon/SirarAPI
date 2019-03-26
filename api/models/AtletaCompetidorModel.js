@@ -18,6 +18,9 @@ var AtletaCompetidorSchema = new Schema({
     esUltimoRegistro: {
         type: Boolean,
     },
+    esLocal: {
+        type: Boolean, //Si es true el atleta es local
+    },
     marcadores:{
         type:[{
             set: {

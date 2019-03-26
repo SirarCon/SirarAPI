@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Prueba = mongoose.model('Prueba');
 var Evento = mongoose.model('Evento');
 var CompetenciaA = mongoose.model('CompetenciaAtleta');
-var AtletaC = mongoose.model('AtletaCompetidor');
+var AtletaC = mongoose.model('EquipoCompetidor');
 var globales =  require("../Globales.js");
 var funcionesGlobales = require("../FuncionesGlobales.js");
 var Tiempo = require('../recursos/Tiempo.js');
@@ -54,8 +54,7 @@ CompetenciaA.findOneAndUpdate({_id: req.params.idCompetencia},
         evento: req.body.evento,
         prueba: req.body.prueba,
         fechaHora: req.body.fechaHora,
-        ciudad: req.body.ciudad,
-        estadio: estadio,
+        lugar: req.body.lugar,
         genero: req.body.genero,
         descripcion: req.body.descripcion,
         fase: req.body.fase,

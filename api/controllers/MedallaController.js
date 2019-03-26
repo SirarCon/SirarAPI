@@ -31,9 +31,9 @@ Medalla.find().exec().then(madallas => {
   Medalla.aggregate(
   {
               $lookup: {
-              "foreignField": "atletaCompetidor",
-              "": "AtletaCompetidors",
-              "Field": "_id",
+              "localField": "atletaCompetidor",
+              "from": "atletacompetidors",
+              "foreignField": "_id",
               "as": "atletas"
               }
   },

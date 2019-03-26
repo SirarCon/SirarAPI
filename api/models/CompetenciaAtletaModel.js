@@ -1,7 +1,9 @@
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
+ //https://stackoverflow.com/questions/24853383/mongoose-objectid-that-references-a-sub-document
+  
+  
 var CompetenciaAtletaSchema = new Schema({
     evento:{
         type: Schema.Types.ObjectId,
@@ -17,12 +19,16 @@ var CompetenciaAtletaSchema = new Schema({
         type: Date,
         required: 'Digite la fecha y hora por favor'
     },
-    lugar:{
+    ciudad: {
         type: String,
-        maxlength: [40, "El lugar de la competencia tiene que ser menor a 41 caracteres"], 
+        required: "Digite la ciudad de la competencia"
+    },
+    estadio: {
+        type: String,
+        required: "Digite el estadio"
     },
     genero:{
-        type: Boolean,
+        type: Number,
         required: "Seleccione el genero de la competencia", 
     },
     descripcion:{//Hit 1, Partido 1, etc
@@ -45,11 +51,12 @@ CompetenciaAtletaSchema.method('todaInformacion',function (){
         evento: this.evento,
         prueba: this.prueba,
         fechaHora: this.fechaHora,
-        lugar: this.lugar,
         genero: this.genero,
         descripcion: this.descripcion,
         fase: this.fase,
-        activo: this.activo,
+        estadio: this.estadio,
+        ciudad: this.ciudad,
+        activo: this.activo,        
     }
 });
 CompetenciaAtletaSchema.method('infoPublica',function (){
@@ -57,10 +64,11 @@ CompetenciaAtletaSchema.method('infoPublica',function (){
         evento: this.evento,
         prueba: this.prueba,
         fechaHora: this.fechaHora,
-        lugar: this.lugar,
         genero: this.genero,
         descripcion: this.descripcion,
         fase: this.fase,
+        estadio: this.estadio,
+        ciudad: this.ciudad,
     }
 });
 

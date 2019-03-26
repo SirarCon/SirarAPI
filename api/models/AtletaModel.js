@@ -20,9 +20,7 @@ var AtletaSchema = new Schema({
       correo: {
         type: String,
         unique:true,
-        required: 'Digite un correo electrónico',
-        maxlength: [40, "El correo de la federación tiene que ser menor a 41 caracteres"],
-        minlength: [10, "El correo de la federación tiene que ser mayor a 9 caracteres"],
+        maxlength: [40, "El correo de la federación tiene que ser menor a 41 caracteres"],    
       },
       telefono: {
         type: String,
@@ -33,11 +31,10 @@ var AtletaSchema = new Schema({
       },
       pasaporte: {
         type: String,
-        mmaxlength: [15, "El pasaporte tiene que ser menor a 16 caracteres"],
-        minlength: [9, "El pasaporte tiene que ser mayor 8 caracteres"],
+        maxlength: [15, "El pasaporte tiene que ser menor a 16 caracteres"],        
       },
       genero: {
-        type: Boolean,
+        type: Number,
       },
       lateralidad: {
         type: Boolean,
@@ -48,13 +45,11 @@ var AtletaSchema = new Schema({
       },
       cedulaBeneficiario: {
         type: String,
-        mmaxlength: [15, "La cédula del beneficiario tiene que ser menor a 16 caracteres"],
-        minlength: [9, "La cédula del beneficiario tiene que ser mayor a 8 caracteres"],
+        mmaxlength: [15, "La cédula del beneficiario tiene que ser menor a 16 caracteres"],        
       },
       visaAmericana: {
         type: String,
-        maxlength: [9, "La visa americana tiene que ser menor a 16 caracteres"],
-        minlength: [8, "La visa americana tiene que ser mayor a 7 caracteres"],
+        maxlength: [9, "La visa americana tiene que ser menor a 16 caracteres"],        
       },
       venceVisa: {
         type: Date,
@@ -108,10 +103,13 @@ var AtletaSchema = new Schema({
         type: Boolean,
         required: "Seleccione si el atleta está activo"
       },
-      deporte:{ type: Schema.Types.ObjectId,
-                ref: "Deporte",                     
+      deporte:{ 
+        required: "Seleccione un deporte",
+        type: Schema.Types.ObjectId,
+        ref: "Deporte",                     
       },
       pais: {
+        required: "Seleccione un país",
         type: Schema.Types.ObjectId,
         ref: "Pais",
       },
@@ -165,6 +163,7 @@ AtletaSchema.method('todaInformacion', function() {
       instagramUrl: this.instagramUrl,
       twitterUrl: this.twitterUrl,
       altura: this.altura,
+      peso: this.peso,
       codigoPais: this.codigoPais,
       activo: this.activo,
       deporte: this.deporte,
@@ -186,6 +185,7 @@ AtletaSchema.method('infoPublica', function() {
     instagramUrl: this.instagramUrl,
     twitterUrl: this.twitterUrl,
     altura: this.altura,
+    peso: this.peso,
     codigoPais: this.codigoPais,
     deporte: this.deporte,
   }
