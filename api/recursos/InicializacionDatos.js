@@ -11,8 +11,8 @@ Usuario = mongoose.model('Usuario'),
 Competencia = mongoose.model('CompetenciaAtleta'),
 AtletaCompetidor = mongoose.model('AtletaCompetidor'),
 Evento = mongoose.model('Evento'),
-Federacion = mongoose.model('Federacion'),
-globales =  require("../Globales.js");
+Federacion = mongoose.model('Federacion');
+var globales =  require("../Globales.js");
 const rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
 
 exports.Errores = async function(){
