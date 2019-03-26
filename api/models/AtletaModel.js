@@ -19,7 +19,6 @@ var AtletaSchema = new Schema({
       },
       correo: {
         type: String,
-        unique:true,
         maxlength: [40, "El correo de la federación tiene que ser menor a 41 caracteres"],    
       },
       telefono: {
