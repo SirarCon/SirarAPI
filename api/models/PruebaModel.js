@@ -54,7 +54,6 @@ var PruebaSchema = new Schema({
       id: this._id,
       nombre: this.nombre, 
       deporte: this.deporte,
-      fases: this.fases.sort((a, b)=>{ return a.posicion - b.posicion}),
       activo: this.activo
     };
   
@@ -65,7 +64,6 @@ var PruebaSchema = new Schema({
       id: this._id,
       nombre: this.nombre, 
       deporte: this.deporte,
-      fases: this.fases.sort((a, b)=>{ return a.posicion - b.posicion}),
     };
   
   });

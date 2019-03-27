@@ -36,7 +36,7 @@ var CompetenciaAtletaSchema = new Schema({
         required: "Digite una descripción para la competencia"
     },
     fase:{
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: "Fase",
         required: "Digite la fase a la que pertenece la competencia"
     },

@@ -109,7 +109,7 @@ var AtletaSchema = new Schema({
       },
       pais: {
         required: "Seleccione un país",
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: "Pais",
       },
 });

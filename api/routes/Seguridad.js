@@ -33,7 +33,7 @@ module.exports ={
         res.json({datos: globales.mensajes(403).instance});
     }else{//Refresca el token
       var payload = globales.crearRandom(50).instance;
-      AwtAuth.sign({payload}, 'secretKey', {expiresIn: "300s"}, 
+      AwtAuth.sign({payload}, 'secretKey', {expiresIn: "3000s"}, 
               (err, token)=>{
                  if(err){
                    console.log(err);

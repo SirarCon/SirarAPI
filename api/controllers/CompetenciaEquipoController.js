@@ -252,7 +252,7 @@ exports.listarFasesxPruebaEvento= function(req, res){
            },
            {
                $sort: {
-                    "fase.posicion" : -1
+                    "fase._id" : -1
                }
            },
            {
@@ -496,7 +496,6 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
                     fase: {
                         _id: 1,
                         descripcion: 1,
-                        posicion: 1,
                         siglas: 1
                     }
                 },

@@ -62,7 +62,7 @@ exports.borrarFase = function(req, res){
 }
 
 exports.obtenerFases = function(req, res){
-    Fase.find().sort({ posicion: 1 }).exec().then(fases=>{
+    Fase.find().sort({ _id: 1 }).exec().then(fases=>{
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, fases).instance});            
         }).catch(err=>{
             console.log(err)

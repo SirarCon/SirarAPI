@@ -33,7 +33,7 @@ var EventoSchema = new Schema({
         type: Boolean,
     },
     pais: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "Pais",
     },
   });

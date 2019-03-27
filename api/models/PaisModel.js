@@ -7,8 +7,7 @@ var Pais = new Schema({
         type: String
     },
     _id: {
-        type: String,
-        unique: true,
+        type: Number,
     },
     flag: {
         type: String

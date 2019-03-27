@@ -3,9 +3,8 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var Fase = new Schema({        
-    posicion:{ //Ordén de las competencias
+    _id:{ //Ordén de las competencias
       type: Number,
-      unique: true,
     },
     descripcion: {
       type: String, 
