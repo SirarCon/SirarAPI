@@ -1,9 +1,11 @@
 'use strict';
-var mongoose = require("mongoose");
-var funcionesGlobales = require("../FuncionesGlobales.js");
-var Schema = mongoose.Schema;
+var mongoose = require("mongoose"),
+funcionesGlobales = require("../FuncionesGlobales.js"),
+Contador = mongoose.model('Contador'),
+Schema = mongoose.Schema;
 
 var EventoSchema = new Schema({
+  _id: Number,
     nombre: {
         unique: true,
         type: String,
@@ -40,16 +42,43 @@ var EventoSchema = new Schema({
 
 
   EventoSchema.pre('save', function(next) {
-    this.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')); 
-    next();
+    var doc = this;
+    Contador.findOneAndUpdate(
+        { _id: 'evento' },
+        { $inc : { sequence_value : 1 } },
+        { new : true },  
+        function(err, seq){
+            if(err) return next(err);
+            doc._id = seq.sequence_value;
+            doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')); 
+            next();
+        }
+    );
+ 
+   
   });
   
-  EventoSchema.pre('update', function(next) {
-  this.update({},{
-                 $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
-                } 
-              });
-  next();
+  EventoSchema.pre('update', async function(next) {
+    var doc = this;
+   await Contador.findOneAndUpdate(
+      { _id: 'evento' },
+      { $inc : { sequence_value : 1 } },
+      { new : true },  
+      function(err, seq){
+          if(err) return next(err);
+          console.log(doc._id)
+          doc._id= seq.sequence_value;
+          console.log(doc._id)
+
+             // nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
+          // } 
+         //});
+next();
+      }
+  );
+
+
+  
   });
   
   EventoSchema.pre('findOneAndUpdate', function(next) {
@@ -88,5 +117,5 @@ var EventoSchema = new Schema({
       };
     
     });
-    
+
     module.exports = mongoose.model('Evento', EventoSchema);

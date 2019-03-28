@@ -1,5 +1,6 @@
 'use strict';
 var mongoose = require('mongoose'),
+Contador = mongoose.model('Contador'),
 Mensaje = mongoose.model('Mensaje'),
 Pais = mongoose.model('Pais'),
 Fase = mongoose.model('Fase'),
@@ -11,10 +12,10 @@ Usuario = mongoose.model('Usuario'),
 Competencia = mongoose.model('CompetenciaAtleta'),
 AtletaCompetidor = mongoose.model('AtletaCompetidor'),
 Evento = mongoose.model('Evento'),
-Federacion = mongoose.model('Federacion');
-var globales =  require("../Globales.js");
-const rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
-
+Federacion = mongoose.model('Federacion'),
+globales =  require("../Globales.js"),
+rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
+ 
 exports.Errores = async function(){
 // Mensaje.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
 // Usuario.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
@@ -28,6 +29,10 @@ exports.Errores = async function(){
 // Federacion.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
 // Pais.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
 // Fase.remove({},(e,el)=>e?console.log(e + "error"): console.log(el+ "exitos"));
+
+var contadores= [ {"_id": "evento", "sequence_value": 0 } ];
+
+
   var mensajes = [
         {"mensaje": "", "codigo": -1, "exito": 1 },
         {"mensaje": "{sutantivoCambiar} {id} fue borrado.", "codigo": -2, "exito": 1 },
@@ -588,6 +593,15 @@ var paises = [
 ]
 
 var opciones = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+contadores.forEach(elemento => {
+    Contador.update(elemento, elemento, opciones, function(err, elemento) {
+        if (err){/*console.log(err);*/ return};
+        })
+    });  
+
+
+
 mensajes.forEach(elemento => {
         Mensaje.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
         if (err) return;
@@ -2083,14 +2097,62 @@ var Rio = new Evento({
         "nombreNormalizado": "juegosolimpicosderiodejaneiro2016",
 });
 
-var eventos = [Rio];
+
+
+
+var Rio = new Evento({
+    "nombre": "Juegos Olímpicos de Río de Janeiro 2016",
+    "fechaInicio": {
+        "$date": "2016-08-05T00:00:00.000Z"
+    },
+    "fechaFinal": {
+        "$date": "2016-08-21T00:00:00.000Z"
+    },
+    "ciudad": "Río",
+    "pais": paises.find(p => p.name ==="Brasil")._id,
+    "fotoUrl": "imagenes/imagenesEventos/5c8719d7d3cb6b0015814b91.jpeg",
+    "activo": true,
+    "nombreNormalizado": "juegosolimpicosderiodejaneiro2016",
+});
+var Tokio = new Evento({
+    //"_id": getNextSequenceValue("evento"),
+    "nombre": "Juegos Olímpicos de Tokio 2020",
+    "fechaInicio": {
+        "$date": "2020-08-05T00:00:00.000Z"
+    },
+    "fechaFinal": {
+        "$date": "2020-08-21T00:00:00.000Z"
+    },
+    "ciudad": "Tokio",
+    "pais": paises.find(p => p.name ==="Japón")._id,
+    "fotoUrl": "imagenes/imagenesEventos/5c8719d7d3cb6b0015814b91.jpeg",
+    "activo": true,
+});
+
+// await  Contador.findOneAndUpdate(
+//     { _id: 'evento' },
+//     { $inc : { sequence_value : 1 } },
+//     { new : true },  
+//     function(err, seq){
+//         console.log(seq.sequence_value)
+//         if(err) console.log("Error");
+//         Rio._id = seq.sequence_value;
+//     }
+// );
+
+
+
+var eventos = [Rio, Tokio];
 
 console.log("E: " + eventos.length)
-eventos.forEach(elemento => {       
+eventos.forEach(elemento => { 
+    console.log(elemento)      
     Evento.update(elemento, elemento, opciones, function(err, elemento) {
-    if (err) {/*console.log(err); */return};
+    if (err) {
+        console.log(err); return};
     });  
 });
+
 
 var competencia = new Competencia({    
     "evento": Rio._id,

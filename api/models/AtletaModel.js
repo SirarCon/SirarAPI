@@ -26,7 +26,7 @@ var AtletaSchema = new Schema({
         maxlength: [8, "El teléfono tiene que ser menor a 9 caracteres"],
       },
       fechaNacimiento: {
-        type: Date, 
+        type: String, 
       },
       pasaporte: {
         type: String,
@@ -78,7 +78,7 @@ var AtletaSchema = new Schema({
         maxlength: [1000, "La información personal tiene que ser menor a 1001 caracteres"],
       },
       fechaDebut:{
-        type: Date,
+        type: String,
       },
       facebookUrl:{
         type: String,
@@ -164,8 +164,9 @@ AtletaSchema.method('todaInformacion', function() {
       altura: this.altura,
       peso: this.peso,
       codigoPais: this.codigoPais,
-      activo: this.activo,
       deporte: this.deporte,
+      pais: this.pais,
+      activo: this.activo,
     }
   });
   
@@ -187,6 +188,7 @@ AtletaSchema.method('infoPublica', function() {
     peso: this.peso,
     codigoPais: this.codigoPais,
     deporte: this.deporte,
+    pais: this.pais
   }
 });
   

@@ -1,5 +1,6 @@
 function cargarModelos(){
   require('./api/models/MensajeModel');
+  require('./api/models/ContadorModel'),
   require('./api/models/PaisModel');
   require('./api/models/FaseModel');
   require('./api/models/UserModel'); //created model loading here
@@ -51,7 +52,7 @@ mongoose.connect(require('./api/Globales.js').nombreBD.instance)
     app.use(function(req, res) {
       res.status(404).send({url: req.originalUrl + ' not found'})
     });
-
+   
     console.log('todo list RESTful API server started on: ' + port);
 
 })
