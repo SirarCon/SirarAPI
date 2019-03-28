@@ -50,7 +50,7 @@ var EventoSchema = new Schema({
         function(err, seq){
             if(err) return next(err);
             doc._id = seq.sequence_value;
-            doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')); 
+            doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
             next();
         }
     );
