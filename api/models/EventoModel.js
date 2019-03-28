@@ -60,19 +60,18 @@ var EventoSchema = new Schema({
   
   EventoSchema.pre('update', async function(next) {
     var doc = this;
-   await Contador.findOneAndUpdate(
+  await  Contador.findOneAndUpdate(
       { _id: 'evento' },
       { $inc : { sequence_value : 1 } },
       { new : true },  
       function(err, seq){
           if(err) return next(err);
-          console.log(doc._id)
-          doc._id= seq.sequence_value;
-          console.log(doc._id)
-
-             // nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
-          // } 
-         //});
+          doc.update({},{
+             $set: {
+               _id: seq.sequence_value,
+              nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(doc.getUpdate().nombre) 
+           } 
+         });
 next();
       }
   );

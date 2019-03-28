@@ -2112,7 +2112,7 @@ var Rio = new Evento({
     "pais": paises.find(p => p.name ==="Brasil")._id,
     "fotoUrl": "imagenes/imagenesEventos/5c8719d7d3cb6b0015814b91.jpeg",
     "activo": true,
-    "nombreNormalizado": "juegosolimpicosderiodejaneiro2016",
+    //"nombreNormalizado": "juegosolimpicosderiodejaneiro2016",
 });
 var Tokio = new Evento({
     //"_id": getNextSequenceValue("evento"),
