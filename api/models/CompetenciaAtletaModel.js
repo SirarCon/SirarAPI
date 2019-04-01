@@ -6,12 +6,12 @@ var Schema = mongoose.Schema;
   
 var CompetenciaAtletaSchema = new Schema({
     evento:{
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: 'Evento',
         required: 'Digite un evento por favor',
     },
     prueba:{
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: 'Prueba',
         required: 'Digite una prueba por favor',
     },
@@ -46,6 +46,21 @@ var CompetenciaAtletaSchema = new Schema({
     }
 });
  
+CompetenciaAtletaSchema.pre('save',  async function(next) {
+  var doc = this;
+  await Contador.findOneAndUpdate(
+        { _id: 'competencia' },
+        { $inc : { sequence_value : 1 } },
+        { new : true },)  
+        .then(async seq =>{
+            doc._id = seq.sequence_value;
+            next();
+        })
+    .catch(err=> {
+      console.log("Error en competencia Model pre")
+    })
+});
+
 CompetenciaAtletaSchema.method('todaInformacion',function (){
     return {
         evento: this.evento,
