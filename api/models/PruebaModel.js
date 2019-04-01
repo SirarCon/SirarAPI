@@ -1,9 +1,13 @@
 'use strict';
-var mongoose = require('mongoose');
-var funcionesGlobales = require("../FuncionesGlobales.js");
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+Contador = mongoose.model('Contador'),
+funcionesGlobales = require("../FuncionesGlobales.js"),
+Schema = mongoose.Schema;
 
 var PruebaSchema = new Schema({
+    _id: {
+      type: Number,
+    },
     nombre: {
             type: String,
             maxlength: [40, "El correo de la federación tiene que ser menor a 41 caracteres"],
@@ -14,7 +18,7 @@ var PruebaSchema = new Schema({
       unique: true,
     },
     deporte:{
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: 'Deporte',
         required: 'Digite un deporte por favor',
     },
@@ -26,12 +30,23 @@ var PruebaSchema = new Schema({
         type: Number,
         required: "Seleccione si la prueba es individual o por equipo"
     },
-  });
+  }, {_id: false});
 
-  PruebaSchema.pre('save', function(next) {
-    this.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')) + this._id; 
-    next();
-  });
+  PruebaSchema.pre('save', async function(next) {
+  var doc = this;
+  await Contador.findOneAndUpdate(
+        { _id: 'deporte' },
+        { $inc : { sequence_value : 1 } },
+        { new : true },)  
+        .then(async seq =>{
+            doc._id = seq.sequence_value;
+            doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
+            next();
+        })
+    .catch(err=> {
+      console.log("Error en deporte Model pre")
+    })
+});
   
   PruebaSchema.pre('update', function(next) {
   this.update({},{
