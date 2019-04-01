@@ -38,46 +38,32 @@ var EventoSchema = new Schema({
       type: Number,
       ref: "Pais",
     },
-  });
+  },{ _id: false});
 
 
-  EventoSchema.pre('save', function(next) {
+  EventoSchema.pre('save', async function(next) {
     var doc = this;
-    Contador.findOneAndUpdate(
+  await Contador.findOneAndUpdate(
         { _id: 'evento' },
         { $inc : { sequence_value : 1 } },
-        { new : true },  
-        function(err, seq){
-            if(err) return next(err);
+        { new : true },)  
+        .then(async seq =>{
             doc._id = seq.sequence_value;
             doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
-            next();
-        }
-    );
- 
-   
+            next()
+        })
+    .catch(err=> {
+      console.log("Error en evento Model pre")
+    })
   });
   
   EventoSchema.pre('update', async function(next) {
-    var doc = this;
-  await  Contador.findOneAndUpdate(
-      { _id: 'evento' },
-      { $inc : { sequence_value : 1 } },
-      { new : true },  
-      function(err, seq){
-          if(err) return next(err);
-          doc.update({},{
-             $set: {
-               _id: seq.sequence_value,
-              nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(doc.getUpdate().nombre) 
-           } 
-         });
-next();
-      }
-  );
-
-
-  
+    this.update({},{
+        $set: {
+        nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
+      } 
+    });
+    next();
   });
   
   EventoSchema.pre('findOneAndUpdate', function(next) {

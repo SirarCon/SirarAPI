@@ -5,12 +5,6 @@ Schema = mongoose.Schema;
 var ContadorSchema = new Schema({
    _id: String,
    sequence_value: Number
-});
-
-
-ContadorSchema.pre('findOne', function(next) {
-this.sequence_value++;
-next();
- });
+}, {collection: "contadores"});
 
  module.exports = mongoose.model('Contador', ContadorSchema);
