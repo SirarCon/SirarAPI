@@ -1,7 +1,8 @@
 'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Tiempo = require('../recursos/Tiempo.js');
+var mongoose = require('mongoose'),
+Contador = mongoose.model('Contador'),
+Schema = mongoose.Schema,
+Tiempo = require('../recursos/Tiempo.js');
 
 
 var AtletaCompetidorSchema = new Schema({
