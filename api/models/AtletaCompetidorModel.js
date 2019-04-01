@@ -9,7 +9,7 @@ var AtletaCompetidorSchema = new Schema({
       type: Number,
     },
     atleta: {
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: 'Atleta',
         required: 'Seleccione un atleta por favor'
     },
