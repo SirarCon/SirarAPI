@@ -1,11 +1,15 @@
 
 'use strict';
-var mongoose = require('mongoose');
-var funcionesGlobales = require("../FuncionesGlobales.js");
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+Contador = mongoose.model('Contador'),
+funcionesGlobales = require("../FuncionesGlobales.js"),
+Schema = mongoose.Schema;
 
 
 var FederacionSchema = new Schema({ 
+    _id:{
+      type: Number,
+    },
     nombre: {
         type: String,
         required: 'Digite un nombre por favor',
@@ -48,11 +52,23 @@ var FederacionSchema = new Schema({
         maxlength: [40, "El correo del presidente tiene que ser menor a 41 caracteres"],
         minlength: [10, "El correo del presidente tiene que ser mayor a 9 caracteres"],
     }
-});
+}, {_id: false});
 
-FederacionSchema.pre('save', function(next) {
-  this.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')); 
-  next();
+FederacionSchema.pre('save', async function(next) {
+  var doc = this;
+  await Contador.findOneAndUpdate(
+        { _id: 'federacion' },
+        { $inc : { sequence_value : 1 } },
+        { new : true },)  
+        .then(async seq =>{
+            doc._id = seq.sequence_value;
+            doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
+            console.log("s" + seq.sequence_value)
+            next();
+        })
+    .catch(err=> {
+      console.log("Error en deporte Model pre")
+    })
 });
 
 FederacionSchema.pre('update', function(next) {

@@ -14,6 +14,7 @@ AtletaCompetidor = mongoose.model('AtletaCompetidor'),
 Evento = mongoose.model('Evento'),
 Federacion = mongoose.model('Federacion'),
 globales =  require("../Globales.js"),
+funcionesGlobales = require("../FuncionesGlobales.js"),
 rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance,
 borrarDatos = true,
 insertarDatos = true;
@@ -37,7 +38,11 @@ exports.Errores = async function(){
         }
 
 
-var contadores= [ {"_id": "evento", "sequence_value": 0 } ];
+var contadores= [
+                {"_id": "evento", "sequence_value": 0 },
+                {"_id": "federacion", "sequence_value": 0 },
+                {"_id": "deporte", "sequence_value": 0 }
+ ];
 
 
   var mensajes = [
@@ -1151,13 +1156,13 @@ var federaciones = [ajedrez, atletismo, badminton/*, baloncesto, balonmano,
                     golf, halterofilia, hockey, judo, karate, lucha, natacion, patinaje, pelotaVasca,
                     pentatlon, racquetball, remo, rugby, softbol, surf, taekwondo, tenis,
 tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
-        federaciones.forEach(elemento => {             
-                Federacion.update(elemento, elemento, opciones, function(err, elemento) {
-                if (err){/*console.log(err);*/ return};
-                });  
-        });
+        // federaciones.forEach(elemento => {             
+        //         Federacion.update(elemento, elemento, opciones, function(err, elemento) {
+        //         if (err){/*console.log(err);*/ return};
+        //         });  
+        // });
 
-console.log("F: " + federaciones.length)
+    await inicializar(federaciones);
     
     var DAjedrez = new Deporte({
                 nombre: "Ajedrez",
@@ -1906,12 +1911,12 @@ console.log("F: " + federaciones.length)
 var deportes =[DAjedrez, DAtletismo, DBadminton]
 
       
-console.log("D: " + deportes.length)
-deportes.forEach(elemento => {       
-        Deporte.update(elemento, elemento, opciones, function(err, elemento) {
-        if (err) {/*console.log(err); */return};
-        });  
-});
+async function inicializar(arreglo){
+    await funcionesGlobales.asyncForEach(arreglo, async (element, indice, arreglo) => {    
+        await arreglo[indice].save().then(async ()=> {
+                    }).catch(err=>{ console.log(err)}) ;
+            });
+}
 
 var usuarios = [
     new Usuario({ 
@@ -1922,9 +1927,7 @@ var usuarios = [
         "identificacion": "115670126",
         "telefono": "70889619",
         "rol": 1,
-        "created_date": {
-            "$date": "2018-08-15T06:59:50.463Z"
-        },
+        "created_date":"2018-08-15T06:59:50.463Z",
         "token": "6tm7GIM6qGtTAmF",        
         "tokenPassword": "ZScdYdUuPFbqwUN",
         "nombreNormalizado": "jonathan varela barrantes"
@@ -1936,9 +1939,7 @@ var usuarios = [
         "identificacion": "112233445566",
         "telefono": "",
         "rol": 1,
-        "fechaCreacion": {
-            "$date": "2018-09-07T15:06:27.967Z"
-        },
+        "fechaCreacion": "2018-09-07T15:06:27.967Z",
         "tokenPassword": "OuFiYTZ5kbDWiF6",
         "nombreNormalizado": "william casasola villalobos",
     }),
@@ -1950,9 +1951,7 @@ var usuarios = [
         "telefono": "222222",
         "fotoUrl": "imagenes/imagenesPerfil/115780376.jpeg",
         "rol": 0,
-        "fechaCreacion": {
-            "$date": "2018-09-15T18:54:28.458Z"
-        },
+        "fechaCreacion":  "2018-09-15T18:54:28.458Z",
         "tokenPassword": "TpTbF1cRyNlmV9s",
         "nombreNormalizado": "will",
     })
@@ -1964,8 +1963,8 @@ usuarios.forEach(elemento => {
     if (err) {/*console.log(err); */return};
     });  
 });
-console.log("U: " + usuarios.length)
 
+await inicializar(deportes);
 
 
 var atletas = [
@@ -2032,27 +2031,21 @@ var atletas = [
         "deporte": DAtletismo._id,
         "fotoUrl": "imagenes/imagenesAtletas/5c87158dd3cb6b0015814b90.jpeg",
         "activo": true,
-        "fechaNacimiento": {
-            "$date": "1992-06-15T00:00:00.000Z"
-        },
+        "fechaNacimiento": "1992-06-15T00:00:00.000Z",
         "pasaporte": "123456789",
         "genero": false,
         "lateralidad": true,
         "beneficiario": "Padre",
         "cedulaBeneficiario": "123456789012",
         "visaAmericana": "12345678",
-        "venceVisa": {
-            "$date": "2022-08-08T00:00:00.000Z"
-        },
+        "venceVisa": "2022-08-08T00:00:00.000Z",
         "tallaCamisa": "L",
         "pantaloneta": "38",
         "tallaJacket": "L",
         "tallaBuzo": "38",
         "tallaTenis": "40",
         "infoPersonal": "She is a Dutch track and field athlete. She competes primarily in the sprints, having previously participated in the heptathlon. She is the 2015 and 2017 World Champion and won silver at the 2016 Summer Olympics in the 200 metres.",
-        "fechaDebut": {
-            "$date": "2009-05-05T00:00:00.000Z"
-        },
+        "fechaDebut": "2009-05-05T00:00:00.000Z",
         "facebookUrl": "https://www.facebook.com/dafneschippersfanpage/",
         "instagramUrl": "https://www.instagram.com/dafne_schippers/",
         "twitterUrl": "https://twitter.com/dafneschippers",
@@ -2063,12 +2056,8 @@ var atletas = [
     })
 ]; 
 
-console.log("A: " + atletas.length)
-atletas.forEach(elemento => {       
-    Atleta.update(elemento, elemento, opciones, function(err, elemento) {
-    if (err) {/*console.log(err); */return};
-    });  
-});
+await inicializar(atletas);
+
 
 
 var pruebaAtletismo = new Prueba({
@@ -2126,9 +2115,7 @@ eventos.forEach(elemento => {
 var competencia = new Competencia({    
     "evento": Rio._id,
     "prueba": pruebaAtletismo._id,
-    "fechaHora": {
-        "$date": "2016-08-18T00:00:00.000Z"
-    },
+    "fechaHora":  "2016-08-18T00:00:00.000Z",
     "lugar": "Estadio Río",
     "genero": false,
     "descripcion": "Hit 1",

@@ -1,10 +1,14 @@
 'use strict';
-var mongoose = require('mongoose');
-var funcionesGlobales = require("../FuncionesGlobales.js");
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+Contador = mongoose.model('Contador'),
+funcionesGlobales = require("../FuncionesGlobales.js"),
+Schema = mongoose.Schema;
 
 
 var DeporteSchema = new Schema({
+    _id: {
+      type: Number,
+    },
     nombre: {
         type: String,
         required: 'Digite un nombre por favor',
@@ -19,19 +23,29 @@ var DeporteSchema = new Schema({
         type: String   
       },
       federacion: {
-                    type: Schema.Types.ObjectId,
+                    type: Number,
                      ref: 'Federacion',
                      required: 'Digite una federación por favor',                      
           },
       activo:{
         type: Boolean
       },                    
-});
+}, {_id: false});
 
-
-DeporteSchema.pre('save', function(next) {
-  this.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(this.get('nombre')); 
-  next();
+DeporteSchema.pre('save', async function(next) {
+  var doc = this;
+  await Contador.findOneAndUpdate(
+        { _id: 'deporte' },
+        { $inc : { sequence_value : 1 } },
+        { new : true },)  
+        .then(async seq =>{
+            doc._id = seq.sequence_value;
+            doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
+            next();
+        })
+    .catch(err=> {
+      console.log("Error en deporte Model pre")
+    })
 });
 
 DeporteSchema.pre('update', function(next) {
