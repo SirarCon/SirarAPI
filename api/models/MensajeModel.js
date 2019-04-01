@@ -1,8 +1,12 @@
 'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+Contador = mongoose.model('Contador'),
+Schema = mongoose.Schema;
 
 var MensajeSchema = new Schema({
+  _id: {
+    type: Number,
+  },
   mensaje: {
     type: String    
   },
@@ -14,8 +18,23 @@ var MensajeSchema = new Schema({
     type: Boolean,
   required: "Digite si fue exitoso o no"
   }
-});
+}, {_id: false});
 
+
+MensajeSchema.pre('save', async function(next) {
+  var doc = this;
+  await Contador.findOneAndUpdate(
+        { _id: 'mensaje' },
+        { $inc : { sequence_value : 1 } },
+        { new : true },)  
+        .then(async seq =>{
+            doc._id = seq.sequence_value;
+            next();
+        })
+    .catch(err=> {
+      console.log("Error en deporte Model pre")
+    })
+});
 
 MensajeSchema.method("obtenerMensaje" , function(nuevoMensaje, id , objeto){
   if(id && nuevoMensaje){
