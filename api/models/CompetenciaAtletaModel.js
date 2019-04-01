@@ -1,6 +1,7 @@
 'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+Contador = mongoose.model('Contador'),    
+Schema = mongoose.Schema;
  //https://stackoverflow.com/questions/24853383/mongoose-objectid-that-references-a-sub-document
   
   
