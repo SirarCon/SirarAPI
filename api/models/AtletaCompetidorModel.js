@@ -5,13 +5,16 @@ var Tiempo = require('../recursos/Tiempo.js');
 
 
 var AtletaCompetidorSchema = new Schema({
+    _id: {
+      type: Number,
+    },
     atleta: {
         type: Schema.Types.ObjectId,
         ref: 'Atleta',
         required: 'Seleccione un atleta por favor'
     },
     competencia: {
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: 'CompetenciaAtleta',
         required:'Seleccione una competencia por favor'
     },
@@ -51,6 +54,22 @@ var AtletaCompetidorSchema = new Schema({
             }
         }]
     }
+}, {_id: false});
+
+
+AtletaCompetidorSchema.pre('save', async function(next){
+    var doc = this;
+await Contador.findOneAndUpdate(
+        { _id: 'atletaCompetidor' },
+        { $inc : { sequence_value : 1 } },
+        { new : true },)  
+        .then(async seq =>{
+            doc._id = seq.sequence_value;           
+            next();
+        })
+    .catch(err=> {
+      console.log("Error en atleta competidor Model pre")
+    })
 });
 
 AtletaCompetidorSchema.method('todaInformacion', function(){
