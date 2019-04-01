@@ -44,7 +44,7 @@ var CompetenciaAtletaSchema = new Schema({
         type: Boolean,
         required: "Seleccione si la prueba es activa",
     }
-});
+}, {_id: false});
  
 CompetenciaAtletaSchema.pre('save',  async function(next) {
   var doc = this;
