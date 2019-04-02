@@ -35,7 +35,7 @@ var PruebaSchema = new Schema({
   PruebaSchema.pre('save', async function(next) {
   var doc = this;
   await Contador.findOneAndUpdate(
-        { _id: 'deporte' },
+        { _id: 'prueba' },
         { $inc : { sequence_value : 1 } },
         { new : true },)  
         .then(async seq =>{
@@ -44,7 +44,7 @@ var PruebaSchema = new Schema({
             next();
         })
     .catch(err=> {
-      console.log("Error en deporte Model pre")
+      console.log("Error en prueba Model pre")
     })
 });
   

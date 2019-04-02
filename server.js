@@ -1,6 +1,6 @@
 function cargarModelos(){
+  require('./api/models/ContadorModel');
   require('./api/models/MensajeModel');
-  require('./api/models/ContadorModel'),
   require('./api/models/PaisModel');
   require('./api/models/FaseModel');
   require('./api/models/UserModel'); //created model loading here

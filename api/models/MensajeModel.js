@@ -32,7 +32,7 @@ MensajeSchema.pre('save', async function(next) {
             next();
         })
     .catch(err=> {
-      console.log("Error en deporte Model pre")
+      console.log("Error en mensaje Model pre")
     })
 });
 

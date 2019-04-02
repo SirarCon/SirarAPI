@@ -1,9 +1,10 @@
 'use strict';
-var mongoose = require("mongoose");
-var funcionesGlobales = require("../FuncionesGlobales.js");
-var Schema = mongoose.Schema;
+var mongoose = require("mongoose"),
+Contador = mongoose.model('Contador'),
+funcionesGlobales = require("../FuncionesGlobales.js"),
+Schema = mongoose.Schema;
 
-var Medalla = new Schema({
+var MedallaSchema = new Schema({
     atletaCompetidor: {
             type: Schema.Types.ObjectId,
             ref: "AtletaCompetidor"
@@ -21,4 +22,20 @@ var Medalla = new Schema({
     }
 });
 
-module.exports = mongoose.model('Medalla', Medalla)
+MedallaSchema.pre('save', async function(next) {
+    var doc = this;
+    await Contador.findOneAndUpdate(
+          { _id: 'medalla' },
+          { $inc : { sequence_value : 1 } },
+          { new : true },)  
+          .then(async seq =>{
+              doc._id = seq.sequence_value;
+              doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
+              next();
+          })
+      .catch(err=> {
+        console.log("Error en medalla Model pre")
+      })
+  });
+    
+module.exports = mongoose.model('Medalla', MedallaSchema)

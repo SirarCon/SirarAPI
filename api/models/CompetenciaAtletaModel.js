@@ -6,6 +6,9 @@ Schema = mongoose.Schema;
   
   
 var CompetenciaAtletaSchema = new Schema({
+    _id: {
+        type: Number
+    },
     evento:{
         type: Number,
         ref: 'Evento',

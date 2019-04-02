@@ -197,10 +197,8 @@ Usuario.findOne()
                    .then(usuario =>{
                     if(req.body.passwordVieja){
                       res.json({token: res.locals.token, datos: globales.mensajes(-6, "usuario", req.body.identificacion).instance})
-                      console.log("Si")
                     }else{
                       res.json({datos: globales.mensajes(-6, "usuario", req.body.identificacion).instance})
-                      console.log("no")
                     }
                     })
                    .catch(err=>{

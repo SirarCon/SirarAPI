@@ -39,44 +39,51 @@ exports.Errores = async function(){
 
 
 var contadores= [
-                {"_id": "evento", "sequence_value": 0 },
-                {"_id": "federacion", "sequence_value": 0 },
-                {"_id": "deporte", "sequence_value": 0 }
+               new Contador({"_id": "evento", "sequence_value": 0 }),
+               new Contador({"_id": "federacion", "sequence_value": 0 }),
+               new Contador({"_id": "deporte", "sequence_value": 0 }),
+               new Contador({"_id": "competencia", "sequence_value": 0 }),
+               new Contador({"_id": "atleta", "sequence_value": 0 }),
+               new Contador({"_id": "atletaCompetidor", "sequence_value": 0 }),
+               new Contador({"_id": "prueba", "sequence_value": 0 }),
+               new Contador({"_id": "mensaje", "sequence_value": 0 }),
+               new Contador({"_id": "medalla", "sequence_value": 0 }),
+               new Contador({"_id": "tablaPosicion", "sequence_value": 0 }),
  ];
 
 
   var mensajes = [
-        {"mensaje": "", "codigo": -1, "exito": 1 },
-        {"mensaje": "{sutantivoCambiar} {id} fue borrado.", "codigo": -2, "exito": 1 },
-        {"mensaje": "{sutantivoCambiar} {id} fue modificado con éxito.", "codigo": -3, "exito": 1 },
-        {"mensaje": "{sutantivoCambiar} {id} se ha creado.", "codigo": -4, "exito": 1 },
-        {"mensaje": "{sutantivoCambiar} a {id} se ha enviado.", "codigo": -5, "exito": 1 },
-        {"mensaje": "Contraseña de {sutantivoCambiar}: {id} cambiada exitosamente.", "codigo": -6, "exito": 1},
-        {"mensaje": "{sutantivoCambiar} {id} se ha ingresado.", "codigo": -7, "exito": 1 },
-        {"mensaje": "Contraseña errónea", "codigo": 1, "exito": 0 },
-        {"mensaje": "{sutantivoCambiar} {id} no encontrado", "codigo": 2, "exito": 0 },
-        {"mensaje": "Hubo un problema borrando {sutantivoCambiar} {id}", "codigo": 3, "exito": 0 },
-        {"mensaje": "Hubo un problema enviando {sutantivoCambiar} a {id}", "codigo": 4, "exito": 0 },
-        {"mensaje": "Hubo un problema buscando {sutantivoCambiar} {id}", "codigo" : 5, "exito": 0 },
-        {"mensaje": "Hubo un problema validando el token  de contraseña", "codigo": 6, "exito": 0 },
-        {"mensaje": "El token  de contraseña no tiene el formato adecuado", "codigo": 7, "exito": 0 },
-        {"mensaje": "Hubo un problema cambiando la contraseña", "codigo" : 8, "exito": 0 },
-        {"mensaje": "Contraseña actual no coincide con la indicada", "codigo" : 9, "exito": 0 },
-        {"mensaje": "Hubo un problema creando {sutantivoCambiar} {id}", "codigo" : 10, "exito": 0 }, 
-        {"mensaje": "No hay {sutantivoCambiar} que listar", "codigo" : 11, "exito": 0 },
-        {"mensaje": "Hubo un problema leyendo {sutantivoCambiar}", "codigo" : 12, "exito": 0 },   
-        {"mensaje": "Hubo un problema leyendo {sutantivoCambiar} {id}", "codigo" : 13, "exito": 0 },
-        {"mensaje": "Hubo un error modificando {sutantivoCambiar} {id}", "codigo" :14, "exito": 0 },
-        {"mensaje": "{sutantivoCambiar} indicado ya está registrado", "codigo" :15, "exito": 0 },
-        {"mensaje": "{sutantivoCambiar} {id} no tiene formato adecuado", "codigo" :16, "exito": 0 },
-        {"mensaje": "Debe digitar la nueva contraseña", "codigo" : 17, "exito": 0 },
-        {"mensaje": "No existe {sutantivoCambiar}", "codigo" : 18, "exito": 0 },
-        {"mensaje": "Hubo un problema ingresando {sutantivoCambiar} {id}", "codigo" : 19, "exito": 0 },
-        {"mensaje": "Hubo un problema borrando {sutantivoCambiar} {id}", "codigo" : 20, "exito": 0 },
-        {"mensaje": "Hubo un problema borrando la foto", "codigo" : 0, "exito": 0 },
-        {"mensaje": "Hubo un problema guardando la foto", "codigo" : 0, "exito": 0 },
-        {"mensaje": "Hubo un problema creando el token", "codigo" : 50, "exito": 0 },
-        {"mensaje": "Por su seguridad la sesión ha expirado", "codigo": 403, "exito": 0 }
+        new Mensaje({"mensaje": "", "codigo": -1, "exito": 1 }),
+        new Mensaje({"mensaje": "{sutantivoCambiar} {id} fue borrado.", "codigo": -2, "exito": 1 }),
+        new Mensaje({"mensaje": "{sutantivoCambiar} {id} fue modificado con éxito.", "codigo": -3, "exito": 1 }),
+        new Mensaje({"mensaje": "{sutantivoCambiar} {id} se ha creado.", "codigo": -4, "exito": 1 }),
+        new Mensaje({"mensaje": "{sutantivoCambiar} a {id} se ha enviado.", "codigo": -5, "exito": 1 }),
+        new Mensaje({"mensaje": "Contraseña de {sutantivoCambiar}: {id} cambiada exitosamente.", "codigo": -6, "exito": 1}),
+        new Mensaje({"mensaje": "{sutantivoCambiar} {id} se ha ingresado.", "codigo": -7, "exito": 1 }),
+        new Mensaje({"mensaje": "Contraseña errónea", "codigo": 1, "exito": 0 }),
+        new Mensaje({"mensaje": "{sutantivoCambiar} {id} no encontrado", "codigo": 2, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema borrando {sutantivoCambiar} {id}", "codigo": 3, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema enviando {sutantivoCambiar} a {id}", "codigo": 4, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema buscando {sutantivoCambiar} {id}", "codigo" : 5, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema validando el token  de contraseña", "codigo": 6, "exito": 0 }),
+        new Mensaje({"mensaje": "El token  de contraseña no tiene el formato adecuado", "codigo": 7, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema cambiando la contraseña", "codigo" : 8, "exito": 0 }),
+        new Mensaje({"mensaje": "Contraseña actual no coincide con la indicada", "codigo" : 9, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema creando {sutantivoCambiar} {id}", "codigo" : 10, "exito": 0 }), 
+        new Mensaje({"mensaje": "No hay {sutantivoCambiar} que listar", "codigo" : 11, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema leyendo {sutantivoCambiar}", "codigo" : 12, "exito": 0 }),   
+        new Mensaje({"mensaje": "Hubo un problema leyendo {sutantivoCambiar} {id}", "codigo" : 13, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un error modificando {sutantivoCambiar} {id}", "codigo" :14, "exito": 0 }),
+        new Mensaje({"mensaje": "{sutantivoCambiar} indicado ya está registrado", "codigo" :15, "exito": 0 }),
+        new Mensaje({"mensaje": "{sutantivoCambiar} {id} no tiene formato adecuado", "codigo" :16, "exito": 0 }),
+        new Mensaje({"mensaje": "Debe digitar la nueva contraseña", "codigo" : 17, "exito": 0 }),
+        new Mensaje({"mensaje": "No existe {sutantivoCambiar}", "codigo" : 18, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema ingresando {sutantivoCambiar} {id}", "codigo" : 19, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema borrando {sutantivoCambiar} {id}", "codigo" : 20, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema borrando la foto", "codigo" : 0, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema guardando la foto", "codigo" : 0, "exito": 0 }),
+        new Mensaje({"mensaje": "Hubo un problema creando el token", "codigo" : 50, "exito": 0 }),
+        new Mensaje({"mensaje": "Por su seguridad la sesión ha expirado", "codigo": 403, "exito": 0 })
 ]
 
 var paises = [
@@ -606,19 +613,9 @@ var paises = [
 
 var opciones = { upsert: true, new: true, setDefaultsOnInsert: true };
 
-contadores.forEach(elemento => {
-    Contador.update(elemento, elemento, opciones, function(err, elemento) {
-        if (err){/*console.log(err);*/ return};
-        })
-    });  
+await inicializar(contadores)
 
-
-
-mensajes.forEach(elemento => {
-        Mensaje.findOneAndUpdate(elemento, elemento, opciones, function(err, elemento) {
-        if (err) return;
-        });  
-});
+await inicializar(mensajes);
 
 paises.forEach(elemento => {
         Pais.update(elemento, elemento, opciones, function(err, elemento) {
@@ -2070,12 +2067,7 @@ var pruebaAtletismo = new Prueba({
 
 var pruebas = [pruebaAtletismo];
 
-console.log("P: " + pruebas.length)
-pruebas.forEach(elemento => {       
-    Prueba.update(elemento, elemento, opciones, function(err, elemento) {
-    if (err) {/*console.log(err); */return};
-    });  
-});
+await inicializar(pruebas);
 
 
 
@@ -2104,19 +2096,16 @@ var Tokio = new Evento({
 
 var eventos = [Rio, Tokio];
 
-console.log("E: " + eventos.length)
 
-eventos.forEach(elemento => {    
-    elemento.save().then(async ()=> {
-        }).catch(err=>{ console.log(err)}) ;
-});
+await inicializar(eventos)
 
 
 var competencia = new Competencia({    
     "evento": Rio._id,
     "prueba": pruebaAtletismo._id,
     "fechaHora":  "2016-08-18T00:00:00.000Z",
-    "lugar": "Estadio Río",
+    "estadio": "Estadio Río",
+    "ciudad": "Río",
     "genero": false,
     "descripcion": "Hit 1",
     "fase": 1,
@@ -2126,12 +2115,7 @@ var competencia = new Competencia({
 var competencias = [competencia];
 
 
-console.log("C: " + competencias.length)
-competencias.forEach(elemento => {       
-    Competencia.update(elemento, elemento, opciones, function(err, elemento) {
-    if (err) {/*console.log(err); */return};
-    });  
-});
+await inicializar(competencias);
 
 var atletaCompetidor = new AtletaCompetidor({
     "atleta": atletas[6]._id,
@@ -2151,12 +2135,8 @@ var atletaCompetidor = new AtletaCompetidor({
 
 var atletasCompetidores = [atletaCompetidor];
 
-console.log("AC: " + atletasCompetidores.length)
-atletasCompetidores.forEach(elemento => {       
-    AtletaCompetidor.update(elemento, elemento, opciones, function(err, elemento) {
-    if (err) {/*console.log(err); */return};
-    });  
-});
+await inicializar(atletasCompetidores);
+
 }
 
 };

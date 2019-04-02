@@ -63,11 +63,10 @@ FederacionSchema.pre('save', async function(next) {
         .then(async seq =>{
             doc._id = seq.sequence_value;
             doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
-            console.log("s" + seq.sequence_value)
             next();
         })
     .catch(err=> {
-      console.log("Error en deporte Model pre")
+      console.log("Error en federacion Model pre")
     })
 });
 
