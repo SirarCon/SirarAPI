@@ -123,7 +123,7 @@ AtletaSchema.pre('save', async function(next) {
   await Contador.findOneAndUpdate(
         { _id: 'atleta' },
         { $inc : { sequence_value : 1 } },
-        { new : true },)  
+        { new : true },)
         .then(async seq =>{
             doc._id = seq.sequence_value;
             doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 

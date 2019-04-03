@@ -1,11 +1,11 @@
 'use strict';
 
 //#region Requires
-var mongoose = require('mongoose');
-var Atleta = mongoose.model('Atleta');
-var Deporte = mongoose.model('Deporte');
-var globales =  require("../Globales.js");
-var funcionesGlobales = require("../FuncionesGlobales.js");
+var mongoose = require('mongoose'),
+Atleta = mongoose.model('Atleta'),
+Deporte = mongoose.model('Deporte'),
+globales =  require("../Globales.js"),
+funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 //#endregion Requires
 
@@ -18,9 +18,10 @@ exports.crearAtleta = async function(req, res){
                 nuevoAtleta.fotoUrl = req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesAtletas, req.body.fotoUrl , nuevoAtleta._id) : undefined,
                 nuevoAtleta.save().then(atleta =>{
                     res.json({token: res.locals.token, datos: globales.mensajes(-4, "Atleta", req.body.nombre ).instance});}
-                    ).catch(err=>{       
+                    ).catch(async err=>{       
                         if (err){  
                             console.log(err)
+                            await funcionesGlobales.restarContador('atleta');
                             funcionesGlobales.borrarArchivo(nuevoAtleta.fotoUrl);  
                             if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
                                 res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", funcionesGlobales.manejarError(err)).instance});
@@ -33,7 +34,10 @@ exports.crearAtleta = async function(req, res){
                 }else{
                         res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ").instance}); //Todo modificar mensaje
                       }    
-                    }).catch(e=> { console.log(e); res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", req.body.nombre).instance})}); //Todo modificar mensaje                  
+                    }).catch(e=> { 
+                        console.log(e);ç
+                        res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", req.body.nombre).instance})
+                    }); //Todo modificar mensaje                  
   };
 
 

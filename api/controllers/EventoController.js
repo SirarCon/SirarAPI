@@ -17,7 +17,8 @@ exports.crearEvento = async function (req, res) {
     nuevoEvento.fotoUrl = req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesEventos, req.body.fotoUrl , nuevoEvento._id) : undefined
     nuevoEvento.save().then(evento => {
         res.json({token: res.locals.token, datos: globales.mensajes(-4, "Evento", req.body.nombre).instance});
-    }).catch(err => {
+    }).catch(async err => {
+        await funcionesGlobales.restarContador('evento');
         funcionesGlobales.borrarArchivo(nuevoEvento.fotoUrl);                   
         if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta             
             res.json({token: res.locals.token, datos: globales.mensajes(10, "Evento.", funcionesGlobales.manejarError(err)).instance});

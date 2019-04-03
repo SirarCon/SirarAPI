@@ -23,8 +23,9 @@ exports.crearCompetenciaAtleta = async function(req, res){
                 var nuevaCompetencia = new CompetenciaA(req.body);
                 nuevaCompetencia.save().then(competencia=>{
                     res.json({token: res.locals.token, datos: globales.mensajes(-4, "Competencia del", req.body.fechaHora).instance});
-                }).catch(err=>{
+                }).catch(async err=>{
                     console.log(err);
+                    await funcionesGlobales.restarContador('competencia');
                     res.json({token: res.locals.token,datos: globales.mensajes(10, "la competencia", funcionesGlobales.manejarError(err)).instance});
                 });
             }else{
@@ -80,8 +81,13 @@ CompetenciaA.findOne()
 .then(competencia =>{
     if(competencia){
         var nuevoAtelta = new AtletaC(req.body);
-        nuevoAtelta.save(); //Todo cambiar a -7 no -2
-        res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ").instance});    
+        nuevoAtelta.save().then(atleta=>{
+            res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ").instance});    
+        }).catch(async err=>{
+            await funcionesGlobales.restarContador('federacion');
+            res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta a Competencia", " ").instance});//Todo Cambiar
+        });
+        
     }else{
         res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ").instance});
     }

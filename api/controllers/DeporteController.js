@@ -22,7 +22,8 @@ exports.crearFederacion = async function(req, res){
     nuevaFederacion.escudoUrl = req.body.escudoUrl ? funcionesGlobales.guardarImagen(rutaImagenesFederaciones, req.body.escudoUrl , nuevaFederacion._id) : undefined,
     nuevaFederacion.save().then(federacion =>{
         res.json({token: res.locals.token, datos: globales.mensajes(-4, "Federación", req.body.nombre).instance});
-      }).catch(err=>{  
+      }).catch(async err=>{  
+              await funcionesGlobales.restarContador('federacion');
               funcionesGlobales.borrarArchivo(nuevaFederacion.escudoUrl);                   
               if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta               
                   res.json({token: res.locals.token, datos: globales.mensajes(10, "Federacion", funcionesGlobales.manejarError(err)).instance});
@@ -30,7 +31,9 @@ exports.crearFederacion = async function(req, res){
                  res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre federación", " ").instance});
               }               
       });              
-  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance}));
+  }).catch(e=> {
+    res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance})
+  });
 };
 
 exports.modificarFederacion = async function(req, res){
@@ -155,7 +158,8 @@ exports.crearDeporte = async function(req, res){
       nuevoDeporte.save()
       .then(deporte =>{
           res.json({token: res.locals.token, datos: globales.mensajes(-4, "Deporte ", req.body.nombre).instance});
-      }).catch(err=>{  
+      }).catch(async err=>{ 
+                await funcionesGlobales.restarContador('deporte'); 
                 funcionesGlobales.borrarArchivo(nuevoDeporte.imagenDeporteUrl); 
                 if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                               
                     res.json({token: res.locals.token, datos: globales.mensajes(10, "Deporte ", funcionesGlobales.manejarError(err)).instance});
@@ -166,7 +170,9 @@ exports.crearDeporte = async function(req, res){
     }else{
       res.json({token: res.locals.token, datos: globales.mensajes(18, "la federación ingresada"," ").instance}); 
     }    
-  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance})); 
+  }).catch(e=> {
+    res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance})
+  }); 
 };
 
 exports.modificarDeporte = async function(req, res){
@@ -326,8 +332,12 @@ exports.insertarPrueba = async function(req, res){
         }else{
           var nuevaPrueba = new Prueba(req.body);
           nuevaPrueba.deporte = req.params.idDeporte;
-          nuevaPrueba.save();
-          res.json({token: res.locals.token, datos: globales.mensajes(-4, "Prueba", req.body.nombre).instance});
+          nuevaPrueba.save().then(prueba=>{
+            res.json({token: res.locals.token, datos: globales.mensajes(-4, "Prueba", req.body.nombre).instance});
+          }).catch(async err => {
+            await funcionesGlobales.restarContador('federacion');
+            res.json({token: res.locals.token, datos: globales.mensajes(10, "Prueba", " ").instance});
+          });          
         }
       }).catch(err=>{
         console.log(err);

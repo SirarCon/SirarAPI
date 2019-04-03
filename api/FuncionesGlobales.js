@@ -1,4 +1,6 @@
 'use strict';
+var mongoose = require("mongoose"),
+Contador = mongoose.model("Contador");
 
 module.exports ={
     validarEmail : function(email, obligatorio = false) {
@@ -107,5 +109,15 @@ manejarError : function(err, mensajeDefecto = " "){
       }
   }  
   return errorM;
+},
+
+restarContador : async function(entidad){
+  await Contador.findOneAndUpdate(
+                { _id: entidad },
+                { $inc : { sequence_value : -1 } },
+                { new : true })  
+            .then().catch(err=> {
+              console.log("Error restando contador de " + entidad + " " + err )
+            })
 }
 }
