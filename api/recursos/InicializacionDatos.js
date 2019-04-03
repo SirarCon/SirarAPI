@@ -16,8 +16,8 @@ Federacion = mongoose.model('Federacion'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance,
-borrarDatos = true,
-insertarDatos = true;
+borrarDatos = false,
+insertarDatos = false;
  
 exports.Errores = async function(){
     if(insertarDatos){
