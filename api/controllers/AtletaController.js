@@ -102,7 +102,7 @@ exports.modificarAtleta  = async function(req, res){
   exports.listarAtletas = async function(req, res){
     Atleta.find()
     .sort({nombreNormalizado : 1})
-    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}}, {path: "pais", select: "name flag" }])  
+    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}}])  
     .exec()
     .then(async (atletas)=>{
           await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
@@ -121,7 +121,7 @@ exports.modificarAtleta  = async function(req, res){
 exports.leerAtleta  = async function(req, res){
     Atleta.findOne()
     .where({_id: req.params.id})
-    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}}, {path: "pais", select: "name flag" }])  
+    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}},])  
     .exec()
     .then(async (atleta) => {
         if(atleta){            
@@ -140,7 +140,7 @@ exports.listarAtletasActivos = async function(req, res){
     Atleta.find()
     .where({activo: true})  
     .sort({nombreNormalizado : 1})
-    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}}, {path: "pais", select: "name flag" }])      
+    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}},])      
     .exec()
     .then(async (atletas)=>{
           await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
@@ -159,7 +159,7 @@ exports.listarAtletasActivos = async function(req, res){
 exports.leerAtletaActivo  = async function(req, res){
     Atleta.findOne()
     .where({_id: req.params.id})
-    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}}, {path: "pais", select: "name flag" }])  
+    .populate([{path: "deporte", select: "nombre", populate:{path: "federacion", select: "nombre"}},])  
     .exec()
     .then(async (atleta) => {
         if(atleta){

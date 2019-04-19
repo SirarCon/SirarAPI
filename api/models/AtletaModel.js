@@ -178,7 +178,6 @@ AtletaSchema.method('todaInformacion', function() {
       twitterUrl: this.twitterUrl,
       altura: this.altura,
       peso: this.peso,
-      codigoPais: this.codigoPais,
       deporte: this.deporte,
       pais: this.pais,
       activo: this.activo,
@@ -201,7 +200,6 @@ AtletaSchema.method('infoPublica', function() {
     twitterUrl: this.twitterUrl,
     altura: this.altura,
     peso: this.peso,
-    codigoPais: this.codigoPais,
     deporte: this.deporte,
     pais: this.pais
   }
