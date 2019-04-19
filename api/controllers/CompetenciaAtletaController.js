@@ -230,7 +230,6 @@ exports.listarCategoriasXDeporte = async function(req, res){
 
 //Lista las fases de las pruebas basadas en el evento, prueba y genero seleccionados
 exports.listarFasesxPruebaEvento= function(req, res){
-    console.log(Number(req.params.genero))
  CompetenciaA.aggregate([
             {   
                 $match: {
@@ -290,7 +289,7 @@ exports.listarCompetenciasEventoPruebaFase = function(req, res){
     CompetenciaA.find({
         evento: req.params.idEvento,
         prueba: req.params.idPrueba,
-        genero: req.params.genero == 1,
+        genero: Number(req.params.genero),
         fase: req.params.fase,
     })
     .sort({descripcion: 1})

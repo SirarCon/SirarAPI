@@ -282,7 +282,7 @@ exports.listarCompetenciasEventoPruebaFase = function(req, res){
     CompetenciaA.find({
         evento: req.params.idEvento,
         prueba: req.params.idPrueba,
-        genero: req.params.genero == 1,
+        genero: Number(req.params.genero),
         fase: req.params.fase,
     })
     .sort({descripcion: 1})
