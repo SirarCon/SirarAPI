@@ -141,7 +141,7 @@ exports.listarEventosAtleta = async function(req, res){
 AtletaC.aggregate([
    {
        $match: { 
-           atleta: mongoose.Types.ObjectId(req.params.idAtleta),
+           atleta: req.params.idAtleta,
        }
     },
      {  $lookup: {

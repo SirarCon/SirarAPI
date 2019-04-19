@@ -76,7 +76,7 @@ CompetenciaA.findOneAndUpdate({_id: req.params.idCompetencia},
 //todo Revisar mensaje y validación de repetidos, ver update de atleta (deporte no cambia)
 exports.ingresarAtletaACompetencia = async function(req, res){
 CompetenciaA.findOne()
-.where({_id : mongoose.Types.ObjectId(req.body.competencia)})
+.where({_id : req.body.competencia})
 .exec()
 .then(competencia =>{
     if(competencia){
@@ -116,7 +116,7 @@ exports.listarAtletasCompetencia = async function(req, res){
 AtletaC.aggregate([
     {
         $match:{
-            competencia: mongoose.Types.ObjectId(req.params.idCompetencia),                               
+            competencia: req.params.idCompetencia,                               
         }
     },
     {
@@ -163,7 +163,7 @@ AtletaC.aggregate([
 exports.listarDeportesXEvento = async function(req, res){
 CompetenciaA.find()
 .where({ evento: req.params.idEvento, activo: true })
-.populate({path:"prueba", select: "deporte", populate:{path: "deporte", select: "id nombre"}})
+.populate({path:"prueba", select: "deporte"})
 .exec()
 .then(competencias => {
     if(competencias.length > 0){
@@ -190,9 +190,9 @@ exports.listarCategoriasXDeporte = async function(req, res){
                             },                          
                     { 
                     $match: {   
-                        "pruebaPertenciente.deporte": mongoose.Types.ObjectId(req.params.idDeporte),
+                        "pruebaPertenciente.deporte": req.params.idDeporte,
                         "pruebaPertenciente.activo": true,
-                        evento : mongoose.Types.ObjectId(req.params.idEvento),                               
+                        evento : req.params.idEvento,                               
                         activo: true
                     }         
                     },
@@ -233,8 +233,8 @@ exports.listarFasesxPruebaEvento= function(req, res){
  CompetenciaA.aggregate([
             {   
                 $match: {
-                     evento: mongoose.Types.ObjectId(req.params.idEvento),
-                     prueba: mongoose.Types.ObjectId(req.params.idPrueba),
+                     evento: req.params.idEvento,
+                     prueba: req.params.idPrueba,
                      genero: req.params.genero == 1,
                     activo: true
                     }
@@ -287,8 +287,8 @@ exports.listarFasesxPruebaEvento= function(req, res){
 //Lista las competencias basadas en el evento, prueba genero y fase seleccionados
 exports.listarCompetenciasEventoPruebaFase = function(req, res){
     CompetenciaA.find({
-        evento: mongoose.Types.ObjectId(req.params.idEvento),
-        prueba: mongoose.Types.ObjectId(req.params.idPrueba),
+        evento: req.params.idEvento,
+        prueba: req.params.idPrueba,
         genero: req.params.genero == 1,
         fase: req.params.fase,
     })
@@ -310,7 +310,7 @@ exports.listarDeportesEventosAtleta = async function(req, res){
     AtletaC.aggregate([
        {
            $match: { 
-               atleta: mongoose.Types.ObjectId(req.params.idAtleta),
+               atleta: req.params.idAtleta,
            }
         },
          {  $lookup: {
@@ -322,7 +322,7 @@ exports.listarDeportesEventosAtleta = async function(req, res){
         },
         {
             $match: {
-                "competencias.evento" : mongoose.Types.ObjectId(req.params.idEvento)
+                "competencias.evento" : req.params.idEvento
             }
         },
         {
@@ -352,20 +352,9 @@ exports.listarDeportesEventosAtleta = async function(req, res){
             }
         },
         {
-            $lookup: {
-                "localField": "pruebas.deporte",
-                "from": "deportes",
-                "foreignField": "_id",
-                "as": "deportes" 
-                }            
-        },{
-            $unwind: "$deportes"
-        },
-        {
             $group:  { 
                 _id: {
-                    _id: "$deportes._id",
-                    nombre: "$deportes.nombre"
+                    _id: "pruebas.deporte",
                 }
             }
         }
@@ -387,7 +376,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
     AtletaC.aggregate([
        {
            $match: { 
-               atleta: mongoose.Types.ObjectId(req.params.idAtleta),
+               atleta: req.params.idAtleta,
            }
         },
          {  $lookup: {
@@ -399,7 +388,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
         },
         {
             $match: {
-                "competencias.evento" : mongoose.Types.ObjectId(req.params.idEvento)
+                "competencias.evento" : req.params.idEvento
             }
         },
         {
@@ -433,7 +422,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
         },
         {
             $match:{
-                "pruebas.deporte": mongoose.Types.ObjectId(req.params.idDeporte)
+                "pruebas.deporte": req.params.idDeporte
             }
         },
         {
@@ -465,7 +454,7 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
     AtletaC.aggregate([
        {
            $match: { 
-               atleta: mongoose.Types.ObjectId(req.params.idAtleta),
+               atleta: req.params.idAtleta,
            }
         },
          {  $lookup: {
@@ -477,8 +466,8 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
         },
         {
             $match: {
-                "competencia.evento" : mongoose.Types.ObjectId(req.params.idEvento),
-                "competencia.prueba" : mongoose.Types.ObjectId(req.params.idPrueba)
+                "competencia.evento" : req.params.idEvento,
+                "competencia.prueba" : req.params.idPrueba
             }
         },
         {

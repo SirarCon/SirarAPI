@@ -393,7 +393,7 @@ exports.modificarPrueba = function(req, res){
 
 exports.listarPruebas = async function(req, res){
   Prueba.find()
-  .where({deporte: mongoose.Types.ObjectId(req.params.idDeporte)})
+  .where({deporte: req.params.idDeporte})
   .sort({nombreNormalizado : 1})
   .exec()
   .then(pruebas=>{ 
@@ -413,7 +413,7 @@ exports.listarPruebas = async function(req, res){
 //#region Usuariopúblico
 exports.listarPruebasActivas = async function(req, res){
   Prueba.find()
-  .where({deporte: mongoose.Types.ObjectId(req.params.idDeporte)})
+  .where({deporte: req.params.idDeporte})
   .sort({nombreNormalizado : 1})
   .exec()
   .then(pruebas=>{
@@ -431,7 +431,7 @@ exports.listarPruebasActivas = async function(req, res){
 
 exports.listarDeporteXPruebasActivas = async function(req, res){
   Prueba.findOne()
-  .where({_id: mongoose.Types.ObjectId(req.params.idPrueba)})
+  .where({_id: req.params.idPrueba})
   .populate("deporte",["_id", "nombre"])
   .exec()
   .then(async (prueba)=>{
