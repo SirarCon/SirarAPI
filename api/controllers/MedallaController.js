@@ -42,7 +42,7 @@ Medalla.find().exec().then(madallas => {
   },
   {
     $match: {
-          "$atletas.atleta" : req.params.idAtleta
+          "$atletas.atleta" : Number(req.params.idAtleta)
     }
   },
   {

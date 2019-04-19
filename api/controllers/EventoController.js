@@ -141,7 +141,7 @@ exports.listarEventosAtleta = async function(req, res){
 AtletaC.aggregate([
    {
        $match: { 
-           atleta: req.params.idAtleta,
+           atleta: Number(req.params.idAtleta),
        }
     },
      {  $lookup: {

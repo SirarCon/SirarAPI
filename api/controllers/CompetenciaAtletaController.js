@@ -116,7 +116,7 @@ exports.listarAtletasCompetencia = async function(req, res){
 AtletaC.aggregate([
     {
         $match:{
-            competencia: req.params.idCompetencia,                               
+            competencia: Number(req.params.idCompetencia),                               
         }
     },
     {
@@ -190,9 +190,9 @@ exports.listarCategoriasXDeporte = async function(req, res){
                             },                          
                     { 
                     $match: {   
-                        "pruebaPertenciente.deporte": req.params.idDeporte,
+                        "pruebaPertenciente.deporte": Number(req.params.idDeporte),
                         "pruebaPertenciente.activo": true,
-                        evento : req.params.idEvento,                               
+                        evento : Number(req.params.idEvento),                               
                         activo: true
                     }         
                     },
@@ -230,13 +230,14 @@ exports.listarCategoriasXDeporte = async function(req, res){
 
 //Lista las fases de las pruebas basadas en el evento, prueba y genero seleccionados
 exports.listarFasesxPruebaEvento= function(req, res){
+    console.log(Number(req.params.genero))
  CompetenciaA.aggregate([
             {   
                 $match: {
-                     evento: req.params.idEvento,
-                     prueba: req.params.idPrueba,
-                     genero: req.params.genero == 1,
-                    activo: true
+                     evento: Number(req.params.idEvento),
+                     prueba: Number(req.params.idPrueba),
+                     genero: Number(req.params.genero),
+                     activo: true
                     }
             },
             {
@@ -310,7 +311,7 @@ exports.listarDeportesEventosAtleta = async function(req, res){
     AtletaC.aggregate([
        {
            $match: { 
-               atleta: req.params.idAtleta,
+               atleta: Number(req.params.idAtleta)
            }
         },
          {  $lookup: {
@@ -322,7 +323,7 @@ exports.listarDeportesEventosAtleta = async function(req, res){
         },
         {
             $match: {
-                "competencias.evento" : req.params.idEvento
+                "competencias.evento" : Number(req.params.idEvento)
             }
         },
         {
@@ -354,12 +355,13 @@ exports.listarDeportesEventosAtleta = async function(req, res){
         {
             $group:  { 
                 _id: {
-                    _id: "pruebas.deporte",
+                    _id: "$pruebas.deporte",
                 }
             }
         }
-    ]).exec().then(eventos=> {
-        if(eventos.length > 0){                                               
+    ])
+    .exec().then(eventos=> {
+        if(eventos.length > 0){ 
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos).instance});  
      }else{
             res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
@@ -376,7 +378,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
     AtletaC.aggregate([
        {
            $match: { 
-               atleta: req.params.idAtleta,
+               atleta: Number(req.params.idAtleta),
            }
         },
          {  $lookup: {
@@ -388,7 +390,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
         },
         {
             $match: {
-                "competencias.evento" : req.params.idEvento
+                "competencias.evento" : Number(req.params.idEvento)
             }
         },
         {
@@ -422,7 +424,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
         },
         {
             $match:{
-                "pruebas.deporte": req.params.idDeporte
+                "pruebas.deporte": Number(req.params.idDeporte)
             }
         },
         {
@@ -454,7 +456,7 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
     AtletaC.aggregate([
        {
            $match: { 
-               atleta: req.params.idAtleta,
+               atleta: Number(req.params.idAtleta),
            }
         },
          {  $lookup: {
@@ -466,8 +468,8 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
         },
         {
             $match: {
-                "competencia.evento" : req.params.idEvento,
-                "competencia.prueba" : req.params.idPrueba
+                "competencia.evento" : Number(req.params.idEvento),
+                "competencia.prueba" : Number(req.params.idPrueba)
             }
         },
         {
