@@ -156,7 +156,7 @@ AtletaC.aggregate([
 exports.listarDeportesXEvento = async function(req, res){
 CompetenciaA.find()
 .where({ evento: req.params.idEvento, activo: true })
-.populate({path:"prueba", select: "deporte", populate:{path: "deporte", select: "id nombre"}})
+.populate({path:"prueba", select: "deporte"})
 .exec()
 .then(competencias => {
     if(competencias.length > 0){

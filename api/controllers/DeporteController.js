@@ -214,7 +214,6 @@ exports.modificarDeporte = async function(req, res){
 exports.listarDeportes = async function(req, res){
   Deporte.find()
   .sort({nombreNormalizado : 1})
-  .populate('federacion', ['nombre'])
   .exec()
   .then(async (deportes) => {  
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {     
@@ -230,7 +229,6 @@ exports.listarDeportesXFederacion = async function(req, res){
   Deporte.find()
   .where({federacion: req.params.idFederacion})
   .sort({nombreNormalizado : 1})
-  .populate('federacion', ['nombre'])
   .exec()
   .then(async (deportes) => {   
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {     
@@ -245,7 +243,6 @@ exports.listarDeportesXFederacion = async function(req, res){
 exports.leerDeporte = async function(req, res){
     Deporte.findOne()
     .where({_id: req.params.id})
-    .populate('federacion', ["nombre"])
     .exec()
     .then(async (deporte) => {
       if(deporte){        
@@ -264,7 +261,6 @@ exports.leerDeporte = async function(req, res){
 exports.leerDeporteActiva = async function(req, res){
   Deporte.findOne()
   .where({_id: req.params.id, activo: true})
-  .populate("federacion")
   .exec()
   .then(async (deporte) => {
     if(deporte){  
@@ -282,7 +278,6 @@ exports.listarDeportesActivas = async function(req, res){
   Deporte.find()
   .where({activo: true })
   .sort({nombreNormalizado : 1})
-  .populate('federacion', ['nombre'])
   .exec()
   .then(async (deportes) => {
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {
@@ -298,7 +293,6 @@ exports.listarDeportesActivasXFederacion = async function(req, res){
   Deporte.find()
   .where({activo: true, federacion: req.params.idFederacion })
   .sort({nombreNormalizado : 1})
-  .populate('federacion', ['nombre'])
   .exec()
   .then(async (deportes) => {
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {
@@ -432,7 +426,6 @@ exports.listarPruebasActivas = async function(req, res){
 exports.listarDeporteXPruebasActivas = async function(req, res){
   Prueba.findOne()
   .where({_id: req.params.idPrueba})
-  .populate("deporte",["_id", "nombre"])
   .exec()
   .then(async (prueba)=>{
     if(prueba){

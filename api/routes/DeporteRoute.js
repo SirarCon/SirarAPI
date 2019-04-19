@@ -32,6 +32,9 @@ routerGeneral.route('/federacion/:id')
 routerGeneral.route('/deporte/pruebas/:idDeporte')
 .get(deporteController.listarPruebasActivas);
 
+routerGeneral.route('/prueba/:idPrueba')
+.get(deporteController.listarDeporteXPruebasActivas);
+
 routerAdm.route('/deportes')
 .get(deporteController.listarDeportes)
 .post(deporteController.crearDeporte);
@@ -60,8 +63,7 @@ routerAdm.route('/federacion/:id')
 .get(deporteController.leerFederacion)
 .put(deporteController.modificarFederacion);
 
-routerAdm.route('/prueba/:idPrueba')
-.get(deporteController.listarDeporteXPruebasActivas);
+
 
     
 // production error handler
