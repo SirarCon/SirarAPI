@@ -37,11 +37,11 @@ routerGeneral.route('/listarPruebasPorDeporteYEventoAtleta/:idAtleta/:idEvento/:
 routerGeneral.route('/listarPruebasPorPruebaAtleta/:idAtleta/:idEvento/:idPrueba')
     .get(competenciaAController.listarCompetenciasPorPruebaAtleta)
 
-routerAdm.route('/competenciaAtleta')
-    .post(competenciaAController.crearCompetenciaAtleta)
+routerAdm.route('/competencia')
+    .post(competenciaAController.crearCompetencia)
 
-routerAdm.route('/competenciaAtleta/:idCompetencia')
-    .put(competenciaAController.modificarCompetenciaAtleta)
+routerAdm.route('/competencia/:idCompetencia')
+    .put(competenciaAController.modificarCompetencia)
 
 routerAdm.route('/atletaCompetencia')
     .post(competenciaAController.ingresarAtletaACompetencia)

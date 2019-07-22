@@ -49,7 +49,7 @@ var PruebaSchema = new Schema({
 });
   
   PruebaSchema.pre('update', function(next) {
-  this.update({},{
+  this.updateOne({},{
                  $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre + this._id) 
                 } 
               });
@@ -57,7 +57,7 @@ var PruebaSchema = new Schema({
   });
   
   PruebaSchema.pre('findOneAndUpdate', function(next) {
-    this.update({},{
+    this.updateOne({},{
                    $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre)  + this._id
                   } 
                 });

@@ -39,10 +39,10 @@ exports.crearFederacion = async function(req, res){
 exports.modificarFederacion = async function(req, res){
   funcionesGlobales.validarEmails([req.body.correoPresidente, req.body.correoFederacion])
   .then(function(values) {
-  Federacion.findOneAndUpdate({_id: req.params.id},
+  Federacion.findOneAndUpdate({_id: req.params.idFederacion},
     {$set: {
       nombre: req.body.nombre,
-      escudoUrl:  req.body.escudoUrl ? funcionesGlobales.guardarImagen(rutaImagenesFederaciones, req.body.escudoUrl , req.params.id) : undefined,
+      escudoUrl:  req.body.escudoUrl ? funcionesGlobales.guardarImagen(rutaImagenesFederaciones, req.body.escudoUrl , req.params.idFederacion) : undefined,
       correoFederacion: req.body.correoFederacion,
       activo: req.body.activo,
       paginaWeb: req.body.paginaWeb,
@@ -73,7 +73,7 @@ exports.modificarFederacion = async function(req, res){
 
 exports.leerFederacion = async function(req, res) {  
   Federacion.findOne()
-  .where({_id: req.params.id})
+  .where({_id: req.params.idFederacion})
   .exec()
   .then(async (federacion) => {
     if(federacion){      
@@ -109,7 +109,7 @@ exports.listaTodasFederaciones =  async function(req, res) {
 //#region Usuariopúblico
 exports.leerFederacionActiva = async function(req, res) {  
   Federacion.findOne()
-  .where({_id: req.params.id, activo: true})
+  .where({_id: req.params.idFederacion, activo: true})
   .exec()
   .then(async (federacion) => {
     if(federacion){      
@@ -181,10 +181,10 @@ exports.modificarDeporte = async function(req, res){
   .exec()
   .then(function(federacion) {
     if(federacion){
-        Deporte.findOneAndUpdate({_id: req.params.id},
+        Deporte.findOneAndUpdate({_id: req.params.idDeporte},
           {$set: {
             nombre: req.body.nombre,
-            imagenDeporteUrl: req.body.imagenDeporteUrl ? funcionesGlobales.guardarImagen(rutaImagenesDeportes, req.body.imagenDeporteUrl , req.params.id) : undefined,
+            imagenDeporteUrl: req.body.imagenDeporteUrl ? funcionesGlobales.guardarImagen(rutaImagenesDeportes, req.body.imagenDeporteUrl , req.params.idDeporte) : undefined,
             federacion: req.body.federacion,
             activo: req.body.activo        
           }}, {projection:{}, new: false, runValidators: true})
@@ -242,7 +242,7 @@ exports.listarDeportesXFederacion = async function(req, res){
 
 exports.leerDeporte = async function(req, res){
     Deporte.findOne()
-    .where({_id: req.params.id})
+    .where({_id: req.params.idDeporte})
     .exec()
     .then(async (deporte) => {
       if(deporte){        
@@ -260,7 +260,7 @@ exports.leerDeporte = async function(req, res){
 //#region Usuariopúblico
 exports.leerDeporteActiva = async function(req, res){
   Deporte.findOne()
-  .where({_id: req.params.id, activo: true})
+  .where({_id: req.params.idDeporte, activo: true})
   .exec()
   .then(async (deporte) => {
     if(deporte){  

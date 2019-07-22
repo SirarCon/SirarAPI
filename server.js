@@ -7,6 +7,7 @@ function cargarModelos(){
   require('./api/models/FederacionModel');
   require('./api/models/DeporteModel');
   require('./api/models/AtletaModel');
+  require('./api/models/EquipoModel');
   require('./api/models/EventoModel');
   require('./api/models/PruebaModel');
   require('./api/models/CompetenciaAtletaModel');
@@ -18,6 +19,7 @@ function registrarRutas(app, express){
 var routes = [require('./api/routes/UserRoute'),
              require('./api/routes/AtletaRoute'), 
              require('./api/routes/DeporteRoute'),
+             //require('./api/routes/EquipoRoute'),
              require('./api/routes/EventoRoute'),
              require('./api/routes/CompetenciaAtletaRoute'),
              require('./api/routes/RecursoRoute')
@@ -36,7 +38,10 @@ var express = require('express'),
   cargarModelos();
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect(require('./api/Globales.js').nombreBD.instance)
+mongoose.connect(require('./api/Globales.js').nombreBD.instance,
+  {useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true })
 .then(async () => {
     app.use(cors());
     app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));

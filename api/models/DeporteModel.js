@@ -49,7 +49,7 @@ DeporteSchema.pre('save', async function(next) {
 });
 
 DeporteSchema.pre('update', function(next) {
-this.update({},{
+this.updateOne({},{
                $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
               } 
             });
@@ -57,7 +57,7 @@ next();
 });
 
 DeporteSchema.pre('findOneAndUpdate', function(next) {
-  this.update({},{
+  this.updateOne({},{
                  $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre) 
                 } 
               });

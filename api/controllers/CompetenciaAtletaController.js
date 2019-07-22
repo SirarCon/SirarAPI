@@ -9,7 +9,7 @@ var funcionesGlobales = require("../FuncionesGlobales.js");
 var Tiempo = require('../recursos/Tiempo.js');
 var Schema = mongoose.Schema;
 
-exports.crearCompetenciaAtleta = async function(req, res){
+exports.crearCompetencia = async function(req, res){
     Evento.findOne()
     .where({_id: req.body.evento})
     .exec()
@@ -49,7 +49,7 @@ exports.crearCompetenciaAtleta = async function(req, res){
   });
 };
 
-exports.modificarCompetenciaAtleta = async function(req, res){
+exports.modificarCompetencia = async function(req, res){
 CompetenciaA.findOneAndUpdate({_id: req.params.idCompetencia},
     { $set: {
         evento: req.body.evento,
@@ -84,7 +84,6 @@ CompetenciaA.findOne()
         nuevoAtelta.save().then(atleta=>{
             res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ").instance});    
         }).catch(async err=>{
-            await funcionesGlobales.restarContador('federacion');
             res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta a Competencia", " ").instance});//Todo Cambiar
         });
         

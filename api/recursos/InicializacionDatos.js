@@ -16,25 +16,25 @@ Federacion = mongoose.model('Federacion'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance,
-borrarDatos = false,
-insertarDatos = false;
+borrarDatos = true,
+insertarDatos = true;
  
 exports.Errores = async function(){
     if(insertarDatos){
         if(borrarDatos){
-            Mensaje.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Contador.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Usuario.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Deporte.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Atleta.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Prueba.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Usuario.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Competencia.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            AtletaCompetidor.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Evento.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Federacion.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Pais.remove({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
-            Fase.remove({},(e,el)=>{});//>e?console.log(e + "error"): console.log(el+ "exitos"));
+            Mensaje.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Contador.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Usuario.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Deporte.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Atleta.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Prueba.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Usuario.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Competencia.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            AtletaCompetidor.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Evento.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Federacion.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Pais.deleteMany({},(e,el)=>{});//e?console.log(e + "error"): console.log(el+ "exitos"));
+            Fase.deleteMany({},(e,el)=>{});//>e?console.log(e + "error"): console.log(el+ "exitos"));
         }
 
 
@@ -49,6 +49,8 @@ var contadores= [
                new Contador({"_id": "mensaje", "sequence_value": 0 }),
                new Contador({"_id": "medalla", "sequence_value": 0 }),
                new Contador({"_id": "tablaPosicion", "sequence_value": 0 }),
+               new Contador({"_id": "equipo", "sequence_value": 0 }),
+
  ];
 
 
@@ -618,13 +620,13 @@ await inicializar(contadores)
 await inicializar(mensajes);
 
 paises.forEach(elemento => {
-        Pais.update(elemento, elemento, opciones, function(err, elemento) {
+        Pais.updateOne(elemento, elemento, opciones, function(err, elemento) {
             if (err){/*console.log(err);*/ return};
             })
         });  
 
 fases.forEach(elemento => {
-    Fase.update(elemento, elemento, opciones, function(err, elemento) {
+    Fase.updateOne(elemento, elemento, opciones, function(err, elemento) {
         if (err){/*console.log(err);*/ return};
         })
     });  
@@ -1956,7 +1958,7 @@ var usuarios = [
 
 
 usuarios.forEach(elemento => {       
-    Usuario.update(elemento, elemento, opciones, function(err, elemento) {
+    Usuario.updateOne(elemento, elemento, opciones, function(err, elemento) {
     if (err) {/*console.log(err); */return};
     });  
 });

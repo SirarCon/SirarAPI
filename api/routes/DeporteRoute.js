@@ -20,13 +20,13 @@ routerGeneral.route('/deportes')
 routerGeneral.route("/deportes/:idFederacion")
 .get(deporteController.listarDeportesActivasXFederacion);
 
-routerGeneral.route("/deporte/:id")
+routerGeneral.route("/deporte/:idDeporte")
 .get(deporteController.leerDeporteActiva);
 
 routerGeneral.route('/federaciones')
 .get(deporteController.listaFederacionesActivas);
 
-routerGeneral.route('/federacion/:id')
+routerGeneral.route('/federacion/:idFederacion')
 .get(deporteController.leerFederacionActiva);
 
 routerGeneral.route('/deporte/pruebas/:idDeporte')
@@ -51,7 +51,7 @@ routerAdm.route('/deporte/prueba/:idDeporte')
 routerAdm.route('/deporte/prueba/:idDeporte/:idPrueba')
 .put(deporteController.modificarPrueba);
 
-routerAdm.route('/deporte/:id')
+routerAdm.route('/deporte/:idDeporte')
 .get(deporteController.leerDeporte)
 .put(deporteController.modificarDeporte);
 
@@ -59,7 +59,7 @@ routerAdm.route('/federaciones')
 .get(deporteController.listaTodasFederaciones)
 .post(deporteController.crearFederacion);
 
-routerAdm.route('/federacion/:id')
+routerAdm.route('/federacion/:idFederacion')
 .get(deporteController.leerFederacion)
 .put(deporteController.modificarFederacion);
 

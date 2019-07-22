@@ -135,7 +135,7 @@ AtletaSchema.pre('save', async function(next) {
 });
 
 AtletaSchema.pre('update', function(next) {
-this.update({},{
+this.updateOne({},{
                $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
               } 
             });
@@ -143,7 +143,7 @@ next();
 });
 
 AtletaSchema.pre('findOneAndUpdate', function(next) {
-  this.update({},{
+  this.updateOne({},{
                  $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre) 
                 } 
               });

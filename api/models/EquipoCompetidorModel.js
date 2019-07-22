@@ -4,20 +4,24 @@ var Schema = mongoose.Schema;
 var Tiempo = require('../recursos/Tiempo.js');
 
 var EquipoCompetidor = new Schema({
+            _id: {
+                type: Number,
+            },
             equipo: {
-                type: Schema.Tyoes.ObjectId,
+                type: Number,
                 ref: 'Equipo',
                 required: 'Seleccionar un equipo'
             },
             competencia: {
-                type: Shcema.Types.ObjectId,
-                ref: 'Competencia'
-            },
+                type: Number,
+                ref: 'CompetenciaAtleta',
+                required:'Seleccione una competencia por favor'
+            },            
             esUltimoRegistro: {
                 type: Boolean,
             },
             esLocal: {
-                    type: Boolean, //Si es true el atleta es local
+                    type: Boolean, //Si es true el equipo es local
             },
             marcadores: {
                 type:[{

@@ -30,7 +30,6 @@ MedallaSchema.pre('save', async function(next) {
           { new : true },)  
           .then(async seq =>{
               doc._id = seq.sequence_value;
-              doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
               next();
           })
       .catch(err=> {

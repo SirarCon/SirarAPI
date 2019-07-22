@@ -29,7 +29,8 @@ var FederacionSchema = new Schema({
         minlength: [10, "El correo de la federación tiene que ser mayor a 9 caracteres"],
       },
       activo:{
-        type: Boolean
+        type: Boolean,
+        required: "Seleccione si la federación es activa"
       },
       paginaWeb: {
         type: String,
@@ -71,7 +72,7 @@ FederacionSchema.pre('save', async function(next) {
 });
 
 FederacionSchema.pre('update', function(next) {
-this.update({},{
+this.updateOne({},{
                $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
               } 
             });
@@ -79,7 +80,7 @@ next();
 });
 
 FederacionSchema.pre('findOneAndUpdate', function(next) {
-  this.update({},{
+  this.updateOne({},{
                  $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre) 
                 } 
               });

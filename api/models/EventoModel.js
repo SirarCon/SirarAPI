@@ -58,7 +58,7 @@ var EventoSchema = new Schema({
   });
   
   EventoSchema.pre('update', async function(next) {
-    this.update({},{
+    this.updateOne({},{
         $set: {
         nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
       } 
@@ -67,7 +67,7 @@ var EventoSchema = new Schema({
   });
   
   EventoSchema.pre('findOneAndUpdate', function(next) {
-    this.update({},{
+    this.updateOne({},{
                    $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre) 
                   } 
                 });

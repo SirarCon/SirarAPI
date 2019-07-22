@@ -27,7 +27,7 @@ exports.crearAtleta = async function(req, res){
                                 res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", funcionesGlobales.manejarError(err)).instance});
                             }else{//Error llave duplicada
                                
-                            res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre atleta", " ").instance});
+                            res.json({token: res.locals.token, datos: globales.mensajes(15, "Atleta", " ").instance});
                             }   
                         }
                     });
