@@ -60,7 +60,7 @@ function mailSenderRecuperar(emailAdress, subject, message, res){
       globales.emailOptions(emailAdress, subject, message).instance,
           (error, info) => {                        
                             if (error) {                                                                       
-                                  res.json({error: error, datos: globales.mensajes(4, "correo electrónico", emailAdress).instance});                                              
+                                  res.json({datos: globales.mensajes(4, "correo electrónico", emailAdress).instance});                                              
                             }  
                             else{   
                             res.json({datos: globales.mensajes(-5, "Correo electrónico", emailAdress).instance }) 
