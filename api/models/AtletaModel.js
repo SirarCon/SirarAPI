@@ -204,7 +204,7 @@ AtletaSchema.method('infoPublica', function() {
     correo: this.correo,
     telefono: this.telefono,
     fechaNacimiento: this.fechaNacimiento,
-    edad: calcularEdad(),
+    edad: calcularEdad(this.fechaNacimiento),
     genero: this.genero,
     infoPersonal: this.infoPersonal,
     fechaDebut: this.fechaDebut,
