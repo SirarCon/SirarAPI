@@ -150,13 +150,7 @@ AtletaSchema.pre('findOneAndUpdate', function(next) {
   next();
   });
 
-function calcularEdad(){
-  var d =   new Date(this.fechaNacimiento.replace(/-/g, '\/').replace(/T.+/, ''));
-  var hoy = new Date();
-  var annos = hoy.getFullYear() - d.getFullYear();
-  return (hoy.getMonth() - d.getMonth() >= 0 && hoy.getDate() - d.getDate() >= 0) ?
-          annos : annos - 1;
-}
+
 
 AtletaSchema.method('todaInformacion', function() {
     return {
