@@ -150,7 +150,17 @@ AtletaSchema.pre('findOneAndUpdate', function(next) {
   next();
   });
 
-
+function calcularEdad(fechaNacimiento){
+  if(fechaNacimiento !== undefined){
+  var d =   new Date(fechaNacimiento.replace(/-/g, '\/').replace(/T.+/, ''));
+  var hoy = new Date();
+  var annos = hoy.getFullYear() - d.getFullYear();
+  return (hoy.getMonth() - d.getMonth() >= 0 && hoy.getDate() - d.getDate() >= 0) ?
+          annos : annos - 1;
+  }else{
+    return 0;
+  }
+}
 
 AtletaSchema.method('todaInformacion', function() {
     return {
@@ -160,7 +170,7 @@ AtletaSchema.method('todaInformacion', function() {
       correo: this.correo,
       telefono: this.telefono,
       fechaNacimiento: this.fechaNacimiento,
-      edad: calcularEdad(),
+      edad: calcularEdad(this.fechaNacimiento),
       pasaporte: this.pasaporte,
       genero: this.genero,
       lateralidad: this.lateralidad,
