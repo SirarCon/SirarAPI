@@ -163,8 +163,7 @@ exports.leerAtletaActivo  = async function(req, res){
     .exec()
     .then(async (atleta) => {
         if(atleta){
-            console.log(atleta.deporte.nombre + " ");
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, atleta.infoPublica()).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atleta.infoPublica()).instance});
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ").instance});
         }

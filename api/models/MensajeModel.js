@@ -37,6 +37,7 @@ MensajeSchema.pre('save', async function(next) {
 });
 
 MensajeSchema.method("obtenerMensaje" , function(nuevoMensaje, id , objeto){
+  console.log(objeto);
   if(id && nuevoMensaje){
     if(!objeto){
     return {exito: this.exito,codigo: this.codigo, mensaje: this.mensaje

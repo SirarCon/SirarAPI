@@ -34,23 +34,22 @@ module.exports ={
 
   // crea la promesa para fs.readFile()
   leerArchivoAsync: function (filename) {
-   // console.log(filename);
     var fs = require('fs');
     return new Promise(function(resolve, reject) {
-      if(filename || filename !== "") {
+      if(filename && filename !== "") {
       fs.readFile(filename, function(err, data){
             if (err){ 
-              console.log(err+ " " + filename);
+              console.log(err + " " + filename);
                 reject("");
               } 
             else{ 
-                resolve("data:image/jpeg;base64," + new Buffer(data).toString('base64'));
+                resolve("data:image/jpeg;base64," + new Buffer.from(data).toString('base64'));
             }
         });
       }
-        else{
-          reject("");
-        }
+      else{
+        reject("");
+      }
     }).catch((e)=>{ console.log(e); return "" });
   },
 

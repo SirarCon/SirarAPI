@@ -96,7 +96,7 @@ exports.listaTodasFederaciones =  async function(req, res) {
         federaciones[indice].escudoUrl = await funcionesGlobales.leerArchivoAsync(element.escudoUrl);                      
       });
       if(federaciones.length > 0){
-          res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,federaciones.map(f => f.todaInformacion())).instance});  
+          res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.todaInformacion())).instance});  
       }else{
         res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ").instance});
       }

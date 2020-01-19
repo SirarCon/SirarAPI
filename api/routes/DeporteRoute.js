@@ -63,9 +63,6 @@ routerAdm.route('/federacion/:idFederacion')
 .get(deporteController.leerFederacion)
 .put(deporteController.modificarFederacion);
 
-
-
-    
 // production error handler
 const HTTP_SERVER_ERROR = 500;
 app.use(function(err, req, res, next) {

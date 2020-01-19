@@ -320,7 +320,7 @@ exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta 
             
           });
           if(usuarios.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,usuarios.map(u => u.datosLogin())).instance});  
+              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, usuarios.map(u => u.datosLogin())).instance});  
           }  
           else
             res.json({token: res.locals.token, datos: globales.mensajes(11, "usuarios", " ").instance});
