@@ -1,11 +1,11 @@
 'use strict';
 var mongoose = require('mongoose'),
-Contador = mongoose.model('Contador'),
+Contador = require('./ContadorModel'),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 Schema = mongoose.Schema;
 
 
-var AtletaSchema = new Schema({
+var AtletaSchema = mongoose.Schema({
     _id: {
       type: Number,
     },
@@ -162,6 +162,14 @@ function calcularEdad(fechaNacimiento){
   }
 }
 
+function formatoFecha(fecha){
+  if(fecha !== undefined){
+    var tipoFecha =  new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
+    return tipoFecha.toLocaleDateString("es-CR");
+  }
+  return fecha;
+}
+
 AtletaSchema.method('todaInformacion', function() {
     return {
       id: this._id,
@@ -169,7 +177,7 @@ AtletaSchema.method('todaInformacion', function() {
       fotoUrl: this.fotoUrl,
       correo: this.correo,
       telefono: this.telefono,
-      fechaNacimiento: this.fechaNacimiento,
+      fechaNacimiento: formatoFecha(this.fechaNacimiento),
       edad: calcularEdad(this.fechaNacimiento),
       pasaporte: this.pasaporte,
       genero: this.genero,
@@ -184,7 +192,7 @@ AtletaSchema.method('todaInformacion', function() {
       tallaBuzo: this.tallaBuzo,
       tallaTenis: this.tallaTenis,
       infoPersonal: this.infoPersonal,
-      fechaDebut: this.fechaDebut,
+      fechaDebut: formatoFecha(this.fechaDebut),
       facebookUrl: this.facebookUrl,
       instagramUrl: this.instagramUrl,
       twitterUrl: this.twitterUrl,
@@ -203,11 +211,11 @@ AtletaSchema.method('infoPublica', function() {
     fotoUrl: this.fotoUrl,
     correo: this.correo,
     telefono: this.telefono,
-    fechaNacimiento: this.fechaNacimiento,
+    fechaNacimiento: formatoFecha(this.fechaNacimiento),
     edad: calcularEdad(this.fechaNacimiento),
     genero: this.genero,
     infoPersonal: this.infoPersonal,
-    fechaDebut: this.fechaDebut,
+    fechaDebut: formatoFecha(this.fechaDebut),
     facebookUrl: this.facebookUrl,
     instagramUrl: this.instagramUrl,
     twitterUrl: this.twitterUrl,
@@ -218,5 +226,5 @@ AtletaSchema.method('infoPublica', function() {
   }
 });
   
-  module.exports = mongoose.model('Atleta', AtletaSchema);
+module.exports = mongoose.model('Atleta', AtletaSchema);
   
