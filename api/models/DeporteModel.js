@@ -6,7 +6,7 @@ Schema = mongoose.Schema;
 
 
 var DeporteSchema = new Schema({
-    _id: {
+  _id: {
       type: Number,
     },
     nombre: {

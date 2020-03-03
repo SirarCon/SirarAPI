@@ -2,6 +2,7 @@ var SimbolosGlobales = Object.getOwnPropertySymbols(global);
 const nodemailer = require('nodemailer');
 
 const nombreBD = Symbol.for("SIRAR.GLOBAL.NOMBREBD");
+const nombreBDTest = Symbol.for("SIRAR.GLOBAL.NOMBREBDTEST");
 const tokenGeneral = Symbol.for("SIRAR.GLOBAL.TOKENGENERAL");
 const emailTransporter = Symbol.for("SIRAR.GLOBAL.EMAILTRANSPORTER");
 const emailOptions = Symbol.for("SIRAR.GLOBAL.EMAILOPTIONS"); 
@@ -32,9 +33,10 @@ function inicializarGLobal(variableGlobal, valor){
 }
 
 //local:
-//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Sirar")
+module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Sirar")
+module.exports.nombreBDTest = inicializarGLobal(nombreBDTest, "mongodb://localhost/SirarTest")
 //desarrollo:
-module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
+//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
 //pruebas:
 //module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds245132.mlab.com:45132/sirardbpruebas") 
 module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
@@ -80,6 +82,7 @@ module.exports.inicializarMensajes = async function(mongoose){
 }
 
 module.exports.mensajes = function(codigo, sustantivo, identificador, objeto){
+    console.log(codigo);
         var mensaje = todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( sustantivo, identificador, objeto)
         return inicializarGLobal(mensajes, mensaje);
 }

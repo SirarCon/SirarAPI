@@ -5,7 +5,7 @@ funcionesGlobales = require("../FuncionesGlobales.js"),
 Schema = mongoose.Schema;
 
 
-var AtletaSchema = mongoose.Schema({
+var AtletaSchema = new Schema({
     _id: {
       type: Number,
     },
@@ -125,12 +125,12 @@ AtletaSchema.pre('save', async function(next) {
         { $inc : { sequence_value : 1 } },
         { new : true },)
         .then(async seq =>{
-            doc._id = seq.sequence_value;
-            doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
+          doc._id = seq.sequence_value;
+          doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
             next();
         })
     .catch(err=> {
-      console.log("Error en federacion Model pre")
+      console.log("Error en federacion Model pre" + err)
     })
 });
 

@@ -17,7 +17,12 @@ exports.crearAtleta = async function(req, res){
                 var nuevoAtleta = new Atleta(req.body);   
                 nuevoAtleta.fotoUrl = req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesAtletas, req.body.fotoUrl , nuevoAtleta._id) : undefined,
                 nuevoAtleta.save().then(atleta =>{
-                    res.json({token: res.locals.token, datos: globales.mensajes(-4, "Atleta", req.body.nombre ).instance});}
+                    console.log(res)
+                  var f =  {token: res.locals.token, datos: globales.mensajes(-4, "Atleta", req.body.nombre ).instance}
+                  console.log(f)  
+                  res.json( f
+                 );
+                }
                     ).catch(async err=>{       
                         if (err){  
                             console.log(err)
@@ -35,7 +40,7 @@ exports.crearAtleta = async function(req, res){
                         res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ").instance}); //Todo modificar mensaje
                       }    
                     }).catch(e=> { 
-                        console.log(e);ç
+                        console.log(e);
                         res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", req.body.nombre).instance})
                     }); //Todo modificar mensaje                  
   };
