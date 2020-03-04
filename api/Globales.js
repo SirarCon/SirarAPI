@@ -73,6 +73,7 @@ module.exports.crearRandom = function(n){
 }
 
 var todosLosMensajes;
+module.exports.todosLosMensajes = todosLosMensajes
 
 module.exports.inicializarMensajes = async function(mongoose){
     var Mensaje = mongoose.model('Mensaje');

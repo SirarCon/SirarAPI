@@ -17,9 +17,9 @@ exports.crearAtleta = async function(req, res){
                 var nuevoAtleta = new Atleta(req.body);   
                 nuevoAtleta.fotoUrl = req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesAtletas, req.body.fotoUrl , nuevoAtleta._id) : undefined,
                 nuevoAtleta.save().then(atleta =>{
-                    console.log(res)
+                    //console.log(req)
                   var f =  {token: res.locals.token, datos: globales.mensajes(-4, "Atleta", req.body.nombre ).instance}
-                  console.log(f)  
+                  //console.log(f)  
                   res.json( f
                  );
                 }
