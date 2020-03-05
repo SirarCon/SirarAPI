@@ -37,18 +37,18 @@ function mailSenderCrear(emailAdress, subject, message, res){
                             if (error) {                                                 
                               Usuario.findOneAndRemove({correo: emailAdress}, (err, usuario)=> {
                                 if (err){
-                                  res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", emailAdress).instance});                      
+                                  res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", emailAdress)});                      
                                 }
                                 else{
                                   if(usuario && usuario.fotoUrl){
                                      funcionesGlobales.borrarArchivo(usuario.fotoUrl);                                               
                                   }
-                                  res.json({token: res.locals.token, datos: globales.mensajes(4, "correo electrónico", emailAdress).instance});                                        
+                                  res.json({token: res.locals.token, datos: globales.mensajes(4, "correo electrónico", emailAdress)});                                        
                                 }
                               });                                
                             }  
                             else{   
-                            res.json({token: res.locals.token, datos: globales.mensajes(-4, "Usuario", emailAdress).instance})                                                                      
+                            res.json({token: res.locals.token, datos: globales.mensajes(-4, "Usuario", emailAdress)})                                                                      
                             }
                           }
   );        
@@ -60,10 +60,10 @@ function mailSenderRecuperar(emailAdress, subject, message, res){
       globales.emailOptions(emailAdress, subject, message).instance,
           (error, info) => {                        
                             if (error) {                                                                       
-                                  res.json({datos: globales.mensajes(4, "correo electrónico", emailAdress).instance});                                              
+                                  res.json({datos: globales.mensajes(4, "correo electrónico", emailAdress)});                                              
                             }  
                             else{   
-                            res.json({datos: globales.mensajes(-5, "Correo electrónico", emailAdress).instance }) 
+                            res.json({datos: globales.mensajes(-5, "Correo electrónico", emailAdress) }) 
                             }
                           }
   );        
@@ -80,22 +80,22 @@ exports.verificarLogin = async function(req, res) {
         .then((usuario)=>{
           if(usuario) {
             if(usuario.password !== req.body.password)
-              res.json({datos: globales.mensajes(1).instance});
+              res.json({datos: globales.mensajes(1)});
             else{
               AwtAuth.sign({usuario}, 'secretKey', /*{expiresIn: "30s"},*/ async (err, token)=>{
                 if(err){
-                  res.json({datos: globales.mensajes(50).instance});
+                  res.json({datos: globales.mensajes(50)});
                   }
                 else{
                   usuario.fotoUrl = await funcionesGlobales.leerArchivoAsync(usuario.fotoUrl);
-                  res.json({token: "token " + token, datos: globales.mensajes(-1, null, null,usuario.datosLogin()).instance});
+                  res.json({token: "token " + token, datos: globales.mensajes(-1, null, null,usuario.datosLogin())});
                 }
               });
   
             }
           }
           else{
-            res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()).instance});
+            res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase())});
           }
         })
         .catch((err)=>{
@@ -103,7 +103,7 @@ exports.verificarLogin = async function(req, res) {
         })
       }
       else{
-        res.json({datos: globales.mensajes(2, "Usuario", "sin correo electrónico").instance});
+        res.json({datos: globales.mensajes(2, "Usuario", "sin correo electrónico")});
       }
 };
 
@@ -153,10 +153,10 @@ exports.solicitarRecuperacion = async function(req, res){
               , res);    
             }
             else{
-              res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()).instance })//
+              res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()) })//
           }
           })
-          .catch(err=>{console.log(err); res.json({datos: globales.mensajes(5, "usuario", req.body.correo.toLowerCase()).instance })});              
+          .catch(err=>{console.log(err); res.json({datos: globales.mensajes(5, "usuario", req.body.correo.toLowerCase()) })});              
 }
 
 
@@ -166,15 +166,15 @@ exports.recuperarcontrasena = async function(req, res){
       {$set: {"tokenPassword" : null}}, {runValidators: true})
       .then(usuario => {
         if(usuario)                  
-            res.json({datos: globales.mensajes(-1, null, null, usuario.datosRecuperarContrasena()).instance});            
+            res.json({datos: globales.mensajes(-1, null, null, usuario.datosRecuperarContrasena())});            
           else{
-            res.json({datos: globales.mensajes(2, "Token", "vencido:").instance});          
+            res.json({datos: globales.mensajes(2, "Token", "vencido:")});          
           }
       })
-      .catch(err=>{res.json({datos: globales.mensajes(6).instance});});
+      .catch(err=>{res.json({datos: globales.mensajes(6)});});
     }
     else{
-      res.json({datos: globales.mensajes(7).instance});    
+      res.json({datos: globales.mensajes(7)});    
     }
 };
 
@@ -189,47 +189,47 @@ Usuario.findOne()
       .then((usuario)=>{
         if(usuario){
             if(req.body.passwordVieja && usuario.password !== req.body.passwordVieja){
-              res.json({token: res.locals.token, datos: globales.mensajes(9).instance});
+              res.json({token: res.locals.token, datos: globales.mensajes(9)});
             }
             else{
             Usuario.findOneAndUpdate(filtro, {$set: {password: req.body.password}}, {runValidators: true})
                    .exec()
                    .then(usuario =>{
                     if(req.body.passwordVieja){
-                      res.json({token: res.locals.token, datos: globales.mensajes(-6, "usuario", req.body.identificacion).instance})
+                      res.json({token: res.locals.token, datos: globales.mensajes(-6, "usuario", req.body.identificacion)})
                     }else{
-                      res.json({datos: globales.mensajes(-6, "usuario", req.body.identificacion).instance})
+                      res.json({datos: globales.mensajes(-6, "usuario", req.body.identificacion)})
                     }
                     })
                    .catch(err=>{
                     if(req.body.passwordVieja)
-                    res.json({token: res.locals.token, datos: globales.mensajes(8).instance})
+                    res.json({token: res.locals.token, datos: globales.mensajes(8)})
                  else
-                    res.json({datos: globales.mensajes(8).instance});
+                    res.json({datos: globales.mensajes(8)});
                    });    
             }
         }
         else{
           if(req.body.passwordVieja)
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.body.identificacion)});
           else
-            res.json({datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
+            res.json({datos: globales.mensajes(2, "Usuario", req.body.identificacion)});
     }
   }).catch(err=>{
     if(req.body.passwordVieja)
-       res.json({token: res.locals.token, datos: globales.mensajes(8).instance})
+       res.json({token: res.locals.token, datos: globales.mensajes(8)})
     else
-       res.json({datos: globales.mensajes(8).instance});
+       res.json({datos: globales.mensajes(8)});
     });
 }
 else{
   if(req.body.identificacion == null || req.body.identificacion === "") 
-  res.json({datos: globales.mensajes(2, "Usuario", "sin identificación").instance});
+  res.json({datos: globales.mensajes(2, "Usuario", "sin identificación")});
   else{
     if(req.body.passwordVieja)
-    res.json({token: res.locals.token, datos: globales.mensajes(17).instance});
+    res.json({token: res.locals.token, datos: globales.mensajes(17)});
     else
-      res.json({datos: globales.mensajes(17).instance});
+      res.json({datos: globales.mensajes(17)});
   }
 }
 }
@@ -284,24 +284,24 @@ exports.crearUsuario = async function(req, res) {
                                     '</html>'
                   , res);  
           }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase()).instance});
+                res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase())});
           }          
       }).catch(err=>{         
                     if (err){   
                       if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta
                         funcionesGlobales.borrarArchivo(nuevoUsuario.fotoUrl);
                           console.log(err)
-                          res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase()).instance});
+                          res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase())});
                       }else{//Error llave duplicada
-                         res.json({token: res.locals.token, datos: globales.mensajes(15, "La identificación o correo electrónico", " ").instance});
+                         res.json({token: res.locals.token, datos: globales.mensajes(15, "La identificación o correo electrónico", " ")});
                       }   
                     }
               });  
   }).catch(e=> {
     if(typeof(e) === "string"){
-       res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance});
+       res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)});
     }else{
-      res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", req.body.correo.toLowerCase()).instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", req.body.correo.toLowerCase())});
     }
   }); 
 };
@@ -320,13 +320,13 @@ exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta 
             
           });
           if(usuarios.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, usuarios.map(u => u.datosLogin())).instance});  
+              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, usuarios.map(u => u.datosLogin()))});  
           }  
           else
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "usuarios", " ").instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "usuarios", " ")});
         })
           .catch((err)=>{
-            res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los usuarios").instance});  
+            res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los usuarios")});  
 }) 
 }catch(e){
     console.log(e);
@@ -343,13 +343,13 @@ exports.leerUsuario = async function(req, res) {
   .then(async (usuario) => {
     if(usuario){      
       usuario.fotoUrl = await funcionesGlobales.leerArchivoAsync(usuario.fotoUrl);
-       res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, usuario.datosLogin()).instance});
+       res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, usuario.datosLogin())});
     }
     else {   
-    res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.params.identificacion).instance});
+    res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.params.identificacion)});
   }
 }).catch((err)=>{
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "usuario", req.params.identificacion).instance});
+    res.json({token: res.locals.token, datos: globales.mensajes(13, "usuario", req.params.identificacion)});
   }) 
 };
 
@@ -374,19 +374,19 @@ exports.modificarUsuario = async function(req, res) {
             if((!req.body.fotoUrl || req.body.fotoUrl === "") && usuarioAntiguo.fotoUrl != null){
               funcionesGlobales.borrarArchivo(usuarioAntiguo.fotoUrl);
             }       
-            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Usuario", req.body.nombre).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Usuario", req.body.nombre)});
           }
           else{
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.body.identificacion).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.body.identificacion)});
           }
       }).catch(err=>{
         if(err.code || err.code == 11000){ //Llave duplicada  
-          res.json({token: res.locals.token, datos: globales.mensajes(15, "La identificación o correo electrónico"," ").instance});
+          res.json({token: res.locals.token, datos: globales.mensajes(15, "La identificación o correo electrónico"," ")});
         }else{ 
-          res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", funcionesGlobales.manejarError(err, req.params.identificacion)).instance});        
+          res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", funcionesGlobales.manejarError(err, req.params.identificacion))});        
         }
       }); 
-    }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", req.body.correo ? req.body.correo : " ").instance}) 
+    }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", req.body.correo ? req.body.correo : " ")}) 
 }) 
 };
 
@@ -398,9 +398,9 @@ exports.borrarUsuario = async function(req, res) {
                         if(usuario)
                           if(usuario.fotoUrl != null || usuario.fotoUrl ==! "")
                           funcionesGlobales.borrarArchivo(usuario.fotoUrl)
-                        res.json({token: res.locals.token, datos: globales.mensajes(-2, "Usuario", req.params.identificacion).instance});    
+                        res.json({token: res.locals.token, datos: globales.mensajes(-2, "Usuario", req.params.identificacion)});    
         }).catch(err=>{
-          res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", req.params.identificacion).instance});
+          res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", req.params.identificacion)});
   });
 };
 //#endregion Funciones Respuesta

@@ -21,18 +21,18 @@ exports.crearFederacion = async function(req, res){
     var nuevaFederacion = new Federacion(req.body);   
     nuevaFederacion.escudoUrl = req.body.escudoUrl ? funcionesGlobales.guardarImagen(rutaImagenesFederaciones, req.body.escudoUrl , nuevaFederacion._id) : undefined,
     nuevaFederacion.save().then(federacion =>{
-        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Federación", req.body.nombre).instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Federación", req.body.nombre)});
       }).catch(async err=>{  
               await funcionesGlobales.restarContador('federacion');
               funcionesGlobales.borrarArchivo(nuevaFederacion.escudoUrl);                   
               if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta               
-                  res.json({token: res.locals.token, datos: globales.mensajes(10, "Federacion", funcionesGlobales.manejarError(err)).instance});
+                  res.json({token: res.locals.token, datos: globales.mensajes(10, "Federacion", funcionesGlobales.manejarError(err))});
               }else{//Error llave duplicada
-                 res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre federación", " ").instance});
+                 res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre federación", " ")});
               }               
       });              
   }).catch(e=> {
-    res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance})
+    res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)})
   });
 };
 
@@ -57,18 +57,18 @@ exports.modificarFederacion = async function(req, res){
         if((!req.body.escudoUrl || req.body.escudoUrl === "") && federacionAntigua.escudoUrl != null){
           funcionesGlobales.borrarArchivo(federacionAntigua.escudoUrl);
         }       
-        res.json({token: res.locals.token, datos: globales.mensajes(-3, "Federación", req.body.nombre).instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(-3, "Federación", req.body.nombre)});
       }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(2, "Federación", " ").instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(2, "Federación", " ")});
       }
   }).catch(err=>{
     if(err.code || err.code == 11000){ //Llave duplicada  
-      res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre federación", " ").instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre federación", " ")});
     }else{ 
-      res.json({token: res.locals.token, datos: globales.mensajes(14, "federacion", funcionesGlobales.manejarError(err)).instance});        
+      res.json({token: res.locals.token, datos: globales.mensajes(14, "federacion", funcionesGlobales.manejarError(err))});        
     }
   });
-}).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", "(s)").instance}));
+}).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", "(s)")}));
 };
 
 exports.leerFederacion = async function(req, res) {  
@@ -78,12 +78,12 @@ exports.leerFederacion = async function(req, res) {
   .then(async (federacion) => {
     if(federacion){      
       federacion.escudoUrl = await funcionesGlobales.leerArchivoAsync(federacion.escudoUrl);
-       res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federacion.todaInformacion()).instance});
+       res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federacion.todaInformacion())});
     }else{   
-      res.json({token: res.locals.token, datos: globales.mensajes(2, "Federación", " ").instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(2, "Federación", " ")});
     }
 }).catch((err)=>{
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "federacion", " ").instance});
+    res.json({token: res.locals.token, datos: globales.mensajes(13, "federacion", " ")});
   }) 
 };
 
@@ -96,12 +96,12 @@ exports.listaTodasFederaciones =  async function(req, res) {
         federaciones[indice].escudoUrl = await funcionesGlobales.leerArchivoAsync(element.escudoUrl);                      
       });
       if(federaciones.length > 0){
-          res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.todaInformacion())).instance});  
+          res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.todaInformacion()))});  
       }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ").instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ")});
       }
   }).catch((err)=>{
-      res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones" , "").instance});  
+      res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones" , "")});  
   }); 
 };
 //#endregion UsuarioAdm
@@ -114,12 +114,12 @@ exports.leerFederacionActiva = async function(req, res) {
   .then(async (federacion) => {
     if(federacion){      
       federacion.escudoUrl = await funcionesGlobales.leerArchivoAsync(federacion.escudoUrl);
-       res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federacion.infoPublica()).instance});
+       res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federacion.infoPublica())});
     }else {   
-       res.json({token: res.locals.token, datos: globales.mensajes(2, "Federación", " ").instance});
+       res.json({token: res.locals.token, datos: globales.mensajes(2, "Federación", " ")});
     }
   }).catch((err)=>{  
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "federacion", " ").instance});
+    res.json({token: res.locals.token, datos: globales.mensajes(13, "federacion", " ")});
   }) 
 };
 
@@ -133,13 +133,13 @@ exports.listaFederacionesActivas =  async function(req, res) {//Menos el que con
         federaciones[indice].escudoUrl = await funcionesGlobales.leerArchivoAsync(element.escudoUrl);        
       });      
       if(federaciones.length > 0){
-          res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.infoPublica())).instance});  
+          res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.infoPublica()))});  
       }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ").instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ")});
       }
   }).catch((err)=>{
     console.log(err);
-    res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones", " ").instance});  
+    res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones", " ")});  
 });
 };
 //#endregion Usuariopúblico
@@ -157,21 +157,21 @@ exports.crearDeporte = async function(req, res){
       nuevoDeporte.imagenDeporteUrl = req.body.imagenDeporteUrl ? funcionesGlobales.guardarImagen(rutaImagenesDeportes, req.body.imagenDeporteUrl , nuevoDeporte._id) : undefined,
       nuevoDeporte.save()
       .then(deporte =>{
-          res.json({token: res.locals.token, datos: globales.mensajes(-4, "Deporte ", req.body.nombre).instance});
+          res.json({token: res.locals.token, datos: globales.mensajes(-4, "Deporte ", req.body.nombre)});
       }).catch(async err=>{ 
                 await funcionesGlobales.restarContador('deporte'); 
                 funcionesGlobales.borrarArchivo(nuevoDeporte.imagenDeporteUrl); 
                 if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                               
-                    res.json({token: res.locals.token, datos: globales.mensajes(10, "Deporte ", funcionesGlobales.manejarError(err)).instance});
+                    res.json({token: res.locals.token, datos: globales.mensajes(10, "Deporte ", funcionesGlobales.manejarError(err))});
                 }else{//Error llave duplicada
-                  res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre deporte ", " ").instance});
+                  res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre deporte ", " ")});
                 }
       });      
     }else{
-      res.json({token: res.locals.token, datos: globales.mensajes(18, "la federación ingresada"," ").instance}); 
+      res.json({token: res.locals.token, datos: globales.mensajes(18, "la federación ingresada"," ")}); 
     }    
   }).catch(e=> {
-    res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance})
+    res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)})
   }); 
 };
 
@@ -194,21 +194,21 @@ exports.modificarDeporte = async function(req, res){
               if((!req.body.imagenDeporteUrl || req.body.imagenDeporteUrl === "") && deporteAntiguo.imagenDeporteUrl != null){
                 funcionesGlobales.borrarArchivo(deporteAntiguo.imagenDeporteUrl);
               }       
-              res.json({token: res.locals.token, datos: globales.mensajes(-3, "Deporte ", req.body.nombre).instance});
+              res.json({token: res.locals.token, datos: globales.mensajes(-3, "Deporte ", req.body.nombre)});
             }else{
-              res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ").instance});
+              res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ")});
             }
           }).catch(err=>{
             if(err.code || err.code == 11000){ //Llave duplicada  
-              res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre deporte ", " ").instance});
+              res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre deporte ", " ")});
             }else{ 
-              res.json({token: res.locals.token, datos: globales.mensajes(14, "deporte", funcionesGlobales.manejarError(err)).instance});        
+              res.json({token: res.locals.token, datos: globales.mensajes(14, "deporte", funcionesGlobales.manejarError(err))});        
             };
           });
         }else{
-             res.json({token: res.locals.token, datos: globales.mensajes(18, "la federación ingresada", " ").instance}); 
+             res.json({token: res.locals.token, datos: globales.mensajes(18, "la federación ingresada", " ")}); 
         }    
-  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e).instance})); //Todo modificar mensaje
+  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)})); //Todo modificar mensaje
 };
 
 exports.listarDeportes = async function(req, res){
@@ -219,9 +219,9 @@ exports.listarDeportes = async function(req, res){
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {     
       deportes[indice].imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(element.imagenDeporteUrl);     
     });
-    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.todaInformacion())).instance})
+    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.todaInformacion()))})
   }).catch((err)=>{           
-      res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes ", " ").instance});  
+      res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes ", " ")});  
     });
 };
 
@@ -234,9 +234,9 @@ exports.listarDeportesXFederacion = async function(req, res){
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {     
       deportes[indice].imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(element.imagenDeporteUrl);     
     });
-    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.todaInformacion())).instance})
+    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.todaInformacion()))})
   }).catch((err)=>{             
-      res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes ", " ").instance});  
+      res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes ", " ")});  
     });
 };
 
@@ -247,12 +247,12 @@ exports.leerDeporte = async function(req, res){
     .then(async (deporte) => {
       if(deporte){        
         deporte.imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(deporte.imagenDeporteUrl);
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deporte.todaInformacion()).instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deporte.todaInformacion())});
       }else {   
-        res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ").instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ")});
       }
     }).catch((err)=>{
-      res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte ", " ").instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte ", " ")});
     })
 };
 //#endregion UsuarioAdm
@@ -265,12 +265,12 @@ exports.leerDeporteActiva = async function(req, res){
   .then(async (deporte) => {
     if(deporte){  
       deporte.imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(deporte.imagenDeporteUrl);
-      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deporte.infoPublica()).instance })
+      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deporte.infoPublica()) })
     }else{   
-      res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ").instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ")});
     }
 }).catch((err)=>{
-  res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", " ").instance});
+  res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", " ")});
   })
 };
 
@@ -283,9 +283,9 @@ exports.listarDeportesActivas = async function(req, res){
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {
       deportes[indice].imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(element.imagenDeporteUrl);          
     });
-    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.infoPublica())).instance })
+    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.infoPublica())) })
   }).catch((err)=>{
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "deportes", " ").instance});
+    res.json({token: res.locals.token, datos: globales.mensajes(13, "deportes", " ")});
   });
 };
 
@@ -298,9 +298,9 @@ exports.listarDeportesActivasXFederacion = async function(req, res){
     await funcionesGlobales.asyncForEach(deportes ,async (element, indice, deportes) => {
       deportes[indice].imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(element.imagenDeporteUrl);          
     });
-    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.infoPublica())).instance })
+    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.infoPublica())) })
   }).catch((err)=>{
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "deportes", " ").instance});
+    res.json({token: res.locals.token, datos: globales.mensajes(13, "deportes", " ")});
   });
 }
 
@@ -322,26 +322,26 @@ exports.insertarPrueba = async function(req, res){
       .where({nombre: req.body.nombre, deporte: req.params.idDeporte})
       .then(prueba => {
         if(prueba){
-          res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre de prueba " + req.body.nombre, " ").instance}); 
+          res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre de prueba " + req.body.nombre, " ")}); 
         }else{
           var nuevaPrueba = new Prueba(req.body);
           nuevaPrueba.deporte = req.params.idDeporte;
           nuevaPrueba.save().then(prueba=>{
-            res.json({token: res.locals.token, datos: globales.mensajes(-4, "Prueba", req.body.nombre).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(-4, "Prueba", req.body.nombre)});
           }).catch(async err => {
             await funcionesGlobales.restarContador('federacion');
-            res.json({token: res.locals.token, datos: globales.mensajes(10, "Prueba", " ").instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(10, "Prueba", " ")});
           });          
         }
       }).catch(err=>{
         console.log(err);
-      res.json({token: res.locals.token, datos: globales.mensajes(13, "pruebas", " ").instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(13, "pruebas", " ")});
        });
       }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ").instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ")});
       }
     }).catch(err =>{
-         res.json({token: res.locals.token, datos: globales.mensajes(10, "Prueba", funcionesGlobales.manejarError(err)).instance});
+         res.json({token: res.locals.token, datos: globales.mensajes(10, "Prueba", funcionesGlobales.manejarError(err))});
       })
 }
 
@@ -356,7 +356,7 @@ exports.modificarPrueba = function(req, res){
         .exec()
         .then(prueba => {
           if(prueba){
-            res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre de prueba " + req.body.nombre , " ").instance}); 
+            res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre de prueba " + req.body.nombre , " ")}); 
           }else{// No existen pruebas con el mismo nombre
             Prueba.findOneAndUpdate({_id: req.params.idPrueba, deporte: req.params.idDeporte},
             { $set: {
@@ -366,21 +366,21 @@ exports.modificarPrueba = function(req, res){
             .exec()
             .then(prueba=>{
               if(prueba){
-                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Prueba ", req.body.nombre).instance});
+                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Prueba ", req.body.nombre)});
               }else{
-                  res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte o prueba", "especificada").instance});
+                  res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte o prueba", "especificada")});
               }
             }).catch(err=>{
-              res.json({token: res.locals.token,datos: globales.mensajes(12, "la prueba", " ").instance});
+              res.json({token: res.locals.token,datos: globales.mensajes(12, "la prueba", " ")});
             })
           }
         }).catch(err=> {
-          res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ").instance});
+          res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ")});
         }); 
       }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte", " ").instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte", " ")});
       }}).catch(err=>{
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "el deporte", " ").instance});
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "el deporte", " ")});
       }) 
     };     
       
@@ -392,13 +392,13 @@ exports.listarPruebas = async function(req, res){
   .exec()
   .then(pruebas=>{ 
     if(pruebas){     
-      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, pruebas.map(d => d.todaInformacion())).instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, pruebas.map(d => d.todaInformacion()))});
     }else{
-      res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ").instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ")});
     }
   }).catch(err=>{
     console.log(err);
-    res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ").instance});  
+    res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ")});  
   });
 };
 
@@ -412,13 +412,13 @@ exports.listarPruebasActivas = async function(req, res){
   .exec()
   .then(pruebas=>{
     if(pruebas){
-      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, pruebas.map(p=>p.infoPublica())).instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, pruebas.map(p=>p.infoPublica()))});
     }else{
-      res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte", " ").instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte", " ")});
     }
   }).catch(err=>{
     console.log(err);
-    res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ").instance});  
+    res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ")});  
   });
 };
 
@@ -429,13 +429,13 @@ exports.listarDeporteXPruebasActivas = async function(req, res){
   .exec()
   .then(async (prueba)=>{
     if(prueba){
-      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, prueba.todaInformacion()).instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, prueba.todaInformacion())});
     }else{
-      res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", " ").instance});
+      res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", " ")});
     }
   }).catch(err=>{
 console.log(err);
-    res.json({token: res.locals.token,datos: globales.mensajes(12, "la prueba", " ").instance});  
+    res.json({token: res.locals.token,datos: globales.mensajes(12, "la prueba", " ")});  
   });
 };
 //#endregion Usuariopúblico

@@ -82,7 +82,5 @@ module.exports.inicializarMensajes = async function(mongoose){
 }
 
 module.exports.mensajes = function(codigo, sustantivo, identificador, objeto){
-    console.log(codigo);
-        var mensaje = todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( sustantivo, identificador, objeto)
-        return  mensaje;
+     return todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( sustantivo, identificador, objeto)
 }

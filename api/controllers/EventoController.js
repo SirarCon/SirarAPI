@@ -16,14 +16,14 @@ exports.crearEvento = async function (req, res) {
     var nuevoEvento = new Evento(req.body);
     nuevoEvento.fotoUrl = req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesEventos, req.body.fotoUrl , nuevoEvento._id) : undefined
     nuevoEvento.save().then(evento => {
-        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Evento", req.body.nombre).instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Evento", req.body.nombre)});
     }).catch(async err => {
         await funcionesGlobales.restarContador('evento');
         funcionesGlobales.borrarArchivo(nuevoEvento.fotoUrl);                   
         if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta             
-            res.json({token: res.locals.token, datos: globales.mensajes(10, "Evento.", funcionesGlobales.manejarError(err)).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(10, "Evento.", funcionesGlobales.manejarError(err))});
         }else{//Error llave duplicada
-           res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre evento", " ").instance});
+           res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre evento", " ")});
         }
     });
 }
@@ -48,16 +48,16 @@ exports.modificarEvento = async function(req, res){
         if((!req.body.fotoUrl || req.body.fotoUrl === "") && eventoAntiguo.fotoUrl != null){
             funcionesGlobales.borrarArchivo(eventoAntiguo.fotoUrl);
           } 
-          res.json({token: res.locals.token, datos: globales.mensajes(-3, "Evento ", req.body.nombre).instance});
+          res.json({token: res.locals.token, datos: globales.mensajes(-3, "Evento ", req.body.nombre)});
         }else{
-          res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento ", " ").instance});
+          res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento ", " ")});
         }
     })
     .catch(err=>{
         if(err.code || err.code == 11000){ //Llave duplicada  
-          res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre evento ", " ").instance});
+          res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre evento ", " ")});
         }else{ 
-          res.json({token: res.locals.token, datos: globales.mensajes(14, "evento", funcionesGlobales.manejarError(err)).instance});        
+          res.json({token: res.locals.token, datos: globales.mensajes(14, "evento", funcionesGlobales.manejarError(err))});        
         };
       }) 
 
@@ -70,12 +70,12 @@ exports.leerEvento = async function(req, res){
     .then(async evento => {
         if(evento){
             evento.fotoUrl = await funcionesGlobales.leerArchivoAsync(evento.fotoUrl);
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, evento.todaInformacion()).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, evento.todaInformacion())});
         }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.idEvento).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.idEvento)});
         }
       }).catch((err)=>{
-          res.json({token: res.locals.token, datos: globales.mensajes(13, "evento", req.params.idEvento).instance});
+          res.json({token: res.locals.token, datos: globales.mensajes(13, "evento", req.params.idEvento)});
     })
 }
 
@@ -88,13 +88,13 @@ exports.listarTodosEventos = async function(req, res){
             eventos[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);                      
           });
           if(eventos.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion())).instance});  
+              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion()))});  
           }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
           }
      }).catch((err)=>{
          console.log(err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , " ").instance});  
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , " ")});  
     });
 }
 //#endregion UsuarioAdm
@@ -110,13 +110,13 @@ exports.listarEventosActivos = async function(req, res){
             eventos[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);                      
           });
           if(eventos.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion())).instance});  
+              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion()))});  
           }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
           }
      }).catch((err)=>{
          console.log(err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , "").instance});  
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , "")});  
     });
 }
 
@@ -128,12 +128,12 @@ exports.leerEventoActivo = async function(req, res){
     .then(async evento => {
         if(evento){
             evento.fotoUrl = await funcionesGlobales.leerArchivoAsync(evento.fotoUrl);
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, evento.infoPublica()).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, evento.infoPublica())});
         }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.idEvento).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.idEvento)});
         }
       }).catch((err)=>{
-          res.json({token: res.locals.token, datos: globales.mensajes(13, "evento", req.params.idEvento).instance});
+          res.json({token: res.locals.token, datos: globales.mensajes(13, "evento", req.params.idEvento)});
     })
 }
 
@@ -175,12 +175,12 @@ AtletaC.aggregate([
     }
 ]).exec().then(eventos=> {
     if(eventos.length > 0){                                               
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos).instance});  
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
  }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ").instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
  }
 }).catch(err => {
-res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ").instance});  
+res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ")});  
 });
 }
 

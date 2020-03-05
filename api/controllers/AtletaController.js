@@ -25,19 +25,19 @@ exports.crearAtleta = async function(req, res){
                             await funcionesGlobales.restarContador('atleta');
                             funcionesGlobales.borrarArchivo(nuevoAtleta.fotoUrl);  
                             if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
-                                res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", funcionesGlobales.manejarError(err)).instance});
+                                res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", funcionesGlobales.manejarError(err))});
                             }else{//Error llave duplicada
                                
-                            res.json({token: res.locals.token, datos: globales.mensajes(15, "Atleta", " ").instance});
+                            res.json({token: res.locals.token, datos: globales.mensajes(15, "Atleta", " ")});
                             }   
                         }
                     });
                 }else{
-                        res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ").instance}); //Todo modificar mensaje
+                        res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ")}); //Todo modificar mensaje
                       }    
                     }).catch(e=> { 
                         console.log(e);
-                        res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", req.body.nombre).instance})
+                        res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", req.body.nombre)})
                     }); //Todo modificar mensaje                  
   };
 
@@ -82,22 +82,22 @@ exports.modificarAtleta  = async function(req, res){
                 if((!req.body.fotoUrl || req.body.fotoUrl === "") && atletaAntiguo.fotoUrl != null){
                     funcionesGlobales.borrarArchivo(atletaAntiguo.fotoUrl);
                 }       
-                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", req.body.nombre).instance});
+                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", req.body.nombre)});
                 }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ").instance});
+                res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
                 }
                 }).catch(err=>{
                     if(err.code || err.code == 11000){ //Llave duplicada  
-                        res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre Atleta", " ").instance});
+                        res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre Atleta", " ")});
                     }else{ 
                         console.log(err);
-                        res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err)).instance});        
+                        res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});        
                     };
                 });
             }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ").instance}); //Todo modificar mensaje
+                res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ")}); //Todo modificar mensaje
             }    
-        }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte).instance});}); //Todo modificar mensaje    
+        }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte)});}); //Todo modificar mensaje    
 };
 
   exports.listarAtletas = async function(req, res){
@@ -115,7 +115,7 @@ exports.modificarAtleta  = async function(req, res){
               res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
           }
       }).catch((err)=>{
-          res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas").stance}); 
+          res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas")}); 
      });
   };
   
@@ -126,12 +126,12 @@ exports.leerAtleta  = async function(req, res){
     .exec()
     .then(async (atleta) => {
         if(atleta){            
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atleta.todaInformacion()).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atleta.todaInformacion())});
         }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ").instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
         }
   }).catch((err)=>{
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id).instance});
+    res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id)});
     })
 };
 //#endregion UsuarioAdm
@@ -164,12 +164,12 @@ exports.leerAtletaActivo  = async function(req, res){
     .exec()
     .then(async (atleta) => {
         if(atleta){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atleta.infoPublica()).instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atleta.infoPublica())});
         }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ").instance});
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
         }
     }).catch((err)=>{
-        res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id).instance});
+        res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id)});
     })
 };
 //#endregion  Usuariopúblico
