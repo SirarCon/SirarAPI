@@ -7,10 +7,8 @@ const globales = require("../Globales");
 const model = require("../models/AtletaModel");
 const subject = require("../controllers/AtletaController");
 const expressRequestMock = require('express-request-mock');
-const mongoose = require('mongoose');
 jest.mock("../Globales")
 
-const mMock = jest.fn(()=> new Mensaje({"mensaje": "{sutantivoCambiar} {id} se ha creado.", "codigo": -4, "exito": 1 }));
 var mensajes = [
   new Mensaje({"mensaje": "", "codigo": -1, "exito": 1 }),
   new Mensaje({"mensaje": "{sutantivoCambiar} {id} fue borrado.", "codigo": -2, "exito": 1 }),
@@ -44,7 +42,23 @@ var mensajes = [
   new Mensaje({"mensaje": "Hubo un problema creando el token", "codigo" : 50, "exito": 0 }),
   new Mensaje({"mensaje": "Por su seguridad la sesión ha expirado", "codigo": 403, "exito": 0 })
 ]
+var locals = {
+  token: 'token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoic2xheEdVRjdXc1BIYlJYMHluMDQzeHZmWmQxSXlVMWl1dnJ3WkdudUdNbFd1TjQ4VjQiLCJpYXQiOjE1ODIwODQ2NDYsImV4cCI6MTU4MjA4NzY0Nn0.K1dbac-CAN80onOQhr7eAS_XEGNToebZMZOxjf-ucOA'
+};
 
+var resp ={
+  locals: {
+    token:{
+       locals: locals
+    }
+  }
+}
+
+beforeEach(() => {
+  globales.mensajes.mockImplementationOnce((codigo, sustantivo, identificador, objeto) => {
+    return  mensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( sustantivo, identificador, objeto);
+  });    
+})
 
 const response = {
   "_id": 1,
@@ -77,23 +91,8 @@ describe('Atletas Model', () => {
   });
 });
 
-
-// describe('Atletas Copntrollee', () => {
-//   it('debería salvar atleta', () => {
-//     mockingoose(deporte).toReturn(deporteResponse, 'findOne');
-//     mockingoose(model).toReturn(response, 'save');
-//     mockingoose(contador).toReturn({sequence_value: 1}, 'findOneAndUpdate')
-//     return atletaController
-//           .crearAtleta().then((res) => {
-//             expect(JSON.parse(JSON.stringify(res))).toMatchObject(response)
-//           });
-//   });
-// });
-
 var req = {
-  locals: {
-    token: 'token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoic2xheEdVRjdXc1BIYlJYMHluMDQzeHZmWmQxSXlVMWl1dnJ3WkdudUdNbFd1TjQ4VjQiLCJpYXQiOjE1ODIwODQ2NDYsImV4cCI6MTU4MjA4NzY0Nn0.K1dbac-CAN80onOQhr7eAS_XEGNToebZMZOxjf-ucOA'
-  },
+  locals: locals,
   body: {
     nombre: 'TestExitoso3',
     correo: 'wacvillalobggos@kotmail.es',
@@ -115,22 +114,10 @@ var depReq ={
 }
 
 describe(' Atletas Copntroller', () => { 
-    beforeEach(() => {
-      globales.todosLosMensajes= Mensaje;
-    })
     it('returns a 200 response', async () => {
-     // console.log(globales.todosLosMensajes.instance),
       mockingoose(deporte).toReturn(depReq, 'findOne')
-      //mockingoose(Mensaje).toReturn(mensajes, 'find')
-      mockingoose(globales.todosLosMensajes).toReturn(mensajes, 'find')
-
-      globales.mensajes.mockImplementationOnce(() => {
-        return{ 
-          todosLosMensajes: mensajes
-        }
-      });
-
-      const { res } = await expressRequestMock(subject.crearAtleta, req)
+      const { res } = await expressRequestMock(subject.crearAtleta, req, resp)
+      const { token, datos } = JSON.parse(res._getData());
       expect(res.statusCode).toEqual(200)
     })
 })

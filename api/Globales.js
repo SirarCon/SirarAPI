@@ -11,7 +11,6 @@ const rutaImagenesAtletas = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESATLETAS");
 const rutaImagenesDeportes = Symbol.for("SIRAR.GLOBAL.rutaImagenesDeportes");
 const rutaImagenesFederaciones = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESFEDERACIONES");
 const rutaImagenesEventos = Symbol.for("SISRAR.GLOBAL.RUTAIMAGENESEVENTOS"); 
-const mensajes = Symbol.for("SIRAR.GLOBAL.MENSAJES");
 const crearRandom = Symbol.for("SIRAR.GLOBAL.CREARRANDOM");
 
 function inicializarGLobal(variableGlobal, valor){
@@ -85,5 +84,5 @@ module.exports.inicializarMensajes = async function(mongoose){
 module.exports.mensajes = function(codigo, sustantivo, identificador, objeto){
     console.log(codigo);
         var mensaje = todosLosMensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( sustantivo, identificador, objeto)
-        return inicializarGLobal(mensajes, mensaje);
+        return  mensaje;
 }

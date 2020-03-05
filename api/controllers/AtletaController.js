@@ -16,12 +16,8 @@ exports.crearAtleta = async function(req, res){
           if(deporte){
                 var nuevoAtleta = new Atleta(req.body);   
                 nuevoAtleta.fotoUrl = req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesAtletas, req.body.fotoUrl , nuevoAtleta._id) : undefined,
-                nuevoAtleta.save().then(atleta =>{
-                    //console.log(req)
-                  var f =  {token: res.locals.token, datos: globales.mensajes(-4, "Atleta", req.body.nombre ).instance}
-                  //console.log(f)  
-                  res.json( f
-                 );
+                nuevoAtleta.save().then(atleta =>{ 
+                  res.json({token: res.locals.token, datos: globales.mensajes(-4, "Atleta", req.body.nombre )});
                 }
                     ).catch(async err=>{       
                         if (err){  
@@ -114,12 +110,12 @@ exports.modificarAtleta  = async function(req, res){
               atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);            
           });
           if(atletas.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a=> a.todaInformacion())).instance});  
+              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a=> a.todaInformacion()))});  
           }else{
-              res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ").instance});
+              res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
           }
       }).catch((err)=>{
-          res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas").instance}); 
+          res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas").stance}); 
      });
   };
   
@@ -152,12 +148,12 @@ exports.listarAtletasActivos = async function(req, res){
               atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);            
           });
           if(atletas.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a =>a.infoPublica())).instance});  
+              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a =>a.infoPublica()))});  
           }else{
-              res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ").instance});
+              res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
             }
       }).catch((err)=>{
-          res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los atletas").instance}); 
+          res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los atletas")}); 
      });
   };
 
