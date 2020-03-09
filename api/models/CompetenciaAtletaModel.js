@@ -1,6 +1,7 @@
 'use strict';
 var mongoose = require('mongoose'),
-Contador = mongoose.model('Contador'),    
+Contador = mongoose.model('Contador'),
+funcionesGlobales = require("../FuncionesGlobales.js"),
 Schema = mongoose.Schema;
  //https://stackoverflow.com/questions/24853383/mongoose-objectid-that-references-a-sub-document
   
@@ -61,6 +62,7 @@ CompetenciaAtletaSchema.pre('save',  async function(next) {
             next();
         })
     .catch(err=> {
+        console.log(err);
       console.log("Error en competencia Model pre")
     })
 });
@@ -69,7 +71,7 @@ CompetenciaAtletaSchema.method('todaInformacion',function (){
     return {
         evento: this.evento,
         prueba: this.prueba,
-        fechaHora: this.fechaHora,
+        fechaHora: funcionesGlobales.construirFecha(this.fechaHora),
         genero: this.genero,
         descripcion: this.descripcion,
         fase: this.fase,
@@ -82,7 +84,7 @@ CompetenciaAtletaSchema.method('infoPublica',function (){
     return {
         evento: this.evento,
         prueba: this.prueba,
-        fechaHora: this.fechaHora,
+        fechaHora: funcionesGlobales.construirFecha(this.fechaHora),
         genero: this.genero,
         descripcion: this.descripcion,
         fase: this.fase,

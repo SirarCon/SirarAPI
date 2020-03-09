@@ -118,5 +118,40 @@ restarContador : async function(entidad){
             .then().catch(err=> {
               console.log("Error restando contador de " + entidad + " " + err )
             })
+},
+
+calcularEdad : function(fechaNacimiento){
+  if(fechaNacimiento !== undefined){
+  var d =   new Date(fechaNacimiento.replace(/-/g, '\/').replace(/T.+/, ''));
+  var hoy = new Date();
+  var annos = hoy.getFullYear() - d.getFullYear();
+  return (hoy.getMonth() - d.getMonth() >= 0 && hoy.getDate() - d.getDate() >= 0) ?
+          annos : annos - 1;
+  }else{
+    return 0;
+  }
+},
+
+formatoFecha: function(fecha, time = false){
+  if(fecha !== undefined){
+    var tipoFecha = time ? 
+    new Date(...(fecha
+            .replace(/-|T|:/g, ',')
+            .replace(/\..+/g,'')
+            .split(",").map((m)=> parseInt(m))))
+    :
+    new Date(fecha
+            .replace(/-/g, '\/')
+            .replace(/T.+/, ''));
+    return tipoFecha.toLocaleDateString("es-CR");
+  }
+  return tipoFecha;
+},
+
+construirFecha: function(fechaCompleta){
+  var fecha = fechaCompleta.getFullYear()+'/'+(fechaCompleta.getMonth()+1)+'/'+ fechaCompleta.getDate();
+  var hora = fechaCompleta.getHours() + ":" + fechaCompleta.getMinutes() + ":" + fechaCompleta.getSeconds();
+  return fecha + ' '+ hora;
 }
+
 }

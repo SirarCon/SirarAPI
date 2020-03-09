@@ -10,7 +10,7 @@ var globales =  require("../Globales.js");
 //#region Pais
 exports.crearPais = function(req, res){
     var nuevoPais = new Pais(req.body);
-     nuevoPais.save().then(pais => {
+     nuevoPais.save().then(() => {
         res.json({token: res.locals.token, datos: globales.mensajes(-4, "Pais", req.body.name)});
       
     }).catch(err => {                

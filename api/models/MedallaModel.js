@@ -22,6 +22,8 @@ var MedallaSchema = new Schema({
     }
 });
 
+//Todo: Debería tener competencia o evento
+
 MedallaSchema.pre('save', async function(next) {
     var doc = this;
     await Contador.findOneAndUpdate(

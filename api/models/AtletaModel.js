@@ -1,6 +1,6 @@
 'use strict';
 var mongoose = require('mongoose'),
-Contador = require('./ContadorModel'),
+Contador = mongoose.model('Contador'),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 Schema = mongoose.Schema;
 
@@ -150,25 +150,7 @@ AtletaSchema.pre('findOneAndUpdate', function(next) {
   next();
   });
 
-function calcularEdad(fechaNacimiento){
-  if(fechaNacimiento !== undefined){
-  var d =   new Date(fechaNacimiento.replace(/-/g, '\/').replace(/T.+/, ''));
-  var hoy = new Date();
-  var annos = hoy.getFullYear() - d.getFullYear();
-  return (hoy.getMonth() - d.getMonth() >= 0 && hoy.getDate() - d.getDate() >= 0) ?
-          annos : annos - 1;
-  }else{
-    return 0;
-  }
-}
 
-function formatoFecha(fecha){
-  if(fecha !== undefined){
-    var tipoFecha =  new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
-    return tipoFecha.toLocaleDateString("es-CR");
-  }
-  return fecha;
-}
 
 AtletaSchema.method('todaInformacion', function() {
     return {
@@ -177,8 +159,8 @@ AtletaSchema.method('todaInformacion', function() {
       fotoUrl: this.fotoUrl,
       correo: this.correo,
       telefono: this.telefono,
-      fechaNacimiento: formatoFecha(this.fechaNacimiento),
-      edad: calcularEdad(this.fechaNacimiento),
+      fechaNacimiento: funcionesGlobales.formatoFecha(this.fechaNacimiento),
+      edad: funcionesGlobales.calcularEdad(this.fechaNacimiento),
       pasaporte: this.pasaporte,
       genero: this.genero,
       lateralidad: this.lateralidad,
@@ -192,7 +174,7 @@ AtletaSchema.method('todaInformacion', function() {
       tallaBuzo: this.tallaBuzo,
       tallaTenis: this.tallaTenis,
       infoPersonal: this.infoPersonal,
-      fechaDebut: formatoFecha(this.fechaDebut),
+      fechaDebut: funcionesGlobales.formatoFecha(this.fechaDebut),
       facebookUrl: this.facebookUrl,
       instagramUrl: this.instagramUrl,
       twitterUrl: this.twitterUrl,
@@ -211,11 +193,11 @@ AtletaSchema.method('infoPublica', function() {
     fotoUrl: this.fotoUrl,
     correo: this.correo,
     telefono: this.telefono,
-    fechaNacimiento: formatoFecha(this.fechaNacimiento),
-    edad: calcularEdad(this.fechaNacimiento),
+    fechaNacimiento: funcionesGlobales.formatoFecha(this.fechaNacimiento),
+    edad: funcionesGlobales.calcularEdad(this.fechaNacimiento),
     genero: this.genero,
     infoPersonal: this.infoPersonal,
-    fechaDebut: formatoFecha(this.fechaDebut),
+    fechaDebut: funcionesGlobales.formatoFecha(this.fechaDebut),
     facebookUrl: this.facebookUrl,
     instagramUrl: this.instagramUrl,
     twitterUrl: this.twitterUrl,

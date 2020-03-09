@@ -22,11 +22,11 @@ exports.crearCompetencia = async function(req, res){
             if(prueba){
                 var nuevaCompetencia = new CompetenciaA(req.body);
                 nuevaCompetencia.save().then(competencia=>{
-                    res.json({token: res.locals.token, datos: globales.mensajes(-4, "Competencia del", req.body.fechaHora)});
+                    res.json({token: res.locals.token, datos: globales.mensajes(-4, "Competencia del", competencia.infoPublica().fechaHora)});
                 }).catch(async err=>{
                     console.log(err);
                     await funcionesGlobales.restarContador('competencia');
-                    res.json({token: res.locals.token,datos: globales.mensajes(10, "la competencia", funcionesGlobales.manejarError(err))});
+                    res.json({token: res.locals.token,datos: globales.mensajes(10, "la competencia del", req.body.fechaHora, funcionesGlobales.manejarError(err))});
                 });
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", "especificada")});

@@ -20,11 +20,11 @@ var EventoSchema = new Schema({
         type: String   
       },      
       fechaInicio: {
-        type: Date,
+        type: String,
         required: 'Digite la fecha de inicio del evento'
       },
       fechaFinal: {
-        type: Date,
+        type: String,
         required: 'Digite la fecha final del evento'
       },
       ciudad:{
