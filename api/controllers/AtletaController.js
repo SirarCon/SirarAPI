@@ -41,7 +41,6 @@ exports.crearAtleta = async function(req, res){
                     }); //Todo modificar mensaje                  
   };
 
-
 exports.modificarAtleta  = async function(req, res){    
         Deporte.findOne().where({_id: req.body.deporte}).exec()
         .then(function(deporte) {
@@ -81,7 +80,7 @@ exports.modificarAtleta  = async function(req, res){
                 if(atletaAntiguo){
                 if((!req.body.fotoUrl || req.body.fotoUrl === "") && atletaAntiguo.fotoUrl != null){
                     funcionesGlobales.borrarArchivo(atletaAntiguo.fotoUrl);
-                }       
+                } 
                 res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", req.body.nombre)});
                 }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
@@ -100,7 +99,7 @@ exports.modificarAtleta  = async function(req, res){
         }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte)});}); //Todo modificar mensaje    
 };
 
-  exports.listarAtletas = async function(req, res){
+exports.listarAtletas = async function(req, res){
     Atleta.find()
     .sort({nombreNormalizado : 1})
     .populate([{path: "deporte", select: "_id federacion"}])  

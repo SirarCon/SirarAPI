@@ -3,7 +3,7 @@ mockingoose = require('mockingoose').default,
 contador = require("../models/ContadorModel"),
 ateltac = require("../models/AtletaCompetidorModel"),
 model = require("../models/EventoModel"),
-subjcontrollerect = require("../controllers/EventoController"),
+controller = require("../controllers/EventoController"),
 expressRequestMock = require('express-request-mock');
 
 var body = {

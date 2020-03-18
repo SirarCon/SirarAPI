@@ -51,9 +51,10 @@ var mensajes = [
 
   exports.locals = locals;
   
-  beforeAll(() => {
+  beforeEach(() => {
     globales.mensajes.mockImplementationOnce((codigo, sustantivo, identificador, objeto) => {
-      return  mensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( sustantivo, identificador, objeto);
+      var mensaje = mensajes.find(mensaje=>{return mensaje.codigo == codigo}).obtenerMensaje( sustantivo, identificador, objeto);
+      return mensaje;
     });    
   })
   
