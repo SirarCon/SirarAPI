@@ -6,17 +6,13 @@ model = require("../models/AtletaModel"),
 controller = require("../controllers/AtletaController"),
 funcionesGlobales = require("../FuncionesGlobales");
 jest.mock("../FuncionesGlobales")
-
-
 const expressRequestMock = require('express-request-mock');
 
 //#region objetos y requests
-
 var reqGeneral={
   locals: helper.locals,
   token: 'd89fgk',
 }
-
 var bodyCrearAtleta= { //Objeto con el body completo para reutilizarlo
   nombre: 'TestExitoso3',
   correo: 'wacvillalobggos@kotmail.es',
@@ -25,7 +21,6 @@ var bodyCrearAtleta= { //Objeto con el body completo para reutilizarlo
   rol: 0,
   pais: 840 
 }
-
 //Se extrae solo el rol , pues el objeto de respuesta no lo retorna
 var  { rol, ...responseLuegoCrearAtleta} = bodyCrearAtleta;
 //Objeto para enviar al modelo Atleta de mongo, se usa el spread operator para completarlo
@@ -38,13 +33,10 @@ var reqNuevoAtleta = {
   ...reqGeneral,
   body: bodyCrearAtleta,
 }
-
 //Objeto para modificar atleta
 var {rol, correo , ...bodyModificarAtleta} = bodyCrearAtleta
-
 var correoModificado ={ correo: 'wacvillalobggos@hotmail.es'}
-
-//Objeto para enviar al controller
+//Objeto para enviar al controller modificar
 var reqModificarAtleta = {
   ...reqGeneral,
   body: {
@@ -53,7 +45,6 @@ var reqModificarAtleta = {
     correoModificado
   },
 }
-
 var depRes ={
     _id: 1,
     nombre: 'Ajedrez',
@@ -62,7 +53,6 @@ var depRes ={
     federacion: 1,
     activo: true,
 }
-
 var responseListarAtletas = [
   {
     _id: 1,
@@ -75,7 +65,6 @@ var responseListarAtletas = [
     __v: 0
   }
 ]
-
 var reqLeerAtleta = {
   ...reqGeneral,
   params:{ 
@@ -91,8 +80,7 @@ var responseLeerAtleta={
     activo: true,
     nombreNormalizado: 'nerybrenes',
     __v: 0
-  }
-
+}
 //#endregion objetos y requests
 
 //#region tests
@@ -111,7 +99,8 @@ describe('Atletas Model', () => {
     mockingoose(contador).toReturn({sequence_value: 1}, 'findOneAndUpdate')
     const { res } = await expressRequestMock(controller.crearAtleta, reqNuevoAtleta, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
-    //console.log(datos)
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy();
     expect(res.statusCode).toEqual(200)
   })
 
@@ -120,6 +109,8 @@ describe('Atletas Model', () => {
     mockingoose(model).toReturn({...bodyModificarAtleta, correoModificado}, 'findOneAndUpdate')
     const { res } = await expressRequestMock(controller.modificarAtleta, reqModificarAtleta, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy();
     expect(res.statusCode).toEqual(200)
   })
 
@@ -136,13 +127,18 @@ describe('Atletas Model', () => {
     mockingoose(model).toReturn(responseListarAtletas, 'find')
     const { res } = await expressRequestMock(controller.listarAtletas, reqGeneral, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
-    expect(res.statusCode).toEqual(200)
+    expect(res.statusCode).toEqual(200);
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy();
+
   })
   
   it('Listar atleta específico', async () => {
     mockingoose(model).toReturn(responseLeerAtleta, 'findOne')
     const { res } = await expressRequestMock(controller.leerAtleta, reqLeerAtleta, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy();
     expect(res.statusCode).toEqual(200)
   })
 
@@ -150,7 +146,8 @@ describe('Atletas Model', () => {
     mockingoose(model).toReturn(responseListarAtletas, 'find')
     const { res } = await expressRequestMock(controller.listarAtletasActivos, reqGeneral, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
-    console.log(datos);
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy();
     expect(res.statusCode).toEqual(200)
   })
   
@@ -158,9 +155,11 @@ describe('Atletas Model', () => {
     mockingoose(model).toReturn(responseLeerAtleta, 'findOne')
     const { res } = await expressRequestMock(controller.leerAtletaActivo, reqLeerAtleta, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
-    console.log(datos);
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy();
     expect(res.statusCode).toEqual(200)
   })
 
 });
+
 //#endregion tests
