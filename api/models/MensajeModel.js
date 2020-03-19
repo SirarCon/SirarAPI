@@ -37,24 +37,11 @@ MensajeSchema.pre('save', async function(next) {
 });
 
 MensajeSchema.method("obtenerMensaje" , function(nuevoMensaje, id , objeto){
-  if(id && nuevoMensaje){
-    if(!objeto){
-    return {exito: this.exito,codigo: this.codigo, mensaje: this.mensaje
-                                                                  .replace("{sutantivoCambiar}", nuevoMensaje).replace("{id}", id)
-                                                                  .replace(/\s+/g, ' ').trim()};
-    }
-    else{
-    return {exito: this.exito,codigo: this.codigo, mensaje: objeto};
-    }
-  }
-  else{
-    if(!objeto){
-      return {exito: this.exito, codigo: this.codigo, mensaje: this.mensaje.replace(/\s+/g, ' ').trim()};
-    }
-    else{
-      return {exito: this.exito, codigo: this.codigo, mensaje: objeto};
-    }
-  }
+  var mensaje = objeto || this.mensaje.replace("{sutantivoCambiar}", nuevoMensaje || "")
+                           .replace("{id}", id || "")
+                           .replace(/\s+/g, ' ').trim();
+                           
+  return {exito: this.exito, codigo: this.codigo, mensaje: mensaje};
 });
 
 module.exports = mongoose.model('Mensaje', MensajeSchema);
