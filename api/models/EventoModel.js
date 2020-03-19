@@ -83,7 +83,7 @@ var EventoSchema = new Schema({
         fechaFinal: this.fechaFinal,
         ciudad: this.ciudad,
         pais: this.pais,
-        anno: this.fechaInicio.getFullYear(),
+        anno: funcionesGlobales.obtenerAnno(this.fechaInicio),
         activo: this.activo
       };
     
@@ -98,7 +98,7 @@ var EventoSchema = new Schema({
         fechaFinal: this.fechaFinal,
         ciudad: this.ciudad,
         pais: this.pais,
-        anno: this.fechaInicio.getFullYear()
+        anno: funcionesGlobales.obtenerAnno(this.fechaInicio)
       };
     
     });

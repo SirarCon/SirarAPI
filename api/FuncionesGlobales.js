@@ -48,9 +48,9 @@ module.exports ={
         });
       }
       else{
-        reject("");
+        resolve("");
       }
-    }).catch((e)=>{ console.log(e); return "" });
+    }).catch((e)=>{ console.log("error" + e.message); return "" });
   },
 
   borrarArchivo: function (ruta){
@@ -132,26 +132,39 @@ calcularEdad : function(fechaNacimiento){
   }
 },
 
+//time: horas, minutos y segundos
 formatoFecha: function(fecha, time = false){
   if(fecha !== undefined){
-    var tipoFecha = time ? 
-    new Date(...(fecha
-            .replace(/-|T|:/g, ',')
-            .replace(/\..+/g,'')
-            .split(",").map((m)=> parseInt(m))))
-    :
-    new Date(fecha
-            .replace(/-/g, '\/')
-            .replace(/T.+/, ''));
+    tipoFecha = convertirAFecha(fecha, time);
     return tipoFecha.toLocaleDateString("es-CR");
-  }
-  return tipoFecha;
+  }  
+  return fecha;
 },
+
+convertirAFecha: function(fecha, time = false){
+  var tipoFecha = time ? 
+  new Date(...(fecha
+          .replace(/-|T|:/g, ',')
+          .replace(/\..+/g,'')
+          .split(",").map((m)=> parseInt(m))))
+  :
+  new Date(fecha
+          .replace(/-/g, '\/')
+          .replace(/T.+/, ''));
+ return tipoFecha;
+}
+,
 
 construirFecha: function(fechaCompleta){
   var fecha = fechaCompleta.getFullYear()+'/'+(fechaCompleta.getMonth()+1)+'/'+ fechaCompleta.getDate();
   var hora = fechaCompleta.getHours() + ":" + fechaCompleta.getMinutes() + ":" + fechaCompleta.getSeconds();
   return fecha + ' '+ hora;
+},
+
+obtenerAnno: function(fecha){
+  var anno = module.exports.convertirAFecha(fecha).getFullYear();
+  return anno;
 }
+
 
 }

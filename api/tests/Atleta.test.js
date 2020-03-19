@@ -4,15 +4,10 @@ contador = require("../models/ContadorModel"),
 deporte = require("../models/DeporteModel"),
 model = require("../models/AtletaModel"),
 controller = require("../controllers/AtletaController"),
-funcionesGlobales = require("../FuncionesGlobales");
-jest.mock("../FuncionesGlobales")
-const expressRequestMock = require('express-request-mock');
+expressRequestMock = require('express-request-mock');
 
 //#region objetos y requests
-var reqGeneral={
-  locals: helper.locals,
-  token: 'd89fgk',
-}
+
 var bodyCrearAtleta= { //Objeto con el body completo para reutilizarlo
   nombre: 'TestExitoso3',
   correo: 'wacvillalobggos@kotmail.es',
@@ -30,7 +25,7 @@ var nuevoAtleta = {
 }
 //Objeto para enviar al controller de Atleta
 var reqNuevoAtleta = {
-  ...reqGeneral,
+  ...helper.reqGeneral,
   body: bodyCrearAtleta,
 }
 //Objeto para modificar atleta
@@ -38,7 +33,7 @@ var {rol, correo , ...bodyModificarAtleta} = bodyCrearAtleta
 var correoModificado ={ correo: 'wacvillalobggos@hotmail.es'}
 //Objeto para enviar al controller modificar
 var reqModificarAtleta = {
-  ...reqGeneral,
+  ...helper.reqGeneral,
   body: {
     _id: 1,
     ...bodyModificarAtleta,
@@ -66,20 +61,14 @@ var responseListarAtletas = [
   }
 ]
 var reqLeerAtleta = {
-  ...reqGeneral,
+  ...helper.reqGeneral,
   params:{ 
     id: 1
   } 
 }
 var responseLeerAtleta={
     _id: 1,
-    nombre: 'Nery Brenes',
-    correo: 'nery@hotmail.es',
-    deporte: { _id: 2, federacion: 2 },
-    pais: 188,
-    activo: true,
-    nombreNormalizado: 'nerybrenes',
-    __v: 0
+   ...bodyCrearAtleta
 }
 //#endregion objetos y requests
 
@@ -114,18 +103,9 @@ describe('Atletas Model', () => {
     expect(res.statusCode).toEqual(200)
   })
 
-  beforeEach(() => {
-  funcionesGlobales.leerArchivoAsync.mockImplementationOnce((fileName) => {
-    return new Promise(function(_, reject){
-      reject("");//Se puede modificar para que retorne una archivo fake
-    }
-   ).catch((e)=>{ console.log(e); return "" });
-   })  
-  })
-
   it('Listar atletas', async () => {
     mockingoose(model).toReturn(responseListarAtletas, 'find')
-    const { res } = await expressRequestMock(controller.listarAtletas, reqGeneral, helper.resp)
+    const { res } = await expressRequestMock(controller.listarAtletas, helper.reqGeneral, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(res.statusCode).toEqual(200);
     expect(datos.codigo).toBeLessThan(0);
@@ -144,7 +124,7 @@ describe('Atletas Model', () => {
 
   it('Listar atletas activos', async () => {
     mockingoose(model).toReturn(responseListarAtletas, 'find')
-    const { res } = await expressRequestMock(controller.listarAtletasActivos, reqGeneral, helper.resp)
+    const { res } = await expressRequestMock(controller.listarAtletasActivos, helper.reqGeneral, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(datos.codigo).toBeLessThan(0);
     expect(datos.exito).toBeTruthy();

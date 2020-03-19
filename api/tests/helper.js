@@ -49,6 +49,11 @@ var mensajes = [
     }
   }
 
+  exports.reqGeneral ={
+    locals: locals,
+    token: 'd89fgk',
+  }
+
   exports.locals = locals;
   
   beforeEach(() => {
