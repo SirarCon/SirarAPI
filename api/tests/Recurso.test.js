@@ -6,33 +6,91 @@ fase = require("../models/FaseModel"),
 controlador = require("../controllers/RecursoController"),
 expressRequestMock = require('express-request-mock');
 
-var body = {
+
+describe('Pais', () => {
+  var bodyPais = {
     name: "Costa Rica",
     _id: 506,
     flag: "Azul"
-};
-var response = body;
+  };
+  var response = bodyPais;
 
-describe('Pais', () => {
+  var reqPais = {
+    ...helper.reqGeneral,
+    body: bodyPais,
+  }
     it('debería salvar País', () => {
       mockingoose(pais).toReturn(response, 'save');
       return pais
-            .create(body).then((res) => {
+            .create(bodyPais).then((res) => {
               expect(JSON.parse(JSON.stringify(res))).toMatchObject(response)
             });
-    });
-  });
-
-var req = {
-    locals: helper.locals,
-    body: body,
-    token: 'd89fgk'
-}
-
-describe('Crear País', () => { 
-    it('returns a 200 response', async () => {
-        const { res } = await expressRequestMock(controlador.crearPais, req, helper.resp)
+    });   
+    it('Crear País', async () => {
+        const { res } = await expressRequestMock(controlador.crearPais, reqPais, helper.resp)
         const { token, datos } = JSON.parse(res._getData());
-      expect(res.statusCode).toEqual(200)
-    })
+        expect(res.statusCode).toEqual(200);
+        expect(datos.codigo).toBeLessThan(0);
+        expect(datos.exito).toBeTruthy();    })
+
+    it('Borrar País', async () => {
+      mockingoose(pais).toReturn(response, 'findOneAndRemove');
+      const { res } = await expressRequestMock(controlador.borrarPais, reqPais, helper.resp)
+      const { token, datos } = JSON.parse(res._getData());
+      expect(res.statusCode).toEqual(200);
+      expect(datos.codigo).toBeLessThan(0);
+      expect(datos.exito).toBeTruthy();  })
+
+      it('Obtener Países', async () => {
+        mockingoose(pais).toReturn([response], 'find');
+        const { res } = await expressRequestMock(controlador.obtenerPaises, helper.reqGeneral, helper.resp)
+        const { token, datos } = JSON.parse(res._getData());
+        expect(res.statusCode).toEqual(200);
+        expect(datos.codigo).toBeLessThan(0);
+        expect(datos.exito).toBeTruthy();  })
+});
+
+
+
+describe('Fase', () => {
+  var bodyFase = {
+    descripcion: "Cuartos de Final",
+    _id: 3,
+    siglas: "Qty"
+  };
+  var response = bodyFase;
+
+  var reqFase = {
+    ...helper.reqGeneral,
+    body: bodyFase,
+  }
+    it('debería salvar Fase', () => {
+      mockingoose(fase).toReturn(response, 'save');
+      return fase
+            .create(bodyFase).then((res) => {
+              expect(JSON.parse(JSON.stringify(res))).toMatchObject(response)
+            });
+    });   
+    it('Crear Fase', async () => {
+        const { res } = await expressRequestMock(controlador.crearFase, reqFase, helper.resp)
+        const { token, datos } = JSON.parse(res._getData());
+        expect(res.statusCode).toEqual(200);
+        expect(datos.codigo).toBeLessThan(0);
+        expect(datos.exito).toBeTruthy();    })
+
+    it('Borrar Fase', async () => {
+      mockingoose(fase).toReturn(response, 'findOneAndRemove');
+      const { res } = await expressRequestMock(controlador.borrarFase, reqFase, helper.resp)
+      const { token, datos } = JSON.parse(res._getData());
+      expect(res.statusCode).toEqual(200);
+      expect(datos.codigo).toBeLessThan(0);
+      expect(datos.exito).toBeTruthy();  })
+
+      it('Obtener Fases', async () => {
+        mockingoose(fase).toReturn([response], 'find');
+        const { res } = await expressRequestMock(controlador.obtenerFases, helper.reqGeneral, helper.resp)
+        const { token, datos } = JSON.parse(res._getData());
+        expect(res.statusCode).toEqual(200);
+        expect(datos.codigo).toBeLessThan(0);
+        expect(datos.exito).toBeTruthy();  })
 })
