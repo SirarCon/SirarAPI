@@ -79,7 +79,7 @@ exports.leerEvento = async function(req, res){
     })
 }
 
-exports.listarTodosEventos = async function(req, res){
+exports.listarTodosEventos = async function(_, res){
     Evento.find()
      .sort({fechaInicio : 1, fechaFinal: 1})
      .exec()
@@ -100,7 +100,7 @@ exports.listarTodosEventos = async function(req, res){
 //#endregion UsuarioAdm
 
 //#region Usuariopúblico
-exports.listarEventosActivos = async function(req, res){
+exports.listarEventosActivos = async function(_, res){
     Evento.find()
     .where({activo: true })
     .sort({fechaInicio : 1, fechaFinal: 1})   

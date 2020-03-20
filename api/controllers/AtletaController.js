@@ -99,7 +99,7 @@ exports.modificarAtleta  = async function(req, res){
         }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte)});}); //Todo modificar mensaje    
 };
 
-exports.listarAtletas = async function(req, res){
+exports.listarAtletas = async function(_, res){
     Atleta.find()
     .sort({nombreNormalizado : 1})
     .populate([{path: "deporte", select: "_id federacion"}])  
@@ -136,7 +136,7 @@ exports.leerAtleta  = async function(req, res){
 //#endregion UsuarioAdm
 
 //#region Usuariopúblico
-exports.listarAtletasActivos = async function(req, res){
+exports.listarAtletasActivos = async function(_, res){
     Atleta.find()
     .where({activo: true})  
     .sort({nombreNormalizado : 1})

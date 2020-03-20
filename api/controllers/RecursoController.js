@@ -30,7 +30,7 @@ exports.borrarPais = function(req, res){
     })
 }
 
-exports.obtenerPaises = function(req, res){
+exports.obtenerPaises = function(_, res){
     Pais.find().sort({name : 1}).exec().then(paises =>{
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, paises)});          
     }).catch(err =>{
@@ -61,7 +61,7 @@ exports.borrarFase = function(req, res){
     })
 }
 
-exports.obtenerFases = function(req, res){
+exports.obtenerFases = function(_, res){
     Fase.find().sort({ _id: 1 }).exec().then(fases=>{
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, fases)});            
         }).catch(err=>{
