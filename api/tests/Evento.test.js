@@ -43,6 +43,18 @@ var responseLeerTodosEventos = [
   {...responseLeerEvento},
 ]
 
+var reqLeerEventosXAtleta = {
+  ...helper.reqGeneral,
+  params:{ 
+    idAtleta: 1
+  } 
+}
+
+var responseEventosPorAtleta = [{
+        "id": 1,
+        "nombre": "Juegos Olímpicos de Río de Janeiro 2016",
+}]
+
 describe('Evento', () => {
     it('debería salvar Evento', () => {
       mockingoose(model).toReturn(body, 'save');
@@ -108,8 +120,8 @@ describe('Evento', () => {
   });
 
   it('listar Eventos Atleta', async () => {
-    mockingoose(model).toReturn(responseLeerEvento, 'aggregate')
-    const { res } = await expressRequestMock(controller.listarEventosAtleta, reqLeerEvento, helper.resp)
+    mockingoose(ateltac).toReturn(responseEventosPorAtleta, 'aggregate')
+    const { res } = await expressRequestMock(controller.listarEventosAtleta, reqLeerEventosXAtleta, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(res.statusCode).toEqual(200);
     expect(datos.codigo).toBeLessThan(0);
