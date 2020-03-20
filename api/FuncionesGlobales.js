@@ -135,7 +135,7 @@ calcularEdad : function(fechaNacimiento){
 //time: horas, minutos y segundos
 formatoFecha: function(fecha, time = false){
   if(fecha !== undefined){
-    tipoFecha = convertirAFecha(fecha, time);
+    var tipoFecha = module.exports.convertirAFecha(fecha, time);
     return tipoFecha.toLocaleDateString("es-CR");
   }  
   return fecha;
@@ -148,9 +148,9 @@ convertirAFecha: function(fecha, time = false){
           .replace(/\..+/g,'')
           .split(",").map((m)=> parseInt(m))))
   :
-  new Date(fecha
-          .replace(/-/g, '\/')
-          .replace(/T.+/, ''));
+  new Date(...(fecha
+          .replace(/-/g, '\/')//Se usan separadores / y se invierte para que no de error al crear la fecha
+          .replace(/T.+/, '')).split("/").reverse());
  return tipoFecha;
 }
 ,
