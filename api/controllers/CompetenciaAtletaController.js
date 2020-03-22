@@ -56,7 +56,7 @@ CompetenciaA.findOneAndUpdate({_id: req.params.idCompetencia},
         prueba: req.body.prueba,
         fechaHora: req.body.fechaHora,
         ciudad: req.body.ciudad,
-        estadio: estadio,
+        estadio: req.body.estadio,
         genero: req.body.genero,
         descripcion: req.body.descripcion,
         fase: req.body.fase,
@@ -73,20 +73,31 @@ CompetenciaA.findOneAndUpdate({_id: req.params.idCompetencia},
         res.json({token: res.locals.token, datos: globales.mensajes(14, "competencia.", funcionesGlobales.manejarError(err))});        
     })
 };
-//todo Revisar mensaje y validación de repetidos, ver update de atleta (deporte no cambia)
+//todo: no se que significa este comentario: ver update de atleta (deporte no cambia)
 exports.ingresarAtletaACompetencia = async function(req, res){
 CompetenciaA.findOne()
 .where({_id : req.body.competencia})
 .exec()
 .then(competencia =>{
     if(competencia){
-        var nuevoAtelta = new AtletaC(req.body);
-        nuevoAtelta.save().then(atleta=>{
-            res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ")});    
-        }).catch(async err=>{
-            res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta a Competencia", " ")});//Todo Cambiar
+        AtletaC.estimatedDocumentCount(
+            {competencia: req.body.competencia,
+            atleta: req.body.atleta})
+        .exec()
+        .then(count => {
+            if(count == 0){
+                var nuevoAtelta = new AtletaC(req.body);
+                nuevoAtelta.save().then(atleta=>{
+                    res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ")});    
+                }).catch(async err=>{
+                    res.json({token: res.locals.token, datos: globales.mensajes(21, "Atleta a Competencia", " ")});//Todo Cambiar
+                });
+            }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(22, "atleta", " ")});    
+            }
+        }).catch(err =>{
+            res.json({token: res.locals.token, datos: globales.mensajes(19, "atleta.", funcionesGlobales.manejarError(err))})
         });
-        
     }else{
         res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ")});
     }
@@ -167,7 +178,7 @@ CompetenciaA.find()
 .then(competencias => {
     if(competencias.length > 0){
         var deportes = Array.from(new Set(competencias.map(c=>  c.prueba.deporte)));
-    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes)});  
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes)});  
 }else{
     res.json({token: res.locals.token, datos: globales.mensajes(11, "deportes", " ")});
   }
@@ -449,7 +460,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
     });
     }
     
-//Lista las pruebas según deporte de un evento seleccionado donde participó un atleta específico
+//Lista las competencias según prueba de un evento seleccionado donde participó un atleta específico
 exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
     AtletaC.aggregate([
        {

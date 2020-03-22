@@ -87,7 +87,7 @@ exports.leerFederacion = async function(req, res) {
   }) 
 };
 
-exports.listaTodasFederaciones =  async function(req, res) {
+exports.listaTodasFederaciones =  async function(_, res) {
   Federacion.find()
   .sort({nombreNormalizado : 1})
   .exec()
@@ -123,7 +123,7 @@ exports.leerFederacionActiva = async function(req, res) {
   }) 
 };
 
-exports.listaFederacionesActivas =  async function(req, res) {//Menos el que consulta en el correo     
+exports.listaFederacionesActivas =  async function(_, res) {//Menos el que consulta en el correo     
   Federacion.find()
   .where({activo: true })
   .sort({nombreNormalizado : 1})
@@ -211,7 +211,7 @@ exports.modificarDeporte = async function(req, res){
   }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)})); //Todo modificar mensaje
 };
 
-exports.listarDeportes = async function(req, res){
+exports.listarDeportes = async function(_, res){
   Deporte.find()
   .sort({nombreNormalizado : 1})
   .exec()
@@ -274,7 +274,7 @@ exports.leerDeporteActiva = async function(req, res){
   })
 };
 
-exports.listarDeportesActivas = async function(req, res){
+exports.listarDeportesActivas = async function(_, res){
   Deporte.find()
   .where({activo: true })
   .sort({nombreNormalizado : 1})
@@ -407,7 +407,7 @@ exports.listarPruebas = async function(req, res){
 //#region Usuariopúblico
 exports.listarPruebasActivas = async function(req, res){
   Prueba.find()
-  .where({deporte: req.params.idDeporte})
+  .where({activo: true, deporte: req.params.idDeporte})
   .sort({nombreNormalizado : 1})
   .exec()
   .then(pruebas=>{
@@ -421,7 +421,6 @@ exports.listarPruebasActivas = async function(req, res){
     res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ")});  
   });
 };
-
 
 exports.listarDeporteXPruebasActivas = async function(req, res){
   Prueba.findOne()
