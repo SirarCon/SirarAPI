@@ -2,7 +2,6 @@
 
 //#region Requires
 var mongoose = require('mongoose'),
-Error = mongoose.model('Error'),
 Evento = mongoose.model('Evento'),
 AtletaC = mongoose.model('AtletaCompetidor'),
 globales =  require("../Globales.js"),
@@ -21,7 +20,8 @@ exports.crearEvento = async function (req, res) {
     }).catch(async err => {
         await funcionesGlobales.restarContador('evento');
         funcionesGlobales.borrarArchivo(nuevoEvento.fotoUrl);                   
-        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta             
+        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta   
+            funcionesGlobales.registrarError("crearEvento/EventoController", err)                             
             res.json({token: res.locals.token, datos: globales.mensajes(10, "Evento.", funcionesGlobales.manejarError(err))});
         }else{//Error llave duplicada
            res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre evento", " ")});
@@ -58,7 +58,8 @@ exports.modificarEvento = async function(req, res){
         if(err.code || err.code == 11000){ //Llave duplicada  
           res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre evento ", " ")});
         }else{ 
-          res.json({token: res.locals.token, datos: globales.mensajes(14, "evento", funcionesGlobales.manejarError(err))});        
+            funcionesGlobales.registrarError("modificarEvento/EventoController", err)                             
+            res.json({token: res.locals.token, datos: globales.mensajes(14, "evento", funcionesGlobales.manejarError(err))});        
         };
       }) 
 
@@ -76,7 +77,8 @@ exports.leerEvento = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.idEvento)});
         }
       }).catch((err)=>{
-          res.json({token: res.locals.token, datos: globales.mensajes(13, "evento", req.params.idEvento)});
+            funcionesGlobales.registrarError("leerEvento/EventoController", err)                             
+            res.json({token: res.locals.token, datos: globales.mensajes(13, "evento", req.params.idEvento)});
     })
 }
 
@@ -94,7 +96,7 @@ exports.listarTodosEventos = async function(_, res){
             res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
           }
      }).catch((err)=>{
-         console.log(err)
+        funcionesGlobales.registrarError("listarTodosEventos/EventoController", err)                             
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , " ")});  
     });
 }
@@ -116,7 +118,7 @@ exports.listarEventosActivos = async function(_, res){
             res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
           }
      }).catch((err)=>{
-         console.log(err)
+        funcionesGlobales.registrarError("listarEventosActivos/EventoController", err)                             
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , "")});  
     });
 }
@@ -134,7 +136,8 @@ exports.leerEventoActivo = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.idEvento)});
         }
       }).catch((err)=>{
-          res.json({token: res.locals.token, datos: globales.mensajes(13, "evento", req.params.idEvento)});
+            funcionesGlobales.registrarError("leerEventoActivo/EventoController", err)                             
+            res.json({token: res.locals.token, datos: globales.mensajes(13, "evento", req.params.idEvento)});
     })
 }
 
@@ -181,7 +184,8 @@ AtletaC.aggregate([
         res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
  }
 }).catch(err => {
-res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ")});  
+        funcionesGlobales.registrarError("listarEventosAtleta/EventoController", err)                             
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ")});  
 });
 }
 

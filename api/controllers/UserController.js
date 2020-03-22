@@ -2,7 +2,6 @@
 
 //#region Requires
 var mongoose = require('mongoose'),
-Error = mongoose.model('Error'),
 Usuario = mongoose.model('Usuario'),
 AwtAuth = require('jsonwebtoken'),
 globales =  require("../Globales.js"),
@@ -100,6 +99,7 @@ exports.verificarLogin = async function(req, res) {
           }
         })
         .catch((err)=>{
+          funcionesGlobales.registrarError("verificarLogin/UserController", err)                                         
           res.send(err);
         })
       }
@@ -157,7 +157,10 @@ exports.solicitarRecuperacion = async function(req, res){
               res.json({datos: globales.mensajes(2, "Usuario", req.body.correo.toLowerCase()) })//
           }
           })
-          .catch(err=>{console.log(err); res.json({datos: globales.mensajes(5, "usuario", req.body.correo.toLowerCase()) })});              
+          .catch(err=>{
+            funcionesGlobales.registrarError("solicitarRecuperacion/UserController", err)                                         
+            res.json({datos: globales.mensajes(5, "usuario", req.body.correo.toLowerCase())
+           })});              
 }
 
 
@@ -172,7 +175,10 @@ exports.recuperarcontrasena = async function(req, res){
             res.json({datos: globales.mensajes(2, "Token", "vencido:")});          
           }
       })
-      .catch(err=>{res.json({datos: globales.mensajes(6)});});
+      .catch(err=>{
+        funcionesGlobales.registrarError("recuperarcontrasena/UserController", err)                                         
+        res.json({datos: globales.mensajes(6)});
+      });
     }
     else{
       res.json({datos: globales.mensajes(7)});    
@@ -204,9 +210,11 @@ Usuario.findOne()
                     })
                    .catch(err=>{
                     if(req.body.passwordVieja)
-                    res.json({token: res.locals.token, datos: globales.mensajes(8)})
-                 else
-                    res.json({datos: globales.mensajes(8)});
+                        res.json({token: res.locals.token, datos: globales.mensajes(8)})
+                    else{
+                        funcionesGlobales.registrarError("cambiarContrasena/UserController", err)                                         
+                        res.json({datos: globales.mensajes(8)});
+                        }
                    });    
             }
         }
@@ -219,8 +227,10 @@ Usuario.findOne()
   }).catch(err=>{
     if(req.body.passwordVieja)
        res.json({token: res.locals.token, datos: globales.mensajes(8)})
-    else
+    else{
+      funcionesGlobales.registrarError("cambiarContrasena/UserController", err)                                         
        res.json({datos: globales.mensajes(8)});
+    }
     });
 }
 else{
@@ -290,8 +300,8 @@ exports.crearUsuario = async function(req, res) {
       }).catch(err=>{         
                     if (err){   
                       if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta
-                        funcionesGlobales.borrarArchivo(nuevoUsuario.fotoUrl);
-                          console.log(err)
+                          funcionesGlobales.registrarError("crearUsuario/UserController", err)                                         
+                          funcionesGlobales.borrarArchivo(nuevoUsuario.fotoUrl);
                           res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", nuevoUsuario.correo.toLowerCase())});
                       }else{//Error llave duplicada
                          res.json({token: res.locals.token, datos: globales.mensajes(15, "La identificación o correo electrónico", " ")});
@@ -302,6 +312,7 @@ exports.crearUsuario = async function(req, res) {
     if(typeof(e) === "string"){
        res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)});
     }else{
+      funcionesGlobales.registrarError("crearUsuario/UserController", err)                                         
       res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", req.body.correo.toLowerCase())});
     }
   }); 
@@ -327,6 +338,7 @@ exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta 
             res.json({token: res.locals.token, datos: globales.mensajes(11, "usuarios", " ")});
         })
           .catch((err)=>{
+            funcionesGlobales.registrarError("listaTodosUsuarios/UserController", err)                                         
             res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los usuarios")});  
 }) 
 }catch(e){
@@ -350,6 +362,7 @@ exports.leerUsuario = async function(req, res) {
     res.json({token: res.locals.token, datos: globales.mensajes(2, "Usuario", req.params.identificacion)});
   }
 }).catch((err)=>{
+    funcionesGlobales.registrarError("leerUsuario/UserController", err)                                         
     res.json({token: res.locals.token, datos: globales.mensajes(13, "usuario", req.params.identificacion)});
   }) 
 };
@@ -384,10 +397,14 @@ exports.modificarUsuario = async function(req, res) {
         if(err.code || err.code == 11000){ //Llave duplicada  
           res.json({token: res.locals.token, datos: globales.mensajes(15, "La identificación o correo electrónico"," ")});
         }else{ 
+          funcionesGlobales.registrarError("modificarUsuario/UserController", err)                                         
           res.json({token: res.locals.token, datos: globales.mensajes(14, "usuario", funcionesGlobales.manejarError(err, req.params.identificacion))});        
         }
       }); 
-    }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", req.body.correo ? req.body.correo : " ")}) 
+    }).catch(err=> {
+      funcionesGlobales.registrarError("modificarUsuario/UserController", err)                                         
+      res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", req.body.correo ? req.body.correo : " ")
+    }) 
 }) 
 };
 
@@ -401,6 +418,7 @@ exports.borrarUsuario = async function(req, res) {
                           funcionesGlobales.borrarArchivo(usuario.fotoUrl)
                         res.json({token: res.locals.token, datos: globales.mensajes(-2, "Usuario", req.params.identificacion)});    
         }).catch(err=>{
+          funcionesGlobales.registrarError("borrarUsuario/UserController", err)                                         
           res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", req.params.identificacion)});
   });
 };

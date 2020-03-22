@@ -2,7 +2,6 @@
 
 //#region Requires
 var mongoose = require('mongoose'),
-Error = mongoose.model('Error'),
 Deporte = mongoose.model('Deporte'),
 Federacion = mongoose.model('Federacion'),
 Prueba = mongoose.model('Prueba'),
@@ -27,12 +26,14 @@ exports.crearFederacion = async function(req, res){
               await funcionesGlobales.restarContador('federacion');
               funcionesGlobales.borrarArchivo(nuevaFederacion.escudoUrl);                   
               if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta               
-                  res.json({token: res.locals.token, datos: globales.mensajes(10, "Federacion", funcionesGlobales.manejarError(err))});
+                funcionesGlobales.registrarError("crearFederacion/DeporteController", err)  
+                res.json({token: res.locals.token, datos: globales.mensajes(10, "Federacion", funcionesGlobales.manejarError(err))});
               }else{//Error llave duplicada
                  res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre federación", " ")});
               }               
       });              
-  }).catch(e=> {
+  }).catch(err=> {
+    funcionesGlobales.registrarError("crearFederacion/DeporteController", err)  
     res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)})
   });
 };
@@ -66,10 +67,14 @@ exports.modificarFederacion = async function(req, res){
     if(err.code || err.code == 11000){ //Llave duplicada  
       res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre federación", " ")});
     }else{ 
+      funcionesGlobales.registrarError("modificarFederacion/DeporteController", err)  
       res.json({token: res.locals.token, datos: globales.mensajes(14, "federacion", funcionesGlobales.manejarError(err))});        
     }
   });
-}).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", "(s)")}));
+}).catch(err=> {
+      funcionesGlobales.registrarError("modificarFederacion/DeporteController", err)  
+      res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", "(s)")})
+ });
 };
 
 exports.leerFederacion = async function(req, res) {  
@@ -84,6 +89,7 @@ exports.leerFederacion = async function(req, res) {
       res.json({token: res.locals.token, datos: globales.mensajes(2, "Federación", " ")});
     }
 }).catch((err)=>{
+    funcionesGlobales.registrarError("leerFederacion/DeporteController", err)  
     res.json({token: res.locals.token, datos: globales.mensajes(13, "federacion", " ")});
   }) 
 };
@@ -102,6 +108,7 @@ exports.listaTodasFederaciones =  async function(_, res) {
         res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ")});
       }
   }).catch((err)=>{
+      funcionesGlobales.registrarError("listaTodasFederaciones/DeporteController", err)  
       res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones" , "")});  
   }); 
 };
@@ -120,6 +127,7 @@ exports.leerFederacionActiva = async function(req, res) {
        res.json({token: res.locals.token, datos: globales.mensajes(2, "Federación", " ")});
     }
   }).catch((err)=>{  
+    funcionesGlobales.registrarError("leerFederacionActiva/DeporteController", err)  
     res.json({token: res.locals.token, datos: globales.mensajes(13, "federacion", " ")});
   }) 
 };
@@ -139,7 +147,7 @@ exports.listaFederacionesActivas =  async function(_, res) {//Menos el que consu
         res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ")});
       }
   }).catch((err)=>{
-    console.log(err);
+    funcionesGlobales.registrarError("listaFederacionesActivas/DeporteController", err)  
     res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones", " ")});  
 });
 };
@@ -162,7 +170,8 @@ exports.crearDeporte = async function(req, res){
       }).catch(async err=>{ 
                 await funcionesGlobales.restarContador('deporte'); 
                 funcionesGlobales.borrarArchivo(nuevoDeporte.imagenDeporteUrl); 
-                if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                               
+                if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
+                  funcionesGlobales.registrarError("crearDeporte/DeporteController", err)                          
                     res.json({token: res.locals.token, datos: globales.mensajes(10, "Deporte ", funcionesGlobales.manejarError(err))});
                 }else{//Error llave duplicada
                   res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre deporte ", " ")});
@@ -171,7 +180,8 @@ exports.crearDeporte = async function(req, res){
     }else{
       res.json({token: res.locals.token, datos: globales.mensajes(18, "la federación ingresada"," ")}); 
     }    
-  }).catch(e=> {
+  }).catch(err=> {
+    funcionesGlobales.registrarError("crearDeporte/DeporteController", err)  
     res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)})
   }); 
 };
@@ -203,13 +213,17 @@ exports.modificarDeporte = async function(req, res){
             if(err.code || err.code == 11000){ //Llave duplicada  
               res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre deporte ", " ")});
             }else{ 
+              funcionesGlobales.registrarError("modificarDeporte/DeporteController", err)  
               res.json({token: res.locals.token, datos: globales.mensajes(14, "deporte", funcionesGlobales.manejarError(err))});        
             };
           });
         }else{
              res.json({token: res.locals.token, datos: globales.mensajes(18, "la federación ingresada", " ")}); 
         }    
-  }).catch(e=> res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)})); //Todo modificar mensaje
+  }).catch(err=>{ 
+        funcionesGlobales.registrarError("modificarDeporte/DeporteController", err)  
+        res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", e)})
+}); //Todo modificar mensaje
 };
 
 exports.listarDeportes = async function(_, res){
@@ -221,7 +235,8 @@ exports.listarDeportes = async function(_, res){
       deportes[indice].imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(element.imagenDeporteUrl);     
     });
     res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.todaInformacion()))})
-  }).catch((err)=>{           
+  }).catch((err)=>{   
+      funcionesGlobales.registrarError("listarDeportes/DeporteController", err)          
       res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes ", " ")});  
     });
 };
@@ -236,7 +251,8 @@ exports.listarDeportesXFederacion = async function(req, res){
       deportes[indice].imagenDeporteUrl = await funcionesGlobales.leerArchivoAsync(element.imagenDeporteUrl);     
     });
     res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.todaInformacion()))})
-  }).catch((err)=>{             
+  }).catch((err)=>{    
+      funcionesGlobales.registrarError("listarDeportesXFederacion/DeporteController", err)                   
       res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes ", " ")});  
     });
 };
@@ -253,7 +269,8 @@ exports.leerDeporte = async function(req, res){
         res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ")});
       }
     }).catch((err)=>{
-      res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte ", " ")});
+          funcionesGlobales.registrarError("leerDeporte/DeporteController", err)                   
+          res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte ", " ")});
     })
 };
 //#endregion UsuarioAdm
@@ -271,7 +288,8 @@ exports.leerDeporteActiva = async function(req, res){
       res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ")});
     }
 }).catch((err)=>{
-  res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", " ")});
+      funcionesGlobales.registrarError("leerDeporteActiva/DeporteController", err)                   
+      res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", " ")});
   })
 };
 
@@ -286,7 +304,8 @@ exports.listarDeportesActivas = async function(_, res){
     });
     res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.infoPublica())) })
   }).catch((err)=>{
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "deportes", " ")});
+        funcionesGlobales.registrarError("listarDeportesActivas/DeporteController", err)                   
+        res.json({token: res.locals.token, datos: globales.mensajes(13, "deportes", " ")});
   });
 };
 
@@ -301,7 +320,8 @@ exports.listarDeportesActivasXFederacion = async function(req, res){
     });
     res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes.map(d => d.infoPublica())) })
   }).catch((err)=>{
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "deportes", " ")});
+      funcionesGlobales.registrarError("listarDeportesActivasXFederacion/DeporteController", err)                   
+      res.json({token: res.locals.token, datos: globales.mensajes(13, "deportes", " ")});
   });
 }
 
