@@ -9,8 +9,12 @@ var Error = new Schema({
   mensaje: {
     type: String    
   },
+  codigo:{
+    type: Number
+  },
   fecha:{
-    type: Number,
+    type: Date,
+    default: new Date()
   },
 });
 

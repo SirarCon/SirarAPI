@@ -22,13 +22,12 @@ exports.crearAtleta = async function(req, res){
                 }
                     ).catch(async err=>{       
                         if (err){  
-                            console.log(err)
                             await funcionesGlobales.restarContador('atleta');
                             funcionesGlobales.borrarArchivo(nuevoAtleta.fotoUrl);  
                             if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
                                 res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", funcionesGlobales.manejarError(err))});
-                            }else{//Error llave duplicada
-                               
+                                funcionesGlobales.registrarError("crearAtleta/AtletaController", err)
+                            }else{//Error llave duplicada                
                             res.json({token: res.locals.token, datos: globales.mensajes(15, "Atleta", " ")});
                             }   
                         }
@@ -36,8 +35,8 @@ exports.crearAtleta = async function(req, res){
                 }else{
                         res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ")}); //Todo modificar mensaje
                       }    
-                    }).catch(e=> { 
-                        console.log(e);
+                    }).catch(err=> { 
+                                funcionesGlobales.registrarError("crearAtleta/AtletaController", err)
                         res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", req.body.nombre)})
                     }); //Todo modificar mensaje                  
   };
@@ -90,14 +89,16 @@ exports.modificarAtleta  = async function(req, res){
                     if(err.code || err.code == 11000){ //Llave duplicada  
                         res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre Atleta", " ")});
                     }else{ 
-                        console.log(err);
+                        funcionesGlobales.registrarError("modificarAtleta/AtletaController", err)
                         res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});        
                     };
                 });
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(18, "el deporte ingresado", " ")}); //Todo modificar mensaje
             }    
-        }).catch(e=> {res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte)});}); //Todo modificar mensaje    
+        }).catch(err=> {
+            funcionesGlobales.registrarError("modificarAtleta/AtletaController", err)
+            res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte)});}); //Todo modificar mensaje    
 };
 
 exports.listarAtletas = async function(_, res){
@@ -115,7 +116,9 @@ exports.listarAtletas = async function(_, res){
               res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
           }
       }).catch((err)=>{
-          res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas")}); 
+          console.log(err);
+            funcionesGlobales.registrarError("listarAtleta/AtletaController", err)
+            res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas")}); 
      });
   };
   
@@ -131,7 +134,8 @@ exports.leerAtleta  = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
         }
   }).catch((err)=>{
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id)});
+        funcionesGlobales.registrarError("leerAtleta/AtletaController", err)
+        res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id)});
     })
 };
 //#endregion UsuarioAdm
@@ -153,7 +157,8 @@ exports.listarAtletasActivos = async function(_, res){
               res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
             }
       }).catch((err)=>{
-          res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los atletas")}); 
+            funcionesGlobales.registrarError("listarAtletasActivos/AtletaController", err)
+            res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los atletas")}); 
      });
   };
 
@@ -169,6 +174,7 @@ exports.leerAtletaActivo  = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
         }
     }).catch((err)=>{
+        funcionesGlobales.registrarError("leerAtletaActivo/AtletaController", err)
         res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id)});
     })
 };

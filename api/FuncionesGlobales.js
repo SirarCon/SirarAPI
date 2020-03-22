@@ -1,5 +1,6 @@
 'use strict';
 var mongoose = require("mongoose"),
+Error = mongoose.model("Error"),
 Contador = mongoose.model("Contador");
 
 module.exports ={
@@ -108,6 +109,15 @@ manejarError : function(err, mensajeDefecto = " "){
       }
   }  
   return errorM;
+},
+
+registrarError: async function(nombreFuncionArchivo, error){
+  var error = new Error({
+      nombreFuncionArchivo: nombreFuncionArchivo,
+      mensaje: error.message || error,
+      codigo: error.code || 0
+  });
+  error.save();
 },
 
 restarContador : async function(entidad){
