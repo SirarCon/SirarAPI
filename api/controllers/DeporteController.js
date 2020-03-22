@@ -1,12 +1,13 @@
 'use strict';
 
 //#region Requires
-var mongoose = require('mongoose');
-var Deporte = mongoose.model('Deporte');
-var Federacion = mongoose.model('Federacion');
-var Prueba = mongoose.model('Prueba');
-var globales =  require("../Globales.js");
-var funcionesGlobales = require("../FuncionesGlobales.js");
+var mongoose = require('mongoose'),
+Error = mongoose.model('Error'),
+Deporte = mongoose.model('Deporte'),
+Federacion = mongoose.model('Federacion'),
+Prueba = mongoose.model('Prueba'),
+globales =  require("../Globales.js"),
+funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesDeportes = globales.rutaImagenesDeportes.instance;
 const rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance;
 //#endregion Requires

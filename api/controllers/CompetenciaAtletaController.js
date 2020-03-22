@@ -1,13 +1,12 @@
 //#region Requires
-var mongoose = require('mongoose');
-var Prueba = mongoose.model('Prueba');
-var Evento = mongoose.model('Evento');
-var CompetenciaA = mongoose.model('CompetenciaAtleta');
-var AtletaC = mongoose.model('AtletaCompetidor');
-var globales =  require("../Globales.js");
-var funcionesGlobales = require("../FuncionesGlobales.js");
-var Tiempo = require('../recursos/Tiempo.js');
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+Error = mongoose.model('Error'),
+Prueba = mongoose.model('Prueba'),
+Evento = mongoose.model('Evento'),
+CompetenciaA = mongoose.model('CompetenciaAtleta'),
+AtletaC = mongoose.model('AtletaCompetidor'),
+globales =  require("../Globales.js"),
+funcionesGlobales = require("../FuncionesGlobales.js");
 
 exports.crearCompetencia = async function(req, res){
     Evento.findOne()

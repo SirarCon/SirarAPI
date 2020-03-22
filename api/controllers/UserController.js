@@ -1,11 +1,12 @@
 'use strict';
 
 //#region Requires
-var mongoose = require('mongoose');
-var Usuario = mongoose.model('Usuario');
-const AwtAuth = require('jsonwebtoken');
-var globales =  require("../Globales.js");
-var funcionesGlobales = require("../FuncionesGlobales.js");
+var mongoose = require('mongoose'),
+Error = mongoose.model('Error'),
+Usuario = mongoose.model('Usuario'),
+AwtAuth = require('jsonwebtoken'),
+globales =  require("../Globales.js"),
+funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesPerfil = globales.rutaImagenesPerfil.instance;
 //#endregion Requires
 

@@ -1,11 +1,12 @@
 'use strict';
 
 //#region Requires
-var mongoose = require('mongoose');
-var Evento = mongoose.model('Evento');
-var AtletaC = mongoose.model('AtletaCompetidor');
-var globales =  require("../Globales.js");
-var funcionesGlobales = require("../FuncionesGlobales.js");
+var mongoose = require('mongoose'),
+Error = mongoose.model('Error'),
+Evento = mongoose.model('Evento'),
+AtletaC = mongoose.model('AtletaCompetidor'),
+globales =  require("../Globales.js"),
+funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesEventos = globales.rutaImagenesEventos.instance;
 //#endregion Requires
 

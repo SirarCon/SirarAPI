@@ -2,6 +2,7 @@
 
 //#region Requires
 var mongoose = require('mongoose'),
+Error = mongoose.model('Error'),
 Atleta = mongoose.model('Atleta'),
 Deporte = mongoose.model('Deporte'),
 globales =  require("../Globales.js"),

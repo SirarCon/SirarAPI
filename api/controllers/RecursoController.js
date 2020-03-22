@@ -1,10 +1,11 @@
 'use strict';
 
 //#region Requires
-var mongoose = require('mongoose');
-var Pais = mongoose.model('Pais');
-var Fase = mongoose.model('Fase');
-var globales =  require("../Globales.js");
+var mongoose = require('mongoose'),
+Error = mongoose.model('Error'),
+Pais = mongoose.model('Pais'),
+Fase = mongoose.model('Fase'),
+globales =  require("../Globales.js");
 //#endregion Requires
 
 //#region Pais

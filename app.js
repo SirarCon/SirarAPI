@@ -1,4 +1,5 @@
 function cargarModelos(){
+    require('./api/models/ErrorModel');
     require('./api/models/ContadorModel');
     require('./api/models/MensajeModel');
     require('./api/models/PaisModel');

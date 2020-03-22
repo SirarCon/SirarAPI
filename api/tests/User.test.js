@@ -1,5 +1,6 @@
 const helper = require("./helper"),
 mockingoose = require('mockingoose').default,
+error = require("../models/ErrorModel"),
 model = require("../models/UserModel"),
 controlador = require("../controllers/UserController"),
 expressRequestMock = require('express-request-mock');

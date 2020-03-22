@@ -1,5 +1,6 @@
 const helper = require("./helper"),
 mockingoose = require('mockingoose').default,
+error = require("../models/ErrorModel"),
 contador = require("../models/ContadorModel"),
 deporte = require("../models/DeporteModel"),
 model = require("../models/FederacionModel"),
