@@ -10,7 +10,7 @@ var mensajes = [
     new Mensaje({"mensaje": "{sutantivoCambiar} {id} se ha creado.", "codigo": -4, "exito": 1 }),
     new Mensaje({"mensaje": "{sutantivoCambiar} a {id} se ha enviado.", "codigo": -5, "exito": 1 }),
     new Mensaje({"mensaje": "Contraseña de {sutantivoCambiar}: {id} cambiada exitosamente.", "codigo": -6, "exito": 1}),
-    new Mensaje({"mensaje": "{sutantivoCambiar} {id} se ha ingresado.", "codigo": -7, "exito": 1 }),
+    new Mensaje({"mensaje": "Se ha ingresado {sutantivoCambiar} {id} .", "codigo": -7, "exito": 1 }),
     new Mensaje({"mensaje": "Contraseña errónea", "codigo": 1, "exito": 0 }),
     new Mensaje({"mensaje": "{sutantivoCambiar} {id} no encontrado", "codigo": 2, "exito": 0 }),
     new Mensaje({"mensaje": "Hubo un problema borrando {sutantivoCambiar} {id}", "codigo": 3, "exito": 0 }),
@@ -31,10 +31,12 @@ var mensajes = [
     new Mensaje({"mensaje": "No existe {sutantivoCambiar}", "codigo" : 18, "exito": 0 }),
     new Mensaje({"mensaje": "Hubo un problema ingresando {sutantivoCambiar} {id}", "codigo" : 19, "exito": 0 }),
     new Mensaje({"mensaje": "Hubo un problema borrando {sutantivoCambiar} {id}", "codigo" : 20, "exito": 0 }),
+    new Mensaje({"mensaje": "Hubo un problema ingresando {sutantivoCambiar} {id}", "codigo" : 21, "exito": 0 }), 
+    new Mensaje({"mensaje": "Ya se ingresó el {sutantivoCambiar} {id}", "codigo" : 22, "exito": 0 }), 
     new Mensaje({"mensaje": "Hubo un problema borrando la foto", "codigo" : 0, "exito": 0 }),
-    new Mensaje({"mensaje": "Hubo un problema guardando la foto", "codigo" : 0, "exito": 0 }),
+    new Mensaje({"mensaje": "Hubo un problema guardando la foto", "codigo" : 100, "exito": 0 }),
     new Mensaje({"mensaje": "Hubo un problema creando el token", "codigo" : 50, "exito": 0 }),
-    new Mensaje({"mensaje": "Por su seguridad la sesión ha expirado", "codigo": 403, "exito": 0 })
+    new Mensaje({"mensaje": "Por su seguridad la sesión ha expirado", "codigo": 403, "exito": 0 }),
   ]
 
  var locals = {
