@@ -4,6 +4,8 @@
 var mongoose = require('mongoose'),
 Atleta = mongoose.model('Atleta'),
 Deporte = mongoose.model('Deporte'),
+Prueba = mongoose.model('Prueba'),
+Evento = mongoose.model('Evento'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
@@ -137,6 +139,49 @@ exports.leerAtleta  = async function(req, res){
         res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id)});
     })
 };
+
+
+exports.modificarMedalla = async function(req, res){
+    var modificar = req.params.agregar == 1 ? {$push:{ medallas: req.body}} : {$pull:{ medallas: {_id: req.body.idMedalla} } };
+    console.log(modificar)
+    Prueba.findOne()
+    .where({_id: req.body.prueba})
+    .exec()
+    .then(prueba=>{
+    if(prueba){
+        Evento.findOne()
+        .where({_id: req.body.evento})
+        .exec()
+        .then(evento=>{
+            if(evento){
+                Atleta.updateOne({_id: req.params.idAtleta}, modificar, {new: true}).exec()
+                .then(atleta=>{
+                    if(atleta){
+                        res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", atleta.nombre)});
+                        }else{
+                            res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
+                            }
+                        }).catch(err=>{
+                            funcionesGlobales.registrarError("agregarMedalla/AtletaController", err)
+                            res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});                                })
+            }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.evento)});
+            }
+        }).catch(err =>{
+                funcionesGlobales.registrarError("agregarMedalla/AtletaController", err)
+                res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});        
+        })
+    }else{
+        res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", req.params.prueba)});
+    }
+    }).catch(err=>{
+        funcionesGlobales.registrarError("agregarMedalla/AtletaController", err)
+        res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});        
+    });
+};
+
+
+
 //#endregion UsuarioAdm
 
 //#region Usuariopúblico

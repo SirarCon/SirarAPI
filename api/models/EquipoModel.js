@@ -29,6 +29,23 @@ var EquipoSchema = new Schema({
               ref: "Atleta"
             }
     ]
+  },
+  medallas: {
+    type: [
+      {
+          posicion: {
+            type: Number,//1 (Oro), 2 (Plata), 3 (Bronze),  
+          },
+          evento:{
+            type: Number,
+            ref: 'Evento',
+          },
+          prueba:{
+            type: Number,
+            ref: 'Prueba',
+          },
+      }
+    ]
   }
 }, {_id: false}) ;
 

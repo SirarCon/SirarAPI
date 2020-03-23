@@ -29,6 +29,9 @@ routerAdm.route('/atleta/:id')
     .get(atletaController.leerAtleta)
     .put(atletaController.modificarAtleta);
 
+routerAdm.route('/atleta/medallas/:idAtleta/:agregar')
+    .put(atletaController.modificarMedalla)
+
 // production error handler
 const HTTP_SERVER_ERROR = 500;
 app.use(function(err, req, res, next) {

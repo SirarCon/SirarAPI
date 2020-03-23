@@ -116,6 +116,23 @@ var AtletaSchema = new Schema({
         type: Number,
         ref: "Pais",
       },
+      medallas: {
+        type: [
+          {
+              posicion: {
+                type: Number,//1 (Oro), 2 (Plata), 3 (Bronze),  
+              },
+              evento:{
+                type: Number,
+                ref: 'Evento',
+              },
+              prueba:{
+                type: Number,
+                ref: 'Prueba',
+              },
+          }
+        ]
+      }
 }, {_id: false});
 
 AtletaSchema.pre('save', async function(next) {
@@ -183,6 +200,7 @@ AtletaSchema.method('todaInformacion', function() {
       deporte: this.deporte,
       pais: this.pais,
       activo: this.activo,
+      medallas: this.medallas,
     }
   });
   
@@ -204,7 +222,8 @@ AtletaSchema.method('infoPublica', function() {
     altura: this.altura,
     peso: this.peso,
     deporte: this.deporte,
-    pais: this.pais
+    pais: this.pais,
+    medallas: this.medallas,
   }
 });
   
