@@ -3,7 +3,7 @@ mockingoose = require('mockingoose').default,
 error = require("../models/ErrorModel"),
 contador = require("../models/ContadorModel"),
 evento = require("../models/EventoModel"),
-model = require('../models/CompetenciaAtletaModel'),
+model = require('../models/CompetenciaModel'),
 AtletaC = require('../models/AtletaCompetidorModel');
 EquipoC = require('../models/EquipoCompetidorModel');
 prueba = require("../models/PruebaModel"),
@@ -73,7 +73,7 @@ describe('Crear Competencia Atleta ', () => {
         mockingoose(evento).toReturn(eventRes, 'findOne')
         mockingoose(prueba).toReturn(pruebaRes, 'findOne')
         mockingoose(contador).toReturn({sequence_value: 1}, 'findOneAndUpdate')
-        const { res } = await expressRequestMock(controller.crearCompetenciaAtleta, req, helper.resp)
+        const { res } = await expressRequestMock(controller.crearCompetencia, req, helper.resp)
         const { token, datos } = JSON.parse(res._getData());
       expect(res.statusCode).toEqual(200)
     })

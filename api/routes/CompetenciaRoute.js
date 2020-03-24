@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(app, express) {
-    var competenciaAController = require('../controllers/CompetenciaAtletaController');
+    var competenciaController = require('../controllers/CompetenciaController');
     var seguridad= require("./Seguridad.js");
     var routerAdm = express.Router()
     var routerGeneral = express.Router()
@@ -14,40 +14,40 @@ routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
 
 // //Rutas POST, GET, PUT, DELETE
 routerGeneral.route('/deportesPorEvento/:idEvento')  
-    .get(competenciaAController.listarDeportesXEvento);
+    .get(competenciaController.listarDeportesXEvento);
 
 routerGeneral.route('/listarCategoriasPorDeporte/:idEvento/:idDeporte')
-    .get(competenciaAController.listarCategoriasXDeporte)
+    .get(competenciaController.listarCategoriasXDeporte)
 
 routerGeneral.route('/listarAtletasPorCompetencia/:idCompetencia')
-    .get(competenciaAController.listarAtletasCompetencia)
+    .get(competenciaController.listarAtletasCompetencia)
 
 routerGeneral.route('/listarFasesPruebaEvento/:idEvento/:idPrueba/:genero') 
-    .get(competenciaAController.listarFasesxPruebaEvento)
+    .get(competenciaController.listarFasesxPruebaEvento)
 
 routerGeneral.route('/listarCompetenciasEventoPruebaFase/:idEvento/:idPrueba/:genero/:fase')    
-    .get(competenciaAController.listarCompetenciasEventoPruebaFase)
+    .get(competenciaController.listarCompetenciasEventoPruebaFase)
 
 routerGeneral.route('/listarDeportePorEventoAtleta/:idAtleta/:idEvento')
-    .get(competenciaAController.listarDeportesEventosAtleta)
+    .get(competenciaController.listarDeportesEventosAtleta)
 
 routerGeneral.route('/listarPruebasPorDeporteYEventoAtleta/:idAtleta/:idEvento/:idDeporte')
-    .get(competenciaAController.listarPruebasDeporteEventosAtleta)
+    .get(competenciaController.listarPruebasDeporteEventosAtleta)
 
 routerGeneral.route('/listarPruebasPorPruebaAtleta/:idAtleta/:idEvento/:idPrueba')
-    .get(competenciaAController.listarCompetenciasPorPruebaAtleta)
+    .get(competenciaController.listarCompetenciasPorPruebaAtleta)
 
 routerAdm.route('/competencia')
-    .post(competenciaAController.crearCompetencia)
+    .post(competenciaController.crearCompetencia)
 
 routerAdm.route('/competencia/:idCompetencia')
-    .put(competenciaAController.modificarCompetencia)
+    .put(competenciaController.modificarCompetencia)
 
 routerAdm.route('/atletaCompetencia')
-    .post(competenciaAController.ingresarAtletaACompetencia)
+    .post(competenciaController.ingresarAtletaACompetencia)
 
 routerAdm.route('/atletaCompetencia/:idAtletaCompetencia')
-    .delete(competenciaAController.eliminarAtletaDeCompetencia)
+    .delete(competenciaController.eliminarAtletaDeCompetencia)
 
 
 // production error handler

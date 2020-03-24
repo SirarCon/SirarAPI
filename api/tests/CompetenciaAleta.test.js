@@ -3,10 +3,10 @@ mockingoose = require('mockingoose').default,
 error = require("../models/ErrorModel"),
 contador = require("../models/ContadorModel"),
 evento = require("../models/EventoModel"),
-model = require('../models/CompetenciaAtletaModel'),
+model = require('../models/CompetenciaModel'),
 AtletaC = require('../models/AtletaCompetidorModel');
 pruebaModel = require("../models/PruebaModel"),
-controller = require("../controllers/CompetenciaAtletaController"),
+controller = require("../controllers/CompetenciaController"),
 expressRequestMock = require('express-request-mock');
 
 

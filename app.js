@@ -11,7 +11,7 @@ function cargarModelos(){
     require('./api/models/EquipoModel');
     require('./api/models/EventoModel');
     require('./api/models/PruebaModel');
-    require('./api/models/CompetenciaAtletaModel');
+    require('./api/models/CompetenciaModel');
     require('./api/models/AtletaCompetidorModel');  
   }
 
@@ -22,7 +22,7 @@ function cargarModelos(){
                require('./api/routes/DeporteRoute'),
                //require('./api/routes/EquipoRoute'),
                require('./api/routes/EventoRoute'),
-               require('./api/routes/CompetenciaAtletaRoute'),
+               require('./api/routes/CompetenciaRoute'),
                require('./api/routes/RecursoRoute')
                 ]; 
      //register the route

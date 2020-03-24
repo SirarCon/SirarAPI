@@ -150,7 +150,7 @@ AtletaC.aggregate([
     },
      {  $lookup: {
             "localField": "competencia",
-            "from": "competenciaatletas",
+            "from": "competencias",
             "foreignField": "_id",
             "as":  "competencias"
        }

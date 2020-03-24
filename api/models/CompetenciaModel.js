@@ -6,7 +6,7 @@ Schema = mongoose.Schema;
  //https://stackoverflow.com/questions/24853383/mongoose-objectid-that-references-a-sub-document
   
   
-var CompetenciaAtletaSchema = new Schema({
+var CompetenciaSchema = new Schema({
     _id: {
         type: Number
     },
@@ -51,7 +51,7 @@ var CompetenciaAtletaSchema = new Schema({
     }
 }, {_id: false});
  
-CompetenciaAtletaSchema.pre('save',  async function(next) {
+CompetenciaSchema.pre('save',  async function(next) {
   var doc = this;
   await Contador.findOneAndUpdate(
         { _id: 'competencia' },
@@ -67,7 +67,7 @@ CompetenciaAtletaSchema.pre('save',  async function(next) {
     })
 });
 
-CompetenciaAtletaSchema.method('todaInformacion',function (){
+CompetenciaSchema.method('todaInformacion',function (){
     return {
         evento: this.evento,
         prueba: this.prueba,
@@ -80,7 +80,7 @@ CompetenciaAtletaSchema.method('todaInformacion',function (){
         activo: this.activo,        
     }
 });
-CompetenciaAtletaSchema.method('infoPublica',function (){
+CompetenciaSchema.method('infoPublica',function (){
     return {
         evento: this.evento,
         prueba: this.prueba,
@@ -93,4 +93,4 @@ CompetenciaAtletaSchema.method('infoPublica',function (){
     }
 });
 
-module.exports = mongoose.model('CompetenciaAtleta', CompetenciaAtletaSchema);
+module.exports = mongoose.model('Competencia', CompetenciaSchema);

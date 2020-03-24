@@ -2,14 +2,14 @@
 var mongoose = require('mongoose');
 var Prueba = mongoose.model('Prueba');
 var Evento = mongoose.model('Evento');
-var CompetenciaA = mongoose.model('CompetenciaAtleta');
+var Competencia = mongoose.model('Competencia');
 var AtletaC = mongoose.model('EquipoCompetidor');
 var globales =  require("../Globales.js");
 var funcionesGlobales = require("../FuncionesGlobales.js");
 var Tiempo = require('../recursos/Tiempo.js');
 var Schema = mongoose.Schema;
 
-exports.crearCompetenciaAtleta = async function(req, res){
+exports.crearCompetencia = async function(req, res){
     Evento.findOne()
     .where({_id: req.body.evento})
     .exec()
@@ -20,7 +20,7 @@ exports.crearCompetenciaAtleta = async function(req, res){
         .exec()
         .then(prueba=>{
             if(prueba){
-                var nuevaCompetencia = new CompetenciaA(req.body);
+                var nuevaCompetencia = new Competencia(req.body);
                 nuevaCompetencia.save().then(competencia=>{
                     res.json({token: res.locals.token, datos: globales.mensajes(-4, "Competencia del", req.body.fechaHora)});
                 }).catch(err=>{
@@ -48,8 +48,8 @@ exports.crearCompetenciaAtleta = async function(req, res){
   });
 };
 
-exports.modificarCompetenciaAtleta = async function(req, res){
-CompetenciaA.findOneAndUpdate({_id: req.params.idCompetencia},
+exports.modificarCompetencia = async function(req, res){
+Competencia.findOneAndUpdate({_id: req.params.idCompetencia},
     { $set: {
         evento: req.body.evento,
         prueba: req.body.prueba,
@@ -73,7 +73,7 @@ CompetenciaA.findOneAndUpdate({_id: req.params.idCompetencia},
 };
 //todo Revisar mensaje y validación de repetidos, ver update de atleta (deporte no cambia)
 exports.ingresarAtletaACompetencia = async function(req, res){
-CompetenciaA.findOne()
+Competencia.findOne()
 .where({_id : req.body.competencia})
 .exec()
 .then(competencia =>{
@@ -154,7 +154,7 @@ AtletaC.aggregate([
 
 //Lista los deportes según el evento seleccionado
 exports.listarDeportesXEvento = async function(req, res){
-CompetenciaA.find()
+Competencia.find()
 .where({ evento: req.params.idEvento, activo: true })
 .populate({path:"prueba", select: "deporte"})
 .exec()
@@ -173,7 +173,7 @@ CompetenciaA.find()
 
 //Agrupa y lista las categorias de los deportes practicados durante un evento seleccionado
 exports.listarCategoriasXDeporte = async function(req, res){
-     CompetenciaA.aggregate([  
+     Competencia.aggregate([  
                   { $lookup: {
                                     "localField": "prueba",
                                     "from": "pruebas",
@@ -223,7 +223,7 @@ exports.listarCategoriasXDeporte = async function(req, res){
 
 //Lista las fases de las pruebas basadas en el evento, prueba y genero seleccionados
 exports.listarFasesxPruebaEvento= function(req, res){
- CompetenciaA.aggregate([
+ Competencia.aggregate([
             {   
                 $match: {
                      evento: Number(req.params.idEvento),
@@ -279,7 +279,7 @@ exports.listarFasesxPruebaEvento= function(req, res){
 
 //Lista las competencias basadas en el evento, prueba genero y fase seleccionados
 exports.listarCompetenciasEventoPruebaFase = function(req, res){
-    CompetenciaA.find({
+    Competencia.find({
         evento: req.params.idEvento,
         prueba: req.params.idPrueba,
         genero: Number(req.params.genero),
@@ -308,7 +308,7 @@ exports.listarDeportesEventosAtleta = async function(req, res){
         },
          {  $lookup: {
                 "localField": "competencia",
-                "from": "competenciaatletas",
+                "from": "Competencias",
                 "foreignField": "_id",
                 "as":  "competencias"
            }
@@ -385,7 +385,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
         },
          {  $lookup: {
                 "localField": "competencia",
-                "from": "competenciaatletas",
+                "from": "Competencias",
                 "foreignField": "_id",
                 "as":  "competencias"
            }
@@ -463,7 +463,7 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
         },
          {  $lookup: {
                 "localField": "competencia",
-                "from": "competenciaatletas",
+                "from": "Competencias",
                 "foreignField": "_id",
                 "as":  "competencia"
            },
