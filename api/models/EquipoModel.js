@@ -22,6 +22,14 @@ var EquipoSchema = new Schema({
     ref: 'Evento',
     required: "Seleccione un evento"
   },  
+  activo: {
+    type: Boolean,
+    required: "Seleccione si el equipo está activo"
+  },
+  retirado: {
+    type: Boolean,
+    required: "Seleccione si el equipo está retirado"
+  },
   atletas: {
     type: [
             {

@@ -74,7 +74,9 @@ exports.modificarAtleta  = async function(req, res){
                     peso: req.body.peso,
                     pais: req.body.pais,
                     deporte: req.body.deporte,
-                    activo: req.body.activo
+                    activo: req.body.activo,
+                    retirado: req.body.retirado,
+
                 }}, {projection:{}, new: false, runValidators: true})
                 .exec()
                 .then(atletaAntiguo=>{
@@ -143,7 +145,6 @@ exports.leerAtleta  = async function(req, res){
 
 exports.modificarMedalla = async function(req, res){
     var modificar = req.params.agregar == 1 ? {$push:{ medallas: req.body}} : {$pull:{ medallas: {_id: req.body.idMedalla} } };
-    console.log(modificar)
     Prueba.findOne()
     .where({_id: req.body.prueba})
     .exec()
@@ -162,20 +163,20 @@ exports.modificarMedalla = async function(req, res){
                             res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
                             }
                         }).catch(err=>{
-                            funcionesGlobales.registrarError("agregarMedalla/AtletaController", err)
+                            funcionesGlobales.registrarError("modificarMedalla/AtletaController", err)
                             res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});                                })
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.evento)});
             }
         }).catch(err =>{
-                funcionesGlobales.registrarError("agregarMedalla/AtletaController", err)
+                funcionesGlobales.registrarError("modificarMedalla/AtletaController", err)
                 res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});        
         })
     }else{
         res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", req.params.prueba)});
     }
     }).catch(err=>{
-        funcionesGlobales.registrarError("agregarMedalla/AtletaController", err)
+        funcionesGlobales.registrarError("modificarMedalla/AtletaController", err)
         res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});        
     });
 };
@@ -208,7 +209,7 @@ exports.listarAtletasActivos = async function(_, res){
 
 exports.leerAtletaActivo  = async function(req, res){
     Atleta.findOne()
-    .where({_id: req.params.id})
+    .where({_id: req.params.id, activo: true})
     .populate([{path: "deporte", select: "_id federacion" /*, populate:{path: "federacion", select: "_id"}*/},])  
     .exec()
     .then(async (atleta) => {

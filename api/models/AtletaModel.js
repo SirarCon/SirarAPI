@@ -106,6 +106,10 @@ var AtletaSchema = new Schema({
         type: Boolean,
         required: "Seleccione si el atleta está activo"
       },
+      retirado: {
+        type: Boolean,
+        required: "Seleccione si el atleta está retirado"
+      },
       deporte:{ 
         required: "Seleccione un deporte",
         type: Number,
