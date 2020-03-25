@@ -13,6 +13,7 @@ function cargarModelos(){
     require('./api/models/PruebaModel');
     require('./api/models/CompetenciaModel');
     require('./api/models/AtletaCompetidorModel');  
+    require('./api/models/EquipoCompetidorModel');  
   }
 
   function registrarRutas(){

@@ -2,60 +2,81 @@
 
 module.exports = function(app, express) {
     var competenciaController = require('../controllers/CompetenciaController');
+    var atletaCompetidorController = require("../controllers/AtletaCompetidorController");
+    var equipoCompetidorController = require("../controllers/EquipoCompetidorController");
     var seguridad= require("./Seguridad.js");
     var routerAdm = express.Router()
     var routerGeneral = express.Router()
 
-//Se le assignan los middleware a los usuarios adm antes del login
-routerGeneral.use(seguridad.verificarTokenGeneral);
+    //Se le assignan los middleware a los usuarios adm antes del login
+    routerGeneral.use(seguridad.verificarTokenGeneral);
 
-//Se le assignan los middleware a los router de Adm luego del Login
-routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
+    //Se le assignan los middleware a los router de Adm luego del Login
+    routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
 
-// //Rutas POST, GET, PUT, DELETE
-routerGeneral.route('/deportesPorEvento/:idEvento')  
-    .get(competenciaController.listarDeportesXEvento);
+    // //Rutas POST, GET, PUT, DELETE
+    routerGeneral.route('/deportesPorEvento/:idEvento')  
+        .get(competenciaController.listarDeportesXEvento);
 
-routerGeneral.route('/listarCategoriasPorDeporte/:idEvento/:idDeporte')
-    .get(competenciaController.listarCategoriasXDeporte)
+    routerGeneral.route('/listarCategoriasPorDeporte/:idEvento/:idDeporte')
+        .get(competenciaController.listarCategoriasXDeporte)
 
-routerGeneral.route('/listarAtletasPorCompetencia/:idCompetencia')
-    .get(competenciaController.listarAtletasCompetencia)
+    routerGeneral.route('/listarAtletasPorCompetencia/:idCompetencia')
+        .get(atletaCompetidorController.listarAtletasCompetencia)
 
-routerGeneral.route('/listarFasesPruebaEvento/:idEvento/:idPrueba/:genero') 
-    .get(competenciaController.listarFasesxPruebaEvento)
+    routerGeneral.route('/listarEquiposPorCompetencia/:idCompetencia')
+        .get(equipoCompetidorController.listarEquiposCompetencia)
 
-routerGeneral.route('/listarCompetenciasEventoPruebaFase/:idEvento/:idPrueba/:genero/:fase')    
-    .get(competenciaController.listarCompetenciasEventoPruebaFase)
+    routerGeneral.route('/listarFasesPruebaEvento/:idEvento/:idPrueba/:genero') 
+        .get(competenciaController.listarFasesxPruebaEvento)
 
-routerGeneral.route('/listarDeportePorEventoAtleta/:idAtleta/:idEvento')
-    .get(competenciaController.listarDeportesEventosAtleta)
+    routerGeneral.route('/listarCompetenciasEventoPruebaFase/:idEvento/:idPrueba/:genero/:fase')    
+        .get(competenciaController.listarCompetenciasEventoPruebaFase)
 
-routerGeneral.route('/listarPruebasPorDeporteYEventoAtleta/:idAtleta/:idEvento/:idDeporte')
-    .get(competenciaController.listarPruebasDeporteEventosAtleta)
+    routerGeneral.route('/listarDeportePorEventoAtleta/:idAtleta/:idEvento')
+        .get(atletaCompetidorController.listarDeportesEventosAtleta)
 
-routerGeneral.route('/listarPruebasPorPruebaAtleta/:idAtleta/:idEvento/:idPrueba')
-    .get(competenciaController.listarCompetenciasPorPruebaAtleta)
+    routerGeneral.route('/listarDeportePorEventoEquipo/:idEquipo/:idEvento')
+        .get(equipoCompetidorController.listarDeportesEventosEquipo)
 
-routerAdm.route('/competencia')
-    .post(competenciaController.crearCompetencia)
+    routerGeneral.route('/listarPruebasPorDeporteYEventoAtleta/:idAtleta/:idEvento/:idDeporte')
+        .get(atletaCompetidorController.listarPruebasDeporteEventosAtleta)
 
-routerAdm.route('/competencia/:idCompetencia')
-    .put(competenciaController.modificarCompetencia)
+    routerGeneral.route('/listarPruebasPorDeporteYEventoEquipo/:idEquipo/:idEvento/:idDeporte')
+        .get(equipoCompetidorController.listarPruebasDeporteEventosEquipo)
 
-routerAdm.route('/atletaCompetencia')
-    .post(competenciaController.ingresarAtletaACompetencia)
+    routerGeneral.route('/listarPruebasPorPruebaAtleta/:idAtleta/:idEvento/:idPrueba')
+        .get(atletaCompetidorController.listarCompetenciasPorPruebaAtleta)
 
-routerAdm.route('/atletaCompetencia/:idAtletaCompetencia')
-    .delete(competenciaController.eliminarAtletaDeCompetencia)
+    routerGeneral.route('/listarPruebasPorPruebaEquipo/:idEquipo/:idEvento/:idPrueba')
+        .get(equipoCompetidorController.listarCompetenciasPorPruebaEquipo)
 
+    /////--------------
 
-// production error handler
-const HTTP_SERVER_ERROR = 500;
-app.use(function(err, req, res, next) {
-  if (res.headersSent) {
-    return next(err);
-  }
+    routerAdm.route('/competencia')
+        .post(competenciaController.crearCompetencia)
+
+    routerAdm.route('/competencia/:idCompetencia')
+        .put(competenciaController.modificarCompetencia)
+
+    routerAdm.route('/atletaCompetencia')
+        .post(atletaCompetidorController.ingresarAtletaACompetencia)
+
+    routerAdm.route('/equipoCompetencia')
+        .post(equipoCompetidorController.ingresarEquipoACompetencia)
+
+    routerAdm.route('/atletaCompetencia/:idAtletaCompetencia')
+        .delete(atletaCompetidorController.eliminarAtletaDeCompetencia)
+
+    routerAdm.route('/equipoCompetencia/:idEquipoCompetencia')
+        .delete(equipoCompetidorController.eliminarEquipoDeCompetencia)
+
+    // production error handler
+    const HTTP_SERVER_ERROR = 500;
+    app.use(function(err, req, res, next) {
+    if (res.headersSent) {
+        return next(err);
+    }
 
   return res.status(err.status || HTTP_SERVER_ERROR).render('500');
 })  
