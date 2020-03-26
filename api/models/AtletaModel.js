@@ -1,8 +1,9 @@
 'use strict';
 var mongoose = require('mongoose'),
 Contador = mongoose.model('Contador'),
-funcionesGlobales = require("../FuncionesGlobales.js"),
-Schema = mongoose.Schema;
+Schema = mongoose.Schema,
+funcionesGlobales = require("../FuncionesGlobales.js");
+
 
 
 var AtletaSchema = new Schema({
@@ -144,14 +145,14 @@ AtletaSchema.pre('save', async function(next) {
   await Contador.findOneAndUpdate(
         { _id: 'atleta' },
         { $inc : { sequence_value : 1 } },
-        { new : true },)
+        { upsert: true, new: true, setDefaultsOnInsert: true },)  
         .then(async seq =>{
           doc._id = seq.sequence_value;
           doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
             next();
         })
     .catch(err=> {
-      console.log("Error en federacion Model pre" + err)
+      funcionesGlobales.registrarError("Error en atleta Model pre", err);
     })
 });
 

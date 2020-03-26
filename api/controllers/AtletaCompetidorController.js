@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
 AtletaC = mongoose.model('AtletaCompetidor'),
+Competencia = mongoose.model('Competencia'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js");
 
@@ -10,12 +11,13 @@ exports.ingresarAtletaACompetencia = async function(req, res){
     .exec()
     .then(competencia =>{
         if(competencia){
-            AtletaC.estimatedDocumentCount(
-                {competencia: req.body.competencia,
-                atleta: req.body.atleta})
+            AtletaC.findOne()
+            .where({competencia: req.body.competencia,
+                    atleta: req.body.atleta
+                })
             .exec()
-            .then(count => {
-                if(count == 0){
+            .then(atletaC => {
+                if(!atletaC){
                     var nuevoAtelta = new AtletaC(req.body);
                     nuevoAtelta.save().then(atleta=>{
                         res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ")});    
@@ -38,7 +40,7 @@ exports.ingresarAtletaACompetencia = async function(req, res){
     })
     };
     
-    exports.eliminarAtletaDeCompetencia = async function(req, res){
+exports.eliminarAtletaDeCompetencia = async function(req, res){
         AtletaC.findOneAndRemove({_id: req.params.idAtletaCompetencia})
         .exec()
         .then(atleta=>{
@@ -53,8 +55,6 @@ exports.ingresarAtletaACompetencia = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(20, "atleta.", funcionesGlobales.manejarError(err))});        
         });
     };
-
-
 
 exports.listarAtletasCompetencia = async function(req, res){ 
     AtletaC.aggregate([
@@ -167,9 +167,7 @@ exports.listarDeportesEventosAtleta = async function(req, res){
         funcionesGlobales.registrarError("listarDeportesEventosAtleta/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ")});  
     });
-    }
-    
-
+    }  
 
 //Lista las pruebas según deporte de un evento seleccionado donde participó un atleta específico
 exports.listarPruebasDeporteEventosAtleta = async function(req, res){

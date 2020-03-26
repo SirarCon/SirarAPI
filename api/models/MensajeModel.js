@@ -1,7 +1,9 @@
 'use strict';
 var mongoose = require('mongoose'),
 Contador = mongoose.model('Contador'),
-Schema = mongoose.Schema;
+Schema = mongoose.Schema,
+funcionesGlobales = require("../FuncionesGlobales.js");
+
 
 var MensajeSchema = new Schema({
   _id: {
@@ -26,13 +28,13 @@ MensajeSchema.pre('save', async function(next) {
   await Contador.findOneAndUpdate(
         { _id: 'mensaje' },
         { $inc : { sequence_value : 1 } },
-        { new : true },)  
+        { upsert: true, new: true, setDefaultsOnInsert: true },)  
         .then(async seq =>{
             doc._id = seq.sequence_value;
             next();
         })
     .catch(err=> {
-      console.log("Error en mensaje Model pre")
+      funcionesGlobales.registrarError("Error en mensaje Model pre", err);
     })
 });
 

@@ -2,7 +2,9 @@
 var mongoose = require('mongoose'),
 Contador = mongoose.model('Contador'),
 funcionesGlobales = require("../FuncionesGlobales.js"),
-Schema = mongoose.Schema;
+Schema = mongoose.Schema,
+funcionesGlobales = require("../FuncionesGlobales.js");
+
  //https://stackoverflow.com/questions/24853383/mongoose-objectid-that-references-a-sub-document
   
   
@@ -56,14 +58,13 @@ CompetenciaSchema.pre('save',  async function(next) {
   await Contador.findOneAndUpdate(
         { _id: 'competencia' },
         { $inc : { sequence_value : 1 } },
-        { new : true },)  
+        { upsert: true, new: true, setDefaultsOnInsert: true },)  
         .then(async seq =>{
             doc._id = seq.sequence_value;
             next();
         })
     .catch(err=> {
-        console.log(err);
-      console.log("Error en competencia Model pre")
+        funcionesGlobales.registrarError("Error en competencia Model pre", err);
     })
 });
 

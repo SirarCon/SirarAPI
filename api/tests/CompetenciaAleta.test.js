@@ -210,7 +210,7 @@ var reslistarCompetenciasPorPruebaAtleta =[{
 
     it('Ingresar Atleta a Competencia', async () => {
       mockingoose(model).toReturn(responseFindOneAC, 'findOne')
-      mockingoose(AtletaC).toReturn(0, 'estimatedDocumentCount')
+      mockingoose(AtletaC).toReturn({}, 'findOne')
       const { res } = await expressRequestMock(controller.ingresarAtletaACompetencia, reqCrearatletaCompetidor, helper.resp)
       const { token, datos } = JSON.parse(res._getData());
       expect(res.statusCode).toEqual(200);

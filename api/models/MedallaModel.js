@@ -1,8 +1,9 @@
 'use strict';
 var mongoose = require("mongoose"),
 Contador = mongoose.model('Contador'),
-funcionesGlobales = require("../FuncionesGlobales.js"),
-Schema = mongoose.Schema;
+Schema = mongoose.Schema,
+funcionesGlobales = require("../FuncionesGlobales.js");
+
 
 var MedallaSchema = new Schema({
     atletaCompetidor: {
@@ -29,13 +30,13 @@ MedallaSchema.pre('save', async function(next) {
     await Contador.findOneAndUpdate(
           { _id: 'medalla' },
           { $inc : { sequence_value : 1 } },
-          { new : true },)  
+          { upsert: true, new: true, setDefaultsOnInsert: true },)  
           .then(async seq =>{
               doc._id = seq.sequence_value;
               next();
           })
       .catch(err=> {
-        console.log("Error en medalla Model pre")
+        funcionesGlobales.registrarError("Error en medalla Model pre", err);
       })
   });
     

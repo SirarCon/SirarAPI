@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
 EquipoC = mongoose.model('EquipoCompetidor'),
+Competencia = mongoose.model('Competencia'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js");
 
@@ -10,16 +11,17 @@ exports.ingresarEquipoACompetencia = async function(req, res){
     .exec()
     .then(competencia =>{
         if(competencia){
-            EquipoC.estimatedDocumentCount(
-                {competencia: req.body.competencia,
+            EquipoC.findOne()
+            .where({competencia: req.body.competencia,
                 equipo: req.body.equipo})
             .exec()
-            .then(count => {
-                if(count == 0){
+            .then(equipoC => {
+                if(!equipoC){
                     var nuevoEquipo = new EquipoC(req.body);
                     nuevoEquipo.save().then(equipo=>{
                         res.json({token: res.locals.token, datos: globales.mensajes(-7, "Equipo a Competencia", " ")});    
                     }).catch(async err=>{
+                        funcionesGlobales.registrarError("ingresarEquipoACompetencia/CompetenciaController", err)
                         res.json({token: res.locals.token, datos: globales.mensajes(21, "Equipo a Competencia", " ")});//Todo Cambiar
                     });
                 }else{

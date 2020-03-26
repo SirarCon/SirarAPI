@@ -1,7 +1,8 @@
 'use strict';
 var mongoose = require('mongoose');
-var funcionesGlobales = require("../FuncionesGlobales.js");
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schema,
+funcionesGlobales = require("../FuncionesGlobales.js");
+
 
 
 var UsuarioSchema = new Schema({

@@ -1,9 +1,12 @@
 'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Tiempo = require('../recursos/Tiempo.js');
+var mongoose = require('mongoose'),
+Contador = mongoose.model('Contador'),
+Schema = mongoose.Schema,
+Tiempo = require('../recursos/Tiempo.js'),
+funcionesGlobales = require("../FuncionesGlobales.js");
 
-var EquipoCompetidor = new Schema({
+
+var EquipoCompetidorSchema = new Schema({
             _id: {
                 type: Number,
             },
@@ -55,5 +58,21 @@ var EquipoCompetidor = new Schema({
             }
 }, {collection: 'EquiposCompetidores'});
 
-module.exports = mongoose.model('EquipoCompetidor', EquipoCompetidor);
+
+EquipoCompetidorSchema.pre('save', async function(next){
+    var doc = this;
+await Contador.findOneAndUpdate(
+        { _id: 'equipoCompetidor' },
+        { $inc : { sequence_value : 1 } },
+        { upsert: true, new: true, setDefaultsOnInsert: true },)  
+        .then(async seq =>{
+            doc._id = seq.sequence_value;           
+            next();
+        })
+    .catch(err=> {
+        funcionesGlobales.registrarError("Error en equipo competidor Model pre", err);
+    })
+});
+
+module.exports = mongoose.model('EquipoCompetidor', EquipoCompetidorSchema);
 

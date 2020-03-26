@@ -50,6 +50,7 @@ var contadores= [
                new Contador({"_id": "medalla", "sequence_value": 0 }),
                new Contador({"_id": "tablaPosicion", "sequence_value": 0 }),
                new Contador({"_id": "equipo", "sequence_value": 0 }),
+               new Contador({"_id": "equipoCompetidor", "sequence_value": 0 }),
 
  ];
 
@@ -1977,6 +1978,7 @@ var atletas = [
         "pais": paises.find(p => p.name ==="Costa Rica")._id,
         "activo": true,
         "nombreNormalizado": "nerybrenes",
+        "retirado": false,
     }),
     new Atleta({
         "nombre": "Usain ",
@@ -1986,6 +1988,7 @@ var atletas = [
         "pais": paises.find(p => p.name ==="Jamaica")._id,
         "activo": true,
         "nombreNormalizado": "usain",
+        "retirado": false,
     }),
     new Atleta({
         "nombre": "Saina",
@@ -1995,6 +1998,7 @@ var atletas = [
         "pais": paises.find(p => p.name ==="India")._id,
         "activo": true,
         "nombreNormalizado": "saina",
+        "retirado": false,
     }),
     new Atleta({
         "nombre": "Carolina",
@@ -2004,6 +2008,7 @@ var atletas = [
         "pais": paises.find(p => p.name ==="España")._id,
         "activo": true,
         "nombreNormalizado": "carolina",
+        "retirado": false,
     }),
     new Atleta({
         "nombre": "Bobby",
@@ -2013,6 +2018,7 @@ var atletas = [
         "pais": paises.find(p => p.name ==="Estados Unidos")._id,
         "activo": true,
         "nombreNormalizado": "bobby",
+        "retirado": false,
     }),
     new Atleta({
         "nombre": "Fabiano",
@@ -2022,6 +2028,7 @@ var atletas = [
         "pais": paises.find(p => p.name ==="Estados Unidos")._id,
         "activo": true,
         "nombreNormalizado": "fabiano",
+        "retirado": false,
     }),
     new Atleta({
         "nombre": "Dafne",
@@ -2054,6 +2061,7 @@ var atletas = [
         "pais": paises.find(p => p.name ==="Holanda")._id,
         "peso": 68,
         "nombreNormalizado": "dafne",
+        "retirado": false,
     })
 ]; 
 

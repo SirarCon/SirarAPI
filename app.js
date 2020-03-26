@@ -21,7 +21,7 @@ function cargarModelos(){
   var routes = [require('./api/routes/UserRoute'),
                require('./api/routes/AtletaRoute'), 
                require('./api/routes/DeporteRoute'),
-               //require('./api/routes/EquipoRoute'),
+               require('./api/routes/EquipoRoute'),
                require('./api/routes/EventoRoute'),
                require('./api/routes/CompetenciaRoute'),
                require('./api/routes/RecursoRoute')

@@ -1,8 +1,9 @@
 'use strict';
 var mongoose = require("mongoose"),
-funcionesGlobales = require("../FuncionesGlobales.js"),
 Contador = mongoose.model('Contador'),
-Schema = mongoose.Schema;
+Schema = mongoose.Schema,
+funcionesGlobales = require("../FuncionesGlobales.js");
+
 
 var EventoSchema = new Schema({
   _id: Number,
@@ -46,14 +47,14 @@ var EventoSchema = new Schema({
   await Contador.findOneAndUpdate(
         { _id: 'evento' },
         { $inc : { sequence_value : 1 } },
-        { new : true },)  
+        { upsert: true, new: true, setDefaultsOnInsert: true },)  
         .then(async seq =>{
             doc._id = seq.sequence_value;
             doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
             next()
         })
     .catch(err=> {
-      console.log("Error en evento Model pre")
+      funcionesGlobales.registrarError("Error en evento Model pre", err);
     })
   });
   

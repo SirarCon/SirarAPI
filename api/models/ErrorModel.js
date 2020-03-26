@@ -16,7 +16,7 @@ var Error = new Schema({
     type: Date,
     default: new Date()
   },
-});
+}, {collection: "errores"});
 
 module.exports = mongoose.model('Error', Error);
 

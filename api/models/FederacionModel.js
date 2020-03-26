@@ -2,8 +2,9 @@
 'use strict';
 var mongoose = require('mongoose'),
 Contador = mongoose.model('Contador'),
-funcionesGlobales = require("../FuncionesGlobales.js"),
-Schema = mongoose.Schema;
+Schema = mongoose.Schema,
+funcionesGlobales = require("../FuncionesGlobales.js");
+
 
 
 var FederacionSchema = new Schema({ 
@@ -53,21 +54,21 @@ var FederacionSchema = new Schema({
         maxlength: [40, "El correo del presidente tiene que ser menor a 41 caracteres"],
         minlength: [10, "El correo del presidente tiene que ser mayor a 9 caracteres"],
     }
-}, {_id: false});
+}, {_id: false, collection: "federaciones"});
 
 FederacionSchema.pre('save', async function(next) {
   var doc = this;
   await Contador.findOneAndUpdate(
         { _id: 'federacion' },
         { $inc : { sequence_value : 1 } },
-        { new : true },)  
+        { upsert: true, new: true, setDefaultsOnInsert: true },)  
         .then(async seq =>{
             doc._id = seq.sequence_value;
             doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
             next();
         })
     .catch(err=> {
-      console.log("Error en federacion Model pre")
+      funcionesGlobales.registrarError("Error en federación Model pre", err);
     })
 });
 

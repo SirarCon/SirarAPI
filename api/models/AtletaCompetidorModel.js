@@ -2,7 +2,9 @@
 var mongoose = require('mongoose'),
 Contador = mongoose.model('Contador'),
 Schema = mongoose.Schema,
-Tiempo = require('../recursos/Tiempo.js');
+Tiempo = require('../recursos/Tiempo.js'),
+funcionesGlobales = require("../FuncionesGlobales.js");
+
 
 
 var AtletaCompetidorSchema = new Schema({
@@ -55,7 +57,7 @@ var AtletaCompetidorSchema = new Schema({
             }
         }]
     }
-}, {_id: false});
+}, {_id: false, collection: "atletascompetidores"});
 
 
 AtletaCompetidorSchema.pre('save', async function(next){
@@ -63,13 +65,13 @@ AtletaCompetidorSchema.pre('save', async function(next){
 await Contador.findOneAndUpdate(
         { _id: 'atletaCompetidor' },
         { $inc : { sequence_value : 1 } },
-        { new : true },)  
+        { upsert: true, new: true, setDefaultsOnInsert: true },)  
         .then(async seq =>{
             doc._id = seq.sequence_value;           
             next();
         })
     .catch(err=> {
-      console.log("Error en atleta competidor Model pre")
+        funcionesGlobales.registrarError("Error en atleta competidor Model pre", err);
     })
 });
 

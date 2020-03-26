@@ -1,8 +1,9 @@
 'use strict';
 var mongoose = require("mongoose"),
 Contador = mongoose.model('Contador'),
-funcionesGlobales = require("../FuncionesGlobales.js"),
-Schema = mongoose.Schema;
+Schema = mongoose.Schema,
+funcionesGlobales = require("../FuncionesGlobales.js");
+
 
 var EquipoSchema = new Schema({  
   _id: {
@@ -62,14 +63,28 @@ EquipoSchema.pre('save', async function(next) {
   await Contador.findOneAndUpdate(
         { _id: 'equipo' },
         { $inc : { sequence_value : 1 } },
-        { new : true },)
+        { upsert: true, new: true, setDefaultsOnInsert: true },)  
         .then(async seq =>{
             doc._id = seq.sequence_value;
             next();
         })
     .catch(err=> {
-      console.log("Error en equipo Model pre")
+      funcionesGlobales.registrarError("Error en equipo Model pre", err);
     })
 });
+
+EquipoSchema.method('todaInformacion', function() {
+  return {
+    _id: this.id,          
+    prueba: this.prueba,
+    pais: this.pais,
+    evento: this.evento,  
+    activo: this.activo,
+    retirado: this.retirado,
+    atletas: this.atletas,
+    medallas: this.medallas
+  }
+});
+
 
 module.exports = mongoose.model('Equipo', EquipoSchema);

@@ -15,12 +15,16 @@ const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 
 //#region UsuarioAdm
 exports.crearEquipo = async function(req, res){
-    Prueba.estimatedDocumentCount({_id: req.body.prueba}).exec()
-    .then(count =>{
-      if(count > 0){
-          Evento.estimatedDocumentCount({_id: req.body.evento}).exec()
-           .then(Ecount=>{
-               if(Ecount > 0){
+    Prueba.findOne()
+    .where({_id: req.body.prueba})
+    .exec()
+    .then(prueba =>{
+      if(prueba){
+          Evento.findOne()
+          .where({_id: req.body.evento})
+          .exec()
+           .then(evento=>{
+               if(evento){
                 var nuevoEquipo = new Equipo(req.body);   
                 nuevoEquipo.save().then(equipo =>{ 
                     res.json({token: res.locals.token, datos: globales.mensajes(-4, "Equipo", req.body.pais )});
@@ -47,13 +51,17 @@ exports.crearEquipo = async function(req, res){
 
 
 exports.modificarEquipo = async function(req, res){
-    Prueba.estimatedDocumentCount({_id: req.body.prueba}).exec()
-    .then(count =>{
-      if(count > 0){
-          Evento.estimatedDocumentCount({_id: req.body.evento}).exec()
-           .then(Ecount=>{
-               if(Ecount > 0){
-                Equipo.findOneAndUpdate({_id: req.params.id},{
+    Prueba.findOne()
+    .where({_id: req.body.prueba})
+    .exec()
+    .then(prueba =>{
+      if(prueba){
+          Evento.findOne()
+          .where({_id: req.body.evento})
+          .exec()
+           .then(evento=>{
+               if(evento){
+                Equipo.findOneAndUpdate({_id: req.params.idEquipo},{
                     $set:{
                         prueba: req.body.prueba,
                         pais: req.body.pais,
@@ -89,10 +97,11 @@ exports.modificarEquipo = async function(req, res){
 };
 
 
-exports.listarEquipos = async function(_, res){
+exports.listarEquipos = async function(req, res){
     Equipo.find()
+    .where({evento: req.params.idEvento})
     .populate([{path: "pais", select: "name"}])
-    .sort({pais: {name: 1}})
+    .sort({pais: 1})
     .exec()
     .then(async (equipos)=>{
         if(equipos.length > 0){
@@ -165,8 +174,8 @@ exports.modificarMedalla = async function(req, res){
 
 
 
-exports.modificarAtleta = async function(req, res){
-    var modificar = req.params.agregar == 1 ? {$push:{ atletas: req.body}} : {$pull:{ atletas: {_id: req.body.idAtleta} } };
+exports.modificarAtletas = async function(req, res){
+    var modificar = req.params.agregar == 1 ? {$push:{ atletas: req.body.atleta}} : {$pull:{ atletas: req.body.atleta } };
     Atleta.findOne()
     .where({_id: req.body.atleta})
     .exec()
@@ -174,6 +183,7 @@ exports.modificarAtleta = async function(req, res){
         if(atleta){
             Equipo.updateOne({_id: req.params.idEquipo}, modificar, {new: true}).exec()
             .then(equipo=>{
+                console.log(modificar)
                 if(equipo){
                     res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo.pais)});
                     }else{
@@ -185,7 +195,7 @@ exports.modificarAtleta = async function(req, res){
                             })
     
         }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", req.params.prueba)});
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", req.body.atleta)});
         }
     }).catch(err=>{
         funcionesGlobales.registrarError("modificarAtleta/EquipoController", err)
@@ -197,11 +207,12 @@ exports.modificarAtleta = async function(req, res){
 //#endregion UsuarioAdm
 
 //#region Usuariopúblico
-exports.listarEquiposActivos = async function(_, res){
+exports.listarEquiposActivos = async function(req, res){
     Equipo.find()
-    .where({activo: true})  
+    .where({evento: req.params.idEvento, activo: true})  
     .populate([{path: "pais", select: "name"}])
-    .sort({pais: {name: 1}})
+    .populate({path: "atletas", select: "_id nombre"})
+    .sort({pais:  1})
     .exec()
     .then(async (equipos)=>{
         if(equipos.length > 0){
