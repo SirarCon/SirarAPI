@@ -57,6 +57,23 @@ exports.ingresarEquipoACompetencia = async function(req, res){
     };
 
 
+exports.modificarMarcadores = async function(req, res){
+    var modificar = req.params.agregar == 1 ? {$push:{ marcadores: req.body.marcador}} :
+    req.body.marcador.idMarcador ?
+    {$pull:{ marcadores: {_id: mongoose.Types.ObjectId(req.body.marcador.idMarcador)} } }
+    : {$pull:{ marcadores: null } };//Por si existe un null
+    EquipoC.updateOne({_id: req.params.idEquipo}, modificar, {new: true}).exec()
+    .then(equipo=>{
+        if(equipo){
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo.nombre)});
+            }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
+                }
+            }).catch(err=>{
+                funcionesGlobales.registrarError("modificarmarcadores/EquipoCompetidorController", err)
+                res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo.", funcionesGlobales.manejarError(err))});                                })
+            
+};
 
 exports.listarEquiposCompetencia = async function(req, res){ 
     EquipoC.aggregate([
@@ -88,14 +105,19 @@ exports.listarEquiposCompetencia = async function(req, res){
             $project:{
                     _id:{
                         _idEquipo : "$equipoinfo._id",
-                        nombre : "$equipoinfo.nombre", 
+                        pais : "$equipoinfo.pais", 
                         marcadores : 1 
                 }         
             }
         }
     ]).exec().then(equipos =>{
         if(equipos.length > 0){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos)});  
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,  
+                equipos.map(e=>{        
+                    e._id.marcadores = e._id.marcadores.sort((a, b)=>{ return a.set - b.set})
+                    return e;
+                })
+            )});  
         }else{
           res.json({token: res.locals.token, datos: globales.mensajes(11, "equipos", " ")});
         }

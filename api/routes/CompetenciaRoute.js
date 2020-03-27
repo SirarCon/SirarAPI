@@ -65,6 +65,12 @@ module.exports = function(app, express) {
     routerAdm.route('/equipoCompetencia')
         .post(equipoCompetidorController.ingresarEquipoACompetencia)
 
+    routerAdm.route('/marcadoresCompetencia/:idAtleta/:agregar')
+        .put(atletaCompetidorController.modificarMarcadores)
+
+    routerAdm.route('/marcadoresCompetencia/:idEquipo/:agregar')
+        .put(equipoCompetidorController.modificarMarcadores)
+
     routerAdm.route('/atletaCompetencia/:idAtletaCompetencia')
         .delete(atletaCompetidorController.eliminarAtletaDeCompetencia)
 
@@ -77,7 +83,6 @@ module.exports = function(app, express) {
     if (res.headersSent) {
         return next(err);
     }
-
   return res.status(err.status || HTTP_SERVER_ERROR).render('500');
 })  
     

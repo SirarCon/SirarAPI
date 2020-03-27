@@ -56,6 +56,25 @@ exports.eliminarAtletaDeCompetencia = async function(req, res){
         });
     };
 
+exports.modificarMarcadores = async function(req, res){
+    var modificar = req.params.agregar == 1 ? {$push:{ marcadores: req.body.marcador}} :
+    req.body.marcador.idMarcador ?
+    {$pull:{ marcadores: {_id: mongoose.Types.ObjectId(req.body.marcador.idMarcador)} } }
+    : {$pull:{ marcadores: null } };//Por si existe un null
+    AtletaC.updateOne({_id: req.params.idAtleta}, modificar, {new: true}).exec()
+    .then(atleta=>{
+        if(atleta){
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", atleta.nombre)});
+            }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
+                }
+            }).catch(err=>{
+                funcionesGlobales.registrarError("modificarmarcadores/AtletaCompetidorController", err)
+                res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});                                })
+            
+};
+
+
 exports.listarAtletasCompetencia = async function(req, res){ 
     AtletaC.aggregate([
         {
@@ -93,7 +112,12 @@ exports.listarAtletasCompetencia = async function(req, res){
         }
     ]).exec().then(atletas =>{
         if(atletas.length > 0){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas)});  
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, 
+                atletas.map(a=>{        
+                    a._id.marcadores = a._id.marcadores.sort((a, b)=>{ return a.set - b.set})
+                    return a;
+                }
+            ))});  
         }else{
           res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
         }

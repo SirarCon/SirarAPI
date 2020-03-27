@@ -21,28 +21,28 @@ var AtletaCompetidorSchema = new Schema({
         ref: 'Competencia',
         required:'Seleccione una competencia por favor'
     },
-    esUltimoRegistro: {
-        type: Boolean,
-    },
     esLocal: {
         type: Boolean, //Si es true el atleta es local
     },
     marcadores:{
         type:[{
+            esUltimoRegistro: {
+                type: Boolean,
+            },
             set: {
                 type: Number,
                 required: 'Digite el set por favor'
-            },
-            tiempo: {
-                type: Tiempo,
-            },
-            metros: {
-                type: Number,
-            },
+            },      
             puntos: {
                 type: Number,
-            },
-            tipo: {//Puntos, Tiempo, Metros
+            },    
+            tiempo: {
+                type: Tiempo,
+            }, 
+            metros: {
+                type: Number,
+            },            
+            tipo: {//Puntos (1), Tiempo (2), Metros (3)
                 type: Number,
                 required: 'Seleccione el tipo de marcador',
             },

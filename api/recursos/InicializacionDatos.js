@@ -2132,9 +2132,9 @@ await inicializar(competencias);
 var atletaCompetidor = new AtletaCompetidor({
     "atleta": atletas[6]._id,
     "competencia": competencia._id,
-    "esUltimoRegistro": true,
     "marcadores": [
         {
+            "esUltimoRegistro": false,
             "set": 1,
             "tiempo": {
                 "segundo": 21,
