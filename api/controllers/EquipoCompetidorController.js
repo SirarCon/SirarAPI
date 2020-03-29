@@ -40,7 +40,7 @@ exports.ingresarEquipoACompetencia = async function(req, res){
     })
     };
     
-    exports.eliminarEquipoDeCompetencia = async function(req, res){
+exports.eliminarEquipoDeCompetencia = async function(req, res){
         EquipoC.findOneAndRemove({_id: req.params.idEquipoCompetencia})
         .exec()
         .then(equipo=>{
@@ -55,7 +55,6 @@ exports.ingresarEquipoACompetencia = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(20, "equipo.", funcionesGlobales.manejarError(err))});        
         });
     };
-
 
 exports.modificarMarcadores = async function(req, res){
     var modificar = req.params.agregar == 1 ? {$push:{ marcadores: req.body.marcador}} :
@@ -194,8 +193,6 @@ exports.listarDeportesEventosEquipo = async function(req, res){
     });
     }
     
-
-
 //Lista las pruebas según deporte de un evento seleccionado donde participó un equipo específico
 exports.listarPruebasDeporteEventosEquipo = async function(req, res){
     EquipoC.aggregate([

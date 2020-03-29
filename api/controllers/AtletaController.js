@@ -142,7 +142,6 @@ exports.leerAtleta  = async function(req, res){
     })
 };
 
-
 exports.modificarMedalla = async function(req, res){
     var modificar = req.params.agregar == 1 ? {$push:{ medallas: req.body}} : {$pull:{ medallas: {_id: req.body.idMedalla} } };
     Prueba.findOne()

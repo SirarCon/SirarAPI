@@ -74,7 +74,6 @@ Competencia.findOneAndUpdate({_id: req.params.idCompetencia},
     })
 };
 
-
 //Lista los deportes según el evento seleccionado
 exports.listarDeportesXEvento = async function(req, res){
 Competencia.find()

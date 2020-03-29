@@ -49,7 +49,6 @@ exports.crearEquipo = async function(req, res){
          });                   
 };
 
-
 exports.modificarEquipo = async function(req, res){
     Prueba.findOne()
     .where({_id: req.body.prueba})
@@ -96,7 +95,6 @@ exports.modificarEquipo = async function(req, res){
          });                   
 };
 
-
 exports.listarEquipos = async function(req, res){
     Equipo.find()
     .where({evento: req.params.idEvento})
@@ -132,7 +130,6 @@ exports.leerEquipo = async function(_, res){
           res.json({token: res.locals.token,datos: globales.mensajes(13, "equipo", req.params.id)}); 
    });
 }
-
 
 exports.modificarMedalla = async function(req, res){
     var modificar = req.params.agregar == 1 ? {$push:{ medallas: req.body}} : {$pull:{ medallas: {_id: req.body.idMedalla} } };
@@ -172,8 +169,6 @@ exports.modificarMedalla = async function(req, res){
     });
 };
 
-
-
 exports.modificarAtletas = async function(req, res){
     var modificar = req.params.agregar == 1 ? {$push:{ atletas: req.body.atleta}} : {$pull:{ atletas: req.body.atleta } };
     Atleta.findOne()
@@ -202,8 +197,6 @@ exports.modificarAtletas = async function(req, res){
         res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo.", funcionesGlobales.manejarError(err))});        
     });
 };
-
-
 //#endregion UsuarioAdm
 
 //#region Usuariopúblico

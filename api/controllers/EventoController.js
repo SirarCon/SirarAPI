@@ -123,7 +123,6 @@ exports.listarEventosActivos = async function(_, res){
     });
 }
 
-
 exports.leerEventoActivo = async function(req, res){
     Evento.findOne()
     .where({_id: req.params.idEvento, activo: true})
@@ -188,8 +187,6 @@ AtletaC.aggregate([
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ")});  
 });
 }
-
-
 
 //#endregion Usuariopúblico
 
