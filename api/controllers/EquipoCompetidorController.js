@@ -63,9 +63,9 @@ exports.modificarMarcadores = async function(req, res){
     {$pull:{ marcadores: {_id: mongoose.Types.ObjectId(req.body.marcador.idMarcador)} } }
     : {$pull:{ marcadores: null } };//Por si existe un null
     EquipoC.updateOne({_id: req.params.idEquipo}, modificar, {new: true}).exec()
-    .then(equipo=>{
-        if(equipo){
-            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo.nombre)});
+    .then(updated=>{
+        if(updated.n == 1){
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", req.params.idEquipo)});
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
                 }
@@ -76,6 +76,7 @@ exports.modificarMarcadores = async function(req, res){
 };
 
 exports.listarEquiposCompetencia = async function(req, res){ 
+    console.log(idCompetencia)
     EquipoC.aggregate([
         {
             $match:{
@@ -103,7 +104,7 @@ exports.listarEquiposCompetencia = async function(req, res){
         },
         {
             $project:{
-                    _id:{
+                    equipos:{
                         _idEquipo : "$equipoinfo._id",
                         pais : "$equipoinfo.pais", 
                         marcadores : 1 
@@ -137,7 +138,7 @@ exports.listarDeportesEventosEquipo = async function(req, res){
         },
          {  $lookup: {
                 "localField": "competencia",
-                "from": "Competencias",
+                "from": "competencias",
                 "foreignField": "_id",
                 "as":  "competencias"
            }
@@ -185,11 +186,11 @@ exports.listarDeportesEventosEquipo = async function(req, res){
         if(eventos.length > 0){ 
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "deportes", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarDeportesEventosEquipo/CompetenciaController", err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del equipo", " ")});  
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes del equipo", " ")});  
     });
     }
     
@@ -205,7 +206,7 @@ exports.listarPruebasDeporteEventosEquipo = async function(req, res){
         },
          {  $lookup: {
                 "localField": "competencia",
-                "from": "Competencias",
+                "from": "competencias",
                 "foreignField": "_id",
                 "as":  "competencias"
            }
@@ -265,11 +266,11 @@ exports.listarPruebasDeporteEventosEquipo = async function(req, res){
         if(eventos.length > 0){                                               
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "pruebas", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarPruebasDeporteEventosEquipo/CompetenciaController", err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del equipo", " ")});  
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas del equipo", " ")});  
     });
     }
     
@@ -283,7 +284,7 @@ exports.listarCompetenciasPorPruebaEquipo = async function(req, res){
         },
          {  $lookup: {
                 "localField": "competencia",
-                "from": "Competencias",
+                "from": "competencias",
                 "foreignField": "_id",
                 "as":  "competencia"
            },

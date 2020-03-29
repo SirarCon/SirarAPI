@@ -62,9 +62,9 @@ exports.modificarMarcadores = async function(req, res){
     {$pull:{ marcadores: {_id: mongoose.Types.ObjectId(req.body.marcador.idMarcador)} } }
     : {$pull:{ marcadores: null } };//Por si existe un null
     AtletaC.updateOne({_id: req.params.idAtleta}, modificar, {new: true}).exec()
-    .then(atleta=>{
-        if(atleta){
-            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", atleta.nombre)});
+    .then(updated=>{
+        if(updated.n == 1){
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", req.params.idAtleta)});
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
                 }
@@ -103,7 +103,7 @@ exports.listarAtletasCompetencia = async function(req, res){
         },
         {
             $project:{
-                    _id:{
+                    atleta:{
                         _idAtleta : "$atletainfo._id",
                         nombre : "$atletainfo.nombre", 
                         marcadores : 1 
@@ -137,7 +137,7 @@ exports.listarDeportesEventosAtleta = async function(req, res){
         },
          {  $lookup: {
                 "localField": "competencia",
-                "from": "Competencias",
+                "from": "competencias",
                 "foreignField": "_id",
                 "as":  "competencias"
            }
@@ -185,11 +185,11 @@ exports.listarDeportesEventosAtleta = async function(req, res){
         if(eventos.length > 0){ 
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "deportes", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarDeportesEventosAtleta/CompetenciaController", err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ")});  
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes del atleta", " ")});  
     });
     }  
 
@@ -203,7 +203,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
         },
          {  $lookup: {
                 "localField": "competencia",
-                "from": "Competencias",
+                "from": "competencias",
                 "foreignField": "_id",
                 "as":  "competencias"
            }
@@ -263,11 +263,11 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
         if(eventos.length > 0){                                               
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(11, "pruebas", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarPruebasDeporteEventosAtleta/CompetenciaController", err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ")});  
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "los pruebas del atleta", " ")});  
     });
     }
     
@@ -281,7 +281,7 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
         },
          {  $lookup: {
                 "localField": "competencia",
-                "from": "Competencias",
+                "from": "competencias",
                 "foreignField": "_id",
                 "as":  "competencia"
            },

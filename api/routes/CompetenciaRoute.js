@@ -21,58 +21,60 @@ module.exports = function(app, express) {
     routerGeneral.route('/listarCategoriasPorDeporte/:idEvento/:idDeporte')
         .get(competenciaController.listarCategoriasXDeporte)
 
-    routerGeneral.route('/listarAtletasPorCompetencia/:idCompetencia')
-        .get(atletaCompetidorController.listarAtletasCompetencia)
-
-    routerGeneral.route('/listarEquiposPorCompetencia/:idCompetencia')
-        .get(equipoCompetidorController.listarEquiposCompetencia)
-
     routerGeneral.route('/listarFasesPruebaEvento/:idEvento/:idPrueba/:genero') 
         .get(competenciaController.listarFasesxPruebaEvento)
 
     routerGeneral.route('/listarCompetenciasEventoPruebaFase/:idEvento/:idPrueba/:genero/:fase')    
         .get(competenciaController.listarCompetenciasEventoPruebaFase)
-
+//----------------------------------------Atletas-----------------------
+    routerGeneral.route('/listarAtletasPorCompetencia/:idCompetencia')
+        .get(atletaCompetidorController.listarAtletasCompetencia)
+        
     routerGeneral.route('/listarDeportePorEventoAtleta/:idAtleta/:idEvento')
         .get(atletaCompetidorController.listarDeportesEventosAtleta)
-
-    routerGeneral.route('/listarDeportePorEventoEquipo/:idEquipo/:idEvento')
-        .get(equipoCompetidorController.listarDeportesEventosEquipo)
 
     routerGeneral.route('/listarPruebasPorDeporteYEventoAtleta/:idAtleta/:idEvento/:idDeporte')
         .get(atletaCompetidorController.listarPruebasDeporteEventosAtleta)
 
+    routerGeneral.route('/listarCompetenciasPorPruebaAtleta/:idAtleta/:idEvento/:idPrueba')
+        .get(atletaCompetidorController.listarCompetenciasPorPruebaAtleta)
+//----------------------------------------Equipos-----------------------
+    
+    routerGeneral.route('/listarEquiposPorCompetencia/:idCompetencia')
+        .get(equipoCompetidorController.listarEquiposCompetencia)
+
+    routerGeneral.route('/listarDeportePorEventoEquipo/:idEquipo/:idEvento')
+        .get(equipoCompetidorController.listarDeportesEventosEquipo)
+
     routerGeneral.route('/listarPruebasPorDeporteYEventoEquipo/:idEquipo/:idEvento/:idDeporte')
         .get(equipoCompetidorController.listarPruebasDeporteEventosEquipo)
 
-    routerGeneral.route('/listarPruebasPorPruebaAtleta/:idAtleta/:idEvento/:idPrueba')
-        .get(atletaCompetidorController.listarCompetenciasPorPruebaAtleta)
-
-    routerGeneral.route('/listarPruebasPorPruebaEquipo/:idEquipo/:idEvento/:idPrueba')
+    routerGeneral.route('/listarCompetenciasPorPruebaEquipo/:idEquipo/:idEvento/:idPrueba')
         .get(equipoCompetidorController.listarCompetenciasPorPruebaEquipo)
 
-    /////--------------
+    /////--------------Admin
 
     routerAdm.route('/competencia')
         .post(competenciaController.crearCompetencia)
 
     routerAdm.route('/competencia/:idCompetencia')
         .put(competenciaController.modificarCompetencia)
-
+//----------------------------------------Atletas-----------------------
     routerAdm.route('/atletaCompetencia')
         .post(atletaCompetidorController.ingresarAtletaACompetencia)
+
+    routerAdm.route('/marcadoresAtletaCompetencia/:idAtleta/:agregar')
+        .put(atletaCompetidorController.modificarMarcadores)
+
+    routerAdm.route('/atletaCompetencia/:idAtletaCompetencia')
+        .delete(atletaCompetidorController.eliminarAtletaDeCompetencia)
+//----------------------------------------Equipos-----------------------
 
     routerAdm.route('/equipoCompetencia')
         .post(equipoCompetidorController.ingresarEquipoACompetencia)
 
-    routerAdm.route('/marcadoresCompetencia/:idAtleta/:agregar')
-        .put(atletaCompetidorController.modificarMarcadores)
-
-    routerAdm.route('/marcadoresCompetencia/:idEquipo/:agregar')
+    routerAdm.route('/marcadoresEquipoCompetencia/:idEquipo/:agregar')
         .put(equipoCompetidorController.modificarMarcadores)
-
-    routerAdm.route('/atletaCompetencia/:idAtletaCompetencia')
-        .delete(atletaCompetidorController.eliminarAtletaDeCompetencia)
 
     routerAdm.route('/equipoCompetencia/:idEquipoCompetencia')
         .delete(equipoCompetidorController.eliminarEquipoDeCompetencia)
