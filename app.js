@@ -4,7 +4,7 @@ function cargarModelos(){
     require('./api/models/MensajeModel');
     require('./api/models/PaisModel');
     require('./api/models/FaseModel');
-    require('./api/models/UserModel'); //created model loading here
+    require('./api/models/UsuarioModel'); //created model loading here
     require('./api/models/FederacionModel');
     require('./api/models/DeporteModel');
     require('./api/models/AtletaModel');
@@ -18,7 +18,7 @@ function cargarModelos(){
 
   function registrarRutas(){
     //importing routes
-  var routes = [require('./api/routes/UserRoute'),
+  var routes = [require('./api/routes/UsuarioRoute'),
                require('./api/routes/AtletaRoute'), 
                require('./api/routes/DeporteRoute'),
                require('./api/routes/EquipoRoute'),

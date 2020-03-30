@@ -1,6 +1,7 @@
 const globales = require("../Globales");
 const contador = require("../models/ContadorModel");
 const Mensaje = require("../models/MensajeModel");
+
 jest.mock("../Globales")
 
 var mensajes = [

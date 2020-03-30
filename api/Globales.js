@@ -4,14 +4,11 @@ const nodemailer = require('nodemailer');
 const nombreBD = Symbol.for("SIRAR.GLOBAL.NOMBREBD");
 const nombreBDTest = Symbol.for("SIRAR.GLOBAL.NOMBREBDTEST");
 const tokenGeneral = Symbol.for("SIRAR.GLOBAL.TOKENGENERAL");
-const emailTransporter = Symbol.for("SIRAR.GLOBAL.EMAILTRANSPORTER");
-const emailOptions = Symbol.for("SIRAR.GLOBAL.EMAILOPTIONS"); 
 const rutaImagenesPerfil = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESPERFIL"); 
 const rutaImagenesAtletas = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESATLETAS"); 
 const rutaImagenesDeportes = Symbol.for("SIRAR.GLOBAL.rutaImagenesDeportes");
 const rutaImagenesFederaciones = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESFEDERACIONES");
 const rutaImagenesEventos = Symbol.for("SISRAR.GLOBAL.RUTAIMAGENESEVENTOS"); 
-const crearRandom = Symbol.for("SIRAR.GLOBAL.CREARRANDOM");
 
 function inicializarGLobal(variableGlobal, valor){
     var existeVarGlobal = (SimbolosGlobales.indexOf(variableGlobal) > -1);
@@ -54,7 +51,7 @@ let transporter = nodemailer.createTransport({
             pass: "Sirar2018"
         }
 });
-module.exports.emailTransporter = inicializarGLobal(emailTransporter, transporter);
+module.exports.emailTransporter =  transporter;
 
 module.exports.emailOptions = function(correo, subject, message){    
     let mailOptions = {
@@ -63,12 +60,12 @@ module.exports.emailOptions = function(correo, subject, message){
         subject: subject,     
         html: message
     };
-    return inicializarGLobal(emailOptions, mailOptions);
+    return mailOptions;
 }
 
 module.exports.crearRandom = function(n){
     const randomstring = require('just.randomstring');                   
-    return inicializarGLobal(crearRandom, randomstring(n));
+    return randomstring(n);
 }
 
 var todosLosMensajes;

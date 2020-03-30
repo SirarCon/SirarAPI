@@ -61,10 +61,10 @@ exports.modificarMarcadores = async function(req, res){
     req.body.marcador.idMarcador ?
     {$pull:{ marcadores: {_id: mongoose.Types.ObjectId(req.body.marcador.idMarcador)} } }
     : {$pull:{ marcadores: null } };//Por si existe un null
-    EquipoC.updateOne({_id: req.params.idEquipo}, modificar, {new: true}).exec()
-    .then(updated=>{
-        if(updated.n == 1){
-            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", req.params.idEquipo)});
+    EquipoC.findOneAndUpdate({_id: req.params.idEquipo}, modificar, {new: true}).exec()
+    .then(equipo=>{
+        if(equipo){
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo._id)});
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
                 }
@@ -75,7 +75,6 @@ exports.modificarMarcadores = async function(req, res){
 };
 
 exports.listarEquiposCompetencia = async function(req, res){ 
-    console.log(idCompetencia)
     EquipoC.aggregate([
         {
             $match:{
@@ -103,18 +102,14 @@ exports.listarEquiposCompetencia = async function(req, res){
         },
         {
             $project:{
-                    equipos:{
-                        _idEquipo : "$equipoinfo._id",
-                        pais : "$equipoinfo.pais", 
-                        marcadores : 1 
-                }         
+                    pais : "$equipoinfo.pais",      
             }
-        }
+        },
     ]).exec().then(equipos =>{
         if(equipos.length > 0){
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,  
                 equipos.map(e=>{        
-                    e._id.marcadores = e._id.marcadores.sort((a, b)=>{ return a.set - b.set})
+                    e._id.marcadores = [].slice.call(e._id.marcadores).sort((a, b)=>{ return a.set - b.set})
                     return e;
                 })
             )});  

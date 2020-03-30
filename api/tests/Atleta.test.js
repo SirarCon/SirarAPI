@@ -1,11 +1,13 @@
-const helper = require("./helper"),
-mockingoose = require('mockingoose').default,
+const mockingoose = require('mockingoose').default,
 error = require("../models/ErrorModel"),
 contador = require("../models/ContadorModel"),
+helper = require("./helper"),
 deporte = require("../models/DeporteModel"),
+prueba = require("../models/PruebaModel"),
+evento = require("../models/EventoModel"),
 model = require("../models/AtletaModel"),
 controller = require("../controllers/AtletaController"),
-expressRequestMock = require('express-request-mock');
+expressRequestMock = require('express-request-mock') ;
 
 //#region objetos y requests
 
@@ -14,8 +16,8 @@ var bodyCrearAtleta= { //Objeto con el body completo para reutilizarlo
   correo: 'wacvillalobggos@kotmail.es',
   activo: true,
   deporte: 1,
-  rol: 0,
-  pais: 840 
+  pais: 840,
+  retirado: true,
 }
 //Se extrae solo el rol , pues el objeto de respuesta no lo retorna
 var  { rol, ...responseLuegoCrearAtleta} = bodyCrearAtleta;
@@ -70,6 +72,22 @@ var reqLeerAtleta = {
 var responseLeerAtleta={
     _id: 1,
    ...bodyCrearAtleta
+}
+
+var pruebaRes ={
+  _id: 1,
+}
+var eventoRes ={
+_id: 1,
+}
+var medallasActualizadas = { 
+  ...nuevoAtleta,
+  medallas: [{
+    _id: "5e8131e4dbdc2009e5bbb861",
+    prueba: 1,
+    posicion: 1,
+    evento: 1
+  }]
 }
 //#endregion objetos y requests
 
@@ -140,6 +158,17 @@ describe('Atletas Model', () => {
     expect(datos.exito).toBeTruthy();
     expect(res.statusCode).toEqual(200)
   })
+
+  it('Modificar medallas', async ()=>{
+    mockingoose(prueba).toReturn(pruebaRes, 'findOne')
+    mockingoose(evento).toReturn(eventoRes, 'findOne')
+    mockingoose(model).toReturn(medallasActualizadas, 'findOneAndUpdate')
+    const { res } = await expressRequestMock(controller.modificarMedalla, helper.reqGeneral, helper.resp)
+    const { token, datos } = JSON.parse(res._getData());
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy();
+    expect(res.statusCode).toEqual(200)
+})
 
 });
 

@@ -61,10 +61,10 @@ exports.modificarMarcadores = async function(req, res){
     req.body.marcador.idMarcador ?
     {$pull:{ marcadores: {_id: mongoose.Types.ObjectId(req.body.marcador.idMarcador)} } }
     : {$pull:{ marcadores: null } };//Por si existe un null
-    AtletaC.updateOne({_id: req.params.idAtleta}, modificar, {new: true}).exec()
-    .then(updated=>{
-        if(updated.n == 1){
-            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", req.params.idAtleta)});
+    AtletaC.findOneAndUpdate({_id: req.params.idAtleta}, modificar, {new: true}).exec()
+    .then(atleta=>{
+        if(atleta){
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", atleta._id)});
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
                 }
@@ -104,17 +104,16 @@ exports.listarAtletasCompetencia = async function(req, res){
         {
             $project:{
                     atleta:{
-                        _idAtleta : "$atletainfo._id",
                         nombre : "$atletainfo.nombre", 
-                        marcadores : 1 
                 }         
             }
         }
     ]).exec().then(atletas =>{
         if(atletas.length > 0){
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, 
-                atletas.map(a=>{        
-                    a._id.marcadores = a._id.marcadores.sort((a, b)=>{ return a.set - b.set})
+                atletas.map(a=>{  
+                    a._id.marcadores = [].slice.call(a._id.marcadores)//Convert to array to work with jest
+                                        .sort((a, b)=>{ return a.set - b.set})
                     return a;
                 }
             ))});  
@@ -122,6 +121,7 @@ exports.listarAtletasCompetencia = async function(req, res){
           res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
         }
       }).catch(err=>{
+          console.log(err)
         funcionesGlobales.registrarError("listarAtletasCompetencia/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los atletas", " ")});  
     });

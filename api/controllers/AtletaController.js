@@ -154,16 +154,17 @@ exports.modificarMedalla = async function(req, res){
         .exec()
         .then(evento=>{
             if(evento){
-                Atleta.updateOne({_id: req.params.idAtleta}, modificar, {new: true}).exec()
+                Atleta.findOneAndUpdate({_id: req.params.idAtleta}, modificar, {new: true}).exec()
                 .then(atleta=>{
                     if(atleta){
                         res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", atleta.nombre)});
-                        }else{
-                            res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
-                            }
-                        }).catch(err=>{
-                            funcionesGlobales.registrarError("modificarMedalla/AtletaController", err)
-                            res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});                                })
+                     }else{
+                        res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
+                        }
+                }).catch(err=>{
+                    funcionesGlobales.registrarError("modificarMedalla/AtletaController", err)
+                    res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});                                
+                })
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.evento)});
             }

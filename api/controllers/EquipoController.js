@@ -114,7 +114,7 @@ exports.listarEquipos = async function(req, res){
    });
 }
 
-exports.leerEquipo = async function(_, res){
+exports.leerEquipo = async function(req, res){
     Equipo.findOne()
     .where({_id: req.params.id})
     .exec()
@@ -143,16 +143,17 @@ exports.modificarMedalla = async function(req, res){
         .exec()
         .then(evento=>{
             if(evento){
-                Equipo.updateOne({_id: req.params.idEquipo}, modificar, {new: true}).exec()
+                Equipo.findOneAndUpdate({_id: req.params.idEquipo}, modificar, {new: true}).exec()
                 .then(equipo=>{
                     if(equipo){
-                        res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo.pais)});
-                        }else{
-                            res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
-                            }
-                        }).catch(err=>{
-                            funcionesGlobales.registrarError("modificarMedalla/EquipoController", err)
-                            res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo", funcionesGlobales.manejarError(err))});                                })
+                        res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo._id)});
+                    }else{
+                        res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
+                        }
+                }).catch(err=>{
+                    funcionesGlobales.registrarError("modificarMedalla/EquipoController", err)
+                    res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo", funcionesGlobales.manejarError(err))});                              
+                  })
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Evento", req.params.evento)});
             }
@@ -176,18 +177,17 @@ exports.modificarAtletas = async function(req, res){
     .exec()
     .then(atleta=>{
         if(atleta){
-            Equipo.updateOne({_id: req.params.idEquipo}, modificar, {new: true}).exec()
+            Equipo.findOneAndUpdate({_id: req.params.idEquipo}, modificar, {new: true}).exec()
             .then(equipo=>{
-                console.log(modificar)
                 if(equipo){
-                    res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo.pais)});
+                    res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo._id)});
                     }else{
                         res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
                         }
-                    }).catch(err=>{
-                        funcionesGlobales.registrarError("modificarAtleta/EquipoController", err)
-                        res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo", funcionesGlobales.manejarError(err))});
-                            })
+            }).catch(err=>{
+                funcionesGlobales.registrarError("modificarAtleta/EquipoController", err)
+                res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo", funcionesGlobales.manejarError(err))});
+                    })
     
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", req.body.atleta)});
@@ -220,7 +220,7 @@ exports.listarEquiposActivos = async function(req, res){
    });
 }
 
-exports.leerEquipoActivo = async function(_, res){
+exports.leerEquipoActivo = async function(req, res){
     Equipo.findOne()
     .where({_id: req.params.id, activo: true})
     .exec()
