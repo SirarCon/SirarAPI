@@ -17,7 +17,7 @@ globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance,
 borrarDatos = false,
-insertarDatos = true;
+insertarDatos = false;
  
 exports.Errores = async function(){
     if(insertarDatos){
