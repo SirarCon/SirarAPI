@@ -5,6 +5,7 @@ var atletaController = require('../controllers/AtletaController');
 var seguridad= require("./Seguridad.js");
 var routerAdm = express.Router()
 var routerGeneral = express.Router()
+var {errorHandler} = require("../FuncionesGlobales");
 
 
 //Se le assignan los middleware a los usuarios adm antes del login
@@ -16,21 +17,21 @@ routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
 
 //Rutas POST, GET, PUT, DELETE
 routerGeneral.route('/atletas')  
-    .get(atletaController.listarAtletasActivos);
+    .get(errorHandler(atletaController.listarAtletasActivos));
 
 routerGeneral.route('/atleta/:id')
-    .get(atletaController.leerAtletaActivo)
+    .get(errorHandler(atletaController.leerAtletaActivo))
 
 routerAdm.route('/atletas')
-    .get(atletaController.listarAtletas)
-    .post(atletaController.crearAtleta);
+    .get(errorHandler(atletaController.listarAtletas))
+    .post(errorHandler(atletaController.crearAtleta));
 
 routerAdm.route('/atleta/:id')
-    .get(atletaController.leerAtleta)
-    .put(atletaController.modificarAtleta);
+    .get(errorHandler(atletaController.leerAtleta))
+    .put(errorHandler(atletaController.modificarAtleta));
 
 routerAdm.route('/atleta/medallas/:idAtleta/:agregar')
-    .put(atletaController.modificarMedalla)
+    .put(errorHandler(atletaController.modificarMedalla));
 
 // production error handler
 const HTTP_SERVER_ERROR = 500;

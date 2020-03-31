@@ -5,6 +5,7 @@ module.exports = function(app, express) {
     var seguridad= require("./Seguridad.js");
     var routerAdm = express.Router()
     var routerGeneral = express.Router()
+    var {errorHandler} = require("../FuncionesGlobales");
 
 //Se le assignan los middleware a los usuarios adm antes del login
 routerGeneral.use(seguridad.verificarTokenGeneral);
@@ -13,21 +14,21 @@ routerGeneral.use(seguridad.verificarTokenGeneral);
 routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
 //Rutas POST, GET, PUT, DELETE
 routerGeneral.route('/eventos')
-.get(eventoController.listarEventosActivos);
+.get(errorHandler(eventoController.listarEventosActivos));
 
 routerGeneral.route('/evento/:idEvento')
-.get(eventoController.leerEventoActivo);
+.get(errorHandler(eventoController.leerEventoActivo));
 
 routerGeneral.route('/eventosPorAtletas/:idAtleta')
-.get(eventoController.listarEventosAtleta)
+.get(errorHandler(eventoController.listarEventosAtleta));
 
 routerAdm.route('/eventos')
-.get(eventoController.listarTodosEventos)
-.post(eventoController.crearEvento);
+.get(errorHandler(eventoController.listarTodosEventos))
+.post(errorHandler(eventoController.crearEvento));
 
 routerAdm.route('/evento/:idEvento')
-.get(eventoController.leerEvento)
-.put(eventoController.modificarEvento);
+.get(errorHandler(eventoController.leerEvento))
+.put(errorHandler(eventoController.modificarEvento));
 
 // production error handler
 const HTTP_SERVER_ERROR = 500;

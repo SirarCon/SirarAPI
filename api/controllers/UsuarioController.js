@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
 Usuario = mongoose.model('Usuario'),
 AwtAuth = require('jsonwebtoken'),
 globales =  require("../Globales.js"),
-funcionesGlobales = require("../FuncionesGlobales.js");
+funcionesGlobales = require("../FuncionesGlobales.js"),
+usuarioService = require("../services/UsuarioService.js");
 const rutaImagenesPerfil = globales.rutaImagenesPerfil.instance;
 //#endregion Requires
 
@@ -30,44 +31,6 @@ function guardarImagenPerfil(ruta, usuario){
 
 
 
-function mailSenderCrear(emailAdress, subject, message, res){            
-  globales.emailTransporter.sendMail(
-      globales.emailOptions(emailAdress, subject, message),
-          (error, info) => {                        
-                            if (error) {                                                 
-                              Usuario.findOneAndRemove({correo: emailAdress}, (err, usuario)=> {
-                                if (err){
-                                  res.json({token: res.locals.token, datos: globales.mensajes(3, "usuario", emailAdress)});                      
-                                }
-                                else{
-                                  if(usuario && usuario.fotoUrl){
-                                     funcionesGlobales.borrarArchivo(usuario.fotoUrl);                                               
-                                  }
-                                  res.json({token: res.locals.token, datos: globales.mensajes(4, "correo electrónico", emailAdress)});                                        
-                                }
-                              });                                
-                            }  
-                            else{   
-                            res.json({token: res.locals.token, datos: globales.mensajes(-4, "Usuario", emailAdress)})                                                                      
-                            }
-                          }
-  );        
-}
-
-
-function mailSenderRecuperar(emailAdress, subject, message, res){            
-    globales.emailTransporter.sendMail(
-      globales.emailOptions(emailAdress, subject, message),
-          (error, info) => {                        
-                            if (error) {                                                                       
-                                  res.json({datos: globales.mensajes(4, "correo electrónico", emailAdress)});                                              
-                            }  
-                            else{   
-                            res.json({datos: globales.mensajes(-5, "Correo electrónico", emailAdress) }) 
-                            }
-                          }
-  );        
-}
 //#endregion Funciones Auxiliares
 
 
@@ -113,7 +76,7 @@ exports.solicitarRecuperacion = async function(req, res){
    Usuario.findOneAndUpdate({correo: req.body.correo.toLowerCase()},{$set: {"tokenPassword": tokenPassword}}, {runValidators: true})
           .then(usuario => {
             if(usuario){
-              mailSenderRecuperar(usuario.correo.toLowerCase(),
+              usuarioService.mailSenderRecuperar(usuario.correo.toLowerCase(),
                 'Restablecer contraseña',
                 '<!DOCTYPE html PUBLIC>'+
                     '<html style="background-color: white">'+
@@ -256,7 +219,7 @@ exports.crearUsuario = async function(req, res) {
       nuevoUsuario.nombreNormalizado = nuevoUsuario.nombre.toLowerCase();
       nuevoUsuario.save().then(usuario=>{
           if(usuario){
-                mailSenderCrear(usuario.correo.toLowerCase(),
+            usuarioService.mailSenderCrear(usuario.correo.toLowerCase(),
                     'Registro en SIRAR',
                     '<!DOCTYPE html PUBLIC>'+
                     '<html style="background-color: white">'+

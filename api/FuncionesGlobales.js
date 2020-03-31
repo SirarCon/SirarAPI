@@ -174,7 +174,13 @@ construirFecha: function(fechaCompleta){
 obtenerAnno: function(fecha){
   var anno = module.exports.convertirAFecha(fecha).getFullYear();
   return anno;
-}
+},
+
+errorHandler: fn => (req, res, next) => {
+  return Promise
+      .resolve(fn(req, res, next))
+      .catch(next);
+},
 
 
 }

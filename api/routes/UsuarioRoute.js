@@ -3,6 +3,8 @@
 module.exports = function(app, express) {
 var usuarioController = require('../controllers/UsuarioController');
 var seguridad= require("./Seguridad.js");
+var {errorHandler} = require("../FuncionesGlobales");
+
 //import * as usuarioController from '../controllers/UsuarioController';
 
 var routerAdm = express.Router()
@@ -27,24 +29,24 @@ else{
 
 //Rutas POST, GET, PUT, DELETE
 routerGeneral.route('/login')  
-    .post(usuarioController.verificarLogin);
+    .post(errorHandler(usuarioController.verificarLogin));
 
 routerGeneral.route('/rps')  
-    .post(usuarioController.solicitarRecuperacion)
-    .put(usuarioController.recuperarcontrasena); 
+    .post(errorHandler(usuarioController.solicitarRecuperacion))
+    .put(errorHandler(usuarioController.recuperarcontrasena)); 
 
 routerGeneral.route('/rps/cambiar')  
-    .post(usuarioController.cambiarContrasena)
+    .post(errorHandler(usuarioController.cambiarContrasena));
 
 routerAdm.route('/usuarios/:identificacion?')
-    .get(usuarioController.listaTodosUsuarios)
-    .post(usuarioController.crearUsuario);
+    .get(errorHandler(usuarioController.listaTodosUsuarios))
+    .post(errorHandler(usuarioController.crearUsuario));
 
 
 routerAdm.route('/usuario/:identificacion')
-    .get(usuarioController.leerUsuario)
-    .put(usuarioController.modificarUsuario)
-    .delete(usuarioController.borrarUsuario);
+    .get(errorHandler(usuarioController.leerUsuario))
+    .put(errorHandler(usuarioController.modificarUsuario))
+    .delete(errorHandler(usuarioController.borrarUsuario));
     
 
 // production error handler

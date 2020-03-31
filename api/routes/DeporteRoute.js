@@ -5,6 +5,7 @@ module.exports = function(app, express) {
     var seguridad= require("./Seguridad.js");
     var routerAdm = express.Router()
     var routerGeneral = express.Router()
+    var {errorHandler} = require("../FuncionesGlobales");
 
 //Se le assignan los middleware a los usuarios adm antes del login
 routerGeneral.use(seguridad.verificarTokenGeneral);
@@ -15,53 +16,53 @@ routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
  
 //Rutas POST, GET, PUT, DELETE
 routerGeneral.route('/deportes')  
-.get(deporteController.listarDeportesActivas);
+.get(errorHandler(deporteController.listarDeportesActivas));
 
 routerGeneral.route("/deportes/:idFederacion")
-.get(deporteController.listarDeportesActivasXFederacion);
+.get(errorHandler(deporteController.listarDeportesActivasXFederacion));
 
 routerGeneral.route("/deporte/:idDeporte")
-.get(deporteController.leerDeporteActiva);
+.get(errorHandler(deporteController.leerDeporteActiva));
 
 routerGeneral.route('/federaciones')
-.get(deporteController.listaFederacionesActivas);
+.get(errorHandler(deporteController.listaFederacionesActivas));
 
 routerGeneral.route('/federacion/:idFederacion')
-.get(deporteController.leerFederacionActiva);
+.get(errorHandler(deporteController.leerFederacionActiva));
 
 routerGeneral.route('/deporte/pruebas/:idDeporte')
-.get(deporteController.listarPruebasActivas);
+.get(errorHandler(deporteController.listarPruebasActivas));
 
 routerGeneral.route('/prueba/:idPrueba')
-.get(deporteController.listarDeporteXPruebasActivas);
+.get(errorHandler(deporteController.listarDeporteXPruebasActivas));
 
 routerAdm.route('/deportes')
-.get(deporteController.listarDeportes)
-.post(deporteController.crearDeporte);
+.get(errorHandler(deporteController.listarDeportes))
+.post(errorHandler(deporteController.crearDeporte));
 
 routerAdm.route("/deportes/:idFederacion")
-.get(deporteController.listarDeportesXFederacion);
+.get(errorHandler(deporteController.listarDeportesXFederacion));
 
 routerAdm.route('/deporte/pruebas/:idDeporte')
-.get(deporteController.listarPruebas);
+.get(errorHandler(deporteController.listarPruebas));
 
 routerAdm.route('/deporte/prueba/:idDeporte')
-.post(deporteController.insertarPrueba);
+.post(errorHandler(deporteController.insertarPrueba));
 
 routerAdm.route('/deporte/prueba/:idDeporte/:idPrueba')
-.put(deporteController.modificarPrueba);
+.put(errorHandler(deporteController.modificarPrueba));
 
 routerAdm.route('/deporte/:idDeporte')
-.get(deporteController.leerDeporte)
-.put(deporteController.modificarDeporte);
+.get(errorHandler(deporteController.leerDeporte))
+.put(errorHandler(deporteController.modificarDeporte));
 
 routerAdm.route('/federaciones')
-.get(deporteController.listaTodasFederaciones)
-.post(deporteController.crearFederacion);
+.get(errorHandler(deporteController.listaTodasFederaciones))
+.post(errorHandler(deporteController.crearFederacion));
 
 routerAdm.route('/federacion/:idFederacion')
-.get(deporteController.leerFederacion)
-.put(deporteController.modificarFederacion);
+.get(errorHandler(deporteController.leerFederacion))
+.put(errorHandler(deporteController.modificarFederacion));
 
 // production error handler
 const HTTP_SERVER_ERROR = 500;

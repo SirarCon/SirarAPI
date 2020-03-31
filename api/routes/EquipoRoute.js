@@ -5,6 +5,7 @@ module.exports = function(app, express){
     var seguridad= require("./Seguridad.js");
     var routerAdm = express.Router()
     var routerGeneral = express.Router()
+    var {errorHandler} = require("../FuncionesGlobales");
 
   //Se le assignan los middleware a los usuarios adm antes del login
   routerGeneral.use(seguridad.verificarTokenGeneral);
@@ -14,26 +15,26 @@ module.exports = function(app, express){
   //Rutas POST, GET, PUT, DELETE
 
   routerGeneral.route('/equipos/:idEvento')
-      .get(equipoController.listarEquiposActivos);
+      .get(errorHandler(equipoController.listarEquiposActivos));
 
   routerGeneral.route('/equipo/:idEquipo')
-      .get(equipoController.leerEquipoActivo);
+      .get(errorHandler(equipoController.leerEquipoActivo));
 
   routerAdm.route('/equipos')
-      .post(equipoController.crearEquipo);
+      .post(errorHandler(equipoController.crearEquipo));
 
   routerAdm.route('/equipos/:idEvento')
-      .get(equipoController.listarEquipos);
+      .get(errorHandler(equipoController.listarEquipos));
 
   routerAdm.route('/equipo/:idEquipo')
-      .get(equipoController.leerEquipo)
-      .put(equipoController.modificarEquipo);
+      .get(errorHandler(equipoController.leerEquipo))
+      .put(errorHandler(equipoController.modificarEquipo));
 
   routerAdm.route('/equipo/atletas/:idEquipo/:agregar')
-      .put(equipoController.modificarAtletas)
+      .put(errorHandler(equipoController.modificarAtletas));
 
   routerAdm.route('/equipo/medallas/:idEquipo/:agregar')
-      .put(equipoController.modificarMedalla)
+      .put(errorHandler(equipoController.modificarMedalla));
 
   // production error handler
   const HTTP_SERVER_ERROR = 500;

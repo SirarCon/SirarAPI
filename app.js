@@ -47,7 +47,6 @@ function cargarModelos(){
     app.use(assignId)
     app.use(morgan(':id :method :status :url :response-time [:date[clf]]' , { stream: accessLogStream }))
 
-
     app.use(cors());
     app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));//Antes de esto no se pueden regitsrar las rutas no se la razón
     app.use(bodyParser.json({limit: '10mb'}));
@@ -58,6 +57,11 @@ function cargarModelos(){
     //sfs2e4ui7jq6b2qyglwhvgmsncgt46eumi2yddctdtg2rdmjb3qa
 
     registrarRutas();//Se registan las rutas luego de que todo está listo
+
+    app.set('view engine', 'jade');  
+    app.use(function (err, req, res, next) {
+      res.json({token: res.locals.token,datos:{exito: false, codigo: 500, mensaje: 'Error no controlado'}});
+    })
 
     app.listen(port);
     console.log('todo list RESTful API server started on: ' + port);

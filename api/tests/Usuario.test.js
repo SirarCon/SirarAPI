@@ -2,8 +2,10 @@ const mockingoose = require('mockingoose').default,
 error = require("../models/ErrorModel"),
 helper = require("./helper"),
 model = require("../models/UsuarioModel"),
+//usuarioService = require("../services/UsuarioService.js"),
 controlador = require("../controllers/UsuarioController"),
 expressRequestMock = require('express-request-mock');
+//jest.mock("../services/UsuarioService.js")
 
 var body = {
     nombre: "William",
@@ -37,7 +39,6 @@ var reqPasswordDistinta = {
    }
 }
 
-
 var reqPasswordIgual = {
   ...req,
   body:{
@@ -59,6 +60,9 @@ var reqGeneralUsuario ={
   }
 } 
 
+const mMock = jest.fn().mockResolvedValue(req);
+
+
 describe('Crear Usuario', () => {
   
     it('debería salvar Usuario', () => {
@@ -70,10 +74,24 @@ describe('Crear Usuario', () => {
     });
 
     // it('returns a 200 response', async () => {
-    //   //controlador.mailSenderCrear.mockImplementationOnce((emailAdress, subject, message, res)=>{
-    //   //  return  req
-    //   // })
-    //   jest.setTimeout(30000);
+    //   // const sendMailMock = jest.fn(); // this will return undefined if .sendMail() is called
+    //   // const mailSenderCrear = jest.fn();
+    //   // // In order to return a specific value you can use this instead
+    //   // // const sendMailMock = jest.fn().mockReturnValue(/* Whatever you would expect as return value */);
+      
+    //   // jest.mock("nodemailer");
+    //   // const nodemailer = require("nodemailer"); //doesn't work with import. idk why
+    //   // nodemailer.createTransport.mockReturnValue({"sendMail": sendMailMock});
+      
+    //   // beforeEach( () => {
+    //   //     sendMailMock.mockClear();
+    //   //     nodemailer.createTransport.mockClear();
+    //   // });      
+    //   usuarioService.mailSenderCrear.mockImplementation(() => {
+    //       return {
+    //         mailSenderCrear: mMock
+    //       };
+    //     });
     //     const { res } = await expressRequestMock(controlador.crearUsuario, req, helper.resp)
     //     const { token, datos } = JSON.parse(res._getData());
     //     expect(res.statusCode).toEqual(200);

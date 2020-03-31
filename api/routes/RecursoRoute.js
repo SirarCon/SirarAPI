@@ -5,6 +5,7 @@ module.exports = function(app, express) {
     var seguridad= require("./Seguridad.js");
     var routerGeneral = express.Router()
     var routerAdm = express.Router()
+    var {errorHandler} = require("../FuncionesGlobales");
 
 //Se le assignan los middleware a los usuarios adm antes del login
 routerGeneral.use(seguridad.verificarTokenGeneral);
@@ -12,25 +13,25 @@ routerGeneral.use(seguridad.verificarTokenGeneral);
 //Se le assignan los middleware a los router de Adm luego del Login
 routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
 
- 
-//Rutas POST, GET, PUT, DELETE
-routerGeneral.route('/paises')
-.get(recursoController.obtenerPaises);
+    
+    //Rutas POST, GET, PUT, DELETE
+    routerGeneral.route('/paises')
+    .get(errorHandler(recursoController.obtenerPaises));
 
-routerGeneral.route('/fases')
-.get(recursoController.obtenerFases);
+    routerGeneral.route('/fases')
+    .get(errorHandler(recursoController.obtenerFases));
 
-routerAdm.route('/paises')
-.post(recursoController.crearPais)
+    routerAdm.route('/paises')
+    .post(errorHandler(recursoController.crearPais));
 
-routerAdm.route('/pais')
-.delete(recursoController.borrarPais)
+    routerAdm.route('/pais')
+    .delete(errorHandler(recursoController.borrarPais));
 
-routerAdm.route('/fases')
-.post(recursoController.crearFase)
+    routerAdm.route('/fases')
+    .post(errorHandler(recursoController.crearFase));
 
-routerAdm.route('/fase')
-.delete(recursoController.borrarFase)
+    routerAdm.route('/fase')
+    .delete(errorHandler(recursoController.borrarFase));
 
 // production error handler
 const HTTP_SERVER_ERROR = 500;
