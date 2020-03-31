@@ -63,7 +63,7 @@ function cargarModelos(){
       res.json({token: res.locals.token,datos:{exito: false, codigo: 500, mensaje: 'Error no controlado'}});
     })
 
-    app.listen(port);
+    app.listen(process.env.PORT || port);
     console.log('todo list RESTful API server started on: ' + port);
 
 
