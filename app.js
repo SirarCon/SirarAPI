@@ -32,20 +32,20 @@ function cargarModelos(){
   
   async function configuracion(port){
 
-    var logDirectory = path.join(__dirname, 'log');
+   //var logDirectory = path.join(__dirname, 'log');
 
     // ensure log directory exists
-    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+    //fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
 
     // create a rotating write stream
-    var accessLogStream = rfs.getStream({
-      filename: logDirectory + "/sirar-%DATE%.log",
-       frequency:"daily" 
-    });
+    // var accessLogStream = rfs.getStream({
+    //   filename: logDirectory + "/sirar-%DATE%.log",
+    //    frequency:"daily" 
+    // });
 
     // setup the logger
-    app.use(assignId)
-    app.use(morgan(':id :method :status :url :response-time [:date[clf]]' , { stream: accessLogStream }))
+    // app.use(assignId)
+    // app.use(morgan(':id :method :status :url :response-time [:date[clf]]' , { stream: accessLogStream }))
 
     app.use(cors());
     app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));//Antes de esto no se pueden regitsrar las rutas no se la razón
