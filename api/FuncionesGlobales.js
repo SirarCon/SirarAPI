@@ -132,7 +132,8 @@ restarContador : async function(entidad){
 
 calcularEdad : function(fechaNacimiento){
   if(fechaNacimiento !== undefined){
-  var d =   new Date(fechaNacimiento.replace(/-/g, '\/').replace(/T.+/, ''));
+  var d =  module.exports.fechaValida(fechaNacimiento) ? fechaNacimiento
+          : new Date(fechaNacimiento.replace(/-/g, '\/').replace(/T.+/, ''));
   var hoy = new Date();
   var annos = hoy.getFullYear() - d.getFullYear();
   return (hoy.getMonth() - d.getMonth() >= 0 && hoy.getDate() - d.getDate() >= 0) ?
@@ -145,7 +146,7 @@ calcularEdad : function(fechaNacimiento){
 //time: horas, minutos y segundos
 formatoFecha: function(fecha, time = false){
   if(fecha){
-    var tipoFecha = module.exports.convertirAFecha(fecha, time);
+    var tipoFecha = module.exports.fechaValida(fecha) ? fecha : module.exports.convertirAFecha(fecha, time);
     return tipoFecha.toLocaleDateString("es-CR");
   }  
   return fecha;
@@ -161,7 +162,7 @@ convertirAFecha: function(fecha, time = false){
   :
   new Date(...(fecha
           .replace(/-/g, '\/')//Se usan separadores / y se invierte para que no de error al crear la fecha
-          .replace(/T.+/, '')).split("/").reverse());
+          .replace(/T.+/, '')).split("/").reverse());          
   return tipoFecha;
   }
   return fecha;
