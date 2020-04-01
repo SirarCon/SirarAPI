@@ -136,8 +136,9 @@ calcularEdad : function(fechaNacimiento){
           : new Date(fechaNacimiento.replace(/-/g, '\/').replace(/T.+/, ''));
   var hoy = new Date();
   var annos = hoy.getFullYear() - d.getFullYear();
-  return (hoy.getMonth() - d.getMonth() >= 0 && hoy.getDate() - d.getDate() >= 0) ?
-          annos : annos - 1;
+
+  return (hoy.getMonth() - d.getMonth() > 0 || hoy.getMonth() - d.getMonth() == 0 && hoy.getDate() - d.getDate() >= 0) ?
+          annos : annos - 1; //getMonth comienza en 0
   }else{
     return 0;
   }
@@ -147,8 +148,11 @@ calcularEdad : function(fechaNacimiento){
 formatoFecha: function(fecha, time = false){
   if(fecha){
     var tipoFecha = module.exports.fechaValida(fecha) ? fecha : module.exports.convertirAFecha(fecha, time);
+   
+
     return tipoFecha.toLocaleDateString("es-CR");
   }  
+ 
   return fecha;
 },
 
