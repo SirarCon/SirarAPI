@@ -144,7 +144,7 @@ calcularEdad : function(fechaNacimiento){
 
 //time: horas, minutos y segundos
 formatoFecha: function(fecha, time = false){
-  if(fecha !== undefined){
+  if(fecha){
     var tipoFecha = module.exports.convertirAFecha(fecha, time);
     return tipoFecha.toLocaleDateString("es-CR");
   }  
@@ -152,6 +152,7 @@ formatoFecha: function(fecha, time = false){
 },
 
 convertirAFecha: function(fecha, time = false){
+  if(fecha){
   var tipoFecha = time ? 
   new Date(...(fecha
           .replace(/-|T|:/g, ',')
@@ -161,7 +162,9 @@ convertirAFecha: function(fecha, time = false){
   new Date(...(fecha
           .replace(/-/g, '\/')//Se usan separadores / y se invierte para que no de error al crear la fecha
           .replace(/T.+/, '')).split("/").reverse());
- return tipoFecha;
+  return tipoFecha;
+  }
+  return fecha;
 }
 ,
 
@@ -174,6 +177,11 @@ construirFecha: function(fechaCompleta){
 obtenerAnno: function(fecha){
   var anno = module.exports.convertirAFecha(fecha).getFullYear();
   return anno;
+},
+
+fechaValida: function(fecha){
+  var valida = Date.parse(fecha)
+  return !Number.isNaN(valida)
 },
 
 errorHandler: fn => (req, res, next) => {
