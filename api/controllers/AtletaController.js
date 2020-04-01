@@ -186,9 +186,11 @@ exports.modificarMedalla = async function(req, res){
 //#endregion UsuarioAdm
 
 //#region Usuariopúblico
-exports.listarAtletasActivos = async function(_, res){
+exports.listarAtletasActivos = async function(req, res){
+    var filtro = req.params.retirado ? {activo: true, retirado: req.params.retirado == 1 } :
+    {activo: true}
     Atleta.find()
-    .where({activo: true})  
+    .where(filtro)  
     .sort({nombreNormalizado : 1})
     .populate([{path: "deporte", select: "_id federacion" },])      
     .exec()

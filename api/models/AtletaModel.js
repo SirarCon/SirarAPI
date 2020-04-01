@@ -205,6 +205,7 @@ AtletaSchema.method('todaInformacion', function() {
       deporte: this.deporte,
       pais: this.pais,
       activo: this.activo,
+      retirado: this.retirado,
       medallas: this.medallas,
     }
   });
@@ -228,6 +229,7 @@ AtletaSchema.method('infoPublica', function() {
     peso: this.peso,
     deporte: this.deporte,
     pais: this.pais,
+    retirado: this.retirado,
     medallas: this.medallas,
   }
 });

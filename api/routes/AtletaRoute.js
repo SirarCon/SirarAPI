@@ -16,7 +16,7 @@ routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
 
 
 //Rutas POST, GET, PUT, DELETE
-routerGeneral.route('/atletas')  
+routerGeneral.route('/atletas/:retirado?')  
     .get(errorHandler(atletaController.listarAtletasActivos));
 
 routerGeneral.route('/atleta/:id')
