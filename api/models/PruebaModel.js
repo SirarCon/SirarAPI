@@ -27,7 +27,7 @@ var PruebaSchema = new Schema({
         type: Boolean,
         required: "Seleccione si la prueba es activa"
     },
-    tipo:{//Tipo: Individual o por Equipo
+    tipo:{//Tipo: Individual: 0 o por Equipo: 1
         type: Number,
         required: "Seleccione si la prueba es individual o por equipo"
     },

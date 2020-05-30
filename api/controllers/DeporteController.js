@@ -23,13 +23,13 @@ exports.crearFederacion = async function(req, res){
     nuevaFederacion.save().then(federacion =>{
         res.json({token: res.locals.token, datos: globales.mensajes(-4, "Federación", req.body.nombre)});
       }).catch(async err=>{  
-              await funcionesGlobales.restarContador('federacion');
               funcionesGlobales.borrarArchivo(nuevaFederacion.escudoUrl);                   
               if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta               
                 funcionesGlobales.registrarError("crearFederacion/DeporteController", err)  
                 res.json({token: res.locals.token, datos: globales.mensajes(10, "Federacion", funcionesGlobales.manejarError(err))});
               }else{//Error llave duplicada
-                 res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre federación", " ")});
+                await funcionesGlobales.restarContador("federacion");
+                res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre federación", " ")});
               }               
       });              
   }).catch(err=> {
@@ -168,12 +168,12 @@ exports.crearDeporte = async function(req, res){
       .then(deporte =>{
           res.json({token: res.locals.token, datos: globales.mensajes(-4, "Deporte ", req.body.nombre)});
       }).catch(async err=>{ 
-                await funcionesGlobales.restarContador('deporte'); 
                 funcionesGlobales.borrarArchivo(nuevoDeporte.imagenDeporteUrl); 
                 if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
                   funcionesGlobales.registrarError("crearDeporte/DeporteController", err)                          
-                    res.json({token: res.locals.token, datos: globales.mensajes(10, "Deporte ", funcionesGlobales.manejarError(err))});
+                  res.json({token: res.locals.token, datos: globales.mensajes(10, "Deporte ", funcionesGlobales.manejarError(err))});
                 }else{//Error llave duplicada
+                  await funcionesGlobales.restarContador('deporte'); 
                   res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre deporte ", " ")});
                 }
       });      
@@ -350,8 +350,13 @@ exports.insertarPrueba = async function(req, res){
           nuevaPrueba.save().then(prueba=>{
             res.json({token: res.locals.token, datos: globales.mensajes(-4, "Prueba", req.body.nombre)});
           }).catch(async err => {
-            await funcionesGlobales.restarContador('federacion');
-            res.json({token: res.locals.token, datos: globales.mensajes(10, "Prueba", " ")});
+            if(!err.code || !err.code == 11000){//Si no es por llave duplicada
+              funcionesGlobales.registrarError("insertarPrueba/DeporteController", err)  
+              res.json({token: res.locals.token, datos: globales.mensajes(14, "prueba", funcionesGlobales.manejarError(err))});        
+            }else{//Error llave duplicada  
+              await funcionesGlobales.restarContador('prueba'); 
+              res.json({token: res.locals.token, datos: globales.mensajes(15, "prueba", " ")});
+            };
           });          
         }
       }).catch(err=>{

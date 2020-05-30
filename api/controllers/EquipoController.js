@@ -29,9 +29,13 @@ exports.crearEquipo = async function(req, res){
                 nuevoEquipo.save().then(equipo =>{ 
                     res.json({token: res.locals.token, datos: globales.mensajes(-4, "Equipo", req.body.pais )});
                   }).catch(async err=>{  
-                    await funcionesGlobales.restarContador('equipo');
-                    res.json({token: res.locals.token, datos: globales.mensajes(10, "Equipo", funcionesGlobales.manejarError(err))});
-                    funcionesGlobales.registrarError("crearEquipo/EquipoController", err)
+                    if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
+                        funcionesGlobales.registrarError("crearEquipo/EquipoController", err)
+                        res.json({token: res.locals.token, datos: globales.mensajes(10, "Equipo", funcionesGlobales.manejarError(err))});
+                    }else{//Error llave duplicada 
+                        await funcionesGlobales.restarContador('equipo');
+                        res.json({token: res.locals.token, datos: globales.mensajes(15, "Equipo", " ")});
+                    }  
                   })     
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(18, "el evento ingresado", " ")}); 

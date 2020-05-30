@@ -18,12 +18,12 @@ exports.crearEvento = async function (req, res) {
     nuevoEvento.save().then(evento => {
         res.json({token: res.locals.token, datos: globales.mensajes(-4, "Evento", req.body.nombre)});
     }).catch(async err => {
-        await funcionesGlobales.restarContador('evento');
         funcionesGlobales.borrarArchivo(nuevoEvento.fotoUrl);                   
-        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta   
+        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta              
             funcionesGlobales.registrarError("crearEvento/EventoController", err)                             
             res.json({token: res.locals.token, datos: globales.mensajes(10, "Evento.", funcionesGlobales.manejarError(err))});
         }else{//Error llave duplicada
+            await funcionesGlobales.restarContador('evento');
            res.json({token: res.locals.token, datos: globales.mensajes(15, "Nombre evento", " ")});
         }
     });

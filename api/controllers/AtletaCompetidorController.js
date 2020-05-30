@@ -22,8 +22,13 @@ exports.ingresarAtletaACompetencia = async function(req, res){
                     nuevoAtelta.save().then(atleta=>{
                         res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ")});    
                     }).catch(async err=>{
-                        res.json({token: res.locals.token, datos: globales.mensajes(21, "Atleta a Competencia", " ")});//Todo Cambiar
-                    });
+                        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
+                            funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorController", err)
+                            res.json({token: res.locals.token, datos: globales.mensajes(21, "Atleta a Competencia ", funcionesGlobales.manejarError(err))});
+                          }else{//Error llave duplicada
+                            await funcionesGlobales.restarContador('atletaCompetidor'); 
+                            res.json({token: res.locals.token, datos: globales.mensajes(15, "id de atleta a competencia", " ")});
+                          }                    });
                 }else{
                     res.json({token: res.locals.token, datos: globales.mensajes(22, "atleta", " ")});    
                 }

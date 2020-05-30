@@ -21,9 +21,13 @@ exports.crearCompetencia = async function(req, res){
                 nuevaCompetencia.save().then(competencia=>{
                     res.json({token: res.locals.token, datos: globales.mensajes(-4, "Competencia del", competencia.infoPublica().fechaHora)});
                 }).catch(async err=>{
-                    funcionesGlobales.registrarError("crearCompetencia/CompetenciaController", err)
-                    await funcionesGlobales.restarContador('competencia');
-                    res.json({token: res.locals.token,datos: globales.mensajes(10, "la competencia del", req.body.fechaHora, funcionesGlobales.manejarError(err))});
+                    if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
+                        funcionesGlobales.registrarError("crearCompetencia/CompetenciaController", err)                          
+                        res.json({token: res.locals.token, datos: globales.mensajes(10, "Competencia ", funcionesGlobales.manejarError(err))});
+                      }else{//Error llave duplicada
+                        await funcionesGlobales.restarContador('competencia'); 
+                        res.json({token: res.locals.token, datos: globales.mensajes(15, "id Competencia ", " ")});
+                      }
                 });
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", "especificada")});

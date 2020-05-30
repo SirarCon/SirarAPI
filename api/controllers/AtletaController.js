@@ -23,13 +23,13 @@ exports.crearAtleta = async function(req, res){
                 }
                     ).catch(async err=>{       
                         if (err){  
-                            await funcionesGlobales.restarContador('atleta');
-                            funcionesGlobales.borrarArchivo(nuevoAtleta.fotoUrl);  
-                            if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
-                                res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", funcionesGlobales.manejarError(err))});
+                            funcionesGlobales.borrarArchivo(nuevoAtleta.fotoUrl);                       
+                            if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                      
                                 funcionesGlobales.registrarError("crearAtleta/AtletaController", err)
-                            }else{//Error llave duplicada                
-                            res.json({token: res.locals.token, datos: globales.mensajes(15, "Atleta", " ")});
+                                res.json({token: res.locals.token, datos: globales.mensajes(10, "Atleta", funcionesGlobales.manejarError(err))});
+                            }else{//Error llave duplicada 
+                                await funcionesGlobales.restarContador('atleta');
+                                res.json({token: res.locals.token, datos: globales.mensajes(15, "Atleta", " ")});
                             }   
                         }
                     });
