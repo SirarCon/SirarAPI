@@ -355,14 +355,15 @@ exports.insertarPrueba = async function(req, res){
           });          
         }
       }).catch(err=>{
-        console.log(err);
-      res.json({token: res.locals.token, datos: globales.mensajes(13, "pruebas", " ")});
+        funcionesGlobales.registrarError("insertarPrueba/DeporteController", err)  
+        res.json({token: res.locals.token, datos: globales.mensajes(13, "pruebas", " ")});
        });
       }else{
         res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ")});
       }
     }).catch(err =>{
-         res.json({token: res.locals.token, datos: globales.mensajes(10, "Prueba", funcionesGlobales.manejarError(err))});
+        funcionesGlobales.registrarError("insertarPrueba/DeporteController", err)  
+        res.json({token: res.locals.token, datos: globales.mensajes(10, "Prueba", funcionesGlobales.manejarError(err))});
       })
 }
 
@@ -373,7 +374,7 @@ exports.modificarPrueba = function(req, res){
     .then(deporte=>{ 
       if(deporte){    
         Prueba.findOne()//Existe una prueba de ese deporte con el mismo nombre?
-        .where({ deporte: req.params.idDeporte, nombre: req.body.nombre})
+        .where({ deporte: req.params.idDeporte, nombre: req.body.nombre, _id: {$ne: req.params.idPrueba}})
         .exec()
         .then(prueba => {
           if(prueba){
@@ -391,16 +392,20 @@ exports.modificarPrueba = function(req, res){
               }else{
                   res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte o prueba", "especificada")});
               }
-            }).catch(err=>{
+            }).catch(err=>{      
+              funcionesGlobales.registrarError("modificarPrueba/DeporteController", err)  
               res.json({token: res.locals.token,datos: globales.mensajes(12, "la prueba", " ")});
             })
           }
         }).catch(err=> {
+          console.log(err);
+          funcionesGlobales.registrarError("modificarPrueba/DeporteController", err)  
           res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ")});
         }); 
       }else{
         res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte", " ")});
       }}).catch(err=>{
+        funcionesGlobales.registrarError("modificarPrueba/DeporteController", err)  
         res.json({token: res.locals.token,datos: globales.mensajes(12, "el deporte", " ")});
       }) 
     };     
@@ -418,7 +423,7 @@ exports.listarPruebas = async function(req, res){
       res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte ", " ")});
     }
   }).catch(err=>{
-    console.log(err);
+    funcionesGlobales.registrarError("listarPruebas/DeporteController", err)  
     res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ")});  
   });
 };
@@ -438,7 +443,7 @@ exports.listarPruebasActivas = async function(req, res){
       res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte", " ")});
     }
   }).catch(err=>{
-    console.log(err);
+    funcionesGlobales.registrarError("listarPruebasActivas/DeporteController", err)  
     res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ")});  
   });
 };
@@ -454,7 +459,7 @@ exports.listarDeporteXPruebasActivas = async function(req, res){
       res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", " ")});
     }
   }).catch(err=>{
-console.log(err);
+    funcionesGlobales.registrarError("listarDeporteXPruebasActivas/DeporteController", err)  
     res.json({token: res.locals.token,datos: globales.mensajes(12, "la prueba", " ")});  
   });
 };
