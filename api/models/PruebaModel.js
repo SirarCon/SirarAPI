@@ -70,6 +70,7 @@ var PruebaSchema = new Schema({
       id: this._id,
       nombre: this.nombre, 
       deporte: this.deporte,
+      tipo: this.tipo,
       activo: this.activo
     };
   
@@ -80,6 +81,7 @@ var PruebaSchema = new Schema({
       id: this._id,
       nombre: this.nombre, 
       deporte: this.deporte,
+      tipo: this.tipo,
     };
   
   });
