@@ -34,7 +34,7 @@ module.exports.mailSenderCrear = function(emailAdress, subject, message, res){
  module.exports.mailSenderRecuperar = function (emailAdress, subject, message, res){            
       globales.emailTransporter.sendMail(
         globales.emailOptions(emailAdress, subject, message),
-            (error, info) => {                        
+            (err, info) => {                        
                               if (error) {  
                                 console.log(err)
                                 funcionesGlobales.registrarError("UsuarioService/mailSenderRecuperar", err)
