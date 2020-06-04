@@ -71,7 +71,7 @@ var contadores= [
     new Mensaje({"mensaje": "Hubo un problema validando el token  de contraseña", "codigo": 6, "exito": 0 }),
     new Mensaje({"mensaje": "El token  de contraseña no tiene el formato adecuado", "codigo": 7, "exito": 0 }),
     new Mensaje({"mensaje": "Hubo un problema cambiando la contraseña", "codigo" : 8, "exito": 0 }),
-    new Mensaje({"mensaje": "Contraseña actual no coincide con la indicada", "codigo" : 9, "exito": 0 }),
+    new Mensaje({"mensaje": "Contraseñas son distintas", "codigo" : 9, "exito": 0 }),
     new Mensaje({"mensaje": "Hubo un problema creando {sutantivoCambiar} {id}", "codigo" : 10, "exito": 0 }), 
     new Mensaje({"mensaje": "No hay {sutantivoCambiar} que listar", "codigo" : 11, "exito": 0 }),
     new Mensaje({"mensaje": "Hubo un problema leyendo {sutantivoCambiar}", "codigo" : 12, "exito": 0 }),   
