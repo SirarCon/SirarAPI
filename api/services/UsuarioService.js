@@ -36,7 +36,10 @@ module.exports.mailSenderCrear = function(emailAdress, subject, message, res){
         globales.emailOptions(emailAdress, subject, message),
             (err, info) => {                        
                               if (err) {  
-                                console.log(err)
+                                //Para desbloquear aplicaciones no confiables:
+                                //https://github.com/nodemailer/nodemailer/issues/515
+                                //redirige a:
+                                //https://accounts.google.com/DisplayUnlockCaptcha
                                 funcionesGlobales.registrarError("UsuarioService/mailSenderRecuperar", err)
                                 res.json({datos: globales.mensajes(4, "correo electrónico", emailAdress)});                                              
                               }  
