@@ -10,7 +10,7 @@ var Error = new Schema({
     type: String    
   },
   codigo:{
-    type: Number
+    type: String
   },
   fecha:{
     type: Date,
