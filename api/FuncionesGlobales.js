@@ -147,12 +147,14 @@ calcularEdad : function(fechaNacimiento){
 //time: horas, minutos y segundos
 formatoFecha: function(fecha, time = false){
   if(fecha){
-    var tipoFecha = module.exports.fechaValida(fecha) ? fecha : module.exports.convertirAFecha(fecha, time);
-   
-
-    return tipoFecha.toLocaleDateString("es-CR");
+    try{
+      var tipoFecha = module.exports.fechaValida(fecha) ? fecha : module.exports.convertirAFecha(fecha, time);
+      return new Date(tipoFecha).toLocaleDateString("es-CR");
+    }catch(error){
+         module.exports.registrarError("formatoFecha/FuncionesGlobales", error);
+         return new Date();
+    }
   }  
- 
   return fecha;
 },
 
