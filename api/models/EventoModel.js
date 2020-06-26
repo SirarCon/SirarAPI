@@ -35,6 +35,9 @@ var EventoSchema = new Schema({
       activo: {
         type: Boolean,
     },
+    estado:{
+      type: Number, //0: Concluyo, 1: Ejecutándose, 2: Futuro
+    },
     pais: {
       type: Number,
       ref: "Pais",
@@ -51,6 +54,9 @@ var EventoSchema = new Schema({
         .then(async seq =>{
             doc._id = seq.sequence_value;
             doc.nombreNormalizado = funcionesGlobales.formatoNombreNormalizado(doc.get('nombre')); 
+            doc.estado = funcionesGlobales
+                        .obtenerEstadoEvento(doc.get('fechaInicio'),
+                                              doc.get('fechaFinal'))
             next()
         })
     .catch(err=> {
@@ -61,7 +67,11 @@ var EventoSchema = new Schema({
   EventoSchema.pre('update', async function(next) {
     this.updateOne({},{
         $set: {
-        nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre) 
+        nombreNormalizado: 
+        funcionesGlobales.formatoNombreNormalizado(this.getUpdate().nombre), 
+        estado: funcionesGlobales
+                        .obtenerEstadoEvento(this.getUpdate().fechaInicio,
+                                              this.getUpdate().fechaFinal)
       } 
     });
     next();
@@ -69,7 +79,13 @@ var EventoSchema = new Schema({
   
   EventoSchema.pre('findOneAndUpdate', function(next) {
     this.updateOne({},{
-                   $set: { nombreNormalizado: funcionesGlobales.formatoNombreNormalizado(this.getUpdate().$set.nombre) 
+                   $set: {
+                      nombreNormalizado: 
+                        funcionesGlobales
+                        .formatoNombreNormalizado(this.getUpdate().$set.nombre),
+                    estado: funcionesGlobales
+                        .obtenerEstadoEvento(this.getUpdate().$set.fechaInicio,
+                                              this.getUpdate().$set.fechaFinal)
                   } 
                 });
     next();
@@ -85,7 +101,8 @@ var EventoSchema = new Schema({
         ciudad: this.ciudad,
         pais: this.pais,
         anno: funcionesGlobales.obtenerAnno(this.fechaInicio),
-        activo: this.activo
+        activo: this.activo,
+        estado: this.estado,
       };
     
     });
@@ -99,7 +116,8 @@ var EventoSchema = new Schema({
         fechaFinal: funcionesGlobales.formatoFecha(this.fechaFinal),
         ciudad: this.ciudad,
         pais: this.pais,
-        anno: funcionesGlobales.obtenerAnno(this.fechaInicio)
+        anno: funcionesGlobales.obtenerAnno(this.fechaInicio),
+        estado: this.estado,
       };
     
     });

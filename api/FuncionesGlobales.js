@@ -187,8 +187,33 @@ obtenerAnno: function(fecha){
 },
 
 fechaValida: function(fecha){
-  var valida = Date.parse(fecha)
-  return !Number.isNaN(valida)
+  try{
+    var valida = Date.parse(fecha)
+    return !Number.isNaN(valida)
+  }catch(error){
+    module.exports.registrarError("fechaValida/FuncionesGlobales", error);
+     return false;
+  }
+},
+
+obtenerEstadoEvento: function(fechaInicial, fechaFinal){
+  var hoy = new Date();
+  var hayFechaInicial = module.exports.fechaValida(fechaInicial);
+  var hayFechaFinal = module.exports.fechaValida(fechaFinal);
+  
+  var fechaInicialD = new Date(fechaInicial);
+  var fechaFinalD = new Date(fechaFinal);
+ 
+  if(hayFechaInicial && hayFechaFinal &&
+    fechaInicialD <= hoy && hoy <= fechaFinalD)
+      return 1;
+  if(hayFechaFinal && fechaFinalD < hoy)
+      return 0;
+  if (hayFechaInicial && hoy < fechaInicialD)
+      return 2;
+   
+
+  return 2; //Por defecto no ha iniciado
 },
 
 errorHandler: fn => (req, res, next) => {
@@ -196,6 +221,5 @@ errorHandler: fn => (req, res, next) => {
       .resolve(fn(req, res, next))
       .catch(next);
 },
-
 
 }
