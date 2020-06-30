@@ -53,7 +53,7 @@ var AtletaSchema = new Schema({
       },
       visaAmericana: {
         type: String,
-        maxlength: [9, "La visa americana tiene que ser menor a 16 caracteres"],        
+        maxlength: [16, "La visa americana tiene que ser menor a 16 caracteres"],        
       },
       venceVisa: {
         type: Date,
