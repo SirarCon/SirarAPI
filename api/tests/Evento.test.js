@@ -9,8 +9,8 @@ expressRequestMock = require('express-request-mock');
 
 var body = {
   nombre: "Tokio 2020",
-  fechaInicio: "07/07/2020",
-  fechaFinal: "07/08/2020",
+  fechaInicio: "2020-07-08T07:00:00.000Z",
+  fechaFinal: "2020-07-08T08:00:00.000Z",
   ciudad: "Tokio",
   activo: true
 };

@@ -1,7 +1,8 @@
 'use strict';
 var mongoose = require("mongoose"),
 Error = mongoose.model("Error"),
-Contador = mongoose.model("Contador");
+Contador = mongoose.model("Contador"),
+moment = require("moment");
 
 module.exports ={
     validarEmail : function(email, obligatorio = false) {
@@ -144,11 +145,10 @@ calcularEdad : function(fechaNacimiento){
   }
 },
 
-//time: horas, minutos y segundos
-formatoFecha: function(fecha, time = false){
+formatoFecha: function(fecha){
   if(fecha){
     try{
-      var tipoFecha = module.exports.fechaValida(fecha) ? fecha : module.exports.convertirAFecha(fecha, time);
+      var tipoFecha = module.exports.fechaValida(fecha) ? fecha : module.exports.convertirAFecha(fecha);
       return new Date(tipoFecha).toLocaleDateString("es-CR");
     }catch(error){
          module.exports.registrarError("formatoFecha/FuncionesGlobales", error);
@@ -158,25 +158,18 @@ formatoFecha: function(fecha, time = false){
   return fecha;
 },
 
-convertirAFecha: function(fecha, time = false){
-  if(fecha){
-  var tipoFecha = time ? 
-  new Date(...(fecha
-          .replace(/-|T|:/g, ',')
-          .replace(/\..+/g,'')
-          .split(",").map((m)=> parseInt(m))))
-  :
-  new Date(...(fecha
-          .replace(/-/g, '\/')//Se usan separadores / y se invierte para que no de error al crear la fecha
-          .replace(/T.+/, '')).split("/").reverse());          
+convertirAFecha: function(fecha){
+  let tipoFecha = fecha;
+  if(fecha && !module.exports.fechaValida(fecha)){
+    tipoFecha = moment(fecha, 'DD/MM/YYYY')
+               .format('MM/DD/YYYY');
+  }         
   return tipoFecha;
-  }
-  return fecha;
 }
 ,
 
-construirFecha: function(fechaCompleta){
-  var fecha = fechaCompleta.getFullYear()+'/'+(fechaCompleta.getMonth()+1)+'/'+ fechaCompleta.getDate();
+construirFecha: function(fechaCompleta){//+ 1 por que en JS el mes comienza en 0 
+  var fecha = fechaCompleta.getFullYear()+'/'+(fechaCompleta.getMonth() + 1)+'/'+ fechaCompleta.getDate();
   var hora = fechaCompleta.getHours() + ":" + fechaCompleta.getMinutes() + ":" + fechaCompleta.getSeconds();
   return fecha + ' '+ hora;
 },
@@ -200,19 +193,15 @@ obtenerEstadoEvento: function(fechaInicial, fechaFinal){
   var hoy = new Date();
   var hayFechaInicial = module.exports.fechaValida(fechaInicial);
   var hayFechaFinal = module.exports.fechaValida(fechaFinal);
-  
-  var fechaInicialD = new Date(fechaInicial);
-  var fechaFinalD = new Date(fechaFinal);
  
   if(hayFechaInicial && hayFechaFinal &&
-    fechaInicialD <= hoy && hoy <= fechaFinalD)
+    fechaInicial <= hoy && hoy <= fechaFinal)
       return 1;
-  if(hayFechaFinal && fechaFinalD < hoy)
+  if(hayFechaFinal && fechaFinal < hoy)
       return 0;
-  if (hayFechaInicial && hoy < fechaInicialD)
+  if (hayFechaInicial && hoy < fechaInicial)
       return 2;
    
-
   return 2; //Por defecto no ha iniciado
 },
 
