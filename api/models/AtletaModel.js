@@ -13,7 +13,7 @@ var AtletaSchema = new Schema({
     nombre: {
         type: String,
         required: 'Digite un nombre por favor',
-        maxlength: [60, "El nombre tiene que ser menor a 21 caracteres"],
+        maxlength: [100, "El nombre tiene que ser menor a 100 caracteres"],
         minlength: [2, "El nombre tiene que ser mayor a 1 caracteres"],
       },
       nombreNormalizado:{
