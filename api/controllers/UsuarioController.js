@@ -159,10 +159,11 @@ Usuario.findOne()
       .exec()
       .then((usuario)=>{
         if(usuario){
-            if(!req.body.passwordConfirmacion || usuario.password !== req.body.passwordConfirmacion){
-              res.json({token: res.locals.token, datos: globales.mensajes(9)});
-            }
-            else{
+            if(req.body.passwordVieja && usuario.password !== req.body.passwordVieja ||
+              req.body.passwordConfirmacion &&
+              req.body.password !== req.body.passwordConfirmacion){
+                      res.json({token: res.locals.token, datos: globales.mensajes(9)});
+            }else{
             Usuario.findOneAndUpdate(filtro, {$set: {password: req.body.password}}, {runValidators: true})
                    .exec()
                    .then(usuario =>{
