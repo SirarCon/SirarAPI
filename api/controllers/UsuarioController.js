@@ -159,14 +159,14 @@ Usuario.findOne()
       .exec()
       .then((usuario)=>{
         if(usuario){
-            if(!req.body.passwordVieja || usuario.password !== req.body.passwordVieja){
+            if(!req.body.passwordConfirmacion || usuario.password !== req.body.passwordConfirmacion){
               res.json({token: res.locals.token, datos: globales.mensajes(9)});
             }
             else{
             Usuario.findOneAndUpdate(filtro, {$set: {password: req.body.password}}, {runValidators: true})
                    .exec()
                    .then(usuario =>{
-                    if(req.body.passwordVieja){
+                    if(req.body.passwordVieja){//Si se cambia desde la aplicación con la sesión inciada
                       res.json({token: res.locals.token, datos: globales.mensajes(-6, "usuario", req.body.identificacion)})
                     }else{
                       res.json({datos: globales.mensajes(-6, "usuario", req.body.identificacion)})
