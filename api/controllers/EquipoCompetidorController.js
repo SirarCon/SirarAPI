@@ -119,7 +119,7 @@ exports.listarEquiposCompetencia = async function(req, res){
                 })
             )});  
         }else{
-          res.json({token: res.locals.token, datos: globales.mensajes(11, "equipos", " ")});
+          res.json({token: res.locals.token, datos: globales.mensajes(-8, "equipos", " ")});
         }
       }).catch(err=>{
         funcionesGlobales.registrarError("listarEquiposCompetencia/CompetenciaController", err)
@@ -185,7 +185,7 @@ exports.listarDeportesEventosEquipo = async function(req, res){
         if(eventos.length > 0){ 
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "deportes", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "deportes", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarDeportesEventosEquipo/CompetenciaController", err)
@@ -263,7 +263,7 @@ exports.listarPruebasDeporteEventosEquipo = async function(req, res){
         if(eventos.length > 0){                                               
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "pruebas", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "pruebas", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarPruebasDeporteEventosEquipo/CompetenciaController", err)
@@ -325,7 +325,7 @@ exports.listarCompetenciasPorPruebaEquipo = async function(req, res){
         if(competencias.length > 0){                                               
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "competencias", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "competencias", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarCompetenciasPorPruebaEquipo/CompetenciaController", err)

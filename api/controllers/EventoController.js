@@ -93,7 +93,7 @@ exports.listarTodosEventos = async function(_, res){
           if(eventos.length > 0){
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion()))});  
           }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "eventos", " ")});
           }
      }).catch((err)=>{
         funcionesGlobales.registrarError("listarTodosEventos/EventoController", err)                             
@@ -115,7 +115,7 @@ exports.listarEventosActivos = async function(_, res){
           if(eventos.length > 0){
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion()))});  
           }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "eventos", " ")});
           }
      }).catch((err)=>{
         funcionesGlobales.registrarError("listarEventosActivos/EventoController", err)                             
@@ -180,7 +180,7 @@ AtletaC.aggregate([
     if(eventos.length > 0){                                               
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
  }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(11, "eventos", " ")});
+        res.json({token: res.locals.token, datos: globales.mensajes(-8, "eventos", " ")});
  }
 }).catch(err => {
         funcionesGlobales.registrarError("listarEventosAtleta/EventoController", err)                             

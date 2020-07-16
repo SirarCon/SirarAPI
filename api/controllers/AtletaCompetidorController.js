@@ -123,7 +123,7 @@ exports.listarAtletasCompetencia = async function(req, res){
                 }
             ))});  
         }else{
-          res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
+          res.json({token: res.locals.token, datos: globales.mensajes(-8, "atletas", " ")});
         }
       }).catch(err=>{
           console.log(err)
@@ -190,7 +190,7 @@ exports.listarDeportesEventosAtleta = async function(req, res){
         if(eventos.length > 0){ 
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "deportes", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "deportes", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarDeportesEventosAtleta/CompetenciaController", err)
@@ -268,7 +268,7 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
         if(eventos.length > 0){                                               
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "pruebas", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "pruebas", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarPruebasDeporteEventosAtleta/CompetenciaController", err)
@@ -330,7 +330,7 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
         if(competencias.length > 0){                                               
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
      }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "competencias", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "competencias", " ")});
      }
     }).catch(err => {
         funcionesGlobales.registrarError("listarCompetenciasPorPruebaAtleta/CompetenciaController", err)

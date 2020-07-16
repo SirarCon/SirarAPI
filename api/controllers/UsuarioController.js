@@ -302,7 +302,7 @@ exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta 
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, usuarios.map(u => u.datosLogin()))});  
           }  
           else
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "usuarios", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "usuarios", " ")});
         })
           .catch((err)=>{
             funcionesGlobales.registrarError("listaTodosUsuarios/UsuarioController", err)                                         

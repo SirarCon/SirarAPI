@@ -7,6 +7,7 @@ Deporte = mongoose.model('Deporte'),
 Prueba = mongoose.model('Prueba'),
 Evento = mongoose.model('Evento'),
 globales =  require("../Globales.js"),
+//atletaUtil = require("../utils/AtletaUtils"),
 funcionesGlobales = require("../FuncionesGlobales.js");
 const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 //#endregion Requires
@@ -16,6 +17,7 @@ exports.crearAtleta = async function(req, res){
         Deporte.findOne().where({_id: req.body.deporte}).exec()
         .then(function(deporte) {
           if(deporte){
+//                req.body = atletaUtil.formatoAFechas(req.body);
                 var nuevoAtleta = new Atleta(req.body);   
                 nuevoAtleta.fotoUrl = req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesAtletas, req.body.fotoUrl , nuevoAtleta._id) : undefined,
                 nuevoAtleta.save().then(atleta =>{ 
@@ -42,10 +44,11 @@ exports.crearAtleta = async function(req, res){
                     }); //Todo modificar mensaje                  
   };
 
-exports.modificarAtleta  = async function(req, res){    
+exports.modificarAtleta  = async function(req, res){  
         Deporte.findOne().where({_id: req.body.deporte}).exec()
         .then(function(deporte) {
             if(deporte){
+ //               req.body = atletaUtil.formatoAFechas(req.body);
                 Atleta.findOneAndUpdate({_id: req.params.id},
                 {$set: {
                     nombre: req.body.nombre,
@@ -116,7 +119,7 @@ exports.listarAtletas = async function(_, res){
           if(atletas.length > 0){
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a=> a.todaInformacion()))});  
           }else{
-              res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
+              res.json({token: res.locals.token, datos: globales.mensajes(-8, "atletas", " ")});
           }
       }).catch((err)=>{
           console.log(err);
@@ -201,7 +204,7 @@ exports.listarAtletasActivos = async function(req, res){
           if(atletas.length > 0){
               res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a =>a.infoPublica()))});  
           }else{
-              res.json({token: res.locals.token, datos: globales.mensajes(11, "atletas", " ")});
+              res.json({token: res.locals.token, datos: globales.mensajes(-8, "atletas", " ")});
             }
       }).catch((err)=>{
             funcionesGlobales.registrarError("listarAtletasActivos/AtletaController", err)

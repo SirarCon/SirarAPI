@@ -109,7 +109,7 @@ exports.listarEquipos = async function(req, res){
         if(equipos.length > 0){
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos.map(a=> a.todaInformacion()))});  
         }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "equipos", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "equipos", " ")});
         }
     }).catch((err)=>{
         console.log(err);
@@ -215,7 +215,7 @@ exports.listarEquiposActivos = async function(req, res){
         if(equipos.length > 0){
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos.map(a=> a.todaInformacion()))});  
         }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(11, "equipos", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(-8, "equipos", " ")});
         }
     }).catch((err)=>{
         console.log(err);

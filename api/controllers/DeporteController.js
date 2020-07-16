@@ -105,7 +105,7 @@ exports.listaTodasFederaciones =  async function(_, res) {
       if(federaciones.length > 0){
           res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.todaInformacion()))});  
       }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ")});
+        res.json({token: res.locals.token, datos: globales.mensajes(-8, "federaciones", " ")});
       }
   }).catch((err)=>{
       funcionesGlobales.registrarError("listaTodasFederaciones/DeporteController", err)  
@@ -144,7 +144,7 @@ exports.listaFederacionesActivas =  async function(_, res) {//Menos el que consu
       if(federaciones.length > 0){
           res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.infoPublica()))});  
       }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(11, "federaciones", " ")});
+        res.json({token: res.locals.token, datos: globales.mensajes(-8, "federaciones", " ")});
       }
   }).catch((err)=>{
     funcionesGlobales.registrarError("listaFederacionesActivas/DeporteController", err)  

@@ -59,13 +59,13 @@ describe('Competencia Atleta', () => {
         }
       ]
       
-      var reqListarCategoriasDeporte = {
+      var reqListarPruebasDeporte = {
         ...helper.reqGeneral,
         params: {idDeporte: 1,
                  idEvento: 1
         }
       }
-      var resCategoriasXDeporte = [{
+      var resPruebasXDeporte = [{
         prueba: 1,
         nombre: "100 Mts",
         genero: 1
@@ -138,8 +138,8 @@ describe('Competencia Atleta', () => {
   });
 
   it('Listar Categorías por Deporte', async () => {
-    mockingoose(model).toReturn(resCategoriasXDeporte, 'aggregate')
-    const { res } = await expressRequestMock(controller.listarCategoriasXDeporte, reqListarCategoriasDeporte, helper.resp)
+    mockingoose(model).toReturn(resPruebasXDeporte, 'aggregate')
+    const { res } = await expressRequestMock(controller.listarPruebasXDeporte, reqListarPruebasDeporte, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(res.statusCode).toEqual(200);
     expect(datos.codigo).toBeLessThan(0);
