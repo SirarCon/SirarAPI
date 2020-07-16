@@ -85,12 +85,10 @@ Competencia.find()
 .populate({path:"prueba", select: "deporte"})
 .exec()
 .then(competencias => {
-    if(competencias.length > 0){
-        var deportes = Array.from(new Set(competencias.map(c=>  c.prueba.deporte)));
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes)});  
-}else{
-    res.json({token: res.locals.token, datos: globales.mensajes(-8, "deportes", " ")});
-  }
+    var deportes = competencias.length > 0 ?
+                   Array.from(new Set(competencias.map(c=>  c.prueba.deporte)))
+                   : new Array();
+    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, deportes)});  
 })
 .catch(err=>{
     funcionesGlobales.registrarError("listarDeportesXEvento/CompetenciaController", err)
