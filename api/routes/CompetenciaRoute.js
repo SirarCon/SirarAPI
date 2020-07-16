@@ -19,8 +19,8 @@ module.exports = function(app, express) {
     routerGeneral.route('/deportesPorEvento/:idEvento')  
         .get(errorHandler(competenciaController.listarDeportesXEvento));
 
-    routerGeneral.route('/listarCategoriasPorDeporte/:idEvento/:idDeporte')
-        .get(errorHandler(competenciaController.listarCategoriasXDeporte));
+    routerGeneral.route('/listarPruebasPorDeporte/:idEvento/:idDeporte')
+        .get(errorHandler(competenciaController.listarPruebasXDeporte));
 
     routerGeneral.route('/listarFasesPruebaEvento/:idEvento/:idPrueba/:genero') 
         .get(errorHandler(competenciaController.listarFasesxPruebaEvento));
@@ -54,6 +54,17 @@ module.exports = function(app, express) {
         .get(errorHandler(equipoCompetidorController.listarCompetenciasPorPruebaEquipo));
 
     /////--------------Admin
+    routerAdm.route('/deportesPorEvento/:idEvento')  
+        .get(errorHandler(competenciaController.listarDeportesXEvento));
+
+    routerAdm.route('/listarPruebasPorDeporte/:idEvento/:idDeporte')
+        .get(errorHandler(competenciaController.listarPruebasXDeporte));
+
+    routerAdm.route('/listarFasesPruebaEvento/:idEvento/:idPrueba/:genero') 
+        .get(errorHandler(competenciaController.listarFasesxPruebaEvento));
+
+    routerAdm.route('/listarCompetenciasEventoPruebaFase/:idEvento/:idPrueba/:genero/:fase')  
+
 
     routerAdm.route('/competencia')
         .post(errorHandler(competenciaController.crearCompetencia));

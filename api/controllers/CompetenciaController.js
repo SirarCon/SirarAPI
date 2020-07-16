@@ -98,8 +98,8 @@ Competencia.find()
 });
 };
 
-//Agrupa y lista las categorias de los deportes practicados durante un evento seleccionado
-exports.listarCategoriasXDeporte = async function(req, res){
+//Agrupa y lista las pruebas de los deportes practicados durante un evento seleccionado
+exports.listarPruebasXDeporte = async function(req, res){
      Competencia.aggregate([  
                   { $lookup: {
                                     "localField": "prueba",
