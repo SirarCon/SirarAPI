@@ -279,7 +279,6 @@ exports.crearUsuario = async function(req, res) {
        res.json({token: res.locals.token, datos: globales.mensajes(16, "Correo", err)});
     }else{
       funcionesGlobales.registrarError("crearUsuario/UsuarioController", err)      
-      console.log(err)                                   
       res.json({token: res.locals.token, datos: globales.mensajes(10, "usuario", req.body.correo.toLowerCase())});
     }
   }); 
@@ -294,23 +293,18 @@ exports.listaTodosUsuarios =  async function(req, res) {//Menos el que consulta 
          .sort({nombreNormalizado : 1})
          .exec()
          .then(async (usuarios)=>{
-          await funcionesGlobales.asyncForEach(usuarios ,async (element, indice, usuarios) => {
-            usuarios[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);
-            
-          });
-          if(usuarios.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, usuarios.map(u => u.datosLogin()))});  
-          }  
-          else
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "usuarios", " ")});
-        })
-          .catch((err)=>{
+            await funcionesGlobales.asyncForEach(usuarios ,async (element, indice, usuarios) => {
+              usuarios[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);
+              
+            });
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, usuarios.map(u => u.datosLogin()))});            
+        }).catch((err)=>{
             funcionesGlobales.registrarError("listaTodosUsuarios/UsuarioController", err)                                         
             res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los usuarios")});  
 }) 
-}catch(e){
-    console.log(e);
-  }
+}catch(err){
+  funcionesGlobales.registrarError("listaTodosUsuarios/UsuarioController", err)      
+}
 };
 //[remote "origin"]
 //	url = https://sirar2018.visualstudio.com/SIRAR/_git/SIRAR%20API

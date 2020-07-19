@@ -102,11 +102,7 @@ exports.listaTodasFederaciones =  async function(_, res) {
       await funcionesGlobales.asyncForEach(federaciones ,async (element, indice, federaciones) => {
         federaciones[indice].escudoUrl = await funcionesGlobales.leerArchivoAsync(element.escudoUrl);                      
       });
-      if(federaciones.length > 0){
-          res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.todaInformacion()))});  
-      }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(-8, "federaciones", " ")});
-      }
+      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.todaInformacion()))});  
   }).catch((err)=>{
       funcionesGlobales.registrarError("listaTodasFederaciones/DeporteController", err)  
       res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones" , "")});  
@@ -127,8 +123,8 @@ exports.leerFederacionActiva = async function(req, res) {
        res.json({token: res.locals.token, datos: globales.mensajes(2, "Federación", " ")});
     }
   }).catch((err)=>{  
-    funcionesGlobales.registrarError("leerFederacionActiva/DeporteController", err)  
-    res.json({token: res.locals.token, datos: globales.mensajes(13, "federacion", " ")});
+      funcionesGlobales.registrarError("leerFederacionActiva/DeporteController", err)  
+      res.json({token: res.locals.token, datos: globales.mensajes(13, "federacion", " ")});
   }) 
 };
 
@@ -141,14 +137,10 @@ exports.listaFederacionesActivas =  async function(_, res) {//Menos el que consu
       await funcionesGlobales.asyncForEach(federaciones ,async (element, indice, federaciones) => {
         federaciones[indice].escudoUrl = await funcionesGlobales.leerArchivoAsync(element.escudoUrl);        
       });      
-      if(federaciones.length > 0){
-          res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.infoPublica()))});  
-      }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(-8, "federaciones", " ")});
-      }
+      res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, federaciones.map(f => f.infoPublica()))});  
   }).catch((err)=>{
-    funcionesGlobales.registrarError("listaFederacionesActivas/DeporteController", err)  
-    res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones", " ")});  
+      funcionesGlobales.registrarError("listaFederacionesActivas/DeporteController", err)  
+      res.json({token: res.locals.token,datos: globales.mensajes(12, "las federaciones", " ")});  
 });
 };
 //#endregion Usuariopúblico

@@ -113,18 +113,13 @@ exports.listarAtletas = async function(_, res){
     .populate([{path: "deporte", select: "_id federacion"}])  
     .exec()
     .then(async (atletas)=>{
-          await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
-              atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);            
-          });
-          if(atletas.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a=> a.todaInformacion()))});  
-          }else{
-              res.json({token: res.locals.token, datos: globales.mensajes(-8, "atletas", " ")});
-          }
+        await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
+            atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);            
+        });
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a=> a.todaInformacion()))});  
       }).catch((err)=>{
-          console.log(err);
-            funcionesGlobales.registrarError("listarAtleta/AtletaController", err)
-            res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas")}); 
+        funcionesGlobales.registrarError("listarAtleta/AtletaController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas")}); 
      });
   };
   
@@ -198,17 +193,13 @@ exports.listarAtletasActivos = async function(req, res){
     .populate([{path: "deporte", select: "_id federacion" },])      
     .exec()
     .then(async (atletas)=>{
-          await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
-              atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);            
-          });
-          if(atletas.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a =>a.infoPublica()))});  
-          }else{
-              res.json({token: res.locals.token, datos: globales.mensajes(-8, "atletas", " ")});
-            }
+        await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
+            atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);            
+        });
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a =>a.infoPublica()))});  
       }).catch((err)=>{
-            funcionesGlobales.registrarError("listarAtletasActivos/AtletaController", err)
-            res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los atletas")}); 
+        funcionesGlobales.registrarError("listarAtletasActivos/AtletaController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los atletas")}); 
      });
   };
 

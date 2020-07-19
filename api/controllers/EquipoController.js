@@ -105,16 +105,11 @@ exports.listarEquipos = async function(req, res){
     .populate([{path: "pais", select: "name"}])
     .sort({pais: 1})
     .exec()
-    .then(async (equipos)=>{
-        if(equipos.length > 0){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos.map(a=> a.todaInformacion()))});  
-        }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "equipos", " ")});
-        }
-    }).catch((err)=>{
-        console.log(err);
-          funcionesGlobales.registrarError("listarEquipos/EquipoController", err)
-          res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los equipos")}); 
+    .then(async (equipos)=>{    
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos.map(a=> a.todaInformacion()))});          
+    }).catch((err)=>{        
+        funcionesGlobales.registrarError("listarEquipos/EquipoController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los equipos")}); 
    });
 }
 
@@ -212,15 +207,10 @@ exports.listarEquiposActivos = async function(req, res){
     .sort({pais:  1})
     .exec()
     .then(async (equipos)=>{
-        if(equipos.length > 0){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos.map(a=> a.todaInformacion()))});  
-        }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "equipos", " ")});
-        }
-    }).catch((err)=>{
-        console.log(err);
-          funcionesGlobales.registrarError("listarEquipos/EquipoController", err)
-          res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los equipos")}); 
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos.map(a=> a.todaInformacion()))});  
+    }).catch((err)=>{        
+        funcionesGlobales.registrarError("listarEquipos/EquipoController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los equipos")}); 
    });
 }
 

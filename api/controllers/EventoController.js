@@ -90,11 +90,7 @@ exports.listarTodosEventos = async function(_, res){
         await funcionesGlobales.asyncForEach(eventos ,async (element, indice, eventos) => {
             eventos[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);                      
           });
-          if(eventos.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion()))});  
-          }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "eventos", " ")});
-          }
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion()))});    
      }).catch((err)=>{
         funcionesGlobales.registrarError("listarTodosEventos/EventoController", err)                             
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , " ")});  
@@ -112,11 +108,7 @@ exports.listarEventosActivos = async function(_, res){
         await funcionesGlobales.asyncForEach(eventos ,async (element, indice, eventos) => {
             eventos[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);                      
           });
-          if(eventos.length > 0){
-              res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion()))});  
-          }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "eventos", " ")});
-          }
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos.map(e => e.todaInformacion()))});            
      }).catch((err)=>{
         funcionesGlobales.registrarError("listarEventosActivos/EventoController", err)                             
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos" , "")});  
@@ -141,51 +133,48 @@ exports.leerEventoActivo = async function(req, res){
 }
 
 exports.listarEventosAtleta = async function(req, res){
-AtletaC.aggregate([
-   {
-       $match: { 
-           atleta: Number(req.params.idAtleta),
-       }
-    },
-     {  $lookup: {
-            "localField": "competencia",
-            "from": "competencias",
-            "foreignField": "_id",
-            "as":  "competencias"
-       }
-    },
+    AtletaC.aggregate([
     {
-        $group: {
-           _id: "$competencias.evento",
-       }       
-    },
-    {
-        $lookup:{
-            "localField": "_id",
-            "from": "eventos",
-            "foreignField": "_id",
-            "as": "eventos"
+        $match: { 
+            atleta: Number(req.params.idAtleta),
         }
-    },
-    {
-        $project: {
-            _id: 0,
-            eventos: {
-                _id: 1,
-                nombre: 1,                
-            }            
+        },
+        {  $lookup: {
+                "localField": "competencia",
+                "from": "competencias",
+                "foreignField": "_id",
+                "as":  "competencias"
         }
-    }
-]).exec().then(eventos=> {
-    if(eventos.length > 0){                                               
+        },
+        {
+            $group: {
+            _id: "$competencias.evento",
+        }       
+        },
+        {
+            $lookup:{
+                "localField": "_id",
+                "from": "eventos",
+                "foreignField": "_id",
+                "as": "eventos"
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                eventos: {
+                    _id: 1,
+                    nombre: 1,                
+                }            
+            }
+        }
+    ]).exec()
+    .then(eventos=> {
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
- }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(-8, "eventos", " ")});
- }
-}).catch(err => {
-        funcionesGlobales.registrarError("listarEventosAtleta/EventoController", err)                             
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ")});  
-});
+    }).catch(err => {
+            funcionesGlobales.registrarError("listarEventosAtleta/EventoController", err)                             
+            res.json({token: res.locals.token,datos: globales.mensajes(12, "los eventos del atleta", " ")});  
+    });
 }
 
 //#endregion Usuariopúblico

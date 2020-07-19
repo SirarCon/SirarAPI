@@ -135,12 +135,9 @@ exports.listarPruebasXDeporte = async function(req, res){
                         }
                     }
                              ])
-                .exec().then(competencias => {            
-                    if(competencias.length > 0){                                               
-                            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
-                     }else{
-                            res.json({token: res.locals.token, datos: globales.mensajes(-8, "deportes", " ")});
-                     }
+                .exec()
+                .then(competencias => {            
+                    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
                 }).catch(err => {
                     funcionesGlobales.registrarError("listarCategoriasXDeporte/CompetenciaController", err)
                     res.json({token: res.locals.token,datos: globales.mensajes(12, "las categorias de las competencias", " ")});  
@@ -191,12 +188,9 @@ exports.listarFasesxPruebaEvento= function(req, res){
                }
            }
         ])
-        .exec().then(fases=>{
-            if(fases.length > 0){
-                res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, fases)});  
-            }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(-8, "fases", " ")});
-            }
+        .exec()
+        .then(fases=>{
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, fases)});  
         }).catch(err=>{     
             funcionesGlobales.registrarError("listarFasesxPruebaEvento/CompetenciaController", err)
             res.json({token: res.locals.token,datos: globales.mensajes(12, "las fases de las competencias", " ")});  
@@ -214,11 +208,7 @@ exports.listarCompetenciasEventoPruebaFase = function(req, res){
     .sort({descripcion: 1})
     .exec()
     .then(competencias=>{
-        if(competencias.length > 0){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
-        }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "competencias", " ")});
-        }
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err=>{
         funcionesGlobales.registrarError("listarCompetenciasEventoPruebaFase/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias", " ")});  

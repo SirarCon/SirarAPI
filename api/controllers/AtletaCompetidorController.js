@@ -113,20 +113,16 @@ exports.listarAtletasCompetencia = async function(req, res){
                 }         
             }
         }
-    ]).exec().then(atletas =>{
-        if(atletas.length > 0){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, 
-                atletas.map(a=>{  
-                    a._id.marcadores = [].slice.call(a._id.marcadores)//Convert to array to work with jest
-                                        .sort((a, b)=>{ return a.set - b.set})
-                    return a;
-                }
-            ))});  
-        }else{
-          res.json({token: res.locals.token, datos: globales.mensajes(-8, "atletas", " ")});
-        }
+    ]).exec()
+    .then(atletas =>{
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, 
+            atletas.map(a=>{  
+                a._id.marcadores = [].slice.call(a._id.marcadores)//Convert to array to work with jest
+                                    .sort((a, b)=>{ return a.set - b.set})
+                return a;
+            }
+        ))});          
       }).catch(err=>{
-          console.log(err)
         funcionesGlobales.registrarError("listarAtletasCompetencia/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los atletas", " ")});  
     });
@@ -187,11 +183,7 @@ exports.listarDeportesEventosAtleta = async function(req, res){
         }
     ])
     .exec().then(eventos=> {
-        if(eventos.length > 0){ 
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
-     }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "deportes", " ")});
-     }
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarDeportesEventosAtleta/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes del atleta", " ")});  
@@ -264,12 +256,9 @@ exports.listarPruebasDeporteEventosAtleta = async function(req, res){
             }
             }
         }
-    ]).exec().then(eventos=> {
-        if(eventos.length > 0){                                               
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
-     }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "pruebas", " ")});
-     }
+    ]).exec()
+    .then(eventos=> {
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarPruebasDeporteEventosAtleta/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los pruebas del atleta", " ")});  
@@ -327,11 +316,7 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
             },
         },
     ]).exec().then(competencias=> {
-        if(competencias.length > 0){                                               
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
-     }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "competencias", " ")});
-     }
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarCompetenciasPorPruebaAtleta/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias del atleta", " ")});  

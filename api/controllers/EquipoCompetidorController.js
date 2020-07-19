@@ -110,17 +110,14 @@ exports.listarEquiposCompetencia = async function(req, res){
                     pais : "$equipoinfo.pais",      
             }
         },
-    ]).exec().then(equipos =>{
-        if(equipos.length > 0){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,  
-                equipos.map(e=>{        
-                    e._id.marcadores = [].slice.call(e._id.marcadores).sort((a, b)=>{ return a.set - b.set})
-                    return e;
-                })
-            )});  
-        }else{
-          res.json({token: res.locals.token, datos: globales.mensajes(-8, "equipos", " ")});
-        }
+    ]).exec()
+    .then(equipos =>{
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,  
+            equipos.map(e=>{        
+                e._id.marcadores = [].slice.call(e._id.marcadores).sort((a, b)=>{ return a.set - b.set})
+                return e;
+            })
+        )});          
       }).catch(err=>{
         funcionesGlobales.registrarError("listarEquiposCompetencia/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los equipos", " ")});  
@@ -181,12 +178,9 @@ exports.listarDeportesEventosEquipo = async function(req, res){
             }
         }
     ])
-    .exec().then(eventos=> {
-        if(eventos.length > 0){ 
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
-     }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "deportes", " ")});
-     }
+    .exec()
+    .then(eventos=> {
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarDeportesEventosEquipo/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "los deportes del equipo", " ")});  
@@ -260,11 +254,7 @@ exports.listarPruebasDeporteEventosEquipo = async function(req, res){
             }
         }
     ]).exec().then(eventos=> {
-        if(eventos.length > 0){                                               
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
-     }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "pruebas", " ")});
-     }
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, eventos)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarPruebasDeporteEventosEquipo/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas del equipo", " ")});  
@@ -321,12 +311,9 @@ exports.listarCompetenciasPorPruebaEquipo = async function(req, res){
                 
             },
         },
-    ]).exec().then(competencias=> {
-        if(competencias.length > 0){                                               
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
-     }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(-8, "competencias", " ")});
-     }
+    ]).exec()
+    .then(competencias=> {
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarCompetenciasPorPruebaEquipo/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias del equipo", " ")});  
