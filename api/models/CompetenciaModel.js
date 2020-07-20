@@ -47,6 +47,9 @@ var CompetenciaSchema = new Schema({
         ref: "Fase",
         required: "Digite la fase a la que pertenece la competencia"
     },
+    enVivo:{
+        type: Number, //0: Concluyo, 1: Ejecutándose, 2: Futuro
+    },
     activo: {
         type: Boolean,
         required: "Seleccione si la prueba es activa",
@@ -78,6 +81,7 @@ CompetenciaSchema.method('todaInformacion',function (){
         fase: this.fase,
         estadio: this.estadio,
         ciudad: this.ciudad,
+        enVivo: this.enVivo,
         activo: this.activo,        
     }
 });
@@ -91,6 +95,7 @@ CompetenciaSchema.method('infoPublica',function (){
         fase: this.fase,
         estadio: this.estadio,
         ciudad: this.ciudad,
+        enVivo: this.enVivo,
     }
 });
 

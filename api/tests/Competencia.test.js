@@ -127,6 +127,15 @@ describe('Competencia Atleta', () => {
     expect(datos.exito).toBeTruthy();  
   });
 
+  it('Activar Competencia', async () => {
+    mockingoose(model).toReturn(eventRes, 'findOneAndUpdate')
+    const { res } = await expressRequestMock(controller.cambiarEstadoCompetencia, req, helper.resp)
+    const { token, datos } = JSON.parse(res._getData());
+    expect(res.statusCode).toEqual(200);
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy();  
+  });
+
   it('Listar Deportes por Evento', async () => {
     model.schema.path('prueba', Object)//Emula el populate, sino retorna el objeto sin prueba  
     mockingoose(model).toReturn(respfinddeportesXevento, 'find')

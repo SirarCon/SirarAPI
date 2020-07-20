@@ -71,6 +71,10 @@ module.exports = function(app, express) {
 
     routerAdm.route('/competencia/:idCompetencia')
         .put(errorHandler(competenciaController.modificarCompetencia));
+
+    routerAdm.route('/activarCompetencia/:idCompetencia')
+        .put(errorHandler(competenciaController.cambiarEstadoCompetencia));
+
 //----------------------------------------Atletas-----------------------
     routerAdm.route('/atletaCompetencia')
         .post(errorHandler(atletaCompetidorController.ingresarAtletaACompetencia));

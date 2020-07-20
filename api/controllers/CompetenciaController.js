@@ -78,6 +78,26 @@ Competencia.findOneAndUpdate({_id: req.params.idCompetencia},
     })
 };
 
+
+exports.cambiarEstadoCompetencia = async function(req, res){
+    Competencia.findOneAndUpdate({_id: req.params.idCompetencia},
+        { $set: {
+            enVivo: req.body.enVivo,           
+            }}, {projection:{}, new: false, runValidators: true}
+        ).exec()
+        .then(competenciaAntigua=>{
+            if(competenciaAntigua){
+                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Competencia", " ")});
+            }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ")});
+            }
+        }).catch(err=>{
+            funcionesGlobales.registrarError("cambiarEstadoCompetencia/CompetenciaController", err)
+            res.json({token: res.locals.token, datos: globales.mensajes(14, "competencia.", funcionesGlobales.manejarError(err))});        
+        })
+    };
+
+
 //Lista los deportes según el evento seleccionado
 exports.listarDeportesXEvento = async function(req, res){
 Competencia.find()
