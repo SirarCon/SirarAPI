@@ -124,7 +124,6 @@ exports.leerEquipo = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(2, "equipos", " ")});
         }
     }).catch((err)=>{
-        console.log(err);
           funcionesGlobales.registrarError("leerEquipo/EquipoController", err)
           res.json({token: res.locals.token,datos: globales.mensajes(13, "equipo", req.params.id)}); 
    });
@@ -225,7 +224,6 @@ exports.leerEquipoActivo = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(2, "equipos", " ")});
         }
     }).catch((err)=>{
-        console.log(err);
           funcionesGlobales.registrarError("leerEquipo/EquipoController", err)
           res.json({token: res.locals.token,datos: globales.mensajes(13, "equipo", req.params.id)}); 
    });

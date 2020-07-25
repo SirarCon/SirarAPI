@@ -97,6 +97,28 @@ exports.modificarMarcadores = async function(req, res){
             
 };
 
+exports.modificarEquipoCompetidor = async function(req, res) {
+    EquipoC.findOneAndUpdate(
+        {_id: req.params.idEquipo},
+        {
+         $set:{
+            esLocal: req.body.esLocal,            
+         }
+        },
+        {projection:{}, new: true, runValidators: true})
+        .exec()
+        .then(equipo=>{
+            if(equipo){
+                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo._id)});
+            }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
+            }
+        }).catch(err=>{
+            funcionesGlobales.registrarError("modificarEquipoCompetidor/EquipoCompetidorController", err)
+            res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo.", funcionesGlobales.manejarError(err))}); 
+        })
+};
+
 exports.listarEquiposCompetencia = async function(req, res){ 
     EquipoC.aggregate([
         {

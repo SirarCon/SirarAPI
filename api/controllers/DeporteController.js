@@ -396,7 +396,6 @@ exports.modificarPrueba = function(req, res){
             })
           }
         }).catch(err=> {
-          console.log(err);
           funcionesGlobales.registrarError("modificarPrueba/DeporteController", err)  
           res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas", " ")});
         }); 

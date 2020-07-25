@@ -40,8 +40,8 @@ module.exports ={
     return new Promise(function(resolve, reject) {
       if(filename && filename !== "") {
       fs.readFile(filename, function(err, data){
-            if (err){ 
-              console.log(err + " " + filename);
+            if (error){ 
+                module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", error + " " + filename);
                 reject("");
               } 
             else{ 
@@ -52,7 +52,10 @@ module.exports ={
       else{
         resolve("");
       }
-    }).catch((e)=>{ console.log("error" + e.message); return "" });
+    }).catch((error)=>{ 
+        module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", error) 
+      return "";
+     });
   },
 
   borrarArchivo: function (ruta){
@@ -64,7 +67,9 @@ module.exports ={
           if(!error){
             fs.unlinkSync(ruta);
           }
-          else console.log(error);
+          else{
+            module.exports.registrarError("borrarArchivo/FuncionesGlobales", error); 
+          } 
         })
       }     
   });
@@ -126,8 +131,9 @@ restarContador : async function(entidad){
                 { _id: entidad },
                 { $inc : { sequence_value : -1 } },
                 { new : true })  
-            .then().catch(err=> {
-              console.log("Error restando contador de " + entidad + " " + err )
+            .then().catch(error=> {
+              module.exports.registrarError("restarContador/FuncionesGlobales",
+                                            "Error restando contador de " + entidad + " " + error);
             })
 },
 

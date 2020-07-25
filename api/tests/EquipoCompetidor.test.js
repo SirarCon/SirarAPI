@@ -186,6 +186,16 @@ var reqModificarMarcador = {
   }
 }
       
+var reqModificarEquipoCompetidor = {
+  ...helper.reqGeneral,
+  params:{
+    idEquipo: 1,
+  },
+  body:{
+    esLocal : true,
+  }
+}
+
       it('Ingresar Equipo a Competencia', async () => {
         mockingoose(model).toReturn(responseFindOneAC, 'findOne')
         mockingoose(EquipoC).toReturn(undefined, 'findOne')
@@ -257,5 +267,15 @@ var reqModificarMarcador = {
       expect(datos.codigo).toBeLessThan(0);
       expect(datos.exito).toBeTruthy(); 
     });
+
+    it('Modificar equipo competidor', async () => {
+      mockingoose(EquipoC).toReturn(resMarcadores, 'findOneAndUpdate')
+      const { res } = await expressRequestMock(controller.modificarEquipoCompetidor, reqModificarEquipoCompetidor, helper.resp)
+      const { token, datos } = JSON.parse(res._getData());
+      expect(res.statusCode).toEqual(200);
+      expect(datos.codigo).toBeLessThan(0);
+      expect(datos.exito).toBeTruthy(); 
+    });
+    
 
   });
