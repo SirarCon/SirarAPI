@@ -222,6 +222,7 @@ describe('Pruebas', () => {
       nombre: " Hit 1 Natación",
       deporte: 1,
       tipo: 1,
+      tipoMarcador: 1,
       activo: true
   };
   var response = body;

@@ -71,14 +71,6 @@ describe('Competencia Atleta', () => {
         genero: 1
       }]
       
-      var reqlistarFasesxPruebaEvento = {
-        ...helper.reqGeneral,
-        params:{ idEvento: 1,
-                 idPrueba: 1,
-                 genero: 1
-        }
-      }
-      
       var reslistarFasesxPruebaEvento = [{
       fase:{_id: 1, descripcion: "Primera fase"}
       }]
@@ -90,6 +82,12 @@ describe('Competencia Atleta', () => {
                  idPrueba: 1,
                  genero: 1,
                  fase: 1
+        }
+      }
+
+      var reqleerCompetencia = {
+        ...helper.reqGeneral,
+        params:{ idCompetencia: 1,
         }
       }
       
@@ -164,9 +162,18 @@ describe('Competencia Atleta', () => {
     expect(datos.exito).toBeTruthy(); 
   });
 
-  it('Listar Fases por Prueba en Evento y Fase', async () => {
+  it('Listar competencias por Prueba en Evento y Fase', async () => {
     mockingoose(model).toReturn(reslistarCompetenciasEventoPruebaFase, 'find')
     const { res } = await expressRequestMock(controller.listarCompetenciasEventoPruebaFase, reqlistarCompetenciasEventoPruebaFase, helper.resp)
+    const { token, datos } = JSON.parse(res._getData());
+    expect(res.statusCode).toEqual(200);
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy(); 
+  });
+
+  it('Leer competencia', async () => {
+    mockingoose(model).toReturn(reslistarCompetenciasEventoPruebaFase, 'find')
+    const { res } = await expressRequestMock(controller.leerCompetencia, reqleerCompetencia, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(res.statusCode).toEqual(200);
     expect(datos.codigo).toBeLessThan(0);

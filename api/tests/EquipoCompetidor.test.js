@@ -37,11 +37,32 @@ describe('Equipo Competidor', () => {
     equipo: 1,
     competencia: 1,
   }
+
+  var equipoCompetidorBody2 = {
+    equipo: 2,
+    competencia: 1,
+  }
+
+  var equipoCompetidorBody3 = {
+    equipo: 3,
+    competencia: 1,
+  }
+
   var reqCrearequipoCompetidor = {
     ...helper.reqGeneral,
     body: equipoCompetidorBody,
   }
   
+  var reqCrearequiposCompetidores = {
+    ...helper.reqGeneral,
+    body:{ equipos: [
+            equipoCompetidorBody,
+            equipoCompetidorBody2,
+            equipoCompetidorBody3
+          ],
+        }
+  }
+
   var reqListarEquiposCompetencia ={
     ...helper.reqGeneral,
     params:{ idCompetencia: 1,
@@ -169,6 +190,14 @@ var reqModificarMarcador = {
         mockingoose(model).toReturn(responseFindOneAC, 'findOne')
         mockingoose(EquipoC).toReturn(undefined, 'findOne')
         const { res } = await expressRequestMock(controller.ingresarEquipoACompetencia, reqCrearequipoCompetidor, helper.resp)
+        const { token, datos } = JSON.parse(res._getData());
+        expect(res.statusCode).toEqual(200);
+        expect(datos.codigo).toBeLessThan(0);
+        expect(datos.exito).toBeTruthy(); 
+      });
+
+      it('Ingresar Equipos a Competencia', async () => {        
+        const { res } = await expressRequestMock(controller.ingresarEquiposACompetencia, reqCrearequiposCompetidores, helper.resp)
         const { token, datos } = JSON.parse(res._getData());
         expect(res.statusCode).toEqual(200);
         expect(datos.codigo).toBeLessThan(0);

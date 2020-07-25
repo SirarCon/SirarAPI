@@ -73,6 +73,7 @@ CompetenciaSchema.pre('save',  async function(next) {
 
 CompetenciaSchema.method('todaInformacion',function (){
     return {
+        _id: this._id,
         evento: this.evento,
         prueba: this.prueba,
         fechaHora: funcionesGlobales.construirFecha(this.fechaHora),
@@ -87,6 +88,7 @@ CompetenciaSchema.method('todaInformacion',function (){
 });
 CompetenciaSchema.method('infoPublica',function (){
     return {
+        _id: this._id,
         evento: this.evento,
         prueba: this.prueba,
         fechaHora: funcionesGlobales.construirFecha(this.fechaHora),

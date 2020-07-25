@@ -27,6 +27,9 @@ module.exports = function(app, express) {
 
     routerGeneral.route('/listarCompetenciasEventoPruebaFase/:idEvento/:idPrueba/:genero/:fase')    
         .get(errorHandler(competenciaController.listarCompetenciasEventoPruebaFase));
+    
+    routerGeneral.route('/competencia/:idCompetencia')
+        .get(errorHandler(competenciaController.leerCompetencia));
 //----------------------------------------Atletas-----------------------
     routerGeneral.route('/listarAtletasPorCompetencia/:idCompetencia')
         .get(errorHandler(atletaCompetidorController.listarAtletasCompetencia))
@@ -64,10 +67,13 @@ module.exports = function(app, express) {
         .get(errorHandler(competenciaController.listarFasesxPruebaEvento));
 
     routerAdm.route('/listarCompetenciasEventoPruebaFase/:idEvento/:idPrueba/:genero/:fase')  
-
+        .get(errorHandler(competenciaController.listarCompetenciasEventoPruebaFase));
 
     routerAdm.route('/competencia')
         .post(errorHandler(competenciaController.crearCompetencia));
+
+    routerAdm.route('/competencia/:idCompetencia')
+        .get(errorHandler(competenciaController.leerCompetencia));
 
     routerAdm.route('/competencia/:idCompetencia')
         .put(errorHandler(competenciaController.modificarCompetencia));
@@ -78,9 +84,15 @@ module.exports = function(app, express) {
 //----------------------------------------Atletas-----------------------
     routerAdm.route('/atletaCompetencia')
         .post(errorHandler(atletaCompetidorController.ingresarAtletaACompetencia));
+    
+    routerAdm.route('/atletasCompetencia')
+        .post(errorHandler(atletaCompetidorController.ingresarAtletasACompetencia));
 
     routerAdm.route('/marcadoresAtletaCompetencia/:idAtleta/:agregar')
         .put(errorHandler(atletaCompetidorController.modificarMarcadores));
+
+    routerAdm.route('/modificarAtletaCompetidor/:idAtleta')
+        .put(errorHandler(atletaCompetidorController.modificarAtletaCompetidor))    
 
     routerAdm.route('/atletaCompetencia/:idAtletaCompetencia')
         .delete(errorHandler(atletaCompetidorController.eliminarAtletaDeCompetencia));
@@ -88,9 +100,15 @@ module.exports = function(app, express) {
 
     routerAdm.route('/equipoCompetencia')
         .post(errorHandler(equipoCompetidorController.ingresarEquipoACompetencia));
+    
+    routerAdm.route('/equiposCompetencia')
+        .post(errorHandler(equipoCompetidorController.ingresarEquiposACompetencia));
 
     routerAdm.route('/marcadoresEquipoCompetencia/:idEquipo/:agregar')
         .put(errorHandler(equipoCompetidorController.modificarMarcadores));
+
+    routerAdm.route('/modificarEquipoCompetidor/:idEquipo')
+        .put(errorHandler(equipoCompetidorController.modificarEquipoCompetidor))   
 
     routerAdm.route('/equipoCompetencia/:idEquipoCompetencia')
         .delete(errorHandler(equipoCompetidorController.eliminarEquipoDeCompetencia));

@@ -68,7 +68,7 @@ exports.borrarFase = function(req, res){
 }
 
 exports.obtenerFases = function(_, res){
-    Fase.find().sort({ _id: 1 }).exec().then(fases=>{
+    Fase.find().sort({ _id: -1 }).exec().then(fases=>{
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, fases)});            
         }).catch(err=>{
             funcionesGlobales.registrarError("obtenerFases/RecursoController", err)                                         

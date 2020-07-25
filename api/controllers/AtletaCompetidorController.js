@@ -45,6 +45,26 @@ exports.ingresarAtletaACompetencia = async function(req, res){
     })
     };
     
+
+exports.ingresarAtletasACompetencia = async function(req, res){
+    var promesas = req.body.atletas.map(reqAtleta => {
+        var nuevoAtelta = new AtletaC(reqAtleta);
+        return nuevoAtelta.save();// Si falla uno solo ese no se inserta
+    });
+    await Promise.all(promesas).then(_=>{
+        res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atletas a Competencia", " ")});    
+    }).catch(async err=>{
+        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
+            funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorController", err)
+            res.json({token: res.locals.token, datos: globales.mensajes(21, "un atleta a Competencia ", funcionesGlobales.manejarError(err))});
+            }else{//Error llave duplicada
+                await funcionesGlobales.asyncForEach(req.body.atletas,
+                    await funcionesGlobales.restarContador('atletaCompetidor'));
+            }                    
+        });
+               
+};
+
 exports.eliminarAtletaDeCompetencia = async function(req, res){
         AtletaC.findOneAndRemove({_id: req.params.idAtletaCompetencia})
         .exec()
@@ -75,8 +95,31 @@ exports.modificarMarcadores = async function(req, res){
                 }
             }).catch(err=>{
                 funcionesGlobales.registrarError("modificarmarcadores/AtletaCompetidorController", err)
-                res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))});                                })
+                res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))}); 
+            })
             
+};
+
+exports.modificarAtletaCompetidor = async function(req, res) {
+    AtletaC.findOneAndUpdate(
+        {_id: req.params.idAtleta},
+        {
+         $set:{
+            esLocal: req.body.esLocal,            
+         }
+        },
+        {projection:{}, new: true, runValidators: true})
+        .exec()
+        .then(atleta=>{
+            if(atleta){
+                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", atleta._id)});
+            }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
+            }
+        }).catch(err=>{
+            funcionesGlobales.registrarError("modificarAtletaCompetidor/AtletaCompetidorController", err)
+            res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))}); 
+        })
 };
 
 

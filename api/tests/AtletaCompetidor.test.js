@@ -41,9 +41,29 @@ var atletaCompetidorBody = {
   atleta: 1,
   competencia: 1,
 }
+var atletaCompetidorBody2 = {
+  atleta: 2,
+  competencia: 1,
+}
+
+var atletaCompetidorBody3 = {
+  atleta: 3,
+  competencia: 1,
+}
+
 var reqCrearatletaCompetidor = {
   ...helper.reqGeneral,
   body: atletaCompetidorBody,
+}
+
+var reqCrearatletasCompetidores = {
+  ...helper.reqGeneral,
+  body:{ atletas:[
+            atletaCompetidorBody,
+            atletaCompetidorBody2,
+            atletaCompetidorBody3
+          ],
+        }
 }
 
 var reqListarAtletasCompetencia ={
@@ -116,7 +136,6 @@ var resMarcadores = {
       esUltimoRegistro: false,
       set: 1,
       tiempo: [Object],
-      tipo: 2
     },
   ]
 }
@@ -128,11 +147,29 @@ var reqModificarMarcador = {
     idMarcador: "5e7d7d702df756081135ccc9"
   }
 }
+
+var reqModificarAtletaCompetidor = {
+  ...helper.reqGeneral,
+  params:{
+    idAtleta: 1,
+  },
+  body:{
+    esLocal : true,
+  }
+}
     
     it('Ingresar Atleta a Competencia', async () => {
       mockingoose(model).toReturn(responseFindOneAC, 'findOne')
       mockingoose(AtletaC).toReturn(undefined, 'findOne')
       const { res } = await expressRequestMock(controller.ingresarAtletaACompetencia, reqCrearatletaCompetidor, helper.resp)
+      const { token, datos } = JSON.parse(res._getData());
+      expect(res.statusCode).toEqual(200);
+      expect(datos.codigo).toBeLessThan(0);
+      expect(datos.exito).toBeTruthy(); 
+    });
+
+    it('Ingresar Atletas a Competencia', async () => {
+      const { res } = await expressRequestMock(controller.ingresarAtletasACompetencia, reqCrearatletasCompetidores, helper.resp)
       const { token, datos } = JSON.parse(res._getData());
       expect(res.statusCode).toEqual(200);
       expect(datos.codigo).toBeLessThan(0);
@@ -193,4 +230,14 @@ var reqModificarMarcador = {
     expect(datos.codigo).toBeLessThan(0);
     expect(datos.exito).toBeTruthy(); 
   });
+
+  it('Modificar atleta competidor', async () => {
+    mockingoose(AtletaC).toReturn(resMarcadores, 'findOneAndUpdate')
+    const { res } = await expressRequestMock(controller.modificarAtletaCompetidor, reqModificarAtletaCompetidor, helper.resp)
+    const { token, datos } = JSON.parse(res._getData());
+    expect(res.statusCode).toEqual(200);
+    expect(datos.codigo).toBeLessThan(0);
+    expect(datos.exito).toBeTruthy(); 
+  });
+
 });

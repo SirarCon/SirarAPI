@@ -44,6 +44,24 @@ exports.ingresarEquipoACompetencia = async function(req, res){
         res.json({token: res.locals.token, datos: globales.mensajes(19, "equipo.", funcionesGlobales.manejarError(err))});        
     })
     };
+
+    exports.ingresarEquiposACompetencia = async function(req, res){
+        var promesas = req.body.equipos.map(reqEquipo => {
+            var nuevoEquipo = new EquipoC(reqEquipo);
+            return nuevoEquipo.save();// Si falla uno solo ese no se inserta
+        });
+        await Promise.all(promesas).then(equipo=>{
+            res.json({token: res.locals.token, datos: globales.mensajes(-7, "Equipo a Competencia", " ")});    
+        }).catch(async err=>{
+            if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
+                funcionesGlobales.registrarError("ingresarEquipoACompetencia/EquipoCompetidorController", err)
+                res.json({token: res.locals.token, datos: globales.mensajes(21, "un equipo a Competencia ", funcionesGlobales.manejarError(err))});
+              }else{//Error llave duplicada
+                await funcionesGlobales.restarContador('equipoCompetidor'); 
+                res.json({token: res.locals.token, datos: globales.mensajes(15, "id de equipo a competencia", " ")});
+              }
+        });                   
+    };
     
 exports.eliminarEquipoDeCompetencia = async function(req, res){
         EquipoC.findOneAndRemove({_id: req.params.idEquipoCompetencia})

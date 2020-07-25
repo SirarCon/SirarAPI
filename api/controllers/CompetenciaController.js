@@ -19,7 +19,7 @@ exports.crearCompetencia = async function(req, res){
             if(prueba){
                 var nuevaCompetencia = new Competencia(req.body);
                 nuevaCompetencia.save().then(competencia=>{
-                    res.json({token: res.locals.token, datos: globales.mensajes(-4, "Competencia del", competencia.infoPublica().fechaHora)});
+                    res.json({token: res.locals.token, datos: globales.mensajes(-4, "Competencia del", competencia.infoPublica()._id)});
                 }).catch(async err=>{
                     if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
                         funcionesGlobales.registrarError("crearCompetencia/CompetenciaController", err)                          
@@ -225,6 +225,22 @@ exports.listarCompetenciasEventoPruebaFase = function(req, res){
         genero: Number(req.params.genero),
         fase: req.params.fase,
     })
+    .populate([{path: "prueba", select: "_id tipo tipoMarcador"}])  
+    .sort({enVivo:1, fechaHora: 1, descripcion: 1})
+    .exec()
+    .then(competencias=>{
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
+    }).catch(err=>{
+        funcionesGlobales.registrarError("listarCompetenciasEventoPruebaFase/CompetenciaController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias", " ")});  
+    })
+}
+
+exports.leerCompetencia = function(req, res){
+    Competencia.find({
+        _id: req.params.idCompetencia,        
+    })
+    .populate([{path: "prueba", select: "_id tipo tipoMarcador"}])  
     .sort({descripcion: 1})
     .exec()
     .then(competencias=>{

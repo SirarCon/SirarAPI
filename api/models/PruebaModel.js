@@ -31,6 +31,10 @@ var PruebaSchema = new Schema({
         type: Number,
         required: "Seleccione si la prueba es individual o por equipo"
     },
+    tipoMarcador: {//Puntos (1), Tiempo (2), Metros (3)
+      type: Number,
+      required: 'Seleccione el tipo de marcador',
+  },
   }, {_id: false});
 
   PruebaSchema.pre('save', async function(next) {
@@ -71,6 +75,7 @@ var PruebaSchema = new Schema({
       nombre: this.nombre, 
       deporte: this.deporte,
       tipo: this.tipo,
+      tipoMarcador: this.tipoMarcador,
       activo: this.activo
     };
   
@@ -82,6 +87,7 @@ var PruebaSchema = new Schema({
       nombre: this.nombre, 
       deporte: this.deporte,
       tipo: this.tipo,
+      tipoMarcador: this.tipoMarcador,
     };
   
   });

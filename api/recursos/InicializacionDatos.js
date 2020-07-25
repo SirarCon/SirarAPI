@@ -610,10 +610,11 @@ var paises = [
   cuartosfinal = new Fase({ "_id": 3, "descripcion" : "Cuartos de Final", "siglas": "QF"}),
   octavosfinal = new Fase({ "_id": 4, "descripcion" : "Octavos de Final", "siglas": "8 F"}),
   dieciseisavosfinal =  new Fase({ "_id": 5, "descripcion" : "Dieciseisavos de Final", "siglas": "16 F"}),
-  grupos =  new Fase({ "_id": 6, "descripcion" : "Fase de Grupos", "siglas": "Grupos"});
+  grupos =  new Fase({ "_id": 6, "descripcion" : "Grupos", "siglas": "Grupos"}),
+  regular =  new Fase({ "_id": 7, "descripcion" : "Regular", "siglas": "Regular"});
  
   var fases = [
-   final, semiFinal, cuartosfinal, octavosfinal, dieciseisavosfinal, grupos
+   final, semiFinal, cuartosfinal, octavosfinal, dieciseisavosfinal, grupos, regular,
 ]
 
 var opciones = { upsert: true, new: true, setDefaultsOnInsert: true };

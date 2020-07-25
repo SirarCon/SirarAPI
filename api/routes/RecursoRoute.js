@@ -16,22 +16,28 @@ routerAdm.use(seguridad.verificarTokenGeneral, seguridad.verify);
     
     //Rutas POST, GET, PUT, DELETE
     routerGeneral.route('/paises')
-    .get(errorHandler(recursoController.obtenerPaises));
+      .get(errorHandler(recursoController.obtenerPaises));
 
     routerGeneral.route('/fases')
-    .get(errorHandler(recursoController.obtenerFases));
+      .get(errorHandler(recursoController.obtenerFases));
 
     routerAdm.route('/paises')
-    .post(errorHandler(recursoController.crearPais));
+      .get(errorHandler(recursoController.obtenerPaises)); 
+      
+    routerAdm.route('/fases')
+      .get(errorHandler(recursoController.obtenerFases));
+
+    routerAdm.route('/paises')
+      .post(errorHandler(recursoController.crearPais));
 
     routerAdm.route('/pais')
-    .delete(errorHandler(recursoController.borrarPais));
+      .delete(errorHandler(recursoController.borrarPais));
 
     routerAdm.route('/fases')
-    .post(errorHandler(recursoController.crearFase));
+      .post(errorHandler(recursoController.crearFase));
 
     routerAdm.route('/fase')
-    .delete(errorHandler(recursoController.borrarFase));
+      .delete(errorHandler(recursoController.borrarFase));
 
 // production error handler
 const HTTP_SERVER_ERROR = 500;

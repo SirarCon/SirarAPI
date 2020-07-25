@@ -42,10 +42,6 @@ var AtletaCompetidorSchema = new Schema({
             metros: {
                 type: Number,
             },            
-            tipo: {//Puntos (1), Tiempo (2), Metros (3)
-                type: Number,
-                required: 'Seleccione el tipo de marcador',
-            },
             momentoTiempo: {
                 type: Tiempo,
             },
