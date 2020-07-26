@@ -19,7 +19,7 @@ exports.crearCompetencia = async function(req, res){
             if(prueba){
                 var nuevaCompetencia = new Competencia(req.body);
                 nuevaCompetencia.save().then(competencia=>{
-                    res.json({token: res.locals.token, datos: globales.mensajes(-4, "Competencia del", competencia.infoPublica()._id)});
+                    res.json({token: res.locals.token, datos: globales.mensajes(-4, "Competencia del", competencia.infoPublica().fechaHora, competencia.infoPublica()._id)});
                 }).catch(async err=>{
                     if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
                         funcionesGlobales.registrarError("crearCompetencia/CompetenciaController", err)                          
