@@ -41,7 +41,7 @@ module.exports ={
       if(filename && filename !== "") {
       fs.readFile(filename, function(err, data){
             if (error){ 
-                module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", error + " " + filename);
+                module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", err + " " + filename);
                 reject("");
               } 
             else{ 
