@@ -40,7 +40,7 @@ module.exports ={
     return new Promise(function(resolve, reject) {
       if(filename && filename !== "") {
       fs.readFile(filename, function(err, data){
-            if (error){ 
+            if (err){ 
                 module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", err + " " + filename);
                 reject("");
               } 
@@ -52,8 +52,8 @@ module.exports ={
       else{
         resolve("");
       }
-    }).catch((error)=>{ 
-        module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", error) 
+    }).catch((err)=>{ 
+        module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", err) 
       return "";
      });
   },
