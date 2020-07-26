@@ -110,7 +110,7 @@ exports.modificarAtleta  = async function(req, res){
 exports.listarAtletas = async function(_, res){
     Atleta.find()
     .sort({nombreNormalizado : 1})
-    .populate([{path: "deporte", select: "_id federacion"}])  
+    .populate([{path: "deporte", select: "_id nombre federacion"}])  
     .exec()
     .then(async (atletas)=>{
         await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
@@ -126,7 +126,7 @@ exports.listarAtletas = async function(_, res){
 exports.leerAtleta  = async function(req, res){
     Atleta.findOne()
     .where({_id: req.params.id})
-    .populate([{path: "deporte", select: "_id federacion" },])  
+    .populate([{path: "deporte", select: "_id nombre federacion" },])  
     .exec()
     .then(async (atleta) => {
         if(atleta){            
@@ -190,7 +190,7 @@ exports.listarAtletasActivos = async function(req, res){
     Atleta.find()
     .where(filtro)  
     .sort({nombreNormalizado : 1})
-    .populate([{path: "deporte", select: "_id federacion" },])      
+    .populate([{path: "deporte", select: "_id nombre federacion" },])      
     .exec()
     .then(async (atletas)=>{
         await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
@@ -206,7 +206,7 @@ exports.listarAtletasActivos = async function(req, res){
 exports.leerAtletaActivo  = async function(req, res){
     Atleta.findOne()
     .where({_id: req.params.id, activo: true})
-    .populate([{path: "deporte", select: "_id federacion" /*, populate:{path: "federacion", select: "_id"}*/},])  
+    .populate([{path: "deporte", select: "_id nombre federacion" /*, populate:{path: "federacion", select: "_id"}*/},])  
     .exec()
     .then(async (atleta) => {
         if(atleta){
