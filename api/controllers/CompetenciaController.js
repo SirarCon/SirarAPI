@@ -102,7 +102,7 @@ exports.cambiarEstadoCompetencia = async function(req, res){
 exports.listarDeportesXEvento = async function(req, res){
 Competencia.find()
 .where({ evento: req.params.idEvento, activo: true })
-.populate({path:"prueba", select: "deporte"})
+.populate([{path: "prueba", select: "deporte", populate:{path: "deporte", select: "_id nombre"}},])  
 .exec()
 .then(competencias => {
     var deportes = competencias.length > 0 ?
