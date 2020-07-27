@@ -12,8 +12,10 @@ function cargarModelos(){
     require('./api/models/EventoModel');
     require('./api/models/PruebaModel');
     require('./api/models/CompetenciaModel');
+    require('./api/models/NotificacionAtletaModel');
+    require('./api/models/NotificacionEquipoModel');
     require('./api/models/AtletaCompetidorModel');  
-    require('./api/models/EquipoCompetidorModel');  
+    require('./api/models/EquipoCompetidorModel');    
   }
 
   function registrarRutas(){
@@ -24,7 +26,8 @@ function cargarModelos(){
                require('./api/routes/EquipoRoute'),
                require('./api/routes/EventoRoute'),
                require('./api/routes/CompetenciaRoute'),
-               require('./api/routes/RecursoRoute')
+               require('./api/routes/RecursoRoute'),
+               require('./api/routes/NotificacionRoute'),
                 ]; 
      //register the route
      routes.forEach((ruta) =>{ ruta(app, express)});

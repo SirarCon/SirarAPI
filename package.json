@@ -28,6 +28,7 @@
     "express": "^4.17.1",
     "express-request-mock": "^2.1.0",
     "file-stream-rotator": "^0.5.7",
+    "firebase-admin": "^9.0.0",
     "jade": "^1.11.0",
     "jest-mongoose-mock": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
