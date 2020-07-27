@@ -380,7 +380,8 @@ exports.modificarPrueba = function(req, res){
             Prueba.findOneAndUpdate({_id: req.params.idPrueba, deporte: req.params.idDeporte},
             { $set: {
               nombre: req.body.nombre, 
-              tipo: req.body.tipo,                       
+              tipo: req.body.tipo,   
+              tipoMarcador: req.body.tipoMarcador,                    
               activo: req.body.activo        
             }}, {projection:{}, new: false, runValidators: true})
             .exec()
