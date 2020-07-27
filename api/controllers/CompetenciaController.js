@@ -55,12 +55,9 @@ exports.crearCompetencia = async function(req, res){
 exports.modificarCompetencia = async function(req, res){
 Competencia.findOneAndUpdate({_id: req.params.idCompetencia},
     { $set: {
-        evento: req.body.evento,
-        prueba: req.body.prueba,
         fechaHora: req.body.fechaHora,
         ciudad: req.body.ciudad,
         recinto: req.body.recinto,
-        genero: req.body.genero,
         descripcion: req.body.descripcion,
         fase: req.body.fase,
         activo: req.body.activo
