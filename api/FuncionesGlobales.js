@@ -175,9 +175,13 @@ convertirAFecha: function(fecha){
 ,
 
 construirFecha: function(fechaCompleta){//+ 1 por que en JS el mes comienza en 0 
+  if(fechaCompleta){
   var fecha = fechaCompleta.getFullYear()+'/'+(fechaCompleta.getMonth() + 1)+'/'+ fechaCompleta.getDate();
   var hora = fechaCompleta.getHours() + ":" + fechaCompleta.getMinutes() + ":" + fechaCompleta.getSeconds();
   return fecha + ' '+ hora;
+  } 
+  else
+   return null;
 },
 
 obtenerAnno: function(fecha){

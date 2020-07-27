@@ -54,6 +54,9 @@ var CompetenciaSchema = new Schema({
  
 CompetenciaSchema.pre('save',  async function(next) {
   var doc = this;
+  //Actualizar estado de enVivo
+  doc.enVivo = doc.fechaHora && new Date() > doc.fechaHora ?
+               0 : 2
   await Contador.findOneAndUpdate(
         { _id: 'competencia' },
         { $inc : { sequence_value : 1 } },
