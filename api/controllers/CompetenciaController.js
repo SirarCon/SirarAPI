@@ -59,7 +59,7 @@ Competencia.findOneAndUpdate({_id: req.params.idCompetencia},
         prueba: req.body.prueba,
         fechaHora: req.body.fechaHora,
         ciudad: req.body.ciudad,
-        estadio: req.body.estadio,
+        recinto: req.body.recinto,
         genero: req.body.genero,
         descripcion: req.body.descripcion,
         fase: req.body.fase,
@@ -138,7 +138,9 @@ exports.listarPruebasXDeporte = async function(req, res){
                         $unwind: "$pruebaPertenciente"
                     }, 
                         { $group:{_id: {
-                                    prueba: "$prueba",
+                                    id: "$prueba",
+                                    tipo: "$pruebaPertenciente.tipo",
+                                    tipoMarcador: "$pruebaPertenciente.tipoMarcador",
                                     nombre: "$pruebaPertenciente.nombre",
                                     genero: "$genero",                                            
                                 }    
@@ -148,7 +150,9 @@ exports.listarPruebasXDeporte = async function(req, res){
                     {
                     $project:{
                             _id: {                                    
-                                prueba: 1,
+                                id: 1,
+                                tipo: 1,
+                                tipoMarcador: 1,
                                 nombre: 1,
                                 genero: 1,                                                                                                            
                             }                         
@@ -156,11 +160,11 @@ exports.listarPruebasXDeporte = async function(req, res){
                     }
                              ])
                 .exec()
-                .then(competencias => {            
-                    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
+                .then(pruebas => {            
+                    res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, pruebas)});  
                 }).catch(err => {
                     funcionesGlobales.registrarError("listarCategoriasXDeporte/CompetenciaController", err)
-                    res.json({token: res.locals.token,datos: globales.mensajes(12, "las categorias de las competencias", " ")});  
+                    res.json({token: res.locals.token,datos: globales.mensajes(12, "las pruebas de las competencias", " ")});  
                 });
 };
 

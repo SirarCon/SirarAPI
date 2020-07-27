@@ -24,15 +24,12 @@ var CompetenciaSchema = new Schema({
     },
     fechaHora:{
         type: Date,
-        required: 'Digite la fecha y hora por favor'
     },
     ciudad: {
         type: String,
-        required: "Digite la ciudad de la competencia"
     },
-    estadio: {
+    recinto: {
         type: String,
-        required: "Digite el estadio"
     },
     genero:{
         type: Number,
@@ -40,7 +37,6 @@ var CompetenciaSchema = new Schema({
     },
     descripcion:{//Hit 1, Partido 1, etc
         type: String,
-        required: "Digite una descripción para la competencia"
     },
     fase:{
         type: Number,
@@ -80,7 +76,7 @@ CompetenciaSchema.method('todaInformacion',function (){
         genero: this.genero,
         descripcion: this.descripcion,
         fase: this.fase,
-        estadio: this.estadio,
+        recinto: this.recinto,
         ciudad: this.ciudad,
         enVivo: this.enVivo,
         activo: this.activo,        
@@ -95,7 +91,7 @@ CompetenciaSchema.method('infoPublica',function (){
         genero: this.genero,
         descripcion: this.descripcion,
         fase: this.fase,
-        estadio: this.estadio,
+        recinto: this.recinto,
         ciudad: this.ciudad,
         enVivo: this.enVivo,
     }

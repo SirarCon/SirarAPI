@@ -2117,7 +2117,7 @@ var competencia = new Competencia({
     "evento": Rio._id,
     "prueba": pruebaAtletismo._id,
     "fechaHora":  "2016-08-18T00:00:00.000Z",
-    "estadio": "Estadio Río",
+    "recinto": "Estadio Río",
     "ciudad": "Río",
     "genero": false,
     "descripcion": "Hit 1",

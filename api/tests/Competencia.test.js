@@ -14,7 +14,7 @@ describe('Competencia Atleta', () => {
         prueba: 1,
         fechaHora: '2016-08-05T08:00:00.000Z',
         ciudad: 'Tokio',
-        estadio: 'Tokio Stadium',
+        recinto: 'Tokio Stadium',
         genero: 1,
         descripcion: 'Hit 1',
         fase: 2,
