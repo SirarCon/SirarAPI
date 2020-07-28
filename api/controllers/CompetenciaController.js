@@ -255,24 +255,45 @@ exports.leerCompetencia = function(req, res){
 
 
 exports.registrarDispositivoCompetencia = async function(req, res){
-    fireBase.registrarDispositivoCompetencia(req.body)
-    .then(notificacion=>{
-        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Notificación ", "")});
-    }).catch(err =>{
-        funcionesGlobales.registrarError("registrarDispositivoCompetencia/CompetenciaController", err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "Notificación creada", " ")});  
-    })
+    fireBase.existeDispositivoCompetencia(req.body)
+    .then(dispositivo =>{
+        if(dispositivo.length == 0){
+            fireBase.registrarDispositivoCompetencia(req.body)
+            .then(notificacion=>{
+                res.json({token: res.locals.token, datos: globales.mensajes(-9, "Competencia")});
+            }).catch(err =>{
+                funcionesGlobales.registrarError("registrarDispositivoCompetencia/CompetenciaController", err)
+                res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "competencia")});  
+            })            
+        }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(24, "Notificación")});
+        }
+    }).catch(err=>{        
+        funcionesGlobales.registrarError("registrarDispositivoCompetencia/CompetenciaController", err);
+        res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "competencia")});  
+    });
 }
 
 exports.removerDispositivoCompetencia = async function(req, res){
-    fireBase.removerDispositivoCompetencia(req.body)
-    .then(notificacion=>{
-        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Notificación ", "")});
-    }).catch(err =>{
-        funcionesGlobales.registrarError("removerDispositivoCompetencia/CompetenciaController", err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "Notificación creada", " ")});  
-    })
+    fireBase.existeDispositivoCompetencia(req.body)
+    .then(dispositivo =>{
+        if(dispositivo.length > 0){
+            fireBase.removerDispositivoCompetencia(req.body)
+            .then(notificacion=>{
+                res.json({token: res.locals.token, datos: globales.mensajes(10)});
+            }).catch(err =>{
+                funcionesGlobales.registrarError("removerDispositivoCompetencia/CompetenciaController", err)
+                res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "competencia")});  
+            });
+        }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(18, "Notificación")});
+        }
+    }).catch(err=>{        
+        funcionesGlobales.registrarError("removerDispositivoCompetencia/CompetenciaController", err);
+        res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "competencia")});  
+    });
 }
+
 
 
 
