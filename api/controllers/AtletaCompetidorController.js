@@ -1,3 +1,5 @@
+const { enviarNotificaciones } = require('../fireBase/DispositivoHandler/AccesoDb.js');
+
 var mongoose = require('mongoose'),
 AtletaC = mongoose.model('AtletaCompetidor'),
 Competencia = mongoose.model('Competencia'),
@@ -22,7 +24,7 @@ exports.ingresarAtletaACompetencia = async function(req, res){
                 if(!atletaC){
                     var nuevoAtelta = new AtletaC(req.body);
                     nuevoAtelta.save().then(atleta=>{
-                        fireBase.enviarNotificacionesAtleta("Atleta participará en evento", atleta.atleta)
+                        enviarNotificacion(AtletaC, atleta)
                         res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ")});    
                     }).catch(async err=>{
                         if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
@@ -47,7 +49,24 @@ exports.ingresarAtletaACompetencia = async function(req, res){
         res.json({token: res.locals.token, datos: globales.mensajes(19, "atleta.", funcionesGlobales.manejarError(err))});        
     })
     };
-    
+  
+ async function enviarNotificacion(Model, atleta){
+     var atletaC = await Model.populate(atleta, 
+        [{path: "competencia", 
+            select: "_id fechaHora", 
+                    populate:[{path: "prueba", select: "_id nombre"},
+                              {path: "evento", select: "_id nombre"}
+                    ]
+        },
+        {path: "atleta", select: "_id nombre"}
+    ])
+    fireBase.enviarNotificacionesAtleta("Atleta " + atletaC.atleta.nombre +
+    " participará en competencia de" + atletaC.competencia.prueba.nombre +
+    " " + atletaC.competencia.evento.nombre + " el " + atletaC.competencia.fechaHora,
+    atletaC.atleta._id
+     );
+
+ }   
 
 exports.ingresarAtletasACompetencia = async function(req, res){
     var promesas = req.body.atletas.map(reqAtleta => {
