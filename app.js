@@ -14,6 +14,7 @@ function cargarModelos(){
     require('./api/models/CompetenciaModel');
     require('./api/models/NotificacionAtletaModel');
     require('./api/models/NotificacionEquipoModel');
+    require('./api/models/NotificacionCompetenciaModel');
     require('./api/models/AtletaCompetidorModel');  
     require('./api/models/EquipoCompetidorModel');    
   }
@@ -55,7 +56,7 @@ function cargarModelos(){
     app.use(bodyParser.json({limit: '10mb'}));
     app.use(compression());
 
-    await require('./api/recursos/InicializacionDatos').Errores();
+    await require('./api/recursos/InicializacionDatos').Datos();
     await require('./api/Globales').inicializarMensajes(mongoose);
     //sfs2e4ui7jq6b2qyglwhvgmsncgt46eumi2yddctdtg2rdmjb3qa
 

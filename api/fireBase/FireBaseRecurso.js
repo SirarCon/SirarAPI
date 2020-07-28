@@ -3,73 +3,86 @@
 const {admin} = require("./FireBaseConfig"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 NotificacionEquipo = require("../models/NotificacionEquipoModel"),
-NotificacionAtleta = require("../models/NotificacionAtletaModel");
+NotificacionAtleta = require("../models/NotificacionAtletaModel"),
+NotificacionCompetencia = require("../models/NotificacionCompetenciaModel");
 const { mensajes } = require("../Globales");
+const modelos  = require("./DispositivoHandler/Modelos");
+const db  = require("./DispositivoHandler/AccesoDb");
+
 
 const notification_options = {
     priority: "high",
     timeToLive: 60 * 60 * 24
   };
 
-function mensajeaEnviar(titulo, mensaje){
-    var mensaje ={
-                  notification: {
-                      title: titulo,
-                      body: mensaje
-                      }
-                }
-    return mensaje;
-}
-  
-async function  enviarNotificacion(mensaje, registrationToken){
-  console.log(registrationToken)
-      const options =  notification_options,
-      notificacion = mensajeaEnviar("SIRAR", mensaje);
-      admin.messaging().sendToDevice(registrationToken, notificacion, options)
-      .then( response => {
 
-        console.log(response);
-       })
-      .catch( err => {
-        funcionesGlobales.registrarError("enviarNotificacion/FireBaseRecurso", err)
-      });
-}
+
+// exports.enviarNotificacionesAtleta = async function(mensaje, idAtleta){
+//   NotificacionAtleta
+//   .find()
+//   .where({atleta: idAtleta})
+//   .select({token: 1})
+//   .exec()
+//   .then(async tokens=>{
+//       await funcionesGlobales.asyncForEach(tokens, async (token)=>{
+//                               await enviarNotificacion(mensaje, token.token)
+//             });
+//   }).catch(err =>{
+//     funcionesGlobales.registrarError("enviarNotificacionesAtleta/FireBaseRecurso", err)
+//   })
+// } 
+
+
+//-------------------------------- Atleta -------------------------------------
+exports.registrarDispositivoAtleta = async function(body){
+  return db.registrarDispositivo(NotificacionAtleta, body);
+};
+
+exports.removerDispositivoAtleta = async function(body){
+  return db.removerDispositivo(NotificacionAtleta, modelos.getDispositivoAtleta(body));
+};
+
+exports.existeDispositivoAtleta = async function(body){
+  return db.existeDispositivo(NotificacionAtleta, modelos.getDispositivoAtleta(body));
+};
 
 exports.enviarNotificacionesAtleta = async function(mensaje, idAtleta){
-  NotificacionAtleta
-  .find()
-  .where({atleta: idAtleta})
-  .select({token: 1})
-  .exec()
-  .then(async tokens=>{
-      await funcionesGlobales.asyncForEach(tokens, async (token)=>{
-                              await enviarNotificacion(mensaje, token.token)
-            });
-  }).catch(err =>{
-    funcionesGlobales.registrarError("enviarNotificacionesAtleta/FireBaseRecurso", err)
-  })
-} 
+  return db.enviarNotificaciones(NotificacionAtleta, mensaje, modelos.getAtleta(idAtleta));
+};
+
+//-------------------------------- Equipo -------------------------------------
+
+exports.registrarDispositivoEquipo = async function(body){
+  return db.registrarDispositivo(NotificacionEquipo, body);
+};
+
+exports.removerDispositivoEquipo = async function(body){
+  return db.removerDispositivo(NotificacionEquipo, modelos.getDispositivoEquipo(body));
+};
+
+exports.existeDispositivoEquipo = async function(body){
+  return db.existeDispositivo(NotificacionEquipo, modelos.getDispositivoEquipo(body));
+};
+
 exports.enviarNotificacionesEquipo = async function(mensaje, idEquipo){
-  NotificacionEquipo
-  .find()
-  .where({equipo: idEquipo})
-  .select({token: 1})
-  .exec()
-  .then(async tokens=>{
-      await funcionesGlobales.asyncForEach(tokens, async (token)=>{
-                              await enviarNotificacion(mensaje, token)
-            });
-  }).catch(err =>{
-    funcionesGlobales.registrarError("enviarNotificacionesEquipo/FireBaseRecurso", err)
-  })
-}
+       return db.enviarNotificaciones(NotificacionEquipo, mensaje, modelos.getEquipo(idEquipo));
+};
 
-exports.registrarNotificacionAtleta = async function(body){
-  var nuevaNotificacion = new NotificacionAtleta(body)
-  return nuevaNotificacion.save();
-}
 
-exports.registrarNotificacionEquipo = async function(body){
-  var nuevaNotificacion = new NotificacionEquipo(body);
-  return nuevaNotificacion.save();
-}
+//-------------------------------- Competencia -------------------------------------
+
+exports.registrarDispositivoCompetencia = async function(body){
+    return db.registrarDispositivo(NotificacionCompetencia, body)
+};
+
+exports.removerDispositivoCompetencia = async function(body){
+    return db.removerDispositivo(NotificacionCompetencia, modelos.getDispositivoCompetencia(body));
+};
+  
+exports.existeDispositivoCompetencia = async function(body){
+    return db.existeDispositivo(NotificacionCompetencia, modelos.getDispositivoCompetencia(body));
+};
+
+exports.enviarNotificacionesCompetencia = async function(mensaje, idCompetencia){
+  return db.enviarNotificaciones(NotificacionCompetencia, mensaje, modelos.getCompetencia(idCompetencia));
+};

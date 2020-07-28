@@ -39,7 +39,7 @@ MensajeSchema.pre('save', async function(next) {
 });
 
 MensajeSchema.method("obtenerMensaje" , function(nuevoMensaje, id , objeto){
-  var mensaje = objeto || this.mensaje.replace("{sutantivoCambiar}", nuevoMensaje || "")
+  var mensaje = objeto || this.mensaje.replace("{sustantivoCambiar}", nuevoMensaje || "")
                            .replace("{id}", id || "")
                            .replace(/\s+/g, ' ').trim();
                            

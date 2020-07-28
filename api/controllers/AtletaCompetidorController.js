@@ -369,13 +369,3 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
     });
     }
 
-exports.registrarNotificacion = async function(req, res){
-    console.log(req.body)
-    fireBase.registrarNotificacionAtleta(req.body)
-    .then(notificacion=>{
-        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Notificación ", "")});
-    }).catch(err =>{
-        funcionesGlobales.registrarError("registrarNotificacion/AtletaCompetidorController", err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "Notificación creada", " ")});  
-    })
-}

@@ -4,7 +4,8 @@ Prueba = mongoose.model('Prueba'),
 Evento = mongoose.model('Evento'),
 Competencia = mongoose.model('Competencia'),
 globales =  require("../Globales.js"),
-funcionesGlobales = require("../FuncionesGlobales.js");
+funcionesGlobales = require("../FuncionesGlobales.js")
+fireBase = require("../fireBase/FireBaseRecurso");
 
 exports.crearCompetencia = async function(req, res){
     Evento.findOne()
@@ -252,6 +253,26 @@ exports.leerCompetencia = function(req, res){
     })
 }
 
+
+exports.registrarDispositivoCompetencia = async function(req, res){
+    fireBase.registrarDispositivoCompetencia(req.body)
+    .then(notificacion=>{
+        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Notificación ", "")});
+    }).catch(err =>{
+        funcionesGlobales.registrarError("registrarDispositivoCompetencia/CompetenciaController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "Notificación creada", " ")});  
+    })
+}
+
+exports.removerDispositivoCompetencia = async function(req, res){
+    fireBase.removerDispositivoCompetencia(req.body)
+    .then(notificacion=>{
+        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Notificación ", "")});
+    }).catch(err =>{
+        funcionesGlobales.registrarError("removerDispositivoCompetencia/CompetenciaController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "Notificación creada", " ")});  
+    })
+}
 
 
 

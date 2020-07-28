@@ -7,8 +7,8 @@ Deporte = mongoose.model('Deporte'),
 Prueba = mongoose.model('Prueba'),
 Evento = mongoose.model('Evento'),
 globales =  require("../Globales.js"),
-//atletaUtil = require("../utils/AtletaUtils"),
-funcionesGlobales = require("../FuncionesGlobales.js");
+funcionesGlobales = require("../FuncionesGlobales.js"),
+fireBase = require("../fireBase/FireBaseRecurso");
 const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 //#endregion Requires
 
@@ -17,7 +17,6 @@ exports.crearAtleta = async function(req, res){
         Deporte.findOne().where({_id: req.body.deporte}).exec()
         .then(function(deporte) {
           if(deporte){
-//                req.body = atletaUtil.formatoAFechas(req.body);
                 var nuevoAtleta = new Atleta(req.body);   
                 nuevoAtleta.fotoUrl = req.body.fotoUrl ? funcionesGlobales.guardarImagen(rutaImagenesAtletas, req.body.fotoUrl , nuevoAtleta._id) : undefined,
                 nuevoAtleta.save().then(atleta =>{ 
@@ -219,4 +218,46 @@ exports.leerAtletaActivo  = async function(req, res){
         res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id)});
     })
 };
+
+exports.registrarDispositivoAtleta = async function(req, res){
+    fireBase.existeDispositivoAtleta(req.body)
+    .then(dispositivo =>{
+        if(dispositivo.length == 0){
+            fireBase.registrarDispositivoAtleta(req.body)
+            .then(notificacion=>{
+                res.json({token: res.locals.token, datos: globales.mensajes(-9, "Atleta")});
+            }).catch(err =>{
+                funcionesGlobales.registrarError("registrarDispositivoAtleta/AtletaController", err)
+                res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", " ")});  
+            })            
+        }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(24, "Notificación")});
+        }
+    }).catch(err=>{        
+        funcionesGlobales.registrarError("registrarDispositivoAtleta/AtletaController", err);
+        res.json({token: res.locals.token,datos: globales.mensajes(23, "creando")});  
+    });
+}
+
+exports.removerDispositivoAtleta = async function(req, res){
+    fireBase.existeDispositivoAtleta(req.body)
+    .then(dispositivo =>{
+        if(dispositivo.length > 0){
+            fireBase.removerDispositivoAtleta(req.body)
+            .then(notificacion=>{
+                res.json({token: res.locals.token, datos: globales.mensajes(10)});
+            }).catch(err =>{
+                funcionesGlobales.registrarError("removerDispositivoAtleta/AtletaController", err)
+                res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando")});  
+            });
+        }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(18, "Notificación")});
+        }
+    }).catch(err=>{        
+        funcionesGlobales.registrarError("removerDispositivoAtleta/AtletaController", err);
+        res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando")});  
+    });
+}
+
+
 //#endregion  Usuariopúblico

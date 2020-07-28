@@ -7,7 +7,8 @@ Atleta = mongoose.model('Atleta'),
 Prueba = mongoose.model('Prueba'),
 Evento = mongoose.model('Evento'),
 globales =  require("../Globales.js"),
-funcionesGlobales = require("../FuncionesGlobales.js");
+funcionesGlobales = require("../FuncionesGlobales.js"),
+fireBase = require("../fireBase/FireBaseRecurso");
 const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 //#endregion Requires
 
@@ -228,4 +229,25 @@ exports.leerEquipoActivo = async function(req, res){
           res.json({token: res.locals.token,datos: globales.mensajes(13, "equipo", req.params.id)}); 
    });
 }
+
+exports.registrarDispositivoEquipo = async function(req, res){
+    fireBase.registrarDispositivoEquipo(req.body)
+    .then(notificacion=>{
+        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Notificación ", "")});
+    }).catch(err =>{
+        funcionesGlobales.registrarError("registrarDispositivoEquipo/EquipoController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "Notificación creada", " ")});  
+    })
+}
+
+exports.removerDispositivoEquipo = async function(req, res){
+    fireBase.removerDispositivoEquipo(req.body)
+    .then(notificacion=>{
+        res.json({token: res.locals.token, datos: globales.mensajes(-4, "Notificación ", "")});
+    }).catch(err =>{
+        funcionesGlobales.registrarError("removerDispositivoEquipo/EquipoController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "Notificación creada", " ")});  
+    })
+}
+
 //#endregion  Usuariopúblico
