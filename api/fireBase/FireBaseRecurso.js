@@ -1,20 +1,10 @@
 'use strict';
 
-const {admin} = require("./FireBaseConfig"),
-funcionesGlobales = require("../FuncionesGlobales.js"),
-NotificacionEquipo = require("../models/NotificacionEquipoModel"),
+const NotificacionEquipo = require("../models/NotificacionEquipoModel"),
 NotificacionAtleta = require("../models/NotificacionAtletaModel"),
 NotificacionCompetencia = require("../models/NotificacionCompetenciaModel");
-const { mensajes } = require("../Globales");
 const modelos  = require("./DispositivoHandler/Modelos");
 const db  = require("./DispositivoHandler/AccesoDb");
-
-
-const notification_options = {
-    priority: "high",
-    timeToLive: 60 * 60 * 24
-  };
-
 
 
 // exports.enviarNotificacionesAtleta = async function(mensaje, idAtleta){

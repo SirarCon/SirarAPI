@@ -22,23 +22,23 @@ exports.getDispositivoCompetencia = function(body)
     }
 }
 
-exports.getAtleta = function(body)
+exports.getAtleta = function(atleta)
 {
   return { 
-      atleta: body.atleta
+      atleta: atleta
     }
 }
 
-exports.getEquipo = function(body)
+exports.getEquipo = function(equipo)
 {
   return { 
-      equipo: body.equipo
+      equipo: equipo
     }
 }
 
-exports.getCompetencia = function(body)
+exports.getCompetencia = function(competencia)
 {
   return { 
-      competencia: body.competencia
+      competencia: competencia
     }
 }
