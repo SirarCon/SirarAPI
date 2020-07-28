@@ -210,7 +210,7 @@ AtletaSchema.method('todaInformacion', function() {
     }
   });
   
-AtletaSchema.method('infoPublica', function() {
+AtletaSchema.method('infoPublica', function(tieneAlerta) {
   return {
     id: this._id,
     nombre: this.nombre,
@@ -231,6 +231,7 @@ AtletaSchema.method('infoPublica', function() {
     pais: this.pais,
     retirado: this.retirado,
     medallas: this.medallas,
+    tieneAlerta: tieneAlerta,
   }
 });
   

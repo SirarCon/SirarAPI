@@ -8,6 +8,7 @@ Prueba = mongoose.model('Prueba'),
 Evento = mongoose.model('Evento'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
+atletasService = require("../services/AtletaService"),
 fireBase = require("../fireBase/FireBaseRecurso");
 const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 //#endregion Requires
@@ -47,7 +48,6 @@ exports.modificarAtleta  = async function(req, res){
         Deporte.findOne().where({_id: req.body.deporte}).exec()
         .then(function(deporte) {
             if(deporte){
- //               req.body = atletaUtil.formatoAFechas(req.body);
                 Atleta.findOneAndUpdate({_id: req.params.id},
                 {$set: {
                     nombre: req.body.nombre,
@@ -192,15 +192,11 @@ exports.listarAtletasActivos = async function(req, res){
     .populate([{path: "deporte", select: "_id nombre federacion" },])      
     .exec()
     .then(async (atletas)=>{
-        await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
-            atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);            
-        });
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a =>a.infoPublica()))});  
-      }).catch((err)=>{
-        funcionesGlobales.registrarError("listarAtletasActivos/AtletaController", err)
-        res.json({token: res.locals.token,datos: globales.mensajes(12, "", "los atletas")}); 
-     });
+        atletas = await atletasService.iterarAtletas(req.header('tokenDispositivo'), atletas)
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas)});  
+      }).catch((err)=>atletasService.manejarErrorLeerAtletas(err, res));
   };
+
 
 exports.leerAtletaActivo  = async function(req, res){
     Atleta.findOne()
@@ -208,16 +204,18 @@ exports.leerAtletaActivo  = async function(req, res){
     .populate([{path: "deporte", select: "_id nombre federacion" /*, populate:{path: "federacion", select: "_id"}*/},])  
     .exec()
     .then(async (atleta) => {
-        if(atleta){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atleta.infoPublica())});
+        if(atleta){            
+            var tieneAlerta = 
+            await atletasService.tieneNotificacion(req.header('tokenDispositivo'), atleta._id)
+            res.json({token: res.locals.token, 
+            datos: globales.mensajes(-1, null, null, atleta.infoPublica(tieneAlerta))});
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
         }
-    }).catch((err)=>{
-        funcionesGlobales.registrarError("leerAtletaActivo/AtletaController", err)
-        res.json({token: res.locals.token, datos: globales.mensajes(13, "atleta", req.params.id)});
-    })
+    }).catch(err=>atletasService.manejarErrorLeerAtleta(err, req, res))
 };
+
+
 
 exports.registrarDispositivoAtleta = async function(req, res){
     fireBase.existeDispositivoAtleta(req.body)
