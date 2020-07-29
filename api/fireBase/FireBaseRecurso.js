@@ -4,7 +4,7 @@ const NotificacionEquipo = require("../models/NotificacionEquipoModel"),
 NotificacionAtleta = require("../models/NotificacionAtletaModel"),
 NotificacionCompetencia = require("../models/NotificacionCompetenciaModel");
 const modelos  = require("./DispositivoHandler/Modelos");
-const db  = require("./DispositivoHandler/AccesoDb");
+const db  = require("./DispositivoHandler/AccesoDB");
 
 
 // exports.enviarNotificacionesAtleta = async function(mensaje, idAtleta){
