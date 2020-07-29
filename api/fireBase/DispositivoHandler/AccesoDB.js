@@ -15,7 +15,7 @@ exports.registrarDispositivo = async function(Modelo, body){
     return Modelo.find(dispositivo);
   }
 
-exports.enviarNotificaciones = async function(Modelo, mensaje, dispositivo){
+exports.enviarNotificaciones = async function(Modelo, mensaje, dispositivo, objeto){
     Modelo
     .find()
     .where(dispositivo)
@@ -23,19 +23,21 @@ exports.enviarNotificaciones = async function(Modelo, mensaje, dispositivo){
     .exec()
     .then(async tokens=>{
         await funcionesGlobales.asyncForEach(tokens, async (token)=>{
-                                await enviarNotificacion(mensaje, token.token)
+                                await enviarNotificacion(mensaje, token.token, objeto)
               });
     }).catch(err =>{
       funcionesGlobales.registrarError("enviarNotificaciones/AccesoDB", err)
     })
 }
 
-function mensajeaEnviar(titulo, mensaje){
-    var mensaje ={
+function mensajeaEnviar(titulo, mensaje, objeto){
+  var mensaje ={
                   notification: {
                       title: titulo,
-                      body: mensaje
-                      }
+                      body: mensaje                      
+                      },
+                    data: objeto
+                  
                 }
     return mensaje;
 }
@@ -46,9 +48,9 @@ const notification_options = {
 };
 
   
-async function enviarNotificacion(mensaje, registrationToken){
+async function enviarNotificacion(mensaje, registrationToken, objeto){
       const options =  notification_options,
-      notificacion = mensajeaEnviar("SIRAR", mensaje);
+      notificacion = mensajeaEnviar("SIRAR", mensaje, objeto);
       admin.messaging().sendToDevice(registrationToken, notificacion, options)
       .then( response => {
         console.log(response);

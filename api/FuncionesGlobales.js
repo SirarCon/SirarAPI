@@ -4,6 +4,9 @@ Error = mongoose.model("Error"),
 Contador = mongoose.model("Contador"),
 moment = require("moment");
 
+var meses =["ENERO", "FEBRERO, MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO",
+            "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"]
+
 module.exports ={
     validarEmail : function(email, obligatorio = false) {
     return new Promise(function(resolve, reject){
@@ -174,11 +177,23 @@ convertirAFecha: function(fecha){
 }
 ,
 
-construirFecha: function(fechaCompleta){//+ 1 por que en JS el mes comienza en 0 
+construirFecha: function(fechaCompleta, paraNotificacion = false){//+ 1 por que en JS el mes comienza en 0 
   if(fechaCompleta){
-  var fecha = fechaCompleta.getFullYear()+'/'+(fechaCompleta.getMonth() + 1)+'/'+ fechaCompleta.getDate();
-  var hora = fechaCompleta.getHours() + ":" + fechaCompleta.getMinutes() + ":" + fechaCompleta.getSeconds();
-  return fecha + ' '+ hora;
+  var fecha = paraNotificacion ?
+              fechaCompleta.getDate() + " " +
+              meses[fechaCompleta.getMonth()] + ", " +
+              fechaCompleta.getFullYear()
+              :
+             fechaCompleta.getFullYear() + '/' + 
+              (fechaCompleta.getMonth() + 1) +'/'+ 
+              fechaCompleta.getDate();
+
+  var hora = fechaCompleta.getHours() + ":" + 
+            (fechaCompleta.getMinutes().toString().length == 1 ? "0" + fechaCompleta.getMinutes() : fechaCompleta.getMinutes())
+              + ":" + 
+            (fechaCompleta.getSeconds().toString().length == 1 ? "0" + fechaCompleta.getSeconds() : fechaCompleta.getSeconds());
+  
+            return fecha + ' '+ hora;
   } 
   else
    return null;

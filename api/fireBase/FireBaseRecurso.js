@@ -7,22 +7,6 @@ const modelos  = require("./DispositivoHandler/Modelos");
 const db  = require("./DispositivoHandler/AccesoDB");
 
 
-// exports.enviarNotificacionesAtleta = async function(mensaje, idAtleta){
-//   NotificacionAtleta
-//   .find()
-//   .where({atleta: idAtleta})
-//   .select({token: 1})
-//   .exec()
-//   .then(async tokens=>{
-//       await funcionesGlobales.asyncForEach(tokens, async (token)=>{
-//                               await enviarNotificacion(mensaje, token.token)
-//             });
-//   }).catch(err =>{
-//     funcionesGlobales.registrarError("enviarNotificacionesAtleta/FireBaseRecurso", err)
-//   })
-// } 
-
-
 //-------------------------------- Atleta -------------------------------------
 exports.registrarDispositivoAtleta = async function(body){
   return db.registrarDispositivo(NotificacionAtleta, body);
@@ -36,8 +20,8 @@ exports.existeDispositivoAtleta = async function(body){
   return db.existeDispositivo(NotificacionAtleta, modelos.getDispositivoAtleta(body));
 };
 
-exports.enviarNotificacionesAtleta = async function(mensaje, idAtleta){
-  return db.enviarNotificaciones(NotificacionAtleta, mensaje, modelos.getAtleta(idAtleta));
+exports.enviarNotificacionesAtleta = async function(mensaje, idAtleta, objeto){
+  return db.enviarNotificaciones(NotificacionAtleta, mensaje, modelos.getAtleta(idAtleta), objeto);
 };
 
 //-------------------------------- Equipo -------------------------------------
@@ -54,8 +38,8 @@ exports.existeDispositivoEquipo = async function(body){
   return db.existeDispositivo(NotificacionEquipo, modelos.getDispositivoEquipo(body));
 };
 
-exports.enviarNotificacionesEquipo = async function(mensaje, idEquipo){
-       return db.enviarNotificaciones(NotificacionEquipo, mensaje, modelos.getEquipo(idEquipo));
+exports.enviarNotificacionesEquipo = async function(mensaje, idEquipo, objeto){
+       return db.enviarNotificaciones(NotificacionEquipo, mensaje, modelos.getEquipo(idEquipo), objeto);
 };
 
 
@@ -73,6 +57,6 @@ exports.existeDispositivoCompetencia = async function(body){
     return db.existeDispositivo(NotificacionCompetencia, modelos.getDispositivoCompetencia(body));
 };
 
-exports.enviarNotificacionesCompetencia = async function(mensaje, idCompetencia){
-  return db.enviarNotificaciones(NotificacionCompetencia, mensaje, modelos.getCompetencia(idCompetencia));
+exports.enviarNotificacionesCompetencia = async function(mensaje, idCompetencia, objeto){
+  return db.enviarNotificaciones(NotificacionCompetencia, mensaje, modelos.getCompetencia(idCompetencia), objeto);
 };

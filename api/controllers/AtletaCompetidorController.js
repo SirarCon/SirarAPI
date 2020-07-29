@@ -1,90 +1,20 @@
-const { enviarNotificaciones } = require('../fireBase/DispositivoHandler/AccesoDB.js');
-
 var mongoose = require('mongoose'),
 AtletaC = mongoose.model('AtletaCompetidor'),
-Competencia = mongoose.model('Competencia'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
-fireBase = require("../fireBase/FireBaseRecurso");
+atletaService = require("../services/AtletaService")
 
 
 //todo: no se que significa este comentario: ver update de atleta (deporte no cambia)
 exports.ingresarAtletaACompetencia = async function(req, res){
-    Competencia.findOne()
-    .where({_id : req.body.competencia})
-    .exec()
-    .then(competencia =>{
-        if(competencia){
-            AtletaC.findOne()
-            .where({competencia: req.body.competencia,
-                    atleta: req.body.atleta
-                })
-            .exec()
-            .then(atletaC => {
-                if(!atletaC){
-                    var nuevoAtelta = new AtletaC(req.body);
-                    nuevoAtelta.save().then(atleta=>{
-                        enviarNotificacion(AtletaC, atleta)
-                        res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ")});    
-                    }).catch(async err=>{
-                        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
-                            funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorController", err)
-                            res.json({token: res.locals.token, datos: globales.mensajes(21, "Atleta a Competencia ", funcionesGlobales.manejarError(err))});
-                          }else{//Error llave duplicada
-                            await funcionesGlobales.restarContador('atletaCompetidor'); 
-                            res.json({token: res.locals.token, datos: globales.mensajes(15, "id de atleta a competencia", " ")});
-                          }                    });
-                }else{
-                    res.json({token: res.locals.token, datos: globales.mensajes(22, "atleta", " ")});    
-                }
-            }).catch(err =>{
-                funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorController", err)
-                res.json({token: res.locals.token, datos: globales.mensajes(19, "atleta.", funcionesGlobales.manejarError(err))})
-            });
-        }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ")});
-        }
-    }).catch(err=>{
-        funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorController", err)
-        res.json({token: res.locals.token, datos: globales.mensajes(19, "atleta.", funcionesGlobales.manejarError(err))});        
-    })
+    atletaService.agregarAtleta(req, res)
     };
-  
- async function enviarNotificacion(Model, atleta){
-     var atletaC = await Model.populate(atleta, 
-        [{path: "competencia", 
-            select: "_id fechaHora", 
-                    populate:[{path: "prueba", select: "_id nombre"},
-                              {path: "evento", select: "_id nombre"}
-                    ]
-        },
-        {path: "atleta", select: "_id nombre"}
-    ])
-    fireBase.enviarNotificacionesAtleta("Atleta " + atletaC.atleta.nombre +
-    " participará en competencia de" + atletaC.competencia.prueba.nombre +
-    " " + atletaC.competencia.evento.nombre + " el " + atletaC.competencia.fechaHora,
-    atletaC.atleta._id
-     );
 
- }   
 
 exports.ingresarAtletasACompetencia = async function(req, res){
-    var promesas = req.body.atletas.map(reqAtleta => {
-        var nuevoAtelta = new AtletaC(reqAtleta);
-        return nuevoAtelta.save();// Si falla uno solo ese no se inserta
-    });
-    await Promise.all(promesas).then(_=>{
+     await atletaService.registrarMultiplesNotificacionesAtletas(req, res);
         res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atletas a Competencia", " ")});    
-    }).catch(async err=>{
-        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
-            funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorController", err)
-            res.json({token: res.locals.token, datos: globales.mensajes(21, "un atleta a Competencia ", funcionesGlobales.manejarError(err))});
-            }else{//Error llave duplicada
-                await funcionesGlobales.asyncForEach(req.body.atletas,
-                    await funcionesGlobales.restarContador('atletaCompetidor'));
-            }                    
-        });
-               
+        //Todo Implementar una forma para manejar el error 
 };
 
 exports.eliminarAtletaDeCompetencia = async function(req, res){
@@ -96,8 +26,7 @@ exports.eliminarAtletaDeCompetencia = async function(req, res){
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
             }
-        })
-        .catch(err=>{
+        }).catch(err=>{
             funcionesGlobales.registrarError("eliminarAtletaDeCompetencia/AtletaCompetidorController", err)
             res.json({token: res.locals.token, datos: globales.mensajes(20, "atleta.", funcionesGlobales.manejarError(err))});        
         });
