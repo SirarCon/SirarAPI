@@ -1,4 +1,4 @@
-const { enviarNotificaciones } = require('../fireBase/DispositivoHandler/AccesoDb.js');
+const { enviarNotificaciones } = require('../fireBase/DispositivoHandler/AccesoDB.js');
 
 var mongoose = require('mongoose'),
 AtletaC = mongoose.model('AtletaCompetidor'),
