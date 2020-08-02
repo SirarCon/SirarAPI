@@ -83,16 +83,8 @@ exports.listarAtletasCompetencia = async function(req, res){
             }
         },
         {
-            $group:{
-                _id: {
-                    atleta: "$atleta",
-                    marcadores: "$marcadores"
-                }
-        }
-        },
-        {
             $lookup: {
-                "localField": "_id.atleta",
+                "localField": "atleta",
                 "from": "atletas",
                 "foreignField": "_id",
                 "as": "atletainfo"
@@ -104,15 +96,21 @@ exports.listarAtletasCompetencia = async function(req, res){
         {
             $project:{
                     atleta:{
+                        
                         nombre : "$atletainfo.nombre", 
-                }         
+                        id: "$atletainfo._id",
+                        pais: "$atletainfo.pais"
+                    },
+                    marcadores: 1,
+                    esLocal: 1,         
             }
         }
     ]).exec()
     .then(atletas =>{
+        console.log(atletas)
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, 
             atletas.map(a=>{  
-                a._id.marcadores = [].slice.call(a._id.marcadores)//Convert to array to work with jest
+                a.marcadores = [].slice.call(a.marcadores)//Convert to array to work with jest
                                     .sort((a, b)=>{ return a.set - b.set})
                 return a;
             }
