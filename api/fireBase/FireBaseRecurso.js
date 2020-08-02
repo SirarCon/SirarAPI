@@ -18,7 +18,7 @@ exports.removerDispositivoAtleta = async function(body){
 
 exports.existeDispositivoAtleta = async function(body, sinToken = false){
   let modelo = sinToken ? modelos.getDispositivoSinTokenAtleta(body) 
-                        : modelos.getDispositivoAtleta(body)
+                        : modelos.getDispositivoAtleta(body);
   return db.existeDispositivo(NotificacionAtleta, modelo);
 };
 
@@ -36,8 +36,10 @@ exports.removerDispositivoEquipo = async function(body){
   return db.removerDispositivo(NotificacionEquipo, modelos.getDispositivoEquipo(body));
 };
 
-exports.existeDispositivoEquipo = async function(body){
-  return db.existeDispositivo(NotificacionEquipo, modelos.getDispositivoEquipo(body));
+exports.existeDispositivoEquipo = async function(body, sinToken = false){
+  let modelo = sinToken ? modelos.getDispositivoSinTokenEquipo(body) 
+                        : modelos.getDispositivoEquipo(body);
+  return db.existeDispositivo(NotificacionEquipo, modelo);
 };
 
 exports.enviarNotificacionesEquipo = async function(mensaje, idEquipo, objeto){
@@ -55,8 +57,10 @@ exports.removerDispositivoCompetencia = async function(body){
     return db.removerDispositivo(NotificacionCompetencia, modelos.getDispositivoCompetencia(body));
 };
   
-exports.existeDispositivoCompetencia = async function(body){
-    return db.existeDispositivo(NotificacionCompetencia, modelos.getDispositivoCompetencia(body));
+exports.existeDispositivoCompetencia = async function(body, sinToken = false){
+  let modelo = sinToken ? modelos.getDispositivoSinTokenCompetencia(body) 
+                        : modelos.getDispositivoCompetencia(body);
+    return db.existeDispositivo(NotificacionCompetencia, modelo);
 };
 
 exports.enviarNotificacionesCompetencia = async function(mensaje, idCompetencia, objeto){
