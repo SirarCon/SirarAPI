@@ -41,13 +41,13 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
                 if(!atletaC){
                     var nuevoAtelta = new AtletaC(req.body);
                     nuevoAtelta.save().then(atleta=>{
-                        registroNotificacion.migrarDispositivoParticipanteCompetencia(atleta)
+                        registroNotificacion.migrarDispositivoAtletaCompetencia(res, atleta)
                         notificacionHelper.notificarIngresoAtleta(AtletaC, atleta);
                         if(devolverMensaje)
                            res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ")});                            
                     }).catch(async err=>{
                         if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
-                            funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorService", err)
+                            funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaService", err)
                             if(devolverMensaje)
                                 res.json({token: res.locals.token, datos: globales.mensajes(21, "Atleta a Competencia ", funcionesGlobales.manejarError(err))});
                           }else{//Error llave duplicada
@@ -61,7 +61,7 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
                         res.json({token: res.locals.token, datos: globales.mensajes(22, "atleta", " ")});    
                 }
             }).catch(err =>{
-                funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorService", err)
+                funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaService", err)
                 if(devolverMensaje)
                     res.json({token: res.locals.token, datos: globales.mensajes(19, "atleta.", funcionesGlobales.manejarError(err))})
             });
@@ -70,7 +70,7 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ")});
         }
     }).catch(err=>{
-        funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorService", err)
+        funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaService", err)
         if(devolverMensaje)
             res.json({token: res.locals.token, datos: globales.mensajes(19, "atleta.", funcionesGlobales.manejarError(err))});        
     })

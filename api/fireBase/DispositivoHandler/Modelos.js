@@ -1,26 +1,28 @@
 exports.getDispositivoAtleta = function(body)
 {
   let conToken =
-  { 
-    token: body.token,
-    atleta: body.atleta 
-  }
-  let sinToken ={
-    atleta: body.atleta 
-  }
+    { 
+      token: body.token,
+      atleta: body.atleta 
+    }
+  let sinToken = 
+    {
+      atleta: body.atleta 
+    }
   return body.token ? conToken : sinToken;
 }
 
 exports.getDispositivoEquipo = function(body)
 {
   let conToken =
-  { 
-    token: body.token,
-    atleta: body.equipo 
-  }
-  let sinToken ={
-    atleta: body.equipo 
-  }
+    { 
+      token: body.token,
+      equipo: body.equipo 
+    }
+  let sinToken = 
+    {
+      equipo: body.equipo 
+    }
   return body.token ? conToken : sinToken;
 
 }
@@ -28,13 +30,14 @@ exports.getDispositivoEquipo = function(body)
 exports.getDispositivoCompetencia = function(body)
 {
   let conToken =
-  { 
-    token: body.token,
-    atleta: body.competencia 
-  }
-  let sinToken ={
-    atleta: body.competencia 
-  }
+    { 
+      token: body.token,
+      competencia: body.competencia 
+    }
+  let sinToken = 
+    {
+      competencia: body.competencia 
+    }
   return body.token ? conToken : sinToken;
 }
 

@@ -141,7 +141,7 @@ exports.migrarDispositivoAtletaCompetencia = async function(res, atletaC){
 }
 
 exports.removerDispositivoAtletaCompetencia = async function(res, atletaC){
-    prepararDispositivoCompetencia(module.exports.removerDispositivoEnAtleta,
+    prepararDispositivoCompetencia(module.exports.removerDispositivoEnCompetencia,
                                     fireBase.existeDispositivoAtleta, res, atletaC);
 }
 
@@ -151,22 +151,27 @@ exports.migrarDispositivoEquipoCompetencia = async function(res, equipoC){
 }
 
 exports.removerDispositivoEquipoCompetencia = async function(res, equipoC){
-    prepararDispositivoCompetencia(module.exports.removerDispositivoEnEquipo,
+    prepararDispositivoCompetencia(module.exports.removerDispositivoEnCompetencia,
                                     fireBase.existeDispositivoEquipo, res, equipoC);
 }
 
-async function prepararDispositivoCompetencia(ejecutar, existeParticipante, res, atletaC){
-    let body ={
-        atleta: atletaC.atleta
-        };
-        let dispositivo = await existeParticipante(body);
-        if(dispositivo){
+async function prepararDispositivoCompetencia(ejecutar, existeParticipante, res, participante){
+    let body =  participante.atleta ?
+                {
+                    atleta: participante.atleta
+                } :
+                {
+                    equipo: participante.equipo 
+                };
+        let dispositivos = await existeParticipante(body);
+        dispositivos.forEach(dispositivo => {
             let req ={
                 body: {
-                    token = dispositivo.token,
-                    competencia = atletaC.competencia,
+                    token : dispositivo.token,
+                    competencia : participante.competencia,
                 }
             }
             ejecutar(req, res, false)
-        }
+        });
+            
 }

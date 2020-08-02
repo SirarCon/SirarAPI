@@ -20,6 +20,7 @@ exports.agregarEquipo = async function(req, res, devolverMensaje = true){
                 if(!equipoC){
                     var nuevoEquipo = new EquipoC(req.body);
                     nuevoEquipo.save().then(equipo=>{
+                        registroNotificacion.migrarDispositivoEquipoCompetencia(res, equipo)
                         notificacionHelper.notificarIngresoEquipo(EquipoC, equipo)
                         if(devolverMensaje)
                             res.json({token: res.locals.token, datos: globales.mensajes(-7, "Equipo a Competencia", " ")});    
