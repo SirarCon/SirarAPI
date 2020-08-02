@@ -163,7 +163,7 @@ async function prepararDispositivoCompetencia(ejecutar, existeParticipante, res,
                 {
                     equipo: participante.equipo 
                 };
-        let dispositivos = await existeParticipante(body);
+        let dispositivos = await existeParticipante(body, true);
         dispositivos.forEach(dispositivo => {
             let req ={
                 body: {
