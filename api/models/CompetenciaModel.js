@@ -85,7 +85,7 @@ CompetenciaSchema.method('todaInformacion',function (){
         activo: this.activo,        
     }
 });
-CompetenciaSchema.method('infoPublica',function (){
+CompetenciaSchema.method('infoPublica',function (tieneAlerta){
     return {
         _id: this._id,
         evento: this.evento,
@@ -97,6 +97,7 @@ CompetenciaSchema.method('infoPublica',function (){
         recinto: this.recinto,
         ciudad: this.ciudad,
         enVivo: this.enVivo,
+        tieneAlerta : tieneAlerta,
     }
 });
 

@@ -233,7 +233,8 @@ exports.listarCompetenciasEventoPruebaFase = function(req, res){
     .populate([{path: "prueba", select: "_id tipo tipoMarcador"}])  
     .sort({enVivo:1, fechaHora: 1, descripcion: 1})
     .exec()
-    .then(competencias=>{
+    .then(async competencias=>{
+        competencias = await competenciaService.iterarCompetencias(req.header('tokenDispositivo'), competencias)
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err=>{
         funcionesGlobales.registrarError("listarCompetenciasEventoPruebaFase/CompetenciaController", err)
@@ -248,8 +249,14 @@ exports.leerCompetencia = function(req, res){
     .populate([{path: "prueba", select: "_id tipo tipoMarcador"}])  
     .sort({descripcion: 1})
     .exec()
-    .then(competencias=>{
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
+    .then(async competencia=>{
+        if(comptencia){
+        var tieneAlerta = 
+            await competenciaService.tieneNotificacion(req.header('tokenDispositivo'), comptencia._id)
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencia.infoPublica(tieneAlerta))}); 
+        }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "competencia", " ")});
+        } 
     }).catch(err=>{
         funcionesGlobales.registrarError("listarCompetenciasEventoPruebaFase/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias", " ")});  

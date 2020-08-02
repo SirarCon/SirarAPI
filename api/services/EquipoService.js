@@ -75,3 +75,15 @@ exports.removerDispositivoEquipo = async function(req, res){
 exports.removerDispositivoEquipoDeCompetencia = async function(res, equipoC) {
     registroNotificacion.removerDispositivoEquipoCompetencia(res, equipoC);
 }
+
+exports.iterarEquipos = async function (token, equipos){
+    await funcionesGlobales.asyncForEach(atletas ,async (element, indice, equipos) => {
+         var tieneNotificacion = await module.exports.tieneNotificacion(token, element._id)
+         equipos[indice] = element.infoPublica(tieneNotificacion);
+     });
+     return equipos;
+ }
+
+ exports.tieneNotificacion = async function(token , equipoId){
+    return await notificacionHelper.tieneNotificacionEquipo(token, equipoId);
+ }

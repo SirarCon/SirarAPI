@@ -1,9 +1,25 @@
 const fireBase = require("../fireBase/FireBaseRecurso"),
 funcionesGlobales = require("../FuncionesGlobales");
 
-exports.tieneNotificacion = async function(token, atletaId){
+exports.tieneNotificacionAtleta = async function(token, atletaId){
     var resultado = await fireBase.existeDispositivoAtleta({
     atleta: atletaId,
+    token: token          
+    });
+    return resultado.length > 0;
+}
+
+exports.tieneNotificacionEquipo = async function(token, equipoId){
+    var resultado = await fireBase.existeDispositivoEquipo({
+    equipo: equipoId,
+    token: token          
+    });
+    return resultado.length > 0;
+}
+
+exports.tieneNotificacionCompetencia = async function(token, competenciaId){
+    var resultado = await fireBase.existeDispositivoCompetencia({
+    competencia: competenciaId,
     token: token          
     });
     return resultado.length > 0;

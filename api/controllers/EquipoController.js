@@ -207,7 +207,8 @@ exports.listarEquiposActivos = async function(req, res){
     .sort({pais:  1})
     .exec()
     .then(async (equipos)=>{
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos.map(a=> a.todaInformacion()))});  
+        equipos = await equipoService.iterarEquipos(req.header('tokenDispositivo'), equipos)
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos)});  
     }).catch((err)=>{        
         funcionesGlobales.registrarError("listarEquipos/EquipoController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los equipos")}); 
@@ -220,9 +221,11 @@ exports.leerEquipoActivo = async function(req, res){
     .exec()
     .then(async (equipo)=>{
         if(equipo){
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipo.todaInformacion())});  
+            var tieneAlerta = 
+            await equipoService.tieneNotificacion(req.header('tokenDispositivo'), equipo._id)
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipo.infoPublica(tieneAlerta))});  
         }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "equipos", " ")});
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "equipo", " ")});
         }
     }).catch((err)=>{
           funcionesGlobales.registrarError("leerEquipo/EquipoController", err)

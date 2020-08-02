@@ -19,11 +19,11 @@ exports.notificarCambioCompetencia = async function(competencia){
 }
 
 exports.notificarAtletasCompetencia = async function(competencia){
-if(competencia.prueba.tipo == 0){
-    notificarAtletas(competencia);
-}else{
-    notificarEquipos();
-}
+    if(competencia.prueba.tipo == 0){
+        notificarAtletas(competencia);
+    }else{
+        notificarEquipos();
+    }
 }
 
 exports.registrarDispositivoCompetencia = async function(req, res){
@@ -33,6 +33,19 @@ exports.registrarDispositivoCompetencia = async function(req, res){
 exports.removerDispositivoCompetencia = async function(req, res){
     registroNotificacion.removerDispositivoEnCompetencia(req, res);
 }
+
+exports.iterarCompetencias = async function (token, competencias){
+    await funcionesGlobales.asyncForEach(atletas ,async (element, indice, competencias) => {
+         var tieneNotificacion = await module.exports.tieneNotificacion(token, element._id)
+         competencias[indice] = element.infoPublica(tieneNotificacion);
+     });
+     return competencias;
+ }
+
+ exports.tieneNotificacion = async function(token , equipoId){
+    return await notificacionHelper.tieneNotificacionCompetencia(token, equipoId);
+ }
+
 
 async function notificarAtletas(competencia){
 AtletaC.aggregate([

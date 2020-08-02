@@ -6,11 +6,6 @@ notificacionHelper = require("../fireBase/NotificacionHelper"),
 registroNotificacion = require("../fireBase/RegistroNotificacion"),
 globales =  require("../Globales.js");
 
-
-exports.tieneNotificacion = async function(token ,atletaId){
-   return await notificacionHelper.tieneNotificacion(token, atletaId);
-}
-
 exports.ingresarMultiplesAtletasCompeticion = async function(req, res){
     await funcionesGlobales.asyncForEach(req.body.atletas, async (atleta, indice, atletas)=>{
         let req = {
@@ -19,8 +14,6 @@ exports.ingresarMultiplesAtletasCompeticion = async function(req, res){
            await module.exports.agregarAtleta(req, res, false);
     })
 }
-
-
 
 exports.agregarAtleta = async function(req, res, devolverMensaje = true){
     await Competencia.findOne()
@@ -93,6 +86,11 @@ exports.iterarAtletas = async function (token, atletas){
           atletas[indice] = element.infoPublica(tieneNotificacion);
      });
      return atletas;
+ }
+
+
+exports.tieneNotificacion = async function(token ,atletaId){
+    return await notificacionHelper.tieneNotificacionAtleta(token, atletaId);
  }
 
  exports.manejarErrorLeerAtleta = async function(err, req, res){

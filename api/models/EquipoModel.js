@@ -73,7 +73,7 @@ EquipoSchema.pre('save', async function(next) {
     })
 });
 
-EquipoSchema.method('todaInformacion', function() {
+EquipoSchema.method('infoPublica', function(tieneAlerta) {
   return {
     _id: this.id,          
     prueba: this.prueba,
@@ -82,7 +82,8 @@ EquipoSchema.method('todaInformacion', function() {
     activo: this.activo,
     retirado: this.retirado,
     atletas: this.atletas,
-    medallas: this.medallas
+    medallas: this.medallas,
+    tieneAlerta: tieneAlerta,
   }
 });
 
