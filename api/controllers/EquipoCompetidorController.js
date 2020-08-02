@@ -2,65 +2,18 @@ var mongoose = require('mongoose'),
 EquipoC = mongoose.model('EquipoCompetidor'),
 Competencia = mongoose.model('Competencia'),
 globales =  require("../Globales.js"),
-funcionesGlobales = require("../FuncionesGlobales.js");
+funcionesGlobales = require("../FuncionesGlobales.js"),
+equipoService = require("../services/EquipoService");
 
 //todo: no se que significa este comentario: ver update de equipo (deporte no cambia)
 exports.ingresarEquipoACompetencia = async function(req, res){
-    Competencia.findOne()
-    .where({_id : req.body.competencia})
-    .exec()
-    .then(competencia =>{
-        if(competencia){
-            EquipoC.findOne()
-            .where({competencia: req.body.competencia,
-                equipo: req.body.equipo})
-            .exec()
-            .then(equipoC => {
-                if(!equipoC){
-                    var nuevoEquipo = new EquipoC(req.body);
-                    nuevoEquipo.save().then(equipo=>{
-                        res.json({token: res.locals.token, datos: globales.mensajes(-7, "Equipo a Competencia", " ")});    
-                    }).catch(async err=>{
-                        if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
-                            funcionesGlobales.registrarError("ingresarEquipoACompetencia/EquipoCompetidorController", err)
-                            res.json({token: res.locals.token, datos: globales.mensajes(21, "Equipo a Competencia ", funcionesGlobales.manejarError(err))});
-                          }else{//Error llave duplicada
-                            await funcionesGlobales.restarContador('equipoCompetidor'); 
-                            res.json({token: res.locals.token, datos: globales.mensajes(15, "id de equipo a competencia", " ")});
-                          }
-                    });
-                }else{
-                    res.json({token: res.locals.token, datos: globales.mensajes(22, "equipo", " ")});    
-                }
-            }).catch(err =>{
-                funcionesGlobales.registrarError("ingresarEquipoACompetencia/CompetenciaController", err)
-                res.json({token: res.locals.token, datos: globales.mensajes(19, "equipo.", funcionesGlobales.manejarError(err))})
-            });
-        }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ")});
-        }
-    }).catch(err=>{
-        funcionesGlobales.registrarError("ingresarEquipoACompetencia/CompetenciaController", err)
-        res.json({token: res.locals.token, datos: globales.mensajes(19, "equipo.", funcionesGlobales.manejarError(err))});        
-    })
+    equipoService.agregarEquipo(req, res)
     };
 
     exports.ingresarEquiposACompetencia = async function(req, res){
-        var promesas = req.body.equipos.map(reqEquipo => {
-            var nuevoEquipo = new EquipoC(reqEquipo);
-            return nuevoEquipo.save();// Si falla uno solo ese no se inserta
-        });
-        await Promise.all(promesas).then(equipo=>{
-            res.json({token: res.locals.token, datos: globales.mensajes(-7, "Equipo a Competencia", " ")});    
-        }).catch(async err=>{
-            if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
-                funcionesGlobales.registrarError("ingresarEquipoACompetencia/EquipoCompetidorController", err)
-                res.json({token: res.locals.token, datos: globales.mensajes(21, "un equipo a Competencia ", funcionesGlobales.manejarError(err))});
-              }else{//Error llave duplicada
-                await funcionesGlobales.restarContador('equipoCompetidor'); 
-                res.json({token: res.locals.token, datos: globales.mensajes(15, "id de equipo a competencia", " ")});
-              }
-        });                   
+        await equipoService.ingresarMultiplesEquiposCompeticion(req, res);
+        res.json({token: res.locals.token, datos: globales.mensajes(-7, "Equipos a Competencia", " ")});    
+        //Todo Implementar una forma para manejar el error                
     };
     
 exports.eliminarEquipoDeCompetencia = async function(req, res){
