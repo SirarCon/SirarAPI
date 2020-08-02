@@ -21,6 +21,7 @@ exports.eliminarEquipoDeCompetencia = async function(req, res){
         .exec()
         .then(equipo=>{
             if(equipo){
+                equipoService.removerDispositivoEquipoDeCompetencia(res, equipo)
                 res.json({token: res.locals.token, datos: globales.mensajes(-2, "Equipo", " ")});    
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});

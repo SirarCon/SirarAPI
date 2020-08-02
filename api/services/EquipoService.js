@@ -70,3 +70,7 @@ exports.registrarDispositivoEquipo = async function(req, res){
 exports.removerDispositivoEquipo = async function(req, res){
     registroNotificacion.removerDispositivoEnEquipo(req, res);
 }
+
+exports.removerDispositivoEquipoDeCompetencia = async function(res, equipoC) {
+    registroNotificacion.removerDispositivoEquipoCompetencia(res, equipoC);
+}

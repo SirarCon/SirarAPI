@@ -22,6 +22,7 @@ exports.eliminarAtletaDeCompetencia = async function(req, res){
         .exec()
         .then(atleta=>{
             if(atleta){
+                atletaService.removerDispositivoAtletaDeCompetencia(res, atleta)
                 res.json({token: res.locals.token, datos: globales.mensajes(-2, "Atleta", " ")});    
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});

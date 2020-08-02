@@ -1,6 +1,5 @@
 const {admin} = require("..//FireBaseConfig"),
 funcionesGlobales = require("../../FuncionesGlobales.js");
-const { mensajes } = require("../../Globales");
 
 exports.registrarDispositivo = async function(Modelo, body){
     var modelo = new Modelo(body);

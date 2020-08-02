@@ -41,7 +41,8 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
                 if(!atletaC){
                     var nuevoAtelta = new AtletaC(req.body);
                     nuevoAtelta.save().then(atleta=>{
-                        notificacionHelper.notificarIngresoAtleta(AtletaC, atleta)
+                        registroNotificacion.migrarDispositivoParticipanteCompetencia(atleta)
+                        notificacionHelper.notificarIngresoAtleta(AtletaC, atleta);
                         if(devolverMensaje)
                            res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ")});                            
                     }).catch(async err=>{
@@ -83,6 +84,11 @@ exports.registrarDispositivoAtleta = async function(req, res){
 exports.removerDispositivoAtleta = async function(req, res){
     registroNotificacion.removerDispositivoEnAtleta(req, res);
 }
+
+exports.removerDispositivoAtletaDeCompetencia = async function(res, atletaC) {
+    registroNotificacion.removerDispositivoAtletaCompetencia(res, atletaC);
+}
+
 
 exports.iterarAtletas = async function (token, atletas){
     await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
