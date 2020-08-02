@@ -8,11 +8,7 @@ globales =  require("../Globales.js");
 
 
 exports.tieneNotificacion = async function(token ,atletaId){
-    var resultado = await fireBase.existeDispositivoAtleta({
-        atleta: atletaId,
-        token: token          
-     });
-     return resultado.length > 0;
+   return await notificacionHelper.tieneNotificacion(token, atletaId);
 }
 
 exports.ingresarMultiplesAtletasCompeticion = async function(req, res){

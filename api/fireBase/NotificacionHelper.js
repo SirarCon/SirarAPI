@@ -1,6 +1,13 @@
 const fireBase = require("../fireBase/FireBaseRecurso"),
 funcionesGlobales = require("../FuncionesGlobales");
 
+exports.tieneNotificacion = async function(token, atletaId){
+    var resultado = await fireBase.existeDispositivoAtleta({
+    atleta: atletaId,
+    token: token          
+    });
+    return resultado.length > 0;
+}
 
 exports.notificarIngresoAtleta = async function (Model, atletaC){
     var info = await obtenerInfoPartipante(Model, atletaC,

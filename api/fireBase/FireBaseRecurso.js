@@ -16,8 +16,10 @@ exports.removerDispositivoAtleta = async function(body){
   return db.removerDispositivo(NotificacionAtleta, modelos.getDispositivoAtleta(body));
 };
 
-exports.existeDispositivoAtleta = async function(body){
-  return db.existeDispositivo(NotificacionAtleta, modelos.getDispositivoAtleta(body));
+exports.existeDispositivoAtleta = async function(body, sinToken = false){
+  let modelo = sinToken ? modelos.getDispositivoSinTokenAtleta(body) 
+                        : modelos.getDispositivoAtleta(body)
+  return db.existeDispositivo(NotificacionAtleta, modelo);
 };
 
 exports.enviarNotificacionesAtleta = async function(mensaje, idAtleta, objeto){

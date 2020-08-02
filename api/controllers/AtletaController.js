@@ -8,8 +8,7 @@ Prueba = mongoose.model('Prueba'),
 Evento = mongoose.model('Evento'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
-atletasService = require("../services/AtletaService"),
-fireBase = require("../fireBase/FireBaseRecurso");
+atletasService = require("../services/AtletaService");;
 const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 //#endregion Requires
 
