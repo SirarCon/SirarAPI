@@ -81,16 +81,8 @@ exports.listarEquiposCompetencia = async function(req, res){
             }
         },
         {
-            $group:{
-                _id: {
-                    equipo: "$equipo",
-                    marcadores: "$marcadores"
-                }
-        }
-        },
-        {
             $lookup: {
-                "localField": "_id.equipo",
+                "localField": "equipo",
                 "from": "equipos",
                 "foreignField": "_id",
                 "as": "equipoinfo"
@@ -101,14 +93,19 @@ exports.listarEquiposCompetencia = async function(req, res){
         },
         {
             $project:{
-                    pais : "$equipoinfo.pais",      
+                equipo:{                        
+                    id: "$atletainfo._id",
+                    pais : "$equipoinfo.pais", 
+                },
+                marcadores: 1,
+                esLocal: 1,
             }
         },
     ]).exec()
     .then(equipos =>{
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null,  
             equipos.map(e=>{        
-                e._id.marcadores = [].slice.call(e._id.marcadores).sort((a, b)=>{ return a.set - b.set})
+                e.marcadores = [].slice.call(e.marcadores).sort((a, b)=>{ return a.set - b.set})
                 return e;
             })
         )});          

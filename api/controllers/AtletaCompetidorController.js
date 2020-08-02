@@ -95,8 +95,7 @@ exports.listarAtletasCompetencia = async function(req, res){
         },
         {
             $project:{
-                    atleta:{
-                        
+                    atleta:{                        
                         nombre : "$atletainfo.nombre", 
                         id: "$atletainfo._id",
                         pais: "$atletainfo.pais"
