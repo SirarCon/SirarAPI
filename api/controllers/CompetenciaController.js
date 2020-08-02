@@ -5,7 +5,7 @@ Evento = mongoose.model('Evento'),
 Competencia = mongoose.model('Competencia'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js")
-fireBase = require("../fireBase/FireBaseRecurso");
+competenciaService = require("../services/CompetenciaService");
 
 exports.crearCompetencia = async function(req, res){
     Evento.findOne()
@@ -64,8 +64,10 @@ Competencia.findOneAndUpdate({_id: req.params.idCompetencia},
         activo: req.body.activo
         }}, {projection:{}, new: false, runValidators: true}
     ).exec()
-    .then(competenciaAntigua=>{
-        if(competenciaAntigua){
+    .then(async competencia=>{
+        if(competencia){
+            if(req.body.activo == 1)
+                competenciaService.notificarCambioCompetencia(competencia);
             res.json({token: res.locals.token, datos: globales.mensajes(-3, "Competencia", req.body.descripcion)});
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ")});
@@ -81,10 +83,11 @@ exports.cambiarEstadoCompetencia = async function(req, res){
     Competencia.findOneAndUpdate({_id: req.params.idCompetencia},
         { $set: {
             enVivo: req.body.enVivo,           
-            }}, {projection:{}, new: false, runValidators: true}
+            }}, {projection:{}, new: true, runValidators: true}
         ).exec()
-        .then(competenciaAntigua=>{
-            if(competenciaAntigua){
+        .then(async competencia=>{
+            if(competencia){                 
+                competenciaService.notificarInicioCierreCompetencia(competencia);
                 res.json({token: res.locals.token, datos: globales.mensajes(-3, "Competencia", " ")});
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ")});
@@ -93,7 +96,7 @@ exports.cambiarEstadoCompetencia = async function(req, res){
             funcionesGlobales.registrarError("cambiarEstadoCompetencia/CompetenciaController", err)
             res.json({token: res.locals.token, datos: globales.mensajes(14, "competencia.", funcionesGlobales.manejarError(err))});        
         })
-    };
+};
 
 
 //Lista los deportes según el evento seleccionado
@@ -255,43 +258,11 @@ exports.leerCompetencia = function(req, res){
 
 
 exports.registrarDispositivoCompetencia = async function(req, res){
-    fireBase.existeDispositivoCompetencia(req.body)
-    .then(dispositivo =>{
-        if(dispositivo.length == 0){
-            fireBase.registrarDispositivoCompetencia(req.body)
-            .then(notificacion=>{
-                res.json({token: res.locals.token, datos: globales.mensajes(-9, "Competencia")});
-            }).catch(err =>{
-                funcionesGlobales.registrarError("registrarDispositivoCompetencia/CompetenciaController", err)
-                res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "competencia")});  
-            })            
-        }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(24, "Notificación")});
-        }
-    }).catch(err=>{        
-        funcionesGlobales.registrarError("registrarDispositivoCompetencia/CompetenciaController", err);
-        res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "competencia")});  
-    });
+  competenciaService.registrarDispositivoCompetencia(req, res);
 }
 
 exports.removerDispositivoCompetencia = async function(req, res){
-    fireBase.existeDispositivoCompetencia(req.body)
-    .then(dispositivo =>{
-        if(dispositivo.length > 0){
-            fireBase.removerDispositivoCompetencia(req.body)
-            .then(notificacion=>{
-                res.json({token: res.locals.token, datos: globales.mensajes(10)});
-            }).catch(err =>{
-                funcionesGlobales.registrarError("removerDispositivoCompetencia/CompetenciaController", err)
-                res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "competencia")});  
-            });
-        }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(18, "Notificación")});
-        }
-    }).catch(err=>{        
-        funcionesGlobales.registrarError("removerDispositivoCompetencia/CompetenciaController", err);
-        res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "competencia")});  
-    });
+    competenciaService.removerDispositivoCompetencia(req, res);
 }
 
 

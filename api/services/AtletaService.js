@@ -3,6 +3,7 @@ Competencia = mongoose.model('Competencia'),
 AtletaC = mongoose.model('AtletaCompetidor'),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 notificacionHelper = require("../fireBase/NotificacionHelper"),
+registroNotificacion = require("../fireBase/RegistroNotificacion"),
 globales =  require("../Globales.js");
 
 
@@ -13,6 +14,16 @@ exports.tieneNotificacion = async function(token ,atletaId){
      });
      return resultado.length > 0;
 }
+
+exports.ingresarMultiplesAtletasCompeticion = async function(req, res){
+    await funcionesGlobales.asyncForEach(req.body.atletas, async (atleta, indice, atletas)=>{
+        let req = {
+            body: atleta
+        }
+           await module.exports.agregarAtleta(req, res, false);
+    })
+}
+
 
 
 exports.agregarAtleta = async function(req, res, devolverMensaje = true){
@@ -30,12 +41,12 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
                 if(!atletaC){
                     var nuevoAtelta = new AtletaC(req.body);
                     nuevoAtelta.save().then(atleta=>{
-                        notificacionHelper.ingresoAtleta(AtletaC, atleta)
+                        notificacionHelper.notificarIngresoAtleta(AtletaC, atleta)
                         if(devolverMensaje)
                            res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atleta a Competencia", " ")});                            
                     }).catch(async err=>{
                         if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta       
-                            funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorController", err)
+                            funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorService", err)
                             if(devolverMensaje)
                                 res.json({token: res.locals.token, datos: globales.mensajes(21, "Atleta a Competencia ", funcionesGlobales.manejarError(err))});
                           }else{//Error llave duplicada
@@ -49,7 +60,7 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
                         res.json({token: res.locals.token, datos: globales.mensajes(22, "atleta", " ")});    
                 }
             }).catch(err =>{
-                funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorController", err)
+                funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorService", err)
                 if(devolverMensaje)
                     res.json({token: res.locals.token, datos: globales.mensajes(19, "atleta.", funcionesGlobales.manejarError(err))})
             });
@@ -58,22 +69,20 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Competencia", " ")});
         }
     }).catch(err=>{
-        funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorController", err)
+        funcionesGlobales.registrarError("ingresarAtletaACompetencia/AtletaCompetidorService", err)
         if(devolverMensaje)
             res.json({token: res.locals.token, datos: globales.mensajes(19, "atleta.", funcionesGlobales.manejarError(err))});        
     })
 }
 
 
-exports.registrarMultiplesNotificacionesAtletas = async function(req, res){
-    await funcionesGlobales.asyncForEach(req.body.atletas, async (atleta, indice, atletas)=>{
-        let req = {
-            body: atleta
-        }
-           await module.exports.agregarAtleta(req, res, false);
-    })
+exports.registrarDispositivoAtleta = async function(req, res){
+    registroNotificacion.registrarDispositivoEnAtleta(req, res);
 }
 
+exports.removerDispositivoAtleta = async function(req, res){
+    registroNotificacion.removerDispositivoEnAtleta(req, res);
+}
 
 exports.iterarAtletas = async function (token, atletas){
     await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {

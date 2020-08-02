@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
 AtletaC = mongoose.model('AtletaCompetidor'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
-atletaService = require("../services/AtletaService")
+atletaService = require("../services/AtletaService");
 
 
 //todo: no se que significa este comentario: ver update de atleta (deporte no cambia)
@@ -12,7 +12,7 @@ exports.ingresarAtletaACompetencia = async function(req, res){
 
 
 exports.ingresarAtletasACompetencia = async function(req, res){
-     await atletaService.registrarMultiplesNotificacionesAtletas(req, res);
+     await atletaService.ingresarMultiplesAtletasCompeticion(req, res);
         res.json({token: res.locals.token, datos: globales.mensajes(-7, "Atletas a Competencia", " ")});    
         //Todo Implementar una forma para manejar el error 
 };

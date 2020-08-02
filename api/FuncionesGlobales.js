@@ -189,10 +189,8 @@ construirFecha: function(fechaCompleta, paraNotificacion = false){//+ 1 por que 
               fechaCompleta.getDate();
 
   var hora = fechaCompleta.getHours() + ":" + 
-            (fechaCompleta.getMinutes().toString().length == 1 ? "0" + fechaCompleta.getMinutes() : fechaCompleta.getMinutes())
-              + ":" + 
-            (fechaCompleta.getSeconds().toString().length == 1 ? "0" + fechaCompleta.getSeconds() : fechaCompleta.getSeconds());
-  
+            (fechaCompleta.getMinutes().toString().length == 1 ? "0" + fechaCompleta.getMinutes() 
+                                                                : fechaCompleta.getMinutes());             
             return fecha + ' '+ hora;
   } 
   else

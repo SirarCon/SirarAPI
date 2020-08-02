@@ -8,7 +8,7 @@ Prueba = mongoose.model('Prueba'),
 Evento = mongoose.model('Evento'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
-fireBase = require("../fireBase/FireBaseRecurso");
+equipoService = require("../services/EquipoService");
 const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 //#endregion Requires
 
@@ -231,43 +231,11 @@ exports.leerEquipoActivo = async function(req, res){
 }
 
 exports.registrarDispositivoEquipo = async function(req, res){
-    fireBase.existeDispositivoEquipo(req.body)
-    .then(dispositivo =>{
-        if(dispositivo.length == 0){
-            fireBase.registrarDispositivoEquipo(req.body)
-            .then(notificacion=>{
-                res.json({token: res.locals.token, datos: globales.mensajes(-9, "Equipo")});
-            }).catch(err =>{
-                funcionesGlobales.registrarError("registrarDispositivoEquipo/EquipoController", err)
-                res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "equipo")});  
-            })            
-        }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(24, "Notificación")});
-        }
-    }).catch(err=>{        
-        funcionesGlobales.registrarError("registrarDispositivoEquipo/EquipoController", err);
-        res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "equipo")});  
-    });
+    equipoService.registrarDispositivoEquipo(req, res);
 }
 
 exports.removerDispositivoEquipo = async function(req, res){
-    fireBase.existeDispositivoEquipo(req.body)
-    .then(dispositivo =>{
-        if(dispositivo.length > 0){
-            fireBase.removerDispositivoEquipo(req.body)
-            .then(notificacion=>{
-                res.json({token: res.locals.token, datos: globales.mensajes(10)});
-            }).catch(err =>{
-                funcionesGlobales.registrarError("removerDispositivoEquipo/EquipoController", err)
-                res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "equipo")});  
-            });
-        }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(18, "Notificación")});
-        }
-    }).catch(err=>{        
-        funcionesGlobales.registrarError("removerDispositivoEquipo/EquipoController", err);
-        res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "equipo")});  
-    });
+    equipoService.removerDispositivoEquipo(req, res)
 }
 
 
