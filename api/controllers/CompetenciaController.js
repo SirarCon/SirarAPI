@@ -250,14 +250,18 @@ exports.leerCompetencia = function(req, res){
     .sort({descripcion: 1})
     .exec()
     .then(async competencia=>{
-        if(comptencia){
+        if(competencia){
         var tieneAlerta = 
-            await competenciaService.tieneNotificacion(req.header('tokenDispositivo'), comptencia._id)
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencia.infoPublica(tieneAlerta))}); 
+            await competenciaService.tieneNotificacion(req.header('tokenDispositivo'), competencia._id)
+            console.log(competencia)
+            console.log(tieneAlerta)
+            competencia.tieneAlerta = tieneAlerta
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencia)}); 
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "competencia", " ")});
         } 
     }).catch(err=>{
+        console.log(err)
         funcionesGlobales.registrarError("listarCompetenciasEventoPruebaFase/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias", " ")});  
     })

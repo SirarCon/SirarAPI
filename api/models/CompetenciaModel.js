@@ -85,7 +85,7 @@ CompetenciaSchema.method('todaInformacion',function (){
         activo: this.activo,        
     }
 });
-CompetenciaSchema.method('infoPublica',function (tieneAlerta){
+CompetenciaSchema.method('infoPublica', function (tieneAlerta){
     return {
         _id: this._id,
         evento: this.evento,

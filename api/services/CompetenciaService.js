@@ -35,7 +35,7 @@ exports.removerDispositivoCompetencia = async function(req, res){
 }
 
 exports.iterarCompetencias = async function (token, competencias){
-    await funcionesGlobales.asyncForEach(atletas ,async (element, indice, competencias) => {
+    await funcionesGlobales.asyncForEach(competencias ,async (element, indice, competencias) => {
          var tieneNotificacion = await module.exports.tieneNotificacion(token, element._id)
          competencias[indice] = element.infoPublica(tieneNotificacion);
      });
