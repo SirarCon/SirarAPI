@@ -243,7 +243,7 @@ exports.listarCompetenciasEventoPruebaFase = function(req, res){
 }
 
 exports.leerCompetencia = function(req, res){
-    Competencia.find({
+    Competencia.findOne({
         _id: req.params.idCompetencia,        
     })
     .populate([{path: "prueba", select: "_id tipo tipoMarcador"}])  
@@ -252,11 +252,8 @@ exports.leerCompetencia = function(req, res){
     .then(async competencia=>{
         if(competencia){
         var tieneAlerta = 
-            await competenciaService.tieneNotificacion(req.header('tokenDispositivo'), competencia._id)
-            console.log(competencia)
-            console.log(tieneAlerta)
-            competencia.tieneAlerta = tieneAlerta
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencia)}); 
+            await competenciaService.tieneNotificacion(req.header('tokenDispositivo'), competencia._id)                   
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencia.infoPublica(tieneAlerta))}); 
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "competencia", " ")});
         } 

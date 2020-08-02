@@ -42,8 +42,8 @@ exports.iterarCompetencias = async function (token, competencias){
      return competencias;
  }
 
- exports.tieneNotificacion = async function(token , equipoId){
-    return await notificacionHelper.tieneNotificacionCompetencia(token, equipoId);
+ exports.tieneNotificacion = async function(token , competenciaId){
+    return await notificacionHelper.tieneNotificacionCompetencia(token, competenciaId);
  }
 
 
