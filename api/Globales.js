@@ -30,10 +30,10 @@ function inicializarGLobal(variableGlobal, valor){
 }
 
 //local:
-module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Sirar")
+//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Sirar")
 //module.exports.nombreBDTest = inicializarGLobal(nombreBDTest, "mongodb://localhost/SirarTest")
 //desarrollo:
-//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
+module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
 //pruebas:
 //module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds245132.mlab.com:45132/sirardbpruebas") 
 module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
