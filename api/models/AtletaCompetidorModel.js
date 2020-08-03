@@ -2,10 +2,7 @@
 var mongoose = require('mongoose'),
 Contador = mongoose.model('Contador'),
 Schema = mongoose.Schema,
-Tiempo = require('../recursos/Tiempo.js'),
 funcionesGlobales = require("../FuncionesGlobales.js");
-
-
 
 var AtletaCompetidorSchema = new Schema({
     _id: {
@@ -33,22 +30,19 @@ var AtletaCompetidorSchema = new Schema({
                 type: Number,
                 required: 'Digite el set por favor'
             },      
-            puntos: {
-                type: Number,
-            },    
-            tiempo: {
-                type: Tiempo,
-            }, 
-            metros: {
-                type: Number,
+            puntaje: {
+                type: String,
             },            
             momentoTiempo: {
-                type: Tiempo,
+                type: String,
             },
             momentoOportunidad:{ //Va por la oportunidad 1
                 type: Number,
             },
             cantidadOportunidades: { //Por ejemplo en Arcquería 3 oprtunidades
+                type: Number,
+            },
+            momentoRegistro:{
                 type: Number,
             }
         }]

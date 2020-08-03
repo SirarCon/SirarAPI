@@ -2153,9 +2153,7 @@ var atletaCompetidor = new AtletaCompetidor({
         {
             "esUltimoRegistro": false,
             "set": 1,
-            "tiempo": {
-                "segundo": 21,
-                "milisegundo": 88
+            "tiempo": "21:88"
             },
             "tipo": 2,            
         }

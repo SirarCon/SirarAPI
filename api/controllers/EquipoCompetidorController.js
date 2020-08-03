@@ -34,7 +34,11 @@ exports.eliminarEquipoDeCompetencia = async function(req, res){
     };
 
 exports.modificarMarcadores = async function(req, res){
-    var modificar = req.params.agregar == 1 ? {$push:{ marcadores: req.body.marcador}} :
+    var marcador ={
+        ...req.body.marcador,
+        momentoRegistro = new Date().getTime()
+    }
+    var modificar = req.params.agregar == 1 ? {$push:{ marcadores: marcador}} :
     req.body.marcador.idMarcador ?
     {$pull:{ marcadores: {_id: mongoose.Types.ObjectId(req.body.marcador.idMarcador)} } }
     : {$pull:{ marcadores: null } };//Por si existe un null
