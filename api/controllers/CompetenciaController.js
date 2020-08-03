@@ -258,7 +258,6 @@ exports.leerCompetencia = function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(2, "competencia", " ")});
         } 
     }).catch(err=>{
-        console.log(err)
         funcionesGlobales.registrarError("listarCompetenciasEventoPruebaFase/CompetenciaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias", " ")});  
     })

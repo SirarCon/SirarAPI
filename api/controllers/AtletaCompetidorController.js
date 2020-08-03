@@ -110,7 +110,6 @@ exports.listarAtletasCompetencia = async function(req, res){
         }
     ]).exec()
     .then(atletas =>{
-        console.log(atletas)
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, 
             atletas.map(a=>{  
                 a.marcadores = [].slice.call(a.marcadores)//Convert to array to work with jest
