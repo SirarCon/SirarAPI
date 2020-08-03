@@ -36,7 +36,7 @@ exports.eliminarAtletaDeCompetencia = async function(req, res){
 exports.modificarMarcadores = async function(req, res){
     var marcador ={
         ...req.body.marcador,
-        momentoRegistro = new Date().getTime()
+        momentoRegistro: new Date().getTime()
     }
     var modificar = req.params.agregar == 1 ? {$push:{ marcadores: marcador}} :
     req.body.marcador.idMarcador ?

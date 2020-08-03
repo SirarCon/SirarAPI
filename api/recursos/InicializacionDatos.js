@@ -2153,8 +2153,7 @@ var atletaCompetidor = new AtletaCompetidor({
         {
             "esUltimoRegistro": false,
             "set": 1,
-            "tiempo": "21:88"
-            },
+            "tiempo": "21: 88",
             "tipo": 2,            
         }
     ],
