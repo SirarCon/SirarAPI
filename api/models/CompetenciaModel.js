@@ -97,6 +97,7 @@ CompetenciaSchema.method('infoPublica', function (tieneAlerta){
         recinto: this.recinto,
         ciudad: this.ciudad,
         enVivo: this.enVivo,
+        activo: this.activo,        
         tieneAlerta : tieneAlerta,
     }
 });
