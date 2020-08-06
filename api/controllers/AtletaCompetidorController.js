@@ -45,7 +45,7 @@ exports.modificarMarcadores = async function(req, res){
     AtletaC.findOneAndUpdate({_id: req.params.idAtleta}, modificar, {new: true}).exec()
     .then(atleta=>{
         if(atleta){
-            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Atleta", atleta._id)});
+                res.json({token: res.locals.token, datos: globales.mensajes(req.params.agregar == 1 ?  -3 : -2, "Registro")});
             }else{
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
                 }
