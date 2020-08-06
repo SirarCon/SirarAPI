@@ -108,7 +108,10 @@ module.exports = function(app, express) {
         .post(errorHandler(equipoCompetidorController.ingresarEquiposACompetencia));
 
     routerAdm.route('/marcadoresEquipoCompetencia/:idEquipo/:agregar')
-        .put(errorHandler(equipoCompetidorController.modificarMarcadores));
+        .put(errorHandler(equipoCompetidorController.agregarRemoverMarcador));
+    
+    routerAdm.route('/modificarMarcadorEquipoCompetencia/:idEquipo')
+        .put(errorHandler(equipoCompetidorController.modificarMarcador));
 
     routerAdm.route('/modificarEquipoCompetidor/:idEquipo')
         .put(errorHandler(equipoCompetidorController.modificarEquipoCompetidor))   
