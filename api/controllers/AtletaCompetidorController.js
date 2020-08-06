@@ -46,7 +46,7 @@ exports.modificarMarcador = async function(req, res){
             }
     }
 
-    AtletaC.findOneAndUpdate({_id: req.params.idAtleta, "marcadores._id": req.body.marcador.idMarcador},
+    AtletaC.findOneAndUpdate({_id: req.params.idAtleta, "marcadores._id": mongoose.Types.ObjectId(req.body.marcador.idMarcador)},
                              modificar, {new: true}).exec()
     .then(atleta=>{
         if(atleta){
