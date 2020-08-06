@@ -28,7 +28,6 @@ var AtletaCompetidorSchema = new Schema({
             },
             set: {
                 type: Number,
-                required: 'Digite el set por favor'
             },      
             puntaje: {
                 type: String,
