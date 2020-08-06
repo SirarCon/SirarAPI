@@ -89,7 +89,10 @@ module.exports = function(app, express) {
         .post(errorHandler(atletaCompetidorController.ingresarAtletasACompetencia));
 
     routerAdm.route('/marcadoresAtletaCompetencia/:idAtleta/:agregar')
-        .put(errorHandler(atletaCompetidorController.modificarMarcadores));
+        .put(errorHandler(atletaCompetidorController.agregarRemoverMarcador));
+
+    routerAdm.route('/modificarMarcadorAtletaCompetencia/:idAtleta')
+        .put(errorHandler(atletaCompetidorController.modificarMarcador));
 
     routerAdm.route('/modificarAtletaCompetidor/:idAtleta')
         .put(errorHandler(atletaCompetidorController.modificarAtletaCompetidor))    

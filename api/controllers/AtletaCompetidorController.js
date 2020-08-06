@@ -33,7 +33,36 @@ exports.eliminarAtletaDeCompetencia = async function(req, res){
         });
     };
 
-exports.modificarMarcadores = async function(req, res){
+
+exports.modificarMarcador = async function(req, res){
+    var modificar ={
+            "$set" : {
+                "marcadores.$.esUltimoRegistro" : req.body.marcador.esUltimoRegistro,
+                "marcadores.$.set" : req.body.marcador.set,
+                "marcadores.$.puntaje" : req.body.marcador.puntaje,
+                "marcadores.$.momentoTiempo" : req.body.marcador.momentoTiempo,
+                "marcadores.$.momentoOportunidad" : req.body.marcador.momentoOportunidad,
+                "marcadores.$.cantidadOportunidades" : req.body.marcador.cantidadOportunidades,
+            }
+    }
+
+    AtletaC.findOneAndUpdate({_id: req.params.idAtleta, "marcadores._id": req.body.marcador.idMarcador},
+                             modificar, {new: true}).exec()
+    .then(atleta=>{
+        if(atleta){
+                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Registro")});
+            }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
+                }
+            }).catch(err=>{
+                funcionesGlobales.registrarError("modificarmarcadores/AtletaCompetidorController", err)
+                res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))}); 
+            })
+            
+};
+
+
+exports.agregarRemoverMarcador = async function(req, res){
     var marcador ={
         ...req.body.marcador,
         momentoRegistro: new Date().getTime()
@@ -50,7 +79,7 @@ exports.modificarMarcadores = async function(req, res){
                 res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
                 }
             }).catch(err=>{
-                funcionesGlobales.registrarError("modificarmarcadores/AtletaCompetidorController", err)
+                funcionesGlobales.registrarError("agregarRemoverMarcadores/AtletaCompetidorController", err)
                 res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))}); 
             })
             
