@@ -16,8 +16,8 @@ Federacion = mongoose.model('Federacion'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance,
-borrarDatos = false,
-insertarDatos = false,
+borrarDatos = true,
+insertarDatos = true,
 iniciarMensajes = true;
  
 async function inicializar(arreglo){
@@ -1192,117 +1192,508 @@ var federaciones = [ajedrez, atletismo, badminton, baloncesto, balonmano,
 
     await inicializar(federaciones);
     
+
+    //#region Deportes
     var DAjedrez = new Deporte({
                 nombre: "Ajedrez",
                 nombreNormalizado: "ajedrez",
                 federacion: ajedrez._id,
                 activo: true,                                
         });
+
      var DAtletismo = new Deporte({
                 nombre: "Atletismo",
                 nombreNormalizado: "atletismo",
                 federacion: atletismo._id,
                 activo: true, 
-                /*pruebas: [   
-                        {nombre: "100 m"},
-                        {nombre: "200 m"},
-                        {nombre: "400 m"},
-                        {nombre: "800 m"},
-                        {nombre: "1500 m"},
-                        {nombre: "5000 m"},
-                        {nombre: "10000 m"},
-                        {nombre: "100 m con vallas"},
-                        {nombre: "110 m con vallas"},
-                        {nombre: "400 m con vallas"},
-                        {nombre: "3000 m con obstáculos"},
-                        {nombre: "Relevo 4x100 m"},
-                        {nombre: "Relevo 4x400 m"},
-                        {nombre: "Salto de altura"},
-                        {nombre: "Salto de longitud"},
-                        {nombre: "Salto Triple"},
-                        {nombre: "Salto con Garrocha"},
-                        {nombre: "Lanzamiento de Bala"},
-                        {nombre: "Lanzamiento de Disco"},
-                        {nombre: "Lanzamiento de Jabalina"},
-                        {nombre: "Lanzamiento de Martillo"}, 
-                        {nombre: "20 Km Marcha"},
-                        {nombre: "50 Km Marcha"},
-                        {nombre: "Maratón"},
-                        {nombre: "Héptatlón"},
-                        {nombre: "Decatlón"},                                       
-                        ]*/
         });
+
        var DBadminton = new Deporte({
          nombre: "Bádminton",
          nombreNormalizado: "badminton",
          federacion: badminton._id,
          activo: true, 
-        /* pruebas: [{nombre: "Individual"}]*/
         });
-        /*{
+
+        var DBaloncesto = new Deporte({
                 nombre: "Baloncesto",
                 nombreNormalizado: "baloncesto",
                 federacion: baloncesto._id,
-                activo: true,
-                pruebas: 
-                        [
-                                {nombre: "Masculino"},
-                                {nombre: "Femenino"}
-                        ]   
-        },
-{
+                activo: true,                
+        });
+
+        var DBalonmano = new Deporte({
         nombre: "Balonmano",
         nombreNormalizado: "balonmano",
         federacion: balonmano._id,
         activo: true,
-        pruebas: 
-                        [
-                                {nombre: "Femenino"},
-                                {nombre: "Masculino"}
-                        ]
-},
-{
+        });
+
+        var DBeisbol = new Deporte({
         nombre: "Béisbol",
         nombreNormalizado: "beisbol",
         federacion: beisbol._id,
-        activo: true, 
-        pruebas: 
-                [
-                {nombre:"Individual"},
-                ]
-},
-{
+        activo: true,               
+        });
+
+        var DBillar = new Deporte({
         nombre: "Billar",
         nombreNormalizado: "billar",
         federacion: billar._id,
         activo: true, 
-        pruebas: 
-                [
-                {nombre:"Individual"},
-                ]
-},
-{
-        nombre: "Boliche",
-        nombreNormalizado: "boliche",
-        federacion: boliche._id,
-        activo: true,
-        pruebas: 
-                [
-                {nombre:"Individual"},
-                {nombre:"Dobles"},
-                {nombre:"Tríos"},
-                {nombre: "Quintetos"},
-                {nombre: "Todo evento"},
-                {nombre: "Final Maestros"}
-                ]
-},
-{
+        });
+
+        var DBoliche = new Deporte({
+            nombre: "Boliche",
+            nombreNormalizado: "boliche",
+            federacion: boliche._id,
+            activo: true,               
+        });
+
+        var DBoxeo = new Deporte({
         nombre: "Boxeo",
         nombreNormalizado: "boxeo",
         federacion: boxeo._id,
         activo: true,
-        pruebas:
-        [
+        });
+
+        var DCanotaje = new Deporte({
+        nombre: "Canotaje",
+        nombreNormalizado: "canotaje",
+        federacion: canotaje._id,
+        activo: true, 
+        });
+
+        var DCiclismoCBMX = new Deporte({
+        nombre: "Ciclismo CBMX",
+        nombreNormalizado: "ciclismo cbmx",
+        federacion: ciclismo._id,
+        activo: true,
+        });
+
+        var DCiclismoCP = new Deporte({
+        nombre: "Ciclismo CP",
+        nombreNormalizado: "ciclismo cp",
+        federacion: ciclismo._id,
+        activo: true,
+        });
+
+        var DCiclismoCR = new Deporte({
+        nombre: "Ciclismo CR",
+        nombreNormalizado: "ciclismo cr",
+        federacion: ciclismo._id,
+        activo: true,
+        });
+
+        var DCiclismoCM = new Deporte({
+        nombre: "Ciclismo CM Montaña",
+        nombreNormalizado: "ciclismo cm montaña",
+        federacion: ciclismo._id,
+        activo: true,
+        });
+
+        var DCricket = new Deporte({
+        nombre: "Cricket",
+        nombreNormalizado: "cricket",
+        federacion: circket._id,
+        activo: true, 
+        });
+
+        var DEcuestreEQS = new Deporte({
+        nombre: "Ecuestre EQS",
+        nombreNormalizado: "ecuestre eqs",
+        federacion: ecuestre._id,
+        activo: true,
+        });
+
+        var DEcuestreEQA = new Deporte({
+        nombre: "Ecuestre EQA",
+        nombreNormalizado: "ecuestre eqa",
+        federacion: ecuestre._id,
+        activo: true,
+        });
+
+        var DEcuestreEQPC = new Deporte({
+        nombre: "Ecuestre EQPC",
+        nombreNormalizado: "ecuestre eqpc",
+        federacion: ecuestre._id,
+        activo: true,
+        });
+
+        var DEsgrima = new Deporte({
+        nombre: "Esgrima",
+        nombreNormalizado: "esgrima",
+        federacion: esgrima._id,
+        activo: true, 
+        });
+
+        var DFisiculturismo = new Deporte({
+        nombre: "Fisiculturismo",
+        nombreNormalizado: "fisiculturismo",
+        federacion: fisicoculturismo._id,
+        activo: true, 
+        });
+
+        var DFutbol = new Deporte({
+        nombre: "Futbol",
+        nombreNormalizado: "futbol",
+        federacion: futbol._id,
+        activo: true,
+        });
+
+        var DGimnasiaAr = new Deporte({
+        nombre: "Gimnasia Artistica",
+        nombreNormalizado: "gimnasia artistica",
+        federacion: gimnasia._id,
+        activo: true,
+        });
+
+        var DGimnasiaRi = new Deporte({
+        nombre: "Gimnasia Ritmica",
+        nombreNormalizado: "gimnasia ritmica",
+        federacion: gimnasia._id,
+        activo: true,
+        });
+
+        var DGolf = new Deporte({
+        nombre: "Golf",
+        nombreNormalizado: "golf",
+        federacion: golf._id,
+        activo: true,
+        });
+
+        var DHalterofilia = new Deporte({
+        nombre: "Halterofilia",
+        nombreNormalizado: "halterofilia",
+        federacion: halterofilia._id,
+        activo: true,
+        });
+
+        var DHockeyC = new Deporte({
+        nombre: "Hockey Césped",
+        nombreNormalizado: "hockey cesped",
+        federacion: hockey._id,
+        activo: true, 
+        });
+
+        var DJudo = new Deporte({
+        nombre: "Judo",
+        nombreNormalizado: "judo",
+        federacion: judo._id,
+        activo: true,
+        });
+
+        var DKarate = new Deporte({
+        nombre: "Karate",
+        nombreNormalizado: "karate",
+        federacion: karate._id,
+        activo: true,
+        });
+
+        var DLuchaLul = new Deporte({
+        nombre: "Lucha LUL",
+        nombreNormalizado: "lucha lul",
+        federacion: lucha._id,
+        activo: true,
+        });
+
+        var DLuchaLuG = new Deporte({
+        nombre: "Lucha LUG",
+        nombreNormalizado: "lucha lug",
+        federacion: lucha._id,
+        activo: true,
+        });
+
+        var DNatacion = new Deporte({
+        nombre: "Natación",
+        nombreNormalizado: "natación",
+        federacion: natacion._id,
+        activo: true,
+        });
+
+        var DNatacionS = new Deporte({
+        nombre: "Natación Sincronizado",
+        nombreNormalizado: "natación sincronizado",
+        federacion: natacion._id,
+        activo: true,
+        });
+
+        var DPatinaje = new Deporte({
+        nombre: "Patinaje",
+        nombreNormalizado: "patinaje",
+        federacion: patinaje._id,
+        activo: true,
+        });
+
+        var DPelotaVasca = new Deporte({
+        nombre: "Pelota Vasca",
+        nombreNormalizado: "pelota vasca",
+        federacion: pelotaVasca._id,
+        activo: true,
+        });
+
+        var DPentatlonM = new Deporte({
+        nombre: "Pentatlón Moderno",
+        nombreNormalizado: "pentatlón moderno",
+        federacion: pentatlon._id,
+        activo: true,
+        });
+
+        var DRacquetball = new Deporte({
+        nombre: "Racquetball",
+        nombreNormalizado: "racquetball",
+        federacion: racquetball._id,
+        activo: true,
+        });
+
+        var DRemo = new Deporte({
+        nombre: "Remo",
+        nombreNormalizado: "remo",
+        federacion: remo._id,
+        activo: true, 
+        });
+
+        var DRugby = new Deporte({
+        nombre: "Rugby",
+        nombreNormalizado: "rugby",
+        federacion: rugby._id,
+        activo: true,        
+        });
+
+        var DSoftbol = new Deporte({
+        nombre: "Softbol",
+        nombreNormalizado: "softbol",
+        federacion: softbol._id,
+        activo: true,        
+        });
+
+        var DSurf = new Deporte({
+        nombre: "Surf",
+        nombreNormalizado: "surf",
+        federacion: surf._id,
+        activo: true, 
+        });
+
+        var DTaekwondo = new Deporte({
+        nombre: "Taekwondo",
+        nombreNormalizado: "taekwondo",
+        federacion: taekwondo._id,
+        activo: true, 
+        });
+
+        var DTenis = new Deporte({
+        nombre: "Tenis",
+        nombreNormalizado: "tenis",
+        federacion: tenis._id,
+        activo: true,
+        });
+
+        var DTenisM = new Deporte({
+        nombre: "Tenis de Mesa",
+        nombreNormalizado: "tenis de mesa",
+        federacion: tenisMesa._id,
+        activo: true,       
+        });
+
+        var DTiro = new Deporte({
+        nombre: "Tiro Al Blanco",
+        nombreNormalizado: "tiro al blanco",
+        federacion: tiroBlanco._id,
+        activo: true,
+        });
+
+        var DTiroA = new Deporte({
+        nombre: "Tiro Con Arco",
+        nombreNormalizado: "tiro con arco",
+        federacion: tiroArco._id,
+        activo: true,
+        });
+
+        var DTria = new Deporte({
+        nombre: "Triatlón",
+        nombreNormalizado: "triatlón",
+        federacion: triatlon._id,
+        activo: true, 
+        });
+
+        var DVoleibol = new Deporte({
+        nombre: "Voleibol",
+        nombreNormalizado: "voleibol",
+        federacion: voleibol._id,
+        activo: true,
+        });
+
+        var DVoleibolP = new Deporte({
+        nombre: "Voleibol Playa",
+        nombreNormalizado: "voleibol plya",
+        federacion: voleibol._id,
+        activo: true,
+        });
+    //#endregion Deportes
+
+
+var deportes =[DAjedrez, DAtletismo, DBadminton, DBaloncesto, DBalonmano, DBeisbol,
+    DBillar, DBoliche, DBoxeo, DCanotaje, DCiclismoCBMX, DCiclismoCP, DCiclismoCR,
+    DCiclismoCM, DCricket, DEcuestreEQS, DEcuestreEQA, DEcuestreEQPC, DEsgrima,
+    DFisiculturismo, DFutbol, DGimnasiaAr, DGimnasiaRi, DGolf, DHalterofilia, 
+    DHockeyC, DJudo, DKarate, DLuchaLul, DLuchaLuG, DNatacion, DNatacionS, DPatinaje,
+    DPelotaVasca, DPentatlonM, DRacquetball, DRemo, DRugby, DSoftbol, DSurf,
+    DTaekwondo, DTenis, DTenisM, DTiro, DTiroA, DTria, DVoleibol, DVoleibolP];
+    await inicializar(deportes);
+
+
+
+
+    var pruebasAtletismoXMetro = [   
+        {nombre: "Salto de altura"},
+        {nombre: "Salto de longitud"},
+        {nombre: "Salto Triple"},
+        {nombre: "Salto con Garrocha"},
+        {nombre: "Lanzamiento de Bala"},
+        {nombre: "Lanzamiento de Disco"},
+        {nombre: "Lanzamiento de Jabalina"},
+        {nombre: "Lanzamiento de Martillo"},                             
+        ].map(prueba=>{
+           return Prueba({
+                nombre: prueba.nombre,
+                deporte: DAtletismo._id,
+                activo: true,
+                tipo: 0,//Individual
+                tipoMarcador: 3,//Metros
+            })
+        })
+
+        var pruebasAtletismoXTiempoIndividual = [
+            {nombre: "100 m"},
+            {nombre: "200 m"},
+            {nombre: "400 m"},
+            {nombre: "800 m"},
+            {nombre: "1500 m"},
+            {nombre: "5000 m"},
+            {nombre: "10000 m"},
+            {nombre: "100 m con vallas"},
+            {nombre: "110 m con vallas"},
+            {nombre: "400 m con vallas"},
+            {nombre: "3000 m con obstáculos"},
+            {nombre: "20 Km Marcha"},
+            {nombre: "50 Km Marcha"},
+            {nombre: "Maratón"},
+            {nombre: "Héptatlón"},
+            {nombre: "Decatlón"},
+        ].map(prueba=>{
+            return Prueba({
+                nombre: prueba.nombre,
+                deporte: DAtletismo._id,
+                activo: true,
+                tipo: 0, // Individual: 0
+                tipoMarcador: 2,// Tiempo
+            })
+
+        });
+        
+        var pruebasAtletismoXTiempoEquipo = [
+            {nombre: "Relevo 4x100 m"},
+            {nombre: "Relevo 4x400 m"},
+        ].map(prueba=>{
+            return Prueba({
+                nombre: prueba.nombre,
+                deporte: DAtletismo._id,
+                activo: true,
+                tipo: 1, // Equipo: 1
+                tipoMarcador: 2,// Tiempo
+            })
+
+        });
+
+        var pruebasBadminton =[
+            {nombre: "Individual"}
+        ].map(prueba=>{
+            return Prueba({
+                nombre: prueba.nombre,
+                deporte: DBadminton._id,
+                activo: true,
+                tipo: 0, // Individual: 0
+                tipoMarcador: 1,// Puntos
+            })
+        });
+
+        var pruebasBaloncesto =[
+            {nombre: "Mayor"}
+        ].map(prueba=>{
+            return Prueba({
+                nombre: prueba.nombre,
+                deporte: DBaloncesto._id,
+                activo: true,
+                Equipo: 1, // Equipo: 1
+                tipoMarcador: 1,// Puntos
+            })
+        });
+
+        var pruebasBalonmano =[
+            {nombre: "Mayor"}
+        ].map(prueba=>{
+            return Prueba({
+                nombre: prueba.nombre,
+                deporte: DBalonmano._id,
+                activo: true,
+                tipo: 1, // Individual: 1
+                tipoMarcador: 1,// Puntos
+            })
+        });
+
+        var pruebasBeisbol =[
+            {nombre: "Individual"}
+        ].map(prueba=>{
+            return Prueba({
+                nombre: prueba.nombre,
+                deporte: DBeisbol._id,
+                activo: true,
+                tipo: 0, // Individual: 0
+                tipoMarcador: 1,// Puntos
+            })
+        });
+
+        var pruebasBillar =[
+            {nombre: "Individual"}
+        ].map(prueba=>{
+            return Prueba({
+                nombre: prueba.nombre,
+                deporte: DBillar._id,
+                activo: true,
+                tipo: 0, // Individual: 0
+                tipoMarcador: 1,// Puntos
+            })
+        });
+
+        var pruebasBolicheIndividual =[
+            {nombre:"Individual"},
+            {nombre: "Todo evento"},
+            {nombre: "Final Maestros"}
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DBoliche._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+        var pruebasBolicheEquipo =[
+            {nombre:"Dobles"},
+            {nombre:"Tríos"},
+            {nombre: "Quintetos"}
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DBoliche._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasDBoxeo =[
                 {nombre: "51 Kg Mosca"},
                 {nombre: "Kg Ligero"},
                 {nombre: "75 Kg Medio"},
@@ -1316,580 +1707,904 @@ var federaciones = [ajedrez, atletismo, badminton, baloncesto, balonmano,
                 {nombre: "81 Kg Semipesado"},
                 {nombre: "91 Kg Pesado"},
                 {nombre: "Más de 91 Kg Superpesado"}   
-        ] 
-},
-{
-        nombre: "Canotaje",
-        nombreNormalizado: "canotaje",
-        federacion: canotaje._id,
-        activo: true, 
-        pruebas:
-        [
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DBoxeo._id,
+                    activo: true,
+                    tipo: 0, // Equipo: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasCanotaje =[
                 {nombre: "C1"},
-                {nombre: "K1"}      
-        ]
-},
-{
-        nombre: "Ciclismo CBMX",
-        nombreNormalizado: "ciclismo cbmx",
-        federacion: ciclismo._id,
-        activo: true,
-        pruebas:
-        [
-                {nombre: "Individual"},                                
-        ] 
-},
-{
-        nombre: "Ciclismo CP",
-        nombreNormalizado: "ciclismo cp",
-        federacion: ciclismo._id,
-        activo: true,
-        pruebas:
-        [                               
+                {nombre: "K1"}  
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DCanotaje._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+
+            var pruebasCiclismoCBMX =[
+                {nombre: "Individual"}   
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DCiclismoCBMX._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+
+            var pruebasCiclismoCPIndividual =[
                 {nombre: "500 m contra reloj"},
                 {nombre: "Velocidad"},
                 {nombre: "Keirin"},
-                {nombre: "Velocidad por equipo"},
-                {nombre: "Persecución por equipo"},
                 {nombre: "Persecución individual"},
-                {nombre: "Carrera por puntos"},
                 {nombre: "Scratch"},
                 {nombre: "Omnium"},
-                {nombre: "1 Km"}
-        ] 
-},
-{
-        nombre: "Ciclismo CR",
-        nombreNormalizado: "ciclismo cr",
-        federacion: ciclismo._id,
-        activo: true,
-        pruebas:
-                [                               
-                        {nombre: "Contra Reloj Individual"},
-                        {nombre: "Ruta individual"},                                
-                ] 
-},
-{
-        nombre: "Ciclismo CM Montaña",
-        nombreNormalizado: "ciclismo cm montaña",
-        federacion: ciclismo._id,
-        activo: true,
-        pruebas:
-                [       
-                        {nombre: "Cross Country Olympic"}
-                ] 
-},
-{
-        nombre: "Cricket",
-        nombreNormalizado: "cricket",
-        federacion: circket._id,
-        activo: true, 
-        pruebas: 
-                [
-                {nombre:"Individual"},
-                ]
-},
-{
-        nombre: "Ecuestre EQS",
-        nombreNormalizado: "ecuestre eqs",
-        federacion: ecuestre._id,
-        activo: true,
-                pruebas:
-                        [
-                                {nombre: "Velocidad"},
-                                {nombre: "Equipos"},
-                                {nombre: "Acumulado"},
-                                {nombre: "Individual"}                                     
-                        ] 
-},
-{
-        nombre: "Ecuestre EQA",
-        nombreNormalizado: "ecuestre eqa",
-        federacion: ecuestre._id,
-        activo: true,
-        pruebas:
-                        [
-                                {nombre: "Equipos"},
-                                {nombre: "Acumulado"},
-                                {nombre: "Individual"}      
-                        ] 
-},
-{
-        nombre: "Ecuestre EQPC",
-        nombreNormalizado: "ecuestre eqpc",
-        federacion: ecuestre._id,
-        activo: true,
-        pruebas:
-                        [
-                                {nombre: "Equipos"},
-                                {nombre: "Individual"}      
-                        ] 
-},
-{
-        nombre: "Esgrima",
-        nombreNormalizado: "esgrima",
-        federacion: esgrima._id,
-        activo: true,
-                pruebas:
-                        [
-                                {nombre: "Espada individual"},
-                                {nombre: "Espada equipo"},
-                                {nombre: "Florete Individual"},
-                                {nombre: "Florete equipo"},
-                                {nombre: "Sable Individual"},
-                                {nombre: "Sable equipo"}
-                        ] 
-},
-{
-        nombre: "Fisiculturismo",
-        nombreNormalizado: "fisiculturismo",
-        federacion: fisicoculturismo._id,
-        activo: true, 
-        pruebas: 
-                [
-                {nombre:"Individual"},
-                ]
-},
-{
-        nombre: "Futbol",
-        nombreNormalizado: "futbol",
-        federacion: futbol._id,
-        activo: true,
-                pruebas:
-                        [
-                                {nombre: "Femenino"},
-                                {nombre: "Masculino"}        
-                        ] 
-},
-{
-        nombre: "Gimnasia Artistica",
-        nombreNormalizado: "gimnasia artistica",
-        federacion: gimnasia._id,
-        activo: true,
-        pruebas: 
-                [
-                        {nombre: "Equipo"},
-                        {nombre: "All Around"}, 
-                        {nombre: "Piso"},
-                        {nombre: "Salto"},
-                        {nombre: "Barras Asimétricas"},
-                        {nombre: "Viga de equilibrio"},
-                        {nombre: "Anillos"},
-                        {nombre: "Caballo con Arzones"},
-                        {nombre: "Barra Fija"},
-                        {nombre: "Barras Paralelas"},                        
-                ]
-},
-{
-        nombre: "Gimnasia Ritmica",
-        nombreNormalizado: "gimnasia ritmica",
-        federacion: gimnasia._id,
-        activo: true,
-                pruebas:
-                        [ 
-                                {nombre: "Aro"},
-                                {nombre: "Pelota"},
-                                {nombre: "Mazas"},
-                                {nombre: "Cinta"},
-                                {nombre: "All Around"},
-                                {nombre: "Equipos"}
-                        ]
-},
-{
-        nombre: "Golf",
-        nombreNormalizado: "golf",
-        federacion: golf._id,
-        activo: true,
-                pruebas:
-                        [
-                                {nombre: "Individual a 54 hoyos"}, 
-                                {nombre: "3 rondas de 18 hoyos"}       
-                        ] 
-},
-{
-        nombre: "Halterofilia",
-        nombreNormalizado: "halterofilia",
-        federacion: halterofilia._id,
-        activo: true,
-                pruebas:
-                        [ 
-                                {nombre: "48 Kg Arranque"},
-                                {nombre: "53 Kg Arranque"},
-                                {nombre: "58 Kg Arranque"},
-                                {nombre: "63 Kg Arranque"},
-                                {nombre: "69 Kg Arranque"},
-                                {nombre: "75 Kg Arranque"},
-                                {nombre: "Más de 75 Kg Arranque"},
-                                {nombre: "48 Kg Envión"},
-                                {nombre: "53 Kg Envión"},
-                                {nombre: "58 Kg Envión"},
-                                {nombre: "63 Kg Envión"},
-                                {nombre: "69 Kg Envión"},
-                                {nombre: "75 Kg Envión"},
-                                {nombre: "Más de 75 Kg Envión"},
-                                {nombre: "56 Kg Arranque"},
-                                {nombre: "62 Kg Arranque"},
-                                {nombre: "69 Kg Arranque"},
-                                {nombre: "77 Kg Arranque"},
-                                {nombre: "85 Kg Arranque"},
-                                {nombre: "94 Kg Arranque"},
-                                {nombre: "105 Kg Arranque"},
-                                {nombre: "Más de 105 Kg Arranque"},
-                                {nombre: "56 Kg Envión"},
-                                {nombre: "62 Kg Envión"},
-                                {nombre: "69 Kg Envión"},
-                                {nombre: "77 Kg Envión"},
-                                {nombre: "85 Kg Envión"},
-                                {nombre: "94 Kg Envión"},
-                                {nombre: "105 Kg Envión"},
-                                {nombre: "Más de 105 Kg Envión"}  
-                        ] 
-},
-{
-        nombre: "Hockey Césped",
-        nombreNormalizado: "hockey cesped",
-        federacion: hockey._id,
-        activo: true, 
-        pruebas: 
-                [
-                {nombre:"Individual"},
-                ]
-},
-{
-        nombre: "Judo",
-        nombreNormalizado: "judo",
-        federacion: judo._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "Menos de 44 Kg"},
-                        {nombre: "Menos de 48 Kg"},
-                        {nombre:  "Menos de 52 Kg"},
-                        {nombre: "Menos de 57 Kg"},
-                        {nombre: "Menos de 63 Kg"},
-                        {nombre: "Menos de 70 Kg"},
-                        {nombre: "Menos de 78 Kg"},
-                        {nombre: "Más de 78 Kg"},
-                        {nombre: "Equipo"},
-                        {nombre: "Menos de 55 Kg"},
-                        {nombre: "Menos de 60 Kg"},
-                        {nombre: "Menos de 66 Kg"},
-                        {nombre: "Menos de 73 Kg"},
-                        {nombre: "Menos de 81 Kg"},
-                        {nombre: "Menos de 90 Kg"},
-                        {nombre: "Menos de 100 Kg"},
-                        {nombre:  "Más de 100 Kg"}
-                ]
-},
-{
-        nombre: "Karate",
-        nombreNormalizado: "karate",
-        federacion: karate._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "Menos de 60 Kg"},
-                        {nombre: "Menos de 67 Kg"},
-                        {nombre: "75 Kg"},
-                        {nombre: "Menos de 84 Kg"},
-                        {nombre: "Más de 84 Kg"},
-                        {nombre: "Kata individual"},
-                        {nombre: "Kata equipo"},
-                        {nombre: "Menos de 50 Kg"},
-                        {nombre: "Menos de 55 Kg"},
-                        {nombre: "61 Kg"},
-                        {nombre: "Menos de 68 Kg"},
-                        {nombre: "Más de 68 Kg"}     
-                ] 
-},
-{
-        nombre: "Lucha LUL",
-        nombreNormalizado: "lucha lul",
-        federacion: lucha._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "menos de 48 Kg"},
-                        {nombre: "53 Kg"},
-                        {nombre: "58 Kg"},
-                        {nombre: "63 Kg"},
-                        {nombre: "69 Kg"},
-                        {nombre: "75 Kg"},
-                        {nombre: "57 Kg"},
-                        {nombre: "65 Kg"},
-                        {nombre: "74 Kg"},
-                        {nombre: "86 Kg"},
-                        {nombre: "97 Kg"},
-                        {nombre: "125 Kg"}
-                ]
-},
-{
-        nombre: "Lucha LUG",
-        nombreNormalizado: "lucha lug",
-        federacion: lucha._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "59 Kg"},
-                        {nombre: "66 Kg"},
-                        {nombre: "75 Kg"},
-                        {nombre: "85 Kg"},
-                        {nombre: "98 Kg"},
-                        {nombre: "130 Kg"}      
-                ]
-},
-{
-        nombre: "Natación",
-        nombreNormalizado: "natación",
-        federacion: natacion._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "Marantón 10 Km"},
-                        {nombre: "50 m libre"},
-                        {nombre: "100 m libre"},
-                        {nombre: "200 m libre"},
-                        {nombre: "400 m libre"},
-                        {nombre: "800 m libre"},
-                        {nombre: "1500 m libre"},
-                        {nombre: "50 m dorso"},
-                        {nombre: "100 m dorso"},
-                        {nombre: "200 m dorso"},
-                        {nombre: "50 m pecho"},
-                        {nombre: "100 m pecho"},
-                        {nombre: "200 m pecho"},
-                        {nombre: "50 m pecho"},
-                        {nombre: "100 m pecho"},
-                        {nombre: "200 m pecho"},
-                        {nombre: "50 m mariposa"},
-                        {nombre: "100 m mariposa"},
-                        {nombre: "200 m mariposa"},
-                        {nombre: "200 m Combinado Individual"},
-                        {nombre: "400 m Combinado Individual"},
-                        {nombre: "4x100 Relevo Libre"},
-                        {nombre: "4x100 Relevo Combinado"},                        
-                ] 
-},
-{
-        nombre: "Natación Sincronizado",
-        nombreNormalizado: "natación sincronizado",
-        federacion: natacion._id,
-        activo: true,
-               pruebas:
-                   [
-                        {nombre: "Sincronizado Dueto Técnico"},
-                        {nombre: "Sincronizado Dueto Libre"},
-                        {nombre: "Sincronizado Solo Técnico"},
-                        {nombre: "Sincronizado Solo Libre"},
-                        {nombre: "Sincronizado Equipo Técnico"},
-                        {nombre: "Sincronizado Equipo Libre"},
-                        {nombre: "Sincronizado Rutina Libre Combinada"}
-                    ]
-},
-{
-        nombre: "Patinaje",
-        nombreNormalizado: "patinaje",
-        federacion: patinaje._id,
-        activo: true,
-        pruebas:
-                 [
+                {nombre: "1 Km"}  
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DCiclismoCP._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+    
+            var pruebasCiclismoCPXEquipo =[
+                {nombre: "Velocidad por equipo"},
+                {nombre: "Persecución por equipo"},
+                {nombre: "Carrera por puntos"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DCiclismoCP._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+    
+            var pruebasCiclismoCPXPuntos =[
+                {nombre: "Carrera por puntos"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DCiclismoCP._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasCiclismoCR =[
+                {nombre: "Contra Reloj Individual"},
+                {nombre: "Ruta individual"}  
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DCiclismoCR._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+
+            var pruebasCiclismoCM =[
+                {nombre: "Cross Country Olympic"}  
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DCiclismoCM._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+
+            var pruebasCricket =[
+                {nombre:"Individual"}  
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DCricket._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasEcuestreEQSXEquipo =[
+                {nombre: "Equipos"},    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DEcuestreEQS._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasEcuestreEQSXIndividual =[
+                {nombre: "Acumulado"},
+                {nombre: "Individual"}     
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DEcuestreEQS._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasEcuestreEQSXVelocidad =[
+                {nombre: "Velocidad"},    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DEcuestreEQS._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+    
+            var pruebasEcuestreEQAIndividual =[
+                {nombre: "Individual"},
+                {nombre: "Acumulado"},   
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DEcuestreEQA._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasEcuestreEQAEquipo =[
+                {nombre: "Equipos"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DEcuestreEQA._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasEcuestreEQPCIndividual =[
+                {nombre: "Individual"} 
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DEcuestreEQPC._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasEcuestreEQPCEquipo =[
+                {nombre: "Equipos"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DEcuestreEQPC._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasEsgrimaIndividual =[
+                {nombre: "Espada individual"},
+                {nombre: "Florete Individual"},
+                {nombre: "Sable Individual"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DEsgrima._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasEsgrimaEquipo =[
+                {nombre: "Espada equipo"},
+                {nombre: "Florete equipo"},
+                {nombre: "Sable equipo"}
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DEsgrima._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasFisiculturismo =[
+                {nombre: "Individual"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DFisiculturismo._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasFutbol =[
+                {nombre: "Mayor"},
+                {nombre: "Sub-23"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DFutbol._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasGimnasiaArIndividual =[
+                {nombre: "All Around"}, 
+                {nombre: "Piso"},
+                {nombre: "Salto"},
+                {nombre: "Barras Asimétricas"},
+                {nombre: "Viga de equilibrio"},
+                {nombre: "Anillos"},
+                {nombre: "Caballo con Arzones"},
+                {nombre: "Barra Fija"},
+                {nombre: "Barras Paralelas"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DGimnasiaAr._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasGimnasiaArEquipo =[
+                {nombre: "Equipo"},  
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DGimnasiaAr._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasGimnasiaRiIndividual =[
+                {nombre: "Aro"},
+                {nombre: "Pelota"},
+                {nombre: "Mazas"},
+                {nombre: "Cinta"},
+                {nombre: "All Around"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DGimnasiaRi._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasGimnasiaRiEquipo =[
+    
+                {nombre: "Equipos"}
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DGimnasiaRi._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasGolf =[
+                {nombre: "Individual a 54 hoyos"}, 
+                {nombre: "3 rondas de 18 hoyos"}     
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DGolf._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasHalterofilia =[
+                {nombre: "48 Kg Arranque"},
+                {nombre: "53 Kg Arranque"},
+                {nombre: "58 Kg Arranque"},
+                {nombre: "63 Kg Arranque"},
+                {nombre: "69 Kg Arranque"},
+                {nombre: "75 Kg Arranque"},
+                {nombre: "Más de 75 Kg Arranque"},
+                {nombre: "48 Kg Envión"},
+                {nombre: "53 Kg Envión"},
+                {nombre: "58 Kg Envión"},
+                {nombre: "63 Kg Envión"},
+                {nombre: "69 Kg Envión"},
+                {nombre: "75 Kg Envión"},
+                {nombre: "Más de 75 Kg Envión"},
+                {nombre: "56 Kg Arranque"},
+                {nombre: "62 Kg Arranque"},
+                {nombre: "69 Kg Arranque"},
+                {nombre: "77 Kg Arranque"},
+                {nombre: "85 Kg Arranque"},
+                {nombre: "94 Kg Arranque"},
+                {nombre: "105 Kg Arranque"},
+                {nombre: "Más de 105 Kg Arranque"},
+                {nombre: "56 Kg Envión"},
+                {nombre: "62 Kg Envión"},
+                {nombre: "69 Kg Envión"},
+                {nombre: "77 Kg Envión"},
+                {nombre: "85 Kg Envión"},
+                {nombre: "94 Kg Envión"},
+                {nombre: "105 Kg Envión"},
+                {nombre: "Más de 105 Kg Envión"} 
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DHalterofilia._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasBHockeyC =[
+                {nombre:"Individual"},    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DHockeyC._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasJudoIndividual =[
+                {nombre: "Menos de 44 Kg"},
+                {nombre: "Menos de 48 Kg"},
+                {nombre:  "Menos de 52 Kg"},
+                {nombre: "Menos de 57 Kg"},
+                {nombre: "Menos de 63 Kg"},
+                {nombre: "Menos de 70 Kg"},
+                {nombre: "Menos de 78 Kg"},
+                {nombre: "Más de 78 Kg"},
+                {nombre: "Menos de 55 Kg"},
+                {nombre: "Menos de 60 Kg"},
+                {nombre: "Menos de 66 Kg"},
+                {nombre: "Menos de 73 Kg"},
+                {nombre: "Menos de 81 Kg"},
+                {nombre: "Menos de 90 Kg"},
+                {nombre: "Menos de 100 Kg"},
+                {nombre:  "Más de 100 Kg"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DJudo._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasJudoEquipo =[
+                {nombre: "Equipo"}, 
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DJudo._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasKarate =[
+                {nombre: "Menos de 60 Kg"},
+                {nombre: "Menos de 67 Kg"},
+                {nombre: "75 Kg"},
+                {nombre: "Menos de 84 Kg"},
+                {nombre: "Más de 84 Kg"},
+                {nombre: "Kata individual"},
+                {nombre: "Kata equipo"},
+                {nombre: "Menos de 50 Kg"},
+                {nombre: "Menos de 55 Kg"},
+                {nombre: "61 Kg"},
+                {nombre: "Menos de 68 Kg"},
+                {nombre: "Más de 68 Kg"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DKarate._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasLuchaLul =[
+                {nombre: "menos de 48 Kg"},
+                {nombre: "53 Kg"},
+                {nombre: "58 Kg"},
+                {nombre: "63 Kg"},
+                {nombre: "69 Kg"},
+                {nombre: "75 Kg"},
+                {nombre: "57 Kg"},
+                {nombre: "65 Kg"},
+                {nombre: "74 Kg"},
+                {nombre: "86 Kg"},
+                {nombre: "97 Kg"},
+                {nombre: "125 Kg"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DLuchaLul._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasLuchaLuG =[
+                {nombre: "59 Kg"},
+                {nombre: "66 Kg"},
+                {nombre: "75 Kg"},
+                {nombre: "85 Kg"},
+                {nombre: "98 Kg"},
+                {nombre: "130 Kg"}  
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DLuchaLuG._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasNatacionIndividual =[
+                {nombre: "Marantón 10 Km"},
+                {nombre: "50 m libre"},
+                {nombre: "100 m libre"},
+                {nombre: "200 m libre"},
+                {nombre: "400 m libre"},
+                {nombre: "800 m libre"},
+                {nombre: "1500 m libre"},
+                {nombre: "50 m dorso"},
+                {nombre: "100 m dorso"},
+                {nombre: "200 m dorso"},
+                {nombre: "50 m pecho"},
+                {nombre: "100 m pecho"},
+                {nombre: "200 m pecho"},
+                {nombre: "50 m pecho"},
+                {nombre: "100 m pecho"},
+                {nombre: "200 m pecho"},
+                {nombre: "50 m mariposa"},
+                {nombre: "100 m mariposa"},
+                {nombre: "200 m mariposa"},
+                {nombre: "200 m Combinado Individual"},
+                {nombre: "400 m Combinado Individual"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DNatacion._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+    
+            var pruebasNatacionEquipo =[
+                {nombre: "4x100 Relevo Libre"},
+                {nombre: "4x100 Relevo Combinado"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DNatacion._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+    
+            var pruebasNatacionSIndividual =[
+                {nombre: "Sincronizado Solo Técnico"},
+                {nombre: "Sincronizado Solo Libre"},
+                {nombre: "Sincronizado Rutina Libre Combinada"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DNatacionS._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasNatacionSEquipo =[
+                {nombre: "Sincronizado Dueto Técnico"},
+                {nombre: "Sincronizado Dueto Libre"},
+                {nombre: "Sincronizado Equipo Técnico"},
+                {nombre: "Sincronizado Equipo Libre"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DNatacionS._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasPatinajePuntos =[
+                {nombre: "10 000 m  puntos"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DPatinaje._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasPatinajeTiempo =[
                 {nombre: "300 m"},
                 {nombre: "500 m "},
                 {nombre: "10 000 m Combinado"},
-                {nombre: "10 000 m  puntos"},
-                   ] 
-},
-{
-        nombre: "Pelota Vasca",
-        nombreNormalizado: "pelota vasca",
-        federacion: pelotaVasca._id,
-        activo: true,
-        pruebas: 
-                [
-                {nombre:"Individual"},
-                ]
-},
-{
-        nombre: "Pentatlón Moderno",
-        nombreNormalizado: "pentatlón moderno",
-        federacion: pentatlon._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "Individual"},
-                        {nombre: "Relevo"}
-                ] 
-},
-{
-        nombre: "Racquetball",
-        nombreNormalizado: "racquetball",
-        federacion: racquetball._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "Individual"},
-                        {nombre: "Dobles"},
-                        {nombre: "Equipos"}     
-                ] 
-},
-{
-        nombre: "Remo",
-        nombreNormalizado: "remo",
-        federacion: remo._id,
-        activo: true, 
-        pruebas: 
-                [
-                {nombre:"Individual"},
-                ]
-},
-{
-        nombre: "Rugby",
-        nombreNormalizado: "rugby",
-        federacion: rugby._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "Femenino"},
-                        {nombre: "Masculino"}   
-                ]
-},
-{
-        nombre: "Softbol",
-        nombreNormalizado: "softbol",
-        federacion: softbol._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "Masculino"},
-                        {nombre: "Femenino"}       
-                ]
-},
-{
-        nombre: "Surf",
-        nombreNormalizado: "surf",
-        federacion: surf._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "Masculino"},
-                        {nombre: "Femenino"}      
-                ] 
-},
-{
-        nombre: "Taekwondo",
-        nombreNormalizado: "taekwondo",
-        federacion: taekwondo._id,
-        activo: true,
-        pruebas:
-                [
-                        {nombre: "46 Kg"},
-                        {nombre: "49 Kg"},
-                        {nombre: "53 Kg"},
-                        {nombre: "57 Kg"},
-                        {nombre: "62 Kg"},
-                        {nombre: "67 Kg"},
-                        {nombre: "73 Kg"},
-                        {nombre: "Más de 73 Kg"},
-                        {nombre: "54 Kg"},
-                        {nombre: "58 Kg"},
-                        {nombre: "63 Kg"},
-                        {nombre: "68 Kg"},
-                        {nombre: "74 Kg"},
-                        {nombre: "80 Kg"},
-                        {nombre: "87 Kg"},
-                        {nombre: "Más de 87 Kg"}     
-                ]  
-},
-{
-        nombre: "Tenis",
-        nombreNormalizado: "tenis",
-        federacion: tenis._id,
-        activo: true,
-                pruebas:
-                        [
-                                {nombre: "Individual"},
-                                {nombre: "Dobles"}, 
-                                {nombre: "Copa de Naciones"},
-                                {nombre: "Mixtos "}
-                        ] 
-},
-{
-        nombre: "Tenis de Mesa",
-        nombreNormalizado: "tenis de mesa",
-        federacion: tenisMesa._id,
-        activo: true,
-        pruebas: 
-                [
-                        {nombre: "Individual"},
-                        {nombre: "Dobles"},
-                        {nombre: "Equipos"},
-                        {nombre: "Mixto"}
-                ]
-        
-},
-{
-        nombre: "Tiro Al Blanco",
-        nombreNormalizado: "tiro al blanco",
-        federacion: tiroBlanco._id,
-        activo: true,
-        pruebas: [
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DPatinaje._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+    
+            var pruebasPelotaVasca =[
+                {nombre:"Individual"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DPelotaVasca._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasPentatlonMIndividual =[
+                {nombre: "Individual"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DPentatlonM._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasPentatlonMEquipo =[
+                {nombre: "Relevo"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DPentatlonM._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasRacquetballIndividual =[
+                {nombre: "Individual"},    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DRacquetball._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasRacquetballEquipo =[
+                {nombre: "Dobles"},
+                {nombre: "Equipos"}     
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DRacquetball._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasRemo =[
+                {nombre:"Individual"}   
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DRemo._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+
+            var pruebasRugby =[
+                {nombre:"Mayor"}
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DRugby._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasSoftbol =[
+                {nombre:"Mayor"}   
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DSoftbol._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasSurf =[
+                {nombre:"Mayor"}       
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DSurf._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasTaekwondo =[
+                {nombre: "46 Kg"},
+                {nombre: "49 Kg"},
+                {nombre: "53 Kg"},
+                {nombre: "57 Kg"},
+                {nombre: "62 Kg"},
+                {nombre: "67 Kg"},
+                {nombre: "73 Kg"},
+                {nombre: "Más de 73 Kg"},
+                {nombre: "54 Kg"},
+                {nombre: "58 Kg"},
+                {nombre: "63 Kg"},
+                {nombre: "68 Kg"},
+                {nombre: "74 Kg"},
+                {nombre: "80 Kg"},
+                {nombre: "87 Kg"},
+                {nombre: "Más de 87 Kg"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTaekwondo._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasTenisIndividual =[
+                {nombre: "Individual"},
+                {nombre: "Copa de Naciones"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTenis._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasTenisEquipo =[
+                {nombre: "Dobles"}, 
+                {nombre: "Mixtos "}   
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTenis._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasTenisMIndividual =[
+                {nombre: "Individual"},  
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTenisM._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasTenisMEquipo =[
+                {nombre: "Dobles"},
+                {nombre: "Equipos"},
+                {nombre: "Mixto"}   
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTenisM._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasTiroIndividual =[
                 {nombre: "Rifle 50 m tendido"}, 
-                {nombre: "Rifle 50 m tendido Equipo"}                 
-        ]
-},
-{
-        nombre: "Tiro Con Arco",
-        nombreNormalizado: "tiro con arco",
-        federacion: tiroArco._id,
-        activo: true,
-        pruebas: 
-                [
-                        {nombre: "Recurvo Ronda Olímpica ind. 70 m"},
-                        {nombre: "Recurvo Ronda Olímpica equipos a 50 m"},
-                        {nombre: "Compuesto Ronda Olímpica ind. 50 m"},
-                        {nombre: "Compuesto Ronda Olímpica equipos 50 m"},
-                        {nombre: "Recurvo Mixta Ronda Olímpica Ind. 70 m"},
-                        {nombre: "Compuesto Mixto Ronda Olímpica 50 m"}
-                ] 
-},
-{
-        nombre: "Triatlón",
-        nombreNormalizado: "triatlón",
-        federacion: triatlon._id,
-        activo: true,
-        pruebas: 
-                [
-                        {nombre: "Individual"}, 
-                        {nombre: "Equipos"},
-                        {nombre: "Relevo Mixto"}         
-                ] 
-},
-{
-        nombre: "Voleibol",
-        nombreNormalizado: "voleibol",
-        federacion: voleibol._id,
-        activo: true,
-        pruebas:
-                [
-                {nombre: "Femenino"},
-                {nombre: "Masculino"}
-                ]
-},
-{
-        nombre: "Voleibol Playa",
-        nombreNormalizado: "voleibol plya",
-        federacion: voleibol._id,
-        activo: true,
-        pruebas:
-                [
-                {nombre: "Femenino"},
-                {nombre: "Masculino"}
-                ]
-}
-*/
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTiro._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasTiroEquipo =[
+                {nombre: "Rifle 50 m tendido Equipo"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTiro._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
 
-var deportes =[DAjedrez, DAtletismo, DBadminton]
+            var pruebasTiroAIndividual =[
+                {nombre: "Recurvo Ronda Olímpica ind. 70 m"},
+                {nombre: "Compuesto Ronda Olímpica ind. 50 m"},
+                {nombre: "Recurvo Mixta Ronda Olímpica Ind. 70 m"},
+                {nombre: "Compuesto Mixto Ronda Olímpica 50 m"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTiroA._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasTiroAEquipo =[
+                {nombre: "Recurvo Ronda Olímpica equipos a 50 m"},
+                {nombre: "Compuesto Ronda Olímpica equipos 50 m"},
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTiroA._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+    
+            var pruebasTriaIndividual =[
+                {nombre: "Individual"}   
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTria._id,
+                    activo: true,
+                    tipo: 0, // Individual: 0
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
+    
+            var pruebasTriaIndividualEquipo =[
+                {nombre: "Equipos"},
+                {nombre: "Relevo Mixto"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DTria._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 2,// Tiempo
+                })
+            });
 
+            var pruebasBVoleibol =[
+                {nombre: "Mayor"}    
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DVoleibol._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+
+            var pruebasVoleibolP =[
+                {nombre: "Mayor"}            
+            ].map(prueba=>{
+                return Prueba({
+                    nombre: prueba.nombre,
+                    deporte: DVoleibolP._id,
+                    activo: true,
+                    tipo: 1, // Equipo: 1
+                    tipoMarcador: 1,// Puntos
+                })
+            });
+        
+var pruebas = [pruebasAtletismoXMetro, pruebasAtletismoXTiempoIndividual,
+    pruebasAtletismoXTiempoEquipo, pruebasBadminton, pruebasBaloncesto, 
+    pruebasBalonmano, pruebasBeisbol, pruebasBillar, pruebasBolicheIndividual,
+    pruebasBolicheEquipo, pruebasDBoxeo, pruebasCanotaje, pruebasCiclismoCBMX,
+    pruebasCiclismoCPIndividual, pruebasCiclismoCPXEquipo, pruebasCiclismoCPXPuntos,
+    pruebasCiclismoCR, pruebasCiclismoCM, pruebasCricket, pruebasEcuestreEQSXEquipo, 
+    pruebasEcuestreEQSXIndividual, pruebasEcuestreEQSXVelocidad, pruebasEcuestreEQAIndividual,
+    pruebasEcuestreEQAEquipo, pruebasEcuestreEQPCIndividual, pruebasEcuestreEQPCEquipo, 
+    pruebasEsgrimaIndividual, pruebasEsgrimaEquipo, pruebasFisiculturismo, pruebasFutbol,
+    pruebasGimnasiaArIndividual, pruebasGimnasiaArEquipo, pruebasGimnasiaRiIndividual,
+    pruebasGimnasiaRiEquipo, pruebasGolf, pruebasHalterofilia, pruebasBHockeyC,
+    pruebasJudoIndividual, pruebasJudoEquipo, pruebasKarate, pruebasLuchaLul,
+    pruebasLuchaLuG, pruebasNatacionIndividual, pruebasNatacionEquipo, 
+    pruebasNatacionSIndividual, pruebasNatacionSEquipo, pruebasPatinajePuntos, 
+    pruebasPatinajeTiempo, pruebasPelotaVasca, pruebasPentatlonMIndividual,
+    pruebasPentatlonMEquipo, pruebasRacquetballIndividual, pruebasRacquetballEquipo,
+    pruebasRemo, pruebasRugby, pruebasSoftbol, pruebasSurf, pruebasTaekwondo,
+    pruebasTenisIndividual, pruebasTenisEquipo, pruebasTenisMIndividual, pruebasTenisMEquipo,
+    pruebasTiroIndividual, pruebasTiroEquipo, pruebasTiroAIndividual, pruebasTiroAEquipo,
+    pruebasTriaIndividual, pruebasTriaIndividualEquipo, pruebasBVoleibol, pruebasVoleibolP]
+
+    await funcionesGlobales.asyncForEach(pruebas, async prueba=>{
+        console.log(prueba)
+        await inicializar(prueba);
+    });
 
 var usuarios = [
     new Usuario({ 
@@ -1936,8 +2651,6 @@ usuarios.forEach(elemento => {
     if (err) {/*console.log(err); */return};
     });  
 });
-
-await inicializar(deportes);
 
 
 var atletas = [
@@ -2036,21 +2749,9 @@ var atletas = [
     })
 ]; 
 
-await inicializar(atletas);
+//await inicializar(atletas);
 
 
-
-var pruebaAtletismo = new Prueba({
-        "nombre": "200 mts",
-        "tipo": 1,
-        "activo": true,
-        "deporte": DAtletismo._id,
-        "nombreNormalizado": "200mts5c872185d3cb6b0015814b94",
-});
-
-var pruebas = [pruebaAtletismo];
-
-await inicializar(pruebas);
 
 
 
@@ -2083,39 +2784,39 @@ var eventos = [Rio, Tokio];
 await inicializar(eventos)
 
 
-var competencia = new Competencia({    
-    "evento": Rio._id,
-    "prueba": pruebaAtletismo._id,
-    "fechaHora":  "2016-08-18T00:00:00.000Z",
-    "recinto": "Estadio Río",
-    "ciudad": "Río",
-    "genero": false,
-    "descripcion": "Hit 1",
-    "fase": 1,
-    "activo": true,
-});
+// var competencia = new Competencia({    
+//     "evento": Rio._id,
+//     "prueba": pruebaAtletismo._id,
+//     "fechaHora":  "2016-08-18T00:00:00.000Z",
+//     "recinto": "Estadio Río",
+//     "ciudad": "Río",
+//     "genero": false,
+//     "descripcion": "Hit 1",
+//     "fase": 1,
+//     "activo": true,
+// });
 
-var competencias = [competencia];
+//var competencias = [competencia];
 
 
-await inicializar(competencias);
+//await inicializar(competencias);
 
-var atletaCompetidor = new AtletaCompetidor({
-    "atleta": atletas[6]._id,
-    "competencia": competencia._id,
-    "marcadores": [
-        {
-            "esUltimoRegistro": false,
-            "set": 1,
-            "tiempo": "21: 88",
-            "tipo": 2,            
-        }
-    ],
-});
+// var atletaCompetidor = new AtletaCompetidor({
+//     "atleta": atletas[6]._id,
+//     "competencia": competencia._id,
+//     "marcadores": [
+//         {
+//             "esUltimoRegistro": false,
+//             "set": 1,
+//             "tiempo": "21: 88",
+//             "tipo": 2,            
+//         }
+//     ],
+// });
 
-var atletasCompetidores = [atletaCompetidor];
+// var atletasCompetidores = [atletaCompetidor];
 
-await inicializar(atletasCompetidores);
+//await inicializar(atletasCompetidores);
 
 }
 

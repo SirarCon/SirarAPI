@@ -15,7 +15,7 @@ var FederacionSchema = new Schema({
         type: String,
         required: 'Digite un nombre por favor',
         unique: true,
-        maxlength: [40, "El nombre tiene que ser menor a 41 caracteres"],
+        maxlength: [150, "El nombre tiene que ser menor a 151 caracteres"],
         minlength: [2, "El nombre tiene que ser mayor a 1 caracteres"],
       },
       nombreNormalizado:{
@@ -35,11 +35,11 @@ var FederacionSchema = new Schema({
       },
       paginaWeb: {
         type: String,
-        maxlength: [40, "La página Web es de máximo 40 caracteres" ],
+        maxlength: [200, "La página Web es de máximo 200 caracteres" ],
       },
       ubicacion: {
         type: String,
-        maxlength: [100, "La ubicación es de máximo 100 caracteres" ],
+        maxlength: [300, "La ubicación es de máximo 300 caracteres" ],
       },
       telefonos: {
         type:[Number],

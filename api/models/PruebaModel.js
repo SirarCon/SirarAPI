@@ -16,7 +16,6 @@ var PruebaSchema = new Schema({
     },
     nombreNormalizado: {
       type: String,
-      unique: true,
     },
     deporte:{
         type: Number,
