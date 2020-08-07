@@ -16,14 +16,16 @@ Federacion = mongoose.model('Federacion'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance,
-borrarDatos = true,
-insertarDatos = true,
-iniciarMensajes = true;
+borrarDatos = false,
+insertarDatos = false,
+iniciarMensajes = false;
  
 async function inicializar(arreglo){
     await funcionesGlobales.asyncForEach(arreglo, async (element, indice, arreglo) => {    
         await arreglo[indice].save().then(async ()=> {
-                    }).catch(err=>{ console.log(err)}) ;
+                    }).catch(err=>{ 
+                        console.log(arreglo[indice])
+                        console.log(err)}) ;
             });
 }
 
@@ -1624,7 +1626,7 @@ var deportes =[DAjedrez, DAtletismo, DBadminton, DBaloncesto, DBalonmano, DBeisb
                 nombre: prueba.nombre,
                 deporte: DBaloncesto._id,
                 activo: true,
-                Equipo: 1, // Equipo: 1
+                tipo: 1, // Equipo: 1
                 tipoMarcador: 1,// Puntos
             })
         });
@@ -2602,7 +2604,6 @@ var pruebas = [pruebasAtletismoXMetro, pruebasAtletismoXTiempoIndividual,
     pruebasTriaIndividual, pruebasTriaIndividualEquipo, pruebasBVoleibol, pruebasVoleibolP]
 
     await funcionesGlobales.asyncForEach(pruebas, async prueba=>{
-        console.log(prueba)
         await inicializar(prueba);
     });
 
