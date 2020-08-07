@@ -23,6 +23,10 @@ var EquipoSchema = new Schema({
     ref: 'Evento',
     required: "Seleccione un evento"
   },  
+  genero: {
+    type: Number,
+    required: "Seleccione el genero de la competencia", 
+  },
   activo: {
     type: Boolean,
     required: "Seleccione si el equipo está activo"
@@ -81,6 +85,7 @@ EquipoSchema.method('infoPublica', function(tieneAlerta) {
     evento: this.evento,  
     activo: this.activo,
     retirado: this.retirado,
+    genero: this.genero,
     atletas: this.atletas,
     medallas: this.medallas,
     tieneAlerta: tieneAlerta,
