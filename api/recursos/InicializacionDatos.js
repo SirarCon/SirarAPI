@@ -1017,6 +1017,7 @@ var remo = new Federacion({
                         escudoUrl: "",
                         activo: true                
         });
+
 var rugby  = new Federacion({
                         nombre: "FEDERACIÓN COSTARRICENSE DE RUGBY",                
                         paginaWeb: "www.federacionrugbycr.com",
@@ -1064,6 +1065,7 @@ var taekwondo = new Federacion({
                         escudoUrl: "",
                         activo: true
         });
+
 var tenis = new Federacion({
                         nombre: "FEDERACIÓN COSTARRICENSE DE TENIS",                
                         paginaWeb: "www.fctenis.com",
@@ -1176,12 +1178,12 @@ var voleibol = new Federacion({
 
 
 //  var opciones2 = {strict:false, upsert: true, new: true, setDefaultsOnInsert: true };
-var federaciones = [ajedrez, atletismo, badminton/*, baloncesto, balonmano,
+var federaciones = [ajedrez, atletismo, badminton, baloncesto, balonmano,
                     beisbol, billar, boliche, boxeo, canotaje, ciclismo, circket, 
                     ecuestre, esgrima, fisicoculturismo, futbol, gimnasia,
                     golf, halterofilia, hockey, judo, karate, lucha, natacion, patinaje, pelotaVasca,
                     pentatlon, racquetball, remo, rugby, softbol, surf, taekwondo, tenis,
-tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
+                    tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol];
         // federaciones.forEach(elemento => {             
         //         Federacion.update(elemento, elemento, opciones, function(err, elemento) {
         //         if (err){/*console.log(err);*/ return};
@@ -1193,14 +1195,12 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
     var DAjedrez = new Deporte({
                 nombre: "Ajedrez",
                 nombreNormalizado: "ajedrez",
-                imagenDeporteUrl: "",
                 federacion: ajedrez._id,
                 activo: true,                                
         });
      var DAtletismo = new Deporte({
                 nombre: "Atletismo",
                 nombreNormalizado: "atletismo",
-                imagenDeporteUrl: "",
                 federacion: atletismo._id,
                 activo: true, 
                 /*pruebas: [   
@@ -1234,7 +1234,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
         });
        var DBadminton = new Deporte({
          nombre: "Bádminton",
-         imagenDeporteUrl: "",
          nombreNormalizado: "badminton",
          federacion: badminton._id,
          activo: true, 
@@ -1242,7 +1241,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
         });
         /*{
                 nombre: "Baloncesto",
-                imagenDeporteUrl: "",
                 nombreNormalizado: "baloncesto",
                 federacion: baloncesto._id,
                 activo: true,
@@ -1254,7 +1252,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
         },
 {
         nombre: "Balonmano",
-        imagenDeporteUrl: "" ,
         nombreNormalizado: "balonmano",
         federacion: balonmano._id,
         activo: true,
@@ -1266,7 +1263,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Béisbol",
-        imagenDeporteUrl: "",
         nombreNormalizado: "beisbol",
         federacion: beisbol._id,
         activo: true, 
@@ -1277,7 +1273,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Billar",
-        imagenDeporteUrl: "",
         nombreNormalizado: "billar",
         federacion: billar._id,
         activo: true, 
@@ -1288,7 +1283,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Boliche",
-        imagenDeporteUrl: "",
         nombreNormalizado: "boliche",
         federacion: boliche._id,
         activo: true,
@@ -1304,7 +1298,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Boxeo",
-        imagenDeporteUrl: "",
         nombreNormalizado: "boxeo",
         federacion: boxeo._id,
         activo: true,
@@ -1327,7 +1320,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Canotaje",
-        imagenDeporteUrl: "",
         nombreNormalizado: "canotaje",
         federacion: canotaje._id,
         activo: true, 
@@ -1339,7 +1331,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Ciclismo CBMX",
-        imagenDeporteUrl: "",
         nombreNormalizado: "ciclismo cbmx",
         federacion: ciclismo._id,
         activo: true,
@@ -1350,7 +1341,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Ciclismo CP",
-        imagenDeporteUrl: "",
         nombreNormalizado: "ciclismo cp",
         federacion: ciclismo._id,
         activo: true,
@@ -1370,7 +1360,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Ciclismo CR",
-        imagenDeporteUrl: "",
         nombreNormalizado: "ciclismo cr",
         federacion: ciclismo._id,
         activo: true,
@@ -1382,7 +1371,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Ciclismo CM Montaña",
-        imagenDeporteUrl: "",
         nombreNormalizado: "ciclismo cm montaña",
         federacion: ciclismo._id,
         activo: true,
@@ -1393,7 +1381,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Cricket",
-        imagenDeporteUrl: "",
         nombreNormalizado: "cricket",
         federacion: circket._id,
         activo: true, 
@@ -1404,7 +1391,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Ecuestre EQS",
-        imagenDeporteUrl: "",
         nombreNormalizado: "ecuestre eqs",
         federacion: ecuestre._id,
         activo: true,
@@ -1418,7 +1404,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Ecuestre EQA",
-        imagenDeporteUrl: "",
         nombreNormalizado: "ecuestre eqa",
         federacion: ecuestre._id,
         activo: true,
@@ -1431,7 +1416,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Ecuestre EQPC",
-        imagenDeporteUrl: "",
         nombreNormalizado: "ecuestre eqpc",
         federacion: ecuestre._id,
         activo: true,
@@ -1443,7 +1427,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Esgrima",
-        imagenDeporteUrl: "",
         nombreNormalizado: "esgrima",
         federacion: esgrima._id,
         activo: true,
@@ -1459,7 +1442,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Fisiculturismo",
-        imagenDeporteUrl: "",
         nombreNormalizado: "fisiculturismo",
         federacion: fisicoculturismo._id,
         activo: true, 
@@ -1470,7 +1452,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Futbol",
-        imagenDeporteUrl: "",
         nombreNormalizado: "futbol",
         federacion: futbol._id,
         activo: true,
@@ -1482,7 +1463,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Gimnasia Artistica",
-        imagenDeporteUrl: "",
         nombreNormalizado: "gimnasia artistica",
         federacion: gimnasia._id,
         activo: true,
@@ -1502,7 +1482,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Gimnasia Ritmica",
-        imagenDeporteUrl: "",
         nombreNormalizado: "gimnasia ritmica",
         federacion: gimnasia._id,
         activo: true,
@@ -1518,7 +1497,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Golf",
-        imagenDeporteUrl: "",
         nombreNormalizado: "golf",
         federacion: golf._id,
         activo: true,
@@ -1530,7 +1508,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Halterofilia",
-        imagenDeporteUrl: "",
         nombreNormalizado: "halterofilia",
         federacion: halterofilia._id,
         activo: true,
@@ -1570,7 +1547,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Hockey Césped",
-        imagenDeporteUrl: "",
         nombreNormalizado: "hockey cesped",
         federacion: hockey._id,
         activo: true, 
@@ -1581,7 +1557,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Judo",
-        imagenDeporteUrl: "",
         nombreNormalizado: "judo",
         federacion: judo._id,
         activo: true,
@@ -1608,7 +1583,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Karate",
-        imagenDeporteUrl: "",
         nombreNormalizado: "karate",
         federacion: karate._id,
         activo: true,
@@ -1630,7 +1604,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Lucha LUL",
-        imagenDeporteUrl: "",
         nombreNormalizado: "lucha lul",
         federacion: lucha._id,
         activo: true,
@@ -1652,7 +1625,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Lucha LUG",
-        imagenDeporteUrl: "",
         nombreNormalizado: "lucha lug",
         federacion: lucha._id,
         activo: true,
@@ -1668,7 +1640,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Natación",
-        imagenDeporteUrl: "",
         nombreNormalizado: "natación",
         federacion: natacion._id,
         activo: true,
@@ -1701,7 +1672,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Natación Sincronizado",
-        imagenDeporteUrl: "",
         nombreNormalizado: "natación sincronizado",
         federacion: natacion._id,
         activo: true,
@@ -1718,7 +1688,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Patinaje",
-        imagenDeporteUrl: "",
         nombreNormalizado: "patinaje",
         federacion: patinaje._id,
         activo: true,
@@ -1732,7 +1701,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Pelota Vasca",
-        imagenDeporteUrl: "",
         nombreNormalizado: "pelota vasca",
         federacion: pelotaVasca._id,
         activo: true,
@@ -1743,7 +1711,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Pentatlón Moderno",
-        imagenDeporteUrl: "",
         nombreNormalizado: "pentatlón moderno",
         federacion: pentatlon._id,
         activo: true,
@@ -1755,7 +1722,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Racquetball",
-        imagenDeporteUrl: "",
         nombreNormalizado: "racquetball",
         federacion: racquetball._id,
         activo: true,
@@ -1768,7 +1734,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Remo",
-        imagenDeporteUrl: "",
         nombreNormalizado: "remo",
         federacion: remo._id,
         activo: true, 
@@ -1779,7 +1744,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Rugby",
-        imagenDeporteUrl: "" ,
         nombreNormalizado: "rugby",
         federacion: rugby._id,
         activo: true,
@@ -1791,7 +1755,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Softbol",
-        imagenDeporteUrl: "",
         nombreNormalizado: "softbol",
         federacion: softbol._id,
         activo: true,
@@ -1803,7 +1766,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Surf",
-        imagenDeporteUrl: "",
         nombreNormalizado: "surf",
         federacion: surf._id,
         activo: true,
@@ -1815,7 +1777,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Taekwondo",
-        imagenDeporteUrl: "",
         nombreNormalizado: "taekwondo",
         federacion: taekwondo._id,
         activo: true,
@@ -1844,7 +1805,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
         nombreNormalizado: "tenis",
         federacion: tenis._id,
         activo: true,
-        imagenDeporteUrl: "",
                 pruebas:
                         [
                                 {nombre: "Individual"},
@@ -1855,7 +1815,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Tenis de Mesa",
-        imagenDeporteUrl: "",
         nombreNormalizado: "tenis de mesa",
         federacion: tenisMesa._id,
         activo: true,
@@ -1870,7 +1829,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Tiro Al Blanco",
-        imagenDeporteUrl: "",
         nombreNormalizado: "tiro al blanco",
         federacion: tiroBlanco._id,
         activo: true,
@@ -1881,7 +1839,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Tiro Con Arco",
-        imagenDeporteUrl: "",
         nombreNormalizado: "tiro con arco",
         federacion: tiroArco._id,
         activo: true,
@@ -1897,7 +1854,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Triatlón",
-        imagenDeporteUrl: "",
         nombreNormalizado: "triatlón",
         federacion: triatlon._id,
         activo: true,
@@ -1910,7 +1866,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Voleibol",
-        imagenDeporteUrl: "",
         nombreNormalizado: "voleibol",
         federacion: voleibol._id,
         activo: true,
@@ -1922,7 +1877,6 @@ tenisMesa, tiroBlanco, tiroArco, triatlon,voleibol*/];
 },
 {
         nombre: "Voleibol Playa",
-        imagenDeporteUrl: "",
         nombreNormalizado: "voleibol plya",
         federacion: voleibol._id,
         activo: true,
