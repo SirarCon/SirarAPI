@@ -10,7 +10,7 @@ exports.ingresarEquipoACompetencia = async function(req, res){
     equipoService.agregarEquipo(req, res)
     };
 
-    exports.ingresarEquiposACompetencia = async function(req, res){
+exports.ingresarEquiposACompetencia = async function(req, res){
         await equipoService.ingresarMultiplesEquiposCompeticion(req, res);
         res.json({token: res.locals.token, datos: globales.mensajes(-7, "Equipos a Competencia", " ")});    
         //Todo Implementar una forma para manejar el error                
