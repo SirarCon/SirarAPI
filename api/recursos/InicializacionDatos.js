@@ -24,11 +24,11 @@ funcionesGlobales = require("../FuncionesGlobales.js"),
 rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance,
 
 //Tener cuidado con estas 2 variables:
-borrarTodosDatos = true,
-insertarTodosDatos = true,
+borrarTodosDatos = false,
+insertarTodosDatos = false,
 
 borrarErrores = false,
-borrarMensajes = false,
+borrarMensajes = true,
 borrarContadores = false,
 borrarPaises = false,
 borrarFases = false,
@@ -46,7 +46,7 @@ borrarNotificacionesAtletas = false,
 borrarNotificacionesEquipos = false,
 borrarNotificacionesCompetencias = false,
 
-insertarMensajes = false,
+insertarMensajes = true,
 insertarContadores = false,
 insertarPaises = false,
 insertarFases = false,
@@ -188,7 +188,7 @@ exports.Datos = async function(){
         new Mensaje({"mensaje": "Se ha ingresado {sustantivoCambiar} {id} .", "codigo": -7, "exito": 1 }),
         new Mensaje({"mensaje": "No hay {sustantivoCambiar} que listar", "codigo" : -8, "exito": 1 }),
         new Mensaje({"mensaje": "Alerta creada para {sustantivoCambiar}", "codigo" : -9, "exito": 1 }),
-        new Mensaje({"mensaje": "Alerta eliminada correctamente", "codigo" : 10, "exito": 1 }),
+        new Mensaje({"mensaje": "Alerta eliminada correctamente", "codigo" : -10, "exito": 1 }),
         //----------------------------------- Mensajes de error -------------------------------------------------
         new Mensaje({"mensaje": "Contraseña errónea", "codigo": 1, "exito": 0 }),
         new Mensaje({"mensaje": "{sustantivoCambiar} {id} no encontrado", "codigo": 2, "exito": 0 }),

@@ -29,7 +29,7 @@ exports.removerDispositivoEnAtleta = async function(req, res){
             if(dispositivo.length > 0){
                 fireBase.removerDispositivoAtleta(req.body)
                 .then(notificacion=>{
-                    res.json({token: res.locals.token, datos: globales.mensajes(10)});
+                    res.json({token: res.locals.token, datos: globales.mensajes(-10)});
                 }).catch(err =>{
                     funcionesGlobales.registrarError("removerDispositivoAtleta/RegistroNotificacion", err)
                     res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "atleta")});  
@@ -72,7 +72,7 @@ exports.removerDispositivoEnEquipo = async function(req, res){
             if(dispositivo.length > 0){
                 fireBase.removerDispositivoEquipo(req.body)
                 .then(notificacion=>{
-                    res.json({token: res.locals.token, datos: globales.mensajes(10)});
+                    res.json({token: res.locals.token, datos: globales.mensajes(-10)});
                 }).catch(err =>{
                     funcionesGlobales.registrarError("removerDispositivoEquipo/RegistroNotificacion", err)
                     res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "equipo")});  
@@ -118,7 +118,7 @@ exports.removerDispositivoEnCompetencia = async function(req, res, devolverMensa
             fireBase.removerDispositivoCompetencia(req.body)
             .then(notificacion=>{
                 if(devolverMensaje)
-                    res.json({token: res.locals.token, datos: globales.mensajes(10)});
+                    res.json({token: res.locals.token, datos: globales.mensajes(-10)});
             }).catch(err =>{
                 funcionesGlobales.registrarError("removerDispositivoCompetencia/RegistroNotificacion", err)
                 if(devolverMensaje)
