@@ -34,7 +34,7 @@ exports.notificarIngresoAtleta = async function (Model, atletaC){
 
 exports.notificarIngresoEquipo = async function (Model, equipoC){
     var info = await obtenerInfoPartipante(Model, equipoC,
-       {path: "equipo", select: "_id nombre", 
+        {path: "equipo", select: "_id", 
                                 populate:{path: "pais", select: "name"}});
    fireBase.enviarNotificacionesEquipo(mensajeEquipoEnCompetencia(info),
                                         equipoC.equipo, retornarDatosCompetencia(info));
@@ -48,6 +48,10 @@ exports.notificarCambioEnCompetencia = async function(competencia){
 exports.notificarInicioCierreCompetencia = async function(competencia){
     fireBase.enviarNotificacionesCompetencia(mensajeCambioCompetencia(competencia, true),
     competencia._id, retornarDatosDesdeCompetencia(competencia));
+}
+
+exports.notificarCambioMarcador = async function(){
+    enviarNotificacionesCompetencia
 }
 
 //#region funcionesAyuda
