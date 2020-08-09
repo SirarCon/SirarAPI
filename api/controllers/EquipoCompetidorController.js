@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
 EquipoC = mongoose.model('EquipoCompetidor'),
-Competencia = mongoose.model('Competencia'),
+Prueba = mongoose.model('Prueba'),
+Fase = mongoose.model('Fase'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 equipoService = require("../services/EquipoService");
@@ -338,6 +339,52 @@ exports.listarCompetenciasPorPruebaEquipo = async function(req, res){
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarCompetenciasPorPruebaEquipo/CompetenciaController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias del equipo", " ")});  
+    });
+    }
+
+//Lista las competencias del equipo agrupadas por evento
+exports.listarCompetenciasPorEquipo = async function(req, res){
+    EquipoC.aggregate([
+       {
+           $match: { 
+               equipo: Number(req.params.idEquipo),
+           }
+        },
+         {  $lookup: {
+                "localField": "competencia",
+                "from": "competencias",
+                "foreignField": "_id",
+                "as":  "competencia"
+           },
+        },
+        {
+            $unwind: "$competencia"
+        },
+        {
+            $lookup: {
+             "localField": "competencia.evento",
+             "from": "eventos",
+             "foreignField": "_id",
+             "as": "evento"
+             }
+         },
+         {
+             $unwind: "$evento"
+         },
+        {
+            $group: { 
+                    _id: {_id: "$evento._id", nombre: "$evento.nombre"},
+                    competencia: {$push: "$competencia"}
+            }
+        },
+       
+    ]).exec().then(async competencias=> {
+        competencias = await Prueba.populate(competencias, [{path: "competencia.prueba", select: "_id, nombre"} ]);
+        competencias = await Fase.populate(competencias, [{path: "competencia.fase", select: "_id, descripcion"} ]);
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
+    }).catch(err => {
+        funcionesGlobales.registrarError("listarCompetenciasPorEquipo/EquipoCompetidorController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias del equipo", " ")});  
     });
     }

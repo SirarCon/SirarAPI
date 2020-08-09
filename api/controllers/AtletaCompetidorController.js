@@ -1,5 +1,7 @@
 var mongoose = require('mongoose'),
 AtletaC = mongoose.model('AtletaCompetidor'),
+Prueba = mongoose.model('Prueba'),
+Fase = mongoose.model('Fase'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 atletaService = require("../services/AtletaService");
@@ -343,6 +345,52 @@ exports.listarCompetenciasPorPruebaAtleta = async function(req, res){
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarCompetenciasPorPruebaAtleta/AtletaCompetidorController", err)
+        res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias del atleta", " ")});  
+    });
+    }
+
+//Lista las competencias del atleta agrupadas por evento
+exports.listarCompetenciasPorAtleta = async function(req, res){
+    AtletaC.aggregate([
+       {
+           $match: { 
+               atleta: Number(req.params.idAtleta),
+           }
+        },
+         {  $lookup: {
+                "localField": "competencia",
+                "from": "competencias",
+                "foreignField": "_id",
+                "as":  "competencia"
+           },
+        },
+        {
+            $unwind: "$competencia"
+        },
+        {
+            $lookup: {
+             "localField": "competencia.evento",
+             "from": "eventos",
+             "foreignField": "_id",
+             "as": "evento"
+             }
+         },
+         {
+             $unwind: "$evento"
+         },
+        {
+            $group: { 
+                    _id: {_id: "$evento._id", nombre: "$evento.nombre"},
+                    competencia: {$push: "$competencia"}
+            }
+        },
+       
+    ]).exec().then(async competencias=> {
+        competencias = await Prueba.populate(competencias, [{path: "competencia.prueba", select: "_id, nombre"} ]);
+        competencias = await Fase.populate(competencias, [{path: "competencia.fase", select: "_id, descripcion"} ]);
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
+    }).catch(err => {
+        funcionesGlobales.registrarError("listarCompetenciasPorAtleta/AtletaCompetidorController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, "las competencias del atleta", " ")});  
     });
     }
