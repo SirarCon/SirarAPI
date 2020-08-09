@@ -104,7 +104,8 @@ function mensajeEquipoEnCompetencia(info){
 }
 
 function mensajeinfoCompetencia(info){
-    let descripcion = info.competencia.descripcion != "" ? " en " + info.competencia.descripcion : "";
+    let descripcion = info.competencia.descripcion && info.competencia.descripcion != "" ?
+    " en " + info.competencia.descripcion : "";
     return  " participará en la fase " + info.competencia.fase.descripcion +
             " " + info.competencia.prueba.nombre + descripcion +
             " en " + info.competencia.evento.nombre + " el " ;
