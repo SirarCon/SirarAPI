@@ -388,7 +388,7 @@ exports.listarCompetenciasPorAtleta = async function(req, res){
     ]).exec().then(async competencias=> {
         competencias = await Prueba.populate(competencias,
              [{path: "competencia.prueba", 
-                select: "_id nombre tipo tipoMarcador genero deporte"
+                select: "_id nombre tipo tipoMarcador deporte"
             } 
         ]);
         competencias = await Fase.populate(competencias, [{path: "competencia.fase", select: "_id, descripcion"} ]);
