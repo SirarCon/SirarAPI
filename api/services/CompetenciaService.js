@@ -100,5 +100,6 @@ function existeNotificacionEnCompetencias(alertas, competencia){
 async function populateCompetencia(competencia){
     return await Competencia.populate(competencia,
                                          [{path: "prueba", select: "nombre tipo"},
-                                          {path: "fase", select: "descripcion"}]);
+                                          {path: "fase", select: "descripcion"}
+                                        ]);
 }

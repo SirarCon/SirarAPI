@@ -4,8 +4,11 @@ contador = require("../models/ContadorModel"),
 helper = require("./helper"),
 deporte = require("../models/DeporteModel"),
 prueba = require("../models/PruebaModel"),
+competencia = require("../models/CompetenciaModel"),
+atletaC = require("../models/AtletaCompetidorModel"),
 evento = require("../models/EventoModel"),
 model = require("../models/AtletaModel"),
+notificacionAtleta = require("../models/NotificacionAtletaModel"),
 controller = require("../controllers/AtletaController"),
 expressRequestMock = require('express-request-mock') ;
 
@@ -51,6 +54,9 @@ var depRes ={
     federacion: 1,
     activo: true,
 }
+
+var responseNotiAtle = [];
+
 var responseListarAtletas = [
   {
     _id: 1,
@@ -143,6 +149,7 @@ describe('Atletas Model', () => {
 
   it('Listar atletas activos', async () => {
     mockingoose(model).toReturn(responseListarAtletas, 'find')
+    mockingoose(notificacionAtleta).toReturn(responseNotiAtle, 'find');
     const { res } = await expressRequestMock(controller.listarAtletasActivos, helper.reqGeneral, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(datos.codigo).toBeLessThan(0);

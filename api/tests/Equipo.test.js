@@ -3,11 +3,19 @@ error = require("../models/ErrorModel"),
 contador = require("../models/ContadorModel"),
 helper = require("./helper"),
 prueba = require("../models/PruebaModel"),
+competencia = require("../models/CompetenciaModel"),
+equipoC = require("../models/EquipoCompetidorModel"),
 evento = require("../models/EventoModel"),
 atleta = require("../models/AtletaModel"),
 model = require("../models/EquipoModel"),
+equipoService = require("../services/EquipoService"),
 controller = require("../controllers/EquipoController"),
 expressRequestMock = require('express-request-mock');
+
+
+jest.mock("../services/EquipoService")
+
+
 
 //#region objetos y requests
 
@@ -18,6 +26,7 @@ var bodyCrearEquipo= { //Objeto con el body completo para reutilizarlo
     evento: 1,
     pais: 840,
     retirado: true,
+    genero: 0,
   }
   //Se extrae solo el rol , pues el objeto de respuesta no lo retorna
   var  { ...responseLuegoCrearEquipo} = bodyCrearEquipo;

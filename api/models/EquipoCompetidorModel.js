@@ -32,11 +32,7 @@ var EquipoCompetidorSchema = new Schema({
                     },
                     puntaje: {
                         type: String,
-                    },            
-                    tipo: {//Puntos (1), Tiempo (2), Metros (3)
-                        type: Number,
-                        required: 'Seleccione el tipo de marcador',
-                    },
+                    },                                
                     momentoTiempo: {
                         type: String,
                     },

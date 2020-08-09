@@ -3,6 +3,7 @@ contador = require("../models/ContadorModel"),
 error = require("../models/ErrorModel"),
 helper = require("./helper"),
 evento = require("../models/EventoModel"),
+fase = require("../models/FaseModel"),
 model = require('../models/CompetenciaModel'),
 EquipoC = require('../models/EquipoCompetidorModel');
 prueba = require("../models/PruebaModel"),
@@ -77,40 +78,27 @@ describe('Equipo Competidor', () => {
                   "_id": "5e7eb65b008f3504f9c27659",
                   "esUltimoRegistro": false,
                   "set": 1,
-                  "puntos": 1,
-                  "momentoTiempo": {
-                      "minuto": "12",
-                      "segundo": "25"
-                  },
-                  "tipo": 1
+                  "puntaje": 1,
+                  "momentoTiempo":" 12:25",                  
               },
               {
                   "_id": "5e7eb66d008f3504f9c2765a",
                   "esUltimoRegistro": false,
                   "set": 1,
-                  "puntos": 2,
-                  "momentoTiempo": {
-                      "minuto": "40",
-                      "segundo": "09"
-                  },
-                  "tipo": 1
+                  "puntaje": 2,
+                  "momentoTiempo":"40:09",
               },
               {
                   "_id": "5e7eb68e008f3504f9c2765d",
                   "esUltimoRegistro": false,
                   "set": 2,
-                  "puntos": 2,
-                  "momentoTiempo": {
-                      "minuto": "90",
-                      "segundo": "23"
-                  },
-                  "tipo": 1
+                  "puntaje": 2,
+                  "momentoTiempo": "90:23",
               },
               {
                   "_id": "5e7eb6b9008f3504f9c2765e",
                   "esUltimoRegistro": true,
-                  "puntos": 2,
-                  "tipo": 1
+                  "puntaje": 2,
               }
           ]
       },
@@ -259,9 +247,9 @@ var reqModificarEquipoCompetidor = {
       expect(datos.exito).toBeTruthy(); 
     });
 
-    it('Modificar marcadores', async () => {
+    it('Agregar marcadores', async () => {
       mockingoose(EquipoC).toReturn(resMarcadores, 'findOneAndUpdate')
-      const { res } = await expressRequestMock(controller.modificarMarcadores, reqModificarMarcador, helper.resp)
+      const { res } = await expressRequestMock(controller.agregarRemoverMarcador, reqModificarMarcador, helper.resp)
       const { token, datos } = JSON.parse(res._getData());
       expect(res.statusCode).toEqual(200);
       expect(datos.codigo).toBeLessThan(0);

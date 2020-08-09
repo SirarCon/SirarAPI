@@ -3,6 +3,7 @@ error = require("../models/ErrorModel"),
 contador = require("../models/ContadorModel"),
 helper = require("./helper"),
 evento = require("../models/EventoModel"),
+fase = require("../models/FaseModel"),
 model = require('../models/CompetenciaModel'),
 AtletaC = require('../models/AtletaCompetidorModel');
 pruebaModel = require("../models/PruebaModel"),
@@ -224,7 +225,7 @@ var reqModificarAtletaCompetidor = {
 
   it('Modificar marcadores', async () => {
     mockingoose(AtletaC).toReturn(resMarcadores, 'findOneAndUpdate')
-    const { res } = await expressRequestMock(controller.modificarMarcadores, reqModificarMarcador, helper.resp)
+    const { res } = await expressRequestMock(controller.agregarRemoverMarcador, reqModificarMarcador, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(res.statusCode).toEqual(200);
     expect(datos.codigo).toBeLessThan(0);

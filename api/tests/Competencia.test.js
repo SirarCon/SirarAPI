@@ -5,11 +5,16 @@ helper = require("./helper"),
 evento = require("../models/EventoModel"),
 model = require('../models/CompetenciaModel'),
 pruebaModel = require("../models/PruebaModel"),
+fase = require("../models/FaseModel"),
+ateltaC = require("../models/AtletaCompetidorModel"),
+equipoC = require("../models/EquipoCompetidorModel"),
+notificacionCompetencia = require("../models/NotificacionCompetenciaModel"),
 controller = require("../controllers/CompetenciaController"),
 expressRequestMock = require('express-request-mock');
 
 describe('Competencia Atleta', () => {
     var body = {
+        _id: 1,
         evento: 1,
         prueba: 1,
         fechaHora: '2016-08-05T08:00:00.000Z',
@@ -17,22 +22,27 @@ describe('Competencia Atleta', () => {
         recinto: 'Tokio Stadium',
         genero: 1,
         descripcion: 'Hit 1',
-        fase: 2,
         activo: true
     } 
-
+    var bodyCrear = {
+      ...body,
+      fase: 1,
+    }
 
     var response= body
     var req = {
       ...helper.reqGeneral,
-      body: body,
+      body: {
+        ...body,
+        fase: 2,
+      },
     }
     var eventRes= {
       "_id" : 1,
       "nombre" : "Juegos Olímpicos de Río de Janeiro 2016",
       "fechaInicio" : "2016-08-05T00:00:00Z", 
       "fechaFinal" : "2016-08-21T00:00:00Z",
-      "ciudad" : "Río",
+      "ciudad" : "Ro",
       "pais" : 76,
       "fotoUrl" : "imagenes/imagenesEventos/5c8719d7d3cb6b0015814b91.jpeg",
       "activo" : 1,
@@ -92,15 +102,20 @@ describe('Competencia Atleta', () => {
       }
       
       var reslistarCompetenciasEventoPruebaFase = [{
-      ...body
+      ...body, fase: {_id: 2, descripcion: "Semifinal"},
+
       }]
 
+      var responseNotiComp = [];
+      var competenciaPopulate = reslistarCompetenciasEventoPruebaFase[0];
+
+      console.log(JSON.stringify(competenciaPopulate) + "fff")
 
     it('debería salvar competencia', () => {
         mockingoose(model).toReturn(response, 'save');
         mockingoose(contador).toReturn({sequence_value: 1}, 'findOneAndUpdate')
         return model
-            .create(body).then((res) => {
+            .create(bodyCrear).then((res) => {
                 expect(JSON.parse(JSON.stringify(res))).toMatchObject(response)
             });
     });
@@ -117,7 +132,8 @@ describe('Competencia Atleta', () => {
     });
 
   it('Modificar Competencia', async () => {
-    mockingoose(model).toReturn(eventRes, 'findOneAndUpdate')
+    mockingoose(model).toReturn(competenciaPopulate, 'findOneAndUpdate')
+    mockingoose(model).toReturn(competenciaPopulate, 'populate')
     const { res } = await expressRequestMock(controller.modificarCompetencia, req, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(res.statusCode).toEqual(200);
@@ -126,7 +142,9 @@ describe('Competencia Atleta', () => {
   });
 
   it('Activar Competencia', async () => {
-    mockingoose(model).toReturn(eventRes, 'findOneAndUpdate')
+    mockingoose(model).toReturn(competenciaPopulate, 'findOneAndUpdate')
+    await mockingoose(model).toReturn(competenciaPopulate, 'populate')
+
     const { res } = await expressRequestMock(controller.cambiarEstadoCompetencia, req, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(res.statusCode).toEqual(200);
@@ -164,6 +182,7 @@ describe('Competencia Atleta', () => {
 
   it('Listar competencias por Prueba en Evento y Fase', async () => {
     mockingoose(model).toReturn(reslistarCompetenciasEventoPruebaFase, 'find')
+    mockingoose(notificacionCompetencia).toReturn(responseNotiComp, 'find');
     const { res } = await expressRequestMock(controller.listarCompetenciasEventoPruebaFase, reqlistarCompetenciasEventoPruebaFase, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(res.statusCode).toEqual(200);
@@ -172,7 +191,9 @@ describe('Competencia Atleta', () => {
   });
 
   it('Leer competencia', async () => {
-    mockingoose(model).toReturn(reslistarCompetenciasEventoPruebaFase, 'find')
+    mockingoose(model).toReturn(reslistarCompetenciasEventoPruebaFase, 'findOne')
+    mockingoose(notificacionCompetencia).toReturn(responseNotiComp, 'find');
+    mockingoose(model).toReturn(competenciaPopulate, 'populate')
     const { res } = await expressRequestMock(controller.leerCompetencia, reqleerCompetencia, helper.resp)
     const { token, datos } = JSON.parse(res._getData());
     expect(res.statusCode).toEqual(200);
