@@ -380,8 +380,12 @@ exports.listarCompetenciasPorEquipo = async function(req, res){
         },
        
     ]).exec().then(async competencias=> {
-        competencias = await Prueba.populate(competencias, [{path: "competencia.prueba", select: "_id, nombre"} ]);
-        competencias = await Fase.populate(competencias, [{path: "competencia.fase", select: "_id, descripcion"} ]);
+        competencias = await Prueba.populate(competencias, 
+            [{path: "competencia.prueba", 
+            select: "_id nombre tipo tipoMarcador genero deporte"
+            } 
+        ]);
+            competencias = await Fase.populate(competencias, [{path: "competencia.fase", select: "_id, descripcion"} ]);
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarCompetenciasPorEquipo/EquipoCompetidorController", err)
