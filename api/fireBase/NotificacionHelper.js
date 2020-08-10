@@ -145,16 +145,23 @@ function mensajeEquipoMarco(info){
 //Para así dejar de enviar notificaciones al dispositivo una vez desactivado la competencia. (Si fuera que alguien no quiere recibir notificaciones de esa competencia)
 //Así al enviar notificaciones de atletas en marcadores enviar solo si tiene el dispositivo también en competencia
 function mensajeMarcador(info){
+     //filter latest Marcador
+     let marcador = info.marcadores.sort((a, b) => b.momentoRegistro - a.momentoRegistro)[0];
     let tipoMarcador = info.competencia.prueba.tipo;
-    let marcador = info.marcadores.sort((a, b) => b.momentoRegistro - a.momentoRegistro)[0];
-    //filter latest Marcador
+    
+    let momentoTiempo = asegurarMensaje(marcador.momentoTiempo, ". Al minuto " + marcador.momentoTiempo)
+    let momentoOportunidad = asegurarMensaje(marcador.momentoOportunidad, " En oportunidad " + marcador.momentoOportunidad)
+    let cantidadOportunidaded = asegurarMensaje(marcador.cantidadOportunidades, "/" + marcador.cantidadOportunidades);
+    let set = asegurarMensaje(marcador.set, ", en el set: " + marcador.set)
+
     let registro = tipoMarcador == 1 ? marcador.puntaje + " puntos o anotaciones":
     tipoMarcador == 2 ? " un tiempo de"+ marcador.puntaje : marcador.puntaje + " metros";
-    return registro + ", en el set: " + marcador.set + 
-                (marcador.momentoTiempo != undefined ? 
-                    ". Al minuto " + marcador.momentoTiempo :
-                    "oportunidad" + marcador.momentoOportunidad + "/" + marcador.cantidadOportunidades);
 
+    return registro + set + momentoTiempo + momentoOportunidad + cantidadOportunidaded;            
+}
+
+function asegurarMensaje(variable, mensaje){
+ return variable != undefined && variable != "" ? mensaje : "";
 }
 
 //#endregion mensajes
