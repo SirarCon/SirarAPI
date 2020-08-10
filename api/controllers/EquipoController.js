@@ -105,7 +105,9 @@ exports.modificarEquipo = async function(req, res){
 exports.listarEquipos = async function(req, res){
     Equipo.find()
     .where({evento: req.params.idEvento})
-    .populate([{path: "pais", select: "name"}])
+    .populate([{path: "pais", select: "name"},
+                {path: "atletas", select: "_id nombre"},
+                {path: "deporte"}])
     .sort({pais: 1})
     .exec()
     .then(async (equipos)=>{    
@@ -204,8 +206,9 @@ exports.modificarAtletas = async function(req, res){
 exports.listarEquiposActivos = async function(req, res){
     Equipo.find()
     .where({evento: req.params.idEvento, activo: true})  
-    .populate([{path: "pais", select: "name"}])
-    .populate({path: "atletas", select: "_id nombre"})
+    .populate([{path: "pais", select: "name"},
+                {path: "atletas", select: "_id nombre"},
+                {path: "deporte"}])
     .sort({pais:  1})
     .exec()
     .then(async (equipos)=>{
