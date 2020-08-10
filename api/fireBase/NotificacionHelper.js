@@ -115,11 +115,15 @@ function mensajeEquipoEnCompetencia(info){
 }
 
 function mensajeinfoCompetencia(info){
-    let descripcion = info.competencia.descripcion && info.competencia.descripcion != "" ?
-    " en " + info.competencia.descripcion : "";
-    return  " participará en la fase " + info.competencia.fase.descripcion +
+    return  " participará" + mensajeInfoCompetencia(info) + " el " ;
+}
+
+function mensajeInfoCompetencia(info){
+    let descripcion = asegurarMensaje(info.competencia.descripcion,
+                                     " en " + info.competencia.descripcion)
+    return " en la fase " + info.competencia.fase.descripcion +
             " " + info.competencia.prueba.nombre + descripcion +
-            " en " + info.competencia.evento.nombre + " el " ;
+            " en " + info.competencia.evento.nombre
 }
 
 function mensajeCambioCompetencia(competencia, inicioTermino = false){
@@ -127,20 +131,21 @@ function mensajeCambioCompetencia(competencia, inicioTermino = false){
                 competencia.enVivo == 0 ? " finalizó." : " inició."
                 : " actualizó su información";
 
-    return "Competencia " + (competencia.descripcion != "" ?  competencia.descripcion + "," : "")
+    return "Competencia " + asegurarMensaje(competencia.descripcion, competencia.descripcion + ",")
             + " en fase " + competencia.fase.descripcion + " " + competencia.prueba.nombre 
             + final;
 }
 
 function mensajeAtletaMarco(info){
     return "Atleta " + info.atleta.nombre +
-    " registró " + mensajeMarcador(info);
+    " registró " + mensajeMarcador(info) + mensajeInfoCompetencia(info);
 }
 
 function mensajeEquipoMarco(info){
     return "Equipo " + info.equipo.pais.name +
-    " registró " + mensajeMarcador(info);
+    " registró " + mensajeMarcador(info) + mensajeInfoCompetencia(info);
 }
+
 //Agregar Dispositivos de atleta a competencia (migrar) cuando se agrega atleta a competencia.
 //Para así dejar de enviar notificaciones al dispositivo una vez desactivado la competencia. (Si fuera que alguien no quiere recibir notificaciones de esa competencia)
 //Así al enviar notificaciones de atletas en marcadores enviar solo si tiene el dispositivo también en competencia
