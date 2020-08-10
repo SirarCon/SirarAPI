@@ -4,6 +4,7 @@
 var mongoose = require('mongoose'),
 Equipo = mongoose.model('Equipo'),
 Atleta = mongoose.model('Atleta'),
+Deporte = mongoose.model('Deporte'),
 Prueba = mongoose.model('Prueba'),
 Evento = mongoose.model('Evento'),
 globales =  require("../Globales.js"),
@@ -16,11 +17,11 @@ const rutaImagenesAtletas = globales.rutaImagenesAtletas.instance;
 
 //#region UsuarioAdm
 exports.crearEquipo = async function(req, res){
-    Prueba.findOne()
-    .where({_id: req.body.prueba})
+    Deporte.findOne()
+    .where({_id: req.body.deporte})
     .exec()
-    .then(prueba =>{
-      if(prueba){
+    .then(deporte =>{
+      if(deporte){
           Evento.findOne()
           .where({_id: req.body.evento})
           .exec()
@@ -55,11 +56,11 @@ exports.crearEquipo = async function(req, res){
 };
 
 exports.modificarEquipo = async function(req, res){
-    Prueba.findOne()
-    .where({_id: req.body.prueba})
+    Deporte.findOne()
+    .where({_id: req.body.deporte})
     .exec()
-    .then(prueba =>{
-      if(prueba){
+    .then(deporte =>{
+      if(deporte){
           Evento.findOne()
           .where({_id: req.body.evento})
           .exec()
@@ -67,7 +68,8 @@ exports.modificarEquipo = async function(req, res){
                if(evento){
                 Equipo.findOneAndUpdate({_id: req.params.idEquipo},{
                     $set:{
-                        prueba: req.body.prueba,
+                        nombre: req.body.nombre,
+                        deporte: req.body.deporte,
                         pais: req.body.pais,
                         evento: req.body.evento,
                         activo: req.body.activo,
@@ -135,8 +137,8 @@ exports.modificarMedalla = async function(req, res){
     Prueba.findOne()
     .where({_id: req.body.prueba})
     .exec()
-    .then(prueba=>{
-    if(prueba){
+    .then(deporte=>{
+    if(deporte){
         Evento.findOne()
         .where({_id: req.body.evento})
         .exec()
@@ -161,7 +163,7 @@ exports.modificarMedalla = async function(req, res){
                 res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo.", funcionesGlobales.manejarError(err))});        
         })
     }else{
-        res.json({token: res.locals.token, datos: globales.mensajes(2, "Prueba", req.params.prueba)});
+        res.json({token: res.locals.token, datos: globales.mensajes(2, "Deporte", req.params.deporte)});
     }
     }).catch(err=>{
         funcionesGlobales.registrarError("modificarMedalla/EquipoController", err)

@@ -8,10 +8,13 @@ funcionesGlobales = require("../FuncionesGlobales.js");
 var EquipoSchema = new Schema({  
   _id: {
     type: Number,
-  },          
-  prueba: {
+  },      
+  nombre:{
+    type: String,
+  },
+  deporte: {
     type: Number,              
-    ref: 'Prueba'
+    ref: 'Deporte'
   },
   pais: {
     type: Number,
@@ -79,8 +82,9 @@ EquipoSchema.pre('save', async function(next) {
 
 EquipoSchema.method('infoPublica', function(tieneAlerta) {
   return {
-    _id: this.id,          
-    prueba: this.prueba,
+    _id: this.id, 
+    nombre: this.nombre,         
+    deporte: this.deporte,
     pais: this.pais,
     evento: this.evento,  
     activo: this.activo,

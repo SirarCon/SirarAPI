@@ -2,6 +2,7 @@ const mockingoose = require('mockingoose').default,
 error = require("../models/ErrorModel"),
 contador = require("../models/ContadorModel"),
 helper = require("./helper"),
+deporte = require("../models/DeporteModel"),
 prueba = require("../models/PruebaModel"),
 competencia = require("../models/CompetenciaModel"),
 equipoC = require("../models/EquipoCompetidorModel"),
@@ -20,7 +21,7 @@ jest.mock("../services/EquipoService")
 //#region objetos y requests
 
 var bodyCrearEquipo= { //Objeto con el body completo para reutilizarlo
-    prueba: 1,
+    deporte: 1,
     pais: 1,
     activo: true,
     evento: 1,
@@ -52,9 +53,13 @@ var bodyCrearEquipo= { //Objeto con el body completo para reutilizarlo
       correoModificado
     },
   }
-  var pruebaRes ={
+  var deporteRes ={
       _id: 1,
   }
+
+  var pruebaRes ={
+    _id: 1,
+}
   var eventoRes ={
     _id: 1,
   }
@@ -66,7 +71,7 @@ var bodyCrearEquipo= { //Objeto con el body completo para reutilizarlo
   var responseListarEquipos = [
     {
       _id: 1,
-      prueba: 1,
+      deporte: 1,
       pais: 1,
       activo: true,
       evento: 1,
@@ -95,7 +100,7 @@ var bodyCrearEquipo= { //Objeto con el body completo para reutilizarlo
     ...nuevoEquipo,
     medallas: [{
         _id: "5e8131e4dbdc2009e5bbb861",
-        prueba: 1,
+        deporte: 1,
         posicion: 1,
         evento: 1
     }]
@@ -116,7 +121,7 @@ var bodyCrearEquipo= { //Objeto con el body completo para reutilizarlo
     });
   
     it('Crear equipo', async () => {
-      mockingoose(prueba).toReturn(pruebaRes, 'findOne')
+      mockingoose(deporte).toReturn(deporteRes, 'findOne')
       mockingoose(evento).toReturn(eventoRes, 'findOne')
       mockingoose(contador).toReturn({sequence_value: 1}, 'findOneAndUpdate')
       const { res } = await expressRequestMock(controller.crearEquipo, reqNuevoEquipo, helper.resp)
@@ -127,7 +132,7 @@ var bodyCrearEquipo= { //Objeto con el body completo para reutilizarlo
     })
   
     it('Modificar equipo', async () => {
-        mockingoose(prueba).toReturn(pruebaRes, 'findOne')
+        mockingoose(deporte).toReturn(deporteRes, 'findOne')
         mockingoose(evento).toReturn(eventoRes, 'findOne') 
         mockingoose(model).toReturn({...bodyModificarEquipo, correoModificado}, 'findOneAndUpdate')
         const { res } = await expressRequestMock(controller.modificarEquipo, reqModificarEquipo, helper.resp)
