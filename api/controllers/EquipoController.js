@@ -29,7 +29,7 @@ exports.crearEquipo = async function(req, res){
                if(evento){
                 var nuevoEquipo = new Equipo(req.body);   
                 nuevoEquipo.save().then(equipo =>{ 
-                    res.json({token: res.locals.token, datos: globales.mensajes(-4, "Equipo", req.body.pais )});
+                    res.json({token: res.locals.token, datos: globales.mensajes(-4, equipo._id)});
                   }).catch(async err=>{  
                     if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
                         funcionesGlobales.registrarError("crearEquipo/EquipoController", err)
