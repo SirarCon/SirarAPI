@@ -128,7 +128,7 @@ exports.leerAtleta  = async function(req, res){
     .exec()
     .then(async (atleta) => {
         if(atleta){            
-            atleta.fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);
+            atleta.fotoUrl = await funcionesGlobales.leerArchivoAsync(atleta.fotoUrl);
             res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atleta.todaInformacion())});
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
@@ -205,7 +205,7 @@ exports.leerAtletaActivo  = async function(req, res){
     .exec()
     .then(async (atleta) => {
         if(atleta){           
-            atleta.fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl); 
+            atleta.fotoUrl = await funcionesGlobales.leerArchivoAsync(atleta.fotoUrl); 
             var tieneAlerta = 
             await atletasService.tieneNotificacion(req.header('tokenDispositivo'), atleta._id)
             res.json({token: res.locals.token, 
