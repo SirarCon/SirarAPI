@@ -149,7 +149,7 @@ function mensajeMarcador(info){
     let marcador = info.marcadores.sort((a, b) => b.momentoRegistro - a.momentoRegistro)[0];
     //filter latest Marcador
     let registro = tipoMarcador == 1 ? marcador.puntaje + " puntos o anotaciones":
-    tipoMarcador == 2 ? " un tiempo de "+ marcador.puntaje : marcador.puntaje + " metros ";
+    tipoMarcador == 2 ? " un tiempo de"+ marcador.puntaje : marcador.puntaje + " metros";
     return registro + ", en el set: " + marcador.set + 
                 (marcador.momentoTiempo != undefined ? 
                     ". Al minuto " + marcador.momentoTiempo :
