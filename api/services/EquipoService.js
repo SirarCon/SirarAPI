@@ -76,6 +76,10 @@ exports.removerDispositivoEquipoDeCompetencia = async function(res, equipoC) {
     registroNotificacion.removerDispositivoEquipoCompetencia(res, equipoC);
 }
 
+exports.notificiarCambioMarcador = async function(Model, equipoC){
+    notificacionHelper.notificarCambioMarcadorEquipo(Model, equipoC);
+} 
+
 exports.iterarEquipos = async function (token, equipos){
     await funcionesGlobales.asyncForEach(equipos ,async (element, indice, equipos) => {
          var tieneNotificacion = await module.exports.tieneNotificacion(token, element._id)

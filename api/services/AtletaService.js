@@ -78,6 +78,10 @@ exports.removerDispositivoAtletaDeCompetencia = async function(res, atletaC) {
     registroNotificacion.removerDispositivoAtletaCompetencia(res, atletaC);
 }
 
+exports.notificiarCambioMarcador = async function(Model, atletaC){
+    notificacionHelper.notificarCambioMarcadorAtleta(Model, atletaC);
+} 
+
 
 exports.iterarAtletas = async function (token, atletas){
     await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
@@ -87,7 +91,6 @@ exports.iterarAtletas = async function (token, atletas){
      });
      return atletas;
  }
-
 
 exports.tieneNotificacion = async function(token ,atletaId){
     return await notificacionHelper.tieneNotificacionAtleta(token, atletaId);

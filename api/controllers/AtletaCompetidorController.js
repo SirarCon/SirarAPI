@@ -49,17 +49,19 @@ exports.modificarMarcador = async function(req, res){
     }
 
     AtletaC.findOneAndUpdate({_id: req.params.idAtleta, "marcadores._id": mongoose.Types.ObjectId(req.body.marcador.idMarcador)},
-                             modificar, {new: true}).exec()
+                             modificar, {new: true})
+    .exec()
     .then(atleta=>{
         if(atleta){
-                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Registro")});
-            }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
-                }
-            }).catch(err=>{
-                funcionesGlobales.registrarError("modificarmarcadores/AtletaCompetidorController", err)
-                res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))}); 
-            })
+            atletaService.notificiarCambioMarcador(AtletaC, atleta);
+            res.json({token: res.locals.token, datos: globales.mensajes(-3, "Registro")});
+        }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
+            }
+    }).catch(err=>{
+        funcionesGlobales.registrarError("modificarmarcadores/AtletaCompetidorController", err)
+        res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))}); 
+    })
             
 };
 
@@ -76,14 +78,15 @@ exports.agregarRemoverMarcador = async function(req, res){
     AtletaC.findOneAndUpdate({_id: req.params.idAtleta}, modificar, {new: true}).exec()
     .then(atleta=>{
         if(atleta){
-                res.json({token: res.locals.token, datos: globales.mensajes(req.params.agregar == 1 ?  -4 : -2, "Registro")});
-            }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
-                }
-            }).catch(err=>{
-                funcionesGlobales.registrarError("agregarRemoverMarcadores/AtletaCompetidorController", err)
-                res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))}); 
-            })
+            atletaService.notificiarCambioMarcador(AtletaC, atleta);
+            res.json({token: res.locals.token, datos: globales.mensajes(req.params.agregar == 1 ?  -4 : -2, "Registro")});
+        }else{
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
+        }
+    }).catch(err=>{
+        funcionesGlobales.registrarError("agregarRemoverMarcadores/AtletaCompetidorController", err)
+        res.json({token: res.locals.token, datos: globales.mensajes(14, "atleta.", funcionesGlobales.manejarError(err))}); 
+    })
             
 };
 

@@ -50,8 +50,19 @@ exports.notificarInicioCierreCompetencia = async function(competencia){
     competencia._id, retornarDatosDesdeCompetencia(competencia));
 }
 
-exports.notificarCambioMarcador = async function(){
-    enviarNotificacionesCompetencia
+exports.notificarCambioMarcadorAtleta = async function(Model, atletaC){
+    var info = await obtenerInfoPartipante(Model, atletaC,
+                                    {path: "atleta", select: "_id nombre"});
+    fireBase.enviarNotificacionesCompetencia(mensajeAtletaMarco(info),
+    info.competencia._id, retornarDatosDesdeCompetencia(info.competencia));
+}
+
+exports.notificarCambioMarcadorEquipo = async function(Model, equipoC){
+    var info = await obtenerInfoPartipante(Model, equipoC,
+            {path: "equipo", select: "_id", 
+                                    populate:{path: "pais", select: "name"}});
+    fireBase.enviarNotificacionesCompetencia(mensajeEquipoMarco(info),
+    info.competencia._id, retornarDatosDesdeCompetencia(info.competencia));
 }
 
 //#region funcionesAyuda
@@ -60,7 +71,7 @@ async function obtenerInfoPartipante(Model, participante, pathParticipante){
     return await Model.populate(participante, 
        [{path: "competencia", 
            select: "_id fechaHora descripcion", 
-                   populate:[{path: "prueba", select: "_id nombre"},
+                   populate:[{path: "prueba", select: "_id nombre tipoMarcador"},
                              {path: "evento", select: "_id nombre"},
                              {path: "fase", select: "_id descripcion"}]
        }, pathParticipante
@@ -122,28 +133,28 @@ function mensajeCambioCompetencia(competencia, inicioTermino = false){
 }
 
 function mensajeAtletaMarco(info){
-    return "Atleta" + info.atleta.nombre +
+    return "Atleta " + info.atleta.nombre +
     " registró " + mensajeMarcador(info);
 }
 
 function mensajeEquipoMarco(info){
-    return "Equipo" + info.equipo.pais.name +
+    return "Equipo " + info.equipo.pais.name +
     " registró " + mensajeMarcador(info);
 }
 //Agregar Dispositivos de atleta a competencia (migrar) cuando se agrega atleta a competencia.
 //Para así dejar de enviar notificaciones al dispositivo una vez desactivado la competencia. (Si fuera que alguien no quiere recibir notificaciones de esa competencia)
 //Así al enviar notificaciones de atletas en marcadores enviar solo si tiene el dispositivo también en competencia
 function mensajeMarcador(info){
-    let tipo = info.competencia.prueba.tipo;
-    let marcador = info.marcadores;//filter latest Marcador
-    let registro = tipoMarcador == 1 ? marcador.puntos + " puntos o anotaciones":
-    tipoMarcador == 2 ? " un tiempo de "+ marcador.tiempo : marcador.metros + " metros ";
-    return registro + ", set: " + marcador.set + 
-                marcador.momentoTiempo != undefined ? 
-                " " + marcador.momentoTiempo :
-                "oportunidad" + marcador.momentoOportunidad + "/" + marcador.cantidadOportunidades
+    let tipoMarcador = info.competencia.prueba.tipo;
+    let marcador = info.marcadores.sort((a, b) => b.momentoRegistro - a.momentoRegistro)[0];
+    //filter latest Marcador
+    let registro = tipoMarcador == 1 ? marcador.puntaje + " puntos o anotaciones":
+    tipoMarcador == 2 ? " un tiempo de "+ marcador.puntaje : marcador.puntaje + " metros ";
+    return registro + ", en el set: " + marcador.set + 
+                (marcador.momentoTiempo != undefined ? 
+                    ". Al minuto " + marcador.momentoTiempo :
+                    "oportunidad" + marcador.momentoOportunidad + "/" + marcador.cantidadOportunidades);
 
-    " "
 }
 
 //#endregion mensajes

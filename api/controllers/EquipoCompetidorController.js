@@ -47,17 +47,19 @@ exports.eliminarEquipoDeCompetencia = async function(req, res){
         }
     
         EquipoC.findOneAndUpdate({_id: req.params.idEquipo, "marcadores._id": mongoose.Types.ObjectId(req.body.marcador.idMarcador)},
-                                 modificar, {new: true}).exec()
+                                 modificar, {new: true})
+        .exec()
         .then(equipo=>{
             if(equipo){
-                    res.json({token: res.locals.token, datos: globales.mensajes(-3, "Registro")});
-                }else{
-                    res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
-                    }
-                }).catch(err=>{
-                    funcionesGlobales.registrarError("modificarmarcadores/EquipoCompetidorController", err)
-                    res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo.", funcionesGlobales.manejarError(err))}); 
-                })
+                equipoService.notificiarCambioMarcador(EquipoC, equipo)
+                res.json({token: res.locals.token, datos: globales.mensajes(-3, "Registro")});
+            }else{
+                res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
+                }
+        }).catch(err=>{
+            funcionesGlobales.registrarError("modificarmarcadores/EquipoCompetidorController", err)
+            res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo.", funcionesGlobales.manejarError(err))}); 
+        })
                 
     };
 
@@ -73,13 +75,14 @@ exports.agregarRemoverMarcador = async function(req, res){
     EquipoC.findOneAndUpdate({_id: req.params.idEquipo}, modificar, {new: true}).exec()
     .then(equipo=>{
         if(equipo){
+            equipoService.notificiarCambioMarcador(EquipoC, equipo)
             res.json({token: res.locals.token, datos: globales.mensajes(req.params.agregar == 1 ?  -4 : -2, "Registro")});
         }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
-                }
-            }).catch(err=>{
-                funcionesGlobales.registrarError("agregarRemoverMarcador/EquipoCompetidorController", err)
-                res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo.", funcionesGlobales.manejarError(err))});                                })
+            res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
+            }
+    }).catch(err=>{
+        funcionesGlobales.registrarError("agregarRemoverMarcador/EquipoCompetidorController", err)
+        res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo.", funcionesGlobales.manejarError(err))});                                })
             
 };
 
