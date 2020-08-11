@@ -163,20 +163,19 @@ exports.modificarMedalla = async function(req, res){
 exports.modificarAtletas = async function(req, res){
     var modificar = req.params.agregar == 1 ? {$push:{ atletas: req.body.atleta}} : {$pull:{ atletas: req.body.atleta } };
     Atleta.findOne()
-    .where({_id: req.body.atleta})
-    .populate([{path: "atletas", select: "_id nombre"},
-                {path: "deporte"}])
+    .where({_id: req.body.atleta})    
     .exec()
     .then(atleta=>{
         if(atleta){
             Equipo.findOneAndUpdate({_id: req.params.idEquipo}, modificar, {new: true}).exec()
-            .then(equipo=>{
+            .then(async equipo=>{
+                equipo = await Equipo.populate(equipo, [{path: "atletas", select: "_id nombre"},
+                                                        {path: "deporte"}])
                 res.json({token: res.locals.token, datos: globales.mensajes(-3, null, null, equipo)});                   
             }).catch(err=>{
                 funcionesGlobales.registrarError("modificarAtleta/EquipoController", err)
                 res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo", funcionesGlobales.manejarError(err))});
-                    })
-    
+             });
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", req.body.atleta)});
         }
