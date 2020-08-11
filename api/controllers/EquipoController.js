@@ -75,10 +75,10 @@ exports.modificarEquipo = async function(req, res){
                         activo: req.body.activo,
                         retirado: req.body.retirado,
                     }
-                }, {projection:{}, new: false, runValidators: true}).exec()   
-                .then(equipoAntiguo =>{ 
-                    if(equipoAntiguo){
-                        res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", req.body.pais )});
+                }, {projection:{}, new: true, runValidators: true}).exec()   
+                .then(equipo =>{ 
+                    if(equipo){
+                        res.json({token: res.locals.token, datos: globales.mensajes(-3, equipo._id)});
                     }else{
                         res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
                         }
