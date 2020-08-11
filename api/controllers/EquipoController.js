@@ -164,6 +164,8 @@ exports.modificarAtletas = async function(req, res){
     var modificar = req.params.agregar == 1 ? {$push:{ atletas: req.body.atleta}} : {$pull:{ atletas: req.body.atleta } };
     Atleta.findOne()
     .where({_id: req.body.atleta})
+    .populate([{path: "atletas", select: "_id nombre"},
+                {path: "deporte"}])
     .exec()
     .then(atleta=>{
         if(atleta){
