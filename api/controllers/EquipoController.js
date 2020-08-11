@@ -169,7 +169,7 @@ exports.modificarAtletas = async function(req, res){
         if(atleta){
             Equipo.findOneAndUpdate({_id: req.params.idEquipo}, modificar, {new: true}).exec()
             .then(equipo=>{
-                res.json({token: res.locals.token, datos: globales.mensajes(-3, equipo)});                   
+                res.json({token: res.locals.token, datos: globales.mensajes(-3, null, null, equipo)});                   
             }).catch(err=>{
                 funcionesGlobales.registrarError("modificarAtleta/EquipoController", err)
                 res.json({token: res.locals.token, datos: globales.mensajes(14, "equipo", funcionesGlobales.manejarError(err))});
