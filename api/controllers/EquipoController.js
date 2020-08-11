@@ -182,7 +182,7 @@ exports.modificarAtletas = async function(req, res){
             Equipo.findOneAndUpdate({_id: req.params.idEquipo}, modificar, {new: true}).exec()
             .then(equipo=>{
                 if(equipo){
-                    res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo._id)});
+                    res.json({token: res.locals.token, datos: globales.mensajes(-3, "Equipo", equipo)});
                     }else{
                         res.json({token: res.locals.token, datos: globales.mensajes(2, "Equipo", " ")});
                         }
