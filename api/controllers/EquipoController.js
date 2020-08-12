@@ -115,13 +115,19 @@ exports.listarEquipos = async function(req, res){
 
 exports.leerEquipo = async function(req, res){
     Equipo.findOne()
-    .where({_id: req.params.id})
+    .where({_id: req.params.idEquipo})
     .exec()
     .then(async (equipo)=>{
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipo.infoPublica())});  
+        if(equipo){
+            var tieneAlerta =
+                await equipoService.tieneNotificacion(req.header('tokenDispositivo'), equipo._id)
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipo.infoPublica(tieneAlerta))});  
+        }else{      
+            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipo)});  
+        }
     }).catch((err)=>{
           funcionesGlobales.registrarError("leerEquipo/EquipoController", err)
-          res.json({token: res.locals.token,datos: globales.mensajes(13, "equipo", req.params.id)}); 
+          res.json({token: res.locals.token,datos: globales.mensajes(13, "equipo", req.params.idEquipo)}); 
    });
 }
 
@@ -205,7 +211,7 @@ exports.listarEquiposActivos = async function(req, res){
 
 exports.leerEquipoActivo = async function(req, res){
     Equipo.findOne()
-    .where({_id: req.params.id, activo: true})
+    .where({_id: req.params.idEquipo, activo: true})
     .exec()
     .then(async (equipo)=>{
         if(equipo){
@@ -217,7 +223,7 @@ exports.leerEquipoActivo = async function(req, res){
         }
     }).catch((err)=>{
           funcionesGlobales.registrarError("leerEquipo/EquipoController", err)
-          res.json({token: res.locals.token,datos: globales.mensajes(13, "equipo", req.params.id)}); 
+          res.json({token: res.locals.token,datos: globales.mensajes(13, "equipo", req.params.idEquipo)}); 
    });
 }
 
