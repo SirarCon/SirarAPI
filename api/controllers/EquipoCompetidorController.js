@@ -128,8 +128,9 @@ exports.listarEquiposCompetencia = async function(req, res){
         },
         {
             $project:{
-                equipo:{                        
-                    id: "$atletainfo._id",
+                equipo:{    
+                    nombre: "$equipoinfo.nombre",                    
+                    id: "$equipoinfo._id",
                     pais : "$equipoinfo.pais", 
                 },
                 marcadores: 1,
