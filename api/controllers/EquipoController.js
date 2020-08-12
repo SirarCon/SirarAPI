@@ -116,6 +116,8 @@ exports.listarEquipos = async function(req, res){
 exports.leerEquipo = async function(req, res){
     Equipo.findOne()
     .where({_id: req.params.idEquipo})
+    .populate([{path: "atletas", select: "_id nombre"},
+                {path: "deporte"}])
     .exec()
     .then(async (equipo)=>{
         if(equipo){
@@ -212,6 +214,8 @@ exports.listarEquiposActivos = async function(req, res){
 exports.leerEquipoActivo = async function(req, res){
     Equipo.findOne()
     .where({_id: req.params.idEquipo, activo: true})
+    .populate([{path: "atletas", select: "_id nombre"},
+                {path: "deporte"}])
     .exec()
     .then(async (equipo)=>{
         if(equipo){
