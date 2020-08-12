@@ -33,16 +33,18 @@ function inicializarGLobal(variableGlobal, valor){
 //module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://localhost/Sirar")
 //module.exports.nombreBDTest = inicializarGLobal(nombreBDTest, "mongodb://localhost/SirarTest")
 //desarrollo:
-module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
+//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
 //pruebas:
-//module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds245132.mlab.com:45132/sirardbpruebas") 
+module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds245132.mlab.com:45132/sirardbpruebas") 
 module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
 module.exports.rutaImagenesPerfil = inicializarGLobal(rutaImagenesPerfil, "imagenes/imagenesPerfil/");
 module.exports.rutaImagenesAtletas= inicializarGLobal(rutaImagenesAtletas, "imagenes/imagenesAtletas/");
 module.exports.rutaImagenesDeportes = inicializarGLobal(rutaImagenesDeportes, "imagenes/imagenesDeportes/");
 module.exports.rutaImagenesFederaciones = inicializarGLobal(rutaImagenesFederaciones, "imagenes/imagenesFederaciones/");
 module.exports.rutaImagenesEventos = inicializarGLobal(rutaImagenesEventos, "imagenes/imagenesEventos/");
-module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirarpwa.herokuapp.com");
+// module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirarpwa.herokuapp.com");
+module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirartest.herokuapp.com");
+
 
 let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',//'smtp.ethereal.email',
