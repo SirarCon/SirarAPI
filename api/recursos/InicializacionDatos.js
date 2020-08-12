@@ -22,6 +22,8 @@ Federacion = mongoose.model('Federacion'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance,
+rutaImagenesEventos = globales.rutaImagenesEventos.instance,
+rutaImagenesAtletas = globales.rutaImagenesAtletas.instance,
 
 //Tener cuidado con estas 2 variables:
 borrarTodosDatos = true,
@@ -2759,75 +2761,91 @@ exports.Datos = async function(){
             new Atleta({
                 "nombre": "Nery Brenes",
                 "correo": "nery@hotmail.es",
-                "apellido1": "Brenes",
                 "deporte": DAtletismo._id,
                 "pais": paises.find(p => p.name ==="Costa Rica")._id,
                 "activo": true,
+                "genero": true,
                 "nombreNormalizado": "nerybrenes",
                 "retirado": false,
+                "fotoUrl": rutaImagenesAtletas + "NeryBrenes"
             }),
             new Atleta({
-                "nombre": "Usain ",
-                "correo": "uBolt@hotmail.es",
-                "apellido1": "Bolt",
-                "deporte": DAtletismo._id,
-                "pais": paises.find(p => p.name ==="Jamaica")._id,
+                "nombre": "Brisa Hennessey Kobara",
+                "correo": "Brisa@hotmail.es",
+                "deporte": DSurf._id,
+                "pais": paises.find(p => p.name ==="Costa Rica")._id,
                 "activo": true,
-                "nombreNormalizado": "usain",
-                "retirado": false,
-            }),
-            new Atleta({
-                "nombre": "Saina",
-                "correo": "sNehwal@hotmail.es",
-                "apellido1": "Nehwal",
-                "deporte": DBadminton._id,        
-                "pais": paises.find(p => p.name ==="India")._id,
-                "activo": true,
-                "nombreNormalizado": "saina",
-                "retirado": false,
-            }),
-            new Atleta({
-                "nombre": "Carolina",
-                "correo": "Marin@hotmail.es",
-                "apellido1": "Marin",
-                "deporte": DBadminton._id,
-                "pais": paises.find(p => p.name ==="España")._id,
-                "activo": true,
-                "nombreNormalizado": "carolina",
-                "retirado": false,
-            }),
-            new Atleta({
-                "nombre": "Bobby",
-                "correo": "Bob@hotmail.es",
-                "apellido1": "Fischer",
-                "deporte": DAjedrez._id,
-                "pais": paises.find(p => p.name ==="Estados Unidos")._id,
-                "activo": true,
-                "nombreNormalizado": "bobby",
-                "retirado": false,
-            }),
-            new Atleta({
-                "nombre": "Fabiano",
-                "correo": "FCaruna@hotmail.es",
-                "apellido1": "Caruana",
-                "deporte": DAjedrez._id,
-                "pais": paises.find(p => p.name ==="Estados Unidos")._id,
-                "activo": true,
-                "nombreNormalizado": "fabiano",
-                "retirado": false,
-            }),
-            new Atleta({
-                "nombre": "Dafne",
-                "correo": "dafne@hotmail.es",
-                "apellido1": "Schippers",
-                "apellido2": "Schip",
-                "telefono": "22660139",
-                "deporte": DAtletismo._id,
-                "fotoUrl": "imagenes/imagenesAtletas/5c87158dd3cb6b0015814b90.jpeg",
-                "activo": true,
-                "fechaNacimiento": "1992-06-15T00:00:00.000Z",
-                "pasaporte": "123456789",
                 "genero": false,
+                "nombreNormalizado": "brisahennesseykobara",
+                "retirado": false,
+                "fotoUrl": rutaImagenesAtletas + "BrisaHennesey.jpg"
+            }),
+            new Atleta({
+                "nombre": "Andrea Vargas",
+                "correo": "aVargas@hotmail.es",
+                "deporte": DAtletismo._id,        
+                "pais": paises.find(p => p.name ==="Costa Rica")._id,
+                "activo": true,
+                "genero": false,
+                "nombreNormalizado": "andreavargas",
+                "retirado": false,
+                "fotoUrl": rutaImagenesAtletas + "AndreaVargas.jpeg"
+            }),
+            new Atleta({
+                "nombre": "Claudia Poll",
+                "correo": "CPoll@hotmail.es",
+                "deporte": DNatacion._id,
+                "pais": paises.find(p => p.name ==="Costa Rica")._id,
+                "activo": true,
+                "genero": false,
+                "nombreNormalizado": "claudiapoll",
+                "retirado": true,
+                "fotoUrl": rutaImagenesAtletas + "ClaudiaPoll.jpg"
+
+            }),
+            new Atleta({
+                "nombre": "Henry Nuñez",
+                "correo": "HNuñez@hotmail.es",
+                "deporte": DJudo._id,
+                "pais": paises.find(p => p.name ==="Costa Rica")._id,
+                "activo": true,
+                "genero": true,
+                "nombreNormalizado": "henrynuñez",
+                "retirado": true,
+                "fotoUrl": rutaImagenesAtletas + "HenryNuñez.jpg",
+            }),
+            new Atleta({
+                "nombre": "Diana Brenes",
+                "correo": "DBrenes@hotmail.es",
+                "deporte": DJudo._id,
+                "pais": paises.find(p => p.name ==="Costa Rica")._id,
+                "activo": true,
+                "genero": false,
+                "nombreNormalizado": "dianabrenes",
+                "retirado": false,
+                "fotoUrl": rutaImagenesAtletas + "DianaBrenes.jpg"
+            }),
+            new Atleta({
+                "nombre": "Kenneth Tencio ",
+                "correo": "DBrenes@hotmail.es",
+                "deporte": DCiclismoCBMX._id,
+                "pais": paises.find(p => p.name ==="Costa Rica")._id,
+                "activo": true,
+                "genero": true,
+                "nombreNormalizado": "kennethtencio",
+                "retirado": false,
+                "fotoUrl": rutaImagenesAtletas + "KennethTencio.jpg"
+            }),
+            new Atleta({
+                "nombre": "Andrey Amador",
+                "correo": "Andrey@hotmail.es",
+                "telefono": "22660139",
+                "deporte": DCiclismoCR._id,
+                "fotoUrl": rutaImagenesAtletas + "AndreyAmador.jpg",
+                "activo": true,
+                "fechaNacimiento": "1986-08-29T00:00:00.000Z",
+                "pasaporte": "123456789",
+                "genero": true,
                 "lateralidad": true,
                 "beneficiario": "Padre",
                 "cedulaBeneficiario": "123456789012",
@@ -2838,15 +2856,15 @@ exports.Datos = async function(){
                 "tallaJacket": "L",
                 "tallaBuzo": "38",
                 "tallaTenis": "40",
-                "infoPersonal": "She is a Dutch track and field athlete. She competes primarily in the sprints, having previously participated in the heptathlon. She is the 2015 and 2017 World Champion and won silver at the 2016 Summer Olympics in the 200 metres.",
+                "infoPersonal": "«Todavía tengo muchas cosas que puedo aprender y mejorar como corredor, y el Team INEOS es el lugar perfecto para seguir creciendo»",
                 "fechaDebut": "2009-05-05T00:00:00.000Z",
-                "facebookUrl": "https://www.facebook.com/dafneschippersfanpage/",
-                "instagramUrl": "https://www.instagram.com/dafne_schippers/",
-                "twitterUrl": "https://twitter.com/dafneschippers",
-                "altura": 1.79,
-                "pais": paises.find(p => p.name ==="Holanda")._id,
-                "peso": 68,
-                "nombreNormalizado": "dafne",
+                "facebookUrl": "https://www.facebook.com/andreyamadoroficial/",
+                "instagramUrl": "https://www.instagram.com/andrey_amador/",
+                "twitterUrl": "https://twitter.com/Andrey_Amador",
+                "altura": 1.80,
+                "pais": paises.find(p => p.name ==="Costa Rica")._id,
+                "peso": 72,
+                "nombreNormalizado": "andreyamador",
                 "retirado": false,
             })
         ]; 
@@ -2862,7 +2880,7 @@ exports.Datos = async function(){
             "fechaFinal": "2016-08-21T00:00:00.000Z",
             "ciudad": "Río",
             "pais": paises.find(p => p.name ==="Brasil")._id,
-            "fotoUrl": "imagenes/imagenesEventos/5c8719d7d3cb6b0015814b91.jpeg",
+            "fotoUrl": rutaImagenesEventos + "Rio.png",
             "activo": true,
             //"nombreNormalizado": "juegosolimpicosderiodejaneiro2016",
         });
@@ -2873,7 +2891,7 @@ exports.Datos = async function(){
             "fechaFinal":  "2020-08-21T00:00:00.000Z",
             "ciudad": "Tokio",
             "pais": paises.find(p => p.name ==="Japón")._id,
-            "fotoUrl": "imagenes/imagenesEventos/5c8719d7d3cb6b0015814b91.jpeg",
+            "fotoUrl": rutaImagenesEventos + "Tokio.png",
             "activo": true,
         });
 
@@ -2888,36 +2906,61 @@ exports.Datos = async function(){
     if(insertarCompetencias){
         var competencia = new Competencia({    
             "evento": Rio._id,
-            "prueba": pruebasAtletismoXMetro[0]._id,
-            "fechaHora":  "2016-08-18T00:00:00.000Z",
+            "prueba": pruebasAtletismoXTiempoIndividual[1]._id,
+            "fechaHora":  "2016-07-28T00:00:00.000Z",
             "recinto": "Estadio Río",
             "ciudad": "Río",
-            "genero": false,
+            "genero": true,
+            "descripcion": "Hit 1",
+            "fase": 2,
+            "activo": true,
+        });
+
+        var competencia2 = new Competencia({    
+            "evento": Rio._id,
+            "prueba": pruebasCiclismoCR[1]._id,
+            "fechaHora":  "2016-08-06T00:00:00.000Z",
+            "recinto": "Copacabana",
+            "ciudad": "Copacabana",
+            "genero": true,
             "descripcion": "Hit 1",
             "fase": 1,
             "activo": true,
         });
-
-        var competencias = [competencia];
+        
+        var competencias = [competencia, competencia2];
 
         await inicializar(competencias);
     }
 
     if(insertarAtletasCompetidores){
         var atletaCompetidor = new AtletaCompetidor({
-            "atleta": atletas[6]._id,
+            "atleta": atletas[0]._id,
             "competencia": competencia._id,
             "marcadores": [
                 {
-                    "esUltimoRegistro": false,
+                    "esUltimoRegistro": true,
                     "set": 1,
-                    "puntaje": "21: 88",
+                    "puntaje": "20: 33",
                     "momentoRegistro": new Date().getTime()
                 }
             ],
         });
 
-        var atletasCompetidores = [atletaCompetidor];
+        var atletaCompetidor2 = new AtletaCompetidor({
+            "atleta": atletas[7]._id,
+            "competencia": competencia2._id,
+            "marcadores": [
+                {
+                    "esUltimoRegistro": true,
+                    "set": 1,
+                    "puntaje": "6:30:05",
+                    "momentoRegistro": new Date().getTime()
+                }
+            ],
+        });
+
+        var atletasCompetidores = [atletaCompetidor, atletaCompetidor2];
 
         await inicializar(atletasCompetidores);
 
