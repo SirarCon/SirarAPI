@@ -26,8 +26,8 @@ rutaImagenesEventos = globales.rutaImagenesEventos.instance,
 rutaImagenesAtletas = globales.rutaImagenesAtletas.instance,
 
 //Tener cuidado con estas 2 variables:
-borrarTodosDatos = true,
-insertarTodosDatos = true,
+borrarTodosDatos = false,
+insertarTodosDatos = false,
 
 borrarErrores = false,
 borrarMensajes = true,
