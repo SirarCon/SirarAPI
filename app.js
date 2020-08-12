@@ -35,6 +35,7 @@ function cargarModelos(){
   }
   
   async function configuracion(port){
+    app.use(cors());
 
    var logDirectory = path.join(__dirname, 'log');
 
@@ -51,7 +52,6 @@ function cargarModelos(){
      app.use(assignId)
      app.use(morgan(':id :method :status :url :response-time [:date[clf]]' , { stream: accessLogStream }))
 
-    app.use(cors());
     app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));//Antes de esto no se pueden regitsrar las rutas no se la razón
     app.use(bodyParser.json({limit: '10mb'}));
     app.use(compression());
