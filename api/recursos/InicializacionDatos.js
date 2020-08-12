@@ -2767,7 +2767,7 @@ exports.Datos = async function(){
                 "genero": true,
                 "nombreNormalizado": "nerybrenes",
                 "retirado": false,
-                "fotoUrl": rutaImagenesAtletas + "NeryBrenes"
+                "fotoUrl": rutaImagenesAtletas + "NeryBrenes.jpg"
             }),
             new Atleta({
                 "nombre": "Brisa Hennessey Kobara",
@@ -2812,7 +2812,7 @@ exports.Datos = async function(){
                 "genero": true,
                 "nombreNormalizado": "henrynuñez",
                 "retirado": true,
-                "fotoUrl": rutaImagenesAtletas + "HenryNuñez.jpg",
+                "fotoUrl": rutaImagenesAtletas + "HenryNuz.jpg",
             }),
             new Atleta({
                 "nombre": "Diana Brenes",
