@@ -24,8 +24,8 @@ funcionesGlobales = require("../FuncionesGlobales.js"),
 rutaImagenesFederaciones = globales.rutaImagenesFederaciones.instance,
 
 //Tener cuidado con estas 2 variables:
-borrarTodosDatos = false,
-insertarTodosDatos = false,
+borrarTodosDatos = true,
+insertarTodosDatos = true,
 
 borrarErrores = false,
 borrarMensajes = true,
