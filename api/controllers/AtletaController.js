@@ -129,7 +129,10 @@ exports.leerAtleta  = async function(req, res){
     .then(async (atleta) => {
         if(atleta){            
             atleta.fotoUrl = await funcionesGlobales.leerArchivoAsync(atleta.fotoUrl);
-            res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atleta.todaInformacion())});
+            var tieneAlerta = 
+            await atletasService.tieneNotificacion(req.header('tokenDispositivo'), atleta._id)
+            res.json({token: res.locals.token,
+                 datos: globales.mensajes(-1, null, null, atleta.todaInformacion(tieneAlerta))});
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "Atleta", " ")});
         }
@@ -207,7 +210,7 @@ exports.leerAtletaActivo  = async function(req, res){
         if(atleta){           
             atleta.fotoUrl = await funcionesGlobales.leerArchivoAsync(atleta.fotoUrl); 
             var tieneAlerta = 
-            await atletasService.tieneNotificacion(req.header('tokenDispositivo'), atleta._id)
+                await atletasService.tieneNotificacion(req.header('tokenDispositivo'), atleta._id)
             res.json({token: res.locals.token, 
             datos: globales.mensajes(-1, null, null, atleta.infoPublica(tieneAlerta))});
         }else{

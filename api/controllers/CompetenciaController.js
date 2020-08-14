@@ -256,7 +256,7 @@ exports.leerCompetencia = function(req, res){
         if(competencia){
         var tieneAlerta = 
             await competenciaService.tieneNotificacion(req.header('tokenDispositivo'), competencia._id)                   
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencia.infoAlerta())}); 
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencia.infoAlerta(tieneAlerta))}); 
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "competencia", " ")});
         } 

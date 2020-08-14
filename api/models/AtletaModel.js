@@ -174,7 +174,7 @@ AtletaSchema.pre('findOneAndUpdate', function(next) {
 
 
 
-AtletaSchema.method('todaInformacion', function() {
+AtletaSchema.method('todaInformacion', function(tieneAlerta) {
     return {
       id: this._id,
       nombre: this.nombre,
@@ -208,6 +208,7 @@ AtletaSchema.method('todaInformacion', function() {
       tallaBuzo: this.tallaBuzo,
       tallaTenis: this.tallaTenis,
       activo: this.activo,
+      tieneAlerta: this.tieneAlerta,
     }
   });
   
