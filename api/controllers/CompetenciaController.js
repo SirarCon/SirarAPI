@@ -246,7 +246,8 @@ exports.leerCompetencia = function(req, res){
     Competencia.findOne({
         _id: req.params.idCompetencia,        
     })
-    .populate([{path: "prueba", select: "_id tipo tipoMarcador"}])  
+    .populate([{path: "prueba", select: "_id nombre tipo tipoMarcador deporte"},
+                {path: "fase", select: "_id descripcion"}])  
     .sort({descripcion: 1})
     .exec()
     .then(async competencia=>{
