@@ -102,4 +102,21 @@ CompetenciaSchema.method('infoPublica', function (tieneAlerta){
     }
 });
 
+CompetenciaSchema.method('infoAlerta', function (){
+    return {
+        _id: this._id,
+        evento: this.evento,
+        prueba: this.prueba,
+        fechaHora: this.fechaHora,
+        genero: this.genero,
+        descripcion: this.descripcion,
+        fase: this.fase,
+        recinto: this.recinto,
+        ciudad: this.ciudad,
+        enVivo: this.enVivo,
+        activo: this.activo,        
+        nombreEvento: this.evento.nombre,
+    }
+});
+
 module.exports = mongoose.model('Competencia', CompetenciaSchema);

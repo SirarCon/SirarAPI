@@ -247,14 +247,16 @@ exports.leerCompetencia = function(req, res){
         _id: req.params.idCompetencia,        
     })
     .populate([{path: "prueba", select: "_id nombre tipo tipoMarcador deporte"},
-                {path: "fase", select: "_id descripcion"}])  
+                {path: "fase", select: "_id descripcion"},
+                {path: "evento", select: "_id nombre"},
+            ])  
     .sort({descripcion: 1})
     .exec()
     .then(async competencia=>{
         if(competencia){
         var tieneAlerta = 
             await competenciaService.tieneNotificacion(req.header('tokenDispositivo'), competencia._id)                   
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencia.infoPublica(tieneAlerta))}); 
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencia.infoAlerta())}); 
         }else{
             res.json({token: res.locals.token, datos: globales.mensajes(2, "competencia", " ")});
         } 
