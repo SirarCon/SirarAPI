@@ -392,7 +392,7 @@ exports.listarCompetenciasPorEquipo = async function(req, res){
             } 
         ]);
             competencias = await Fase.populate(competencias, [{path: "competencia.fase", select: "_id, descripcion"} ]);
-            competencias = await competenciaService.iterarCompetencias(req.header('tokenDispositivo'), competencias);
+            competencias = await competenciaService.tienenNotificacion(req.header('tokenDispositivo'), competencias);
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarCompetenciasPorEquipo/EquipoCompetidorController", err)

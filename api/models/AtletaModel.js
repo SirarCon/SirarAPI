@@ -208,7 +208,7 @@ AtletaSchema.method('todaInformacion', function(tieneAlerta) {
       tallaBuzo: this.tallaBuzo,
       tallaTenis: this.tallaTenis,
       activo: this.activo,
-      tieneAlerta: this.tieneAlerta,
+      tieneAlerta: tieneAlerta,
     }
   });
   

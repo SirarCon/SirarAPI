@@ -42,6 +42,14 @@ exports.iterarCompetencias = async function (token, competencias){
      return competencias;
  }
 
+ exports.tienenNotificacion = async function (token, competencias){
+    await funcionesGlobales.asyncForEach(competencias ,async (element, indice, competencias) => {
+         var tieneNotificacion = await module.exports.tieneNotificacion(token, element._id)
+         competencias[indice].tieneAlerta = tieneNotificacion;
+     });
+     return competencias;
+ }
+
  exports.tieneNotificacion = async function(token , competenciaId){
     return await notificacionHelper.tieneNotificacionCompetencia(token, competenciaId);
  }

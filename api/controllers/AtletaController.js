@@ -105,7 +105,7 @@ exports.modificarAtleta  = async function(req, res){
             res.json({token: res.locals.token, datos: globales.mensajes(13, "deporte", req.body.deporte)});}); //Todo modificar mensaje    
 };
 
-exports.listarAtletas = async function(_, res){
+exports.listarAtletas = async function(req, res){
     Atleta.find()
     .sort({nombreNormalizado : 1})
     .populate([{path: "deporte", select: "_id nombre federacion"}])  
