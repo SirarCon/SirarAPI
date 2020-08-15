@@ -92,6 +92,17 @@ exports.iterarAtletas = async function (token, atletas){
      return atletas;
  }
 
+ 
+ exports.iterarAtletasAdmin = async function (token, atletas){
+    await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
+         atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);               
+         var tieneNotificacion = await module.exports.tieneNotificacion(token, element._id)
+          atletas[indice] = element.todaInformacion(tieneNotificacion);
+     });
+     return atletas;
+ }
+
+
 exports.tieneNotificacion = async function(token ,atletaId){
     return await notificacionHelper.tieneNotificacionAtleta(token, atletaId);
  }

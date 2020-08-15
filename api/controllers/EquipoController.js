@@ -106,7 +106,8 @@ exports.listarEquipos = async function(req, res){
     .sort({pais: 1})
     .exec()
     .then(async (equipos)=>{    
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos.map(a=> a.infoPublica()))});          
+        equipos = await equipoService.iterarEquipos(req.header('tokenDispositivo'), equipos)
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, equipos)});          
     }).catch((err)=>{
         funcionesGlobales.registrarError("listarEquipos/EquipoController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los equipos")}); 

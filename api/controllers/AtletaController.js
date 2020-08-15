@@ -111,10 +111,8 @@ exports.listarAtletas = async function(_, res){
     .populate([{path: "deporte", select: "_id nombre federacion"}])  
     .exec()
     .then(async (atletas)=>{
-        await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
-            atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);            
-        });
-        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas.map(a=> a.todaInformacion()))});  
+        atletas = await atletasService.iterarAtletasAdmin(req.header('tokenDispositivo'), atletas)
+        res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, atletas)});  
       }).catch((err)=>{
         funcionesGlobales.registrarError("listarAtleta/AtletaController", err)
         res.json({token: res.locals.token,datos: globales.mensajes(12, " ", "los atletas")}); 
