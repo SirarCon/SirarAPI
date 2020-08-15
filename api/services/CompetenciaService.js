@@ -46,9 +46,9 @@ exports.iterarCompetencias = async function (token, competencias){
      //Se tiene que iterar sobre el arreglo de competencias
      //Vienen agrupadas por evento
     await funcionesGlobales.asyncForEach(competenciasEvento ,async (compEven, indice, competenciasEvento) => {
-        await funcionesGlobales.asyncForEach(compEven.competencias ,async (competencia, indice, competencias) => {
+        await funcionesGlobales.asyncForEach(compEven.competencia ,async (element, indice, competencia) => {
           let tieneNotificacion = await module.exports.tieneNotificacion(token, competencia._id);
-          competencias[indice] = await mostrarInformacionCompetencia(competencia, tieneNotificacion);;
+          competencia[indice] = await mostrarInformacionCompetencia(element, tieneNotificacion);;
         })
      });
      return competenciasEvento;
