@@ -381,17 +381,17 @@ exports.listarCompetenciasPorEquipo = async function(req, res){
         {
             $group: { 
                     _id: {_id: "$evento._id", nombre: "$evento.nombre"},
-                    competencia: {$push: "$competencia"}
+                    competencias: {$push: "$competencia"}
             }
         },
        
     ]).exec().then(async competencias=> {
         competencias = await Prueba.populate(competencias, 
-            [{path: "competencia.prueba", 
+            [{path: "competencias.prueba", 
             select: "_id nombre tipo tipoMarcador deporte"
             } 
         ]);
-            competencias = await Fase.populate(competencias, [{path: "competencia.fase", select: "_id, descripcion"} ]);
+            competencias = await Fase.populate(competencias, [{path: "competencias.fase", select: "_id, descripcion"} ]);
             competencias = await competenciaService.tienenNotificacion(req.header('tokenDispositivo'), competencias);
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err => {
