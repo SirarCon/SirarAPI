@@ -68,6 +68,7 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
 
 exports.registrarDispositivoAtleta = async function(req, res){
     registroNotificacion.registrarDispositivoEnAtleta(req, res);
+    registroNotificacion.migrarDispositivoAtletaCompetencia(res, req.body);
 }
 
 exports.removerDispositivoAtleta = async function(req, res){

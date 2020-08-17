@@ -66,6 +66,7 @@ exports.ingresarMultiplesEquiposCompeticion = async function(req, res){
 
 exports.registrarDispositivoEquipo = async function(req, res){
     registroNotificacion.registrarDispositivoEnEquipo(req, res);
+    registroNotificacion.migrarDispositivoAtletaCompetencia(res, req.body);
 }
 
 exports.removerDispositivoEquipo = async function(req, res){
