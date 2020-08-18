@@ -46,43 +46,51 @@ exports.removerDispositivoEnAtleta = async function(req, res){
 
 //----------------------------------- Equipo ------------------------------------------------
 
-exports.registrarDispositivoEnEquipo = async function(req, res){
+exports.registrarDispositivoEnEquipo = async function(req, res, devolverMensaje = true){
     fireBase.existeDispositivoEquipo(req.body)
     .then(dispositivo =>{
         if(dispositivo.length == 0){
             fireBase.registrarDispositivoEquipo(req.body)
             .then(notificacion=>{
-                res.json({token: res.locals.token, datos: globales.mensajes(-9, "Equipo")});
+                if(devolverMensaje)
+                    res.json({token: res.locals.token, datos: globales.mensajes(-9, "Equipo")});
             }).catch(err =>{
                 funcionesGlobales.registrarError("registrarDispositivoEquipo/RegistroNotificacion", err)
-                res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "equipo")});  
+                if(devolverMensaje)
+                    res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "equipo")});  
             })            
         }else{
-            res.json({token: res.locals.token, datos: globales.mensajes(24, "Notificación")});
+            if(devolverMensaje)
+                res.json({token: res.locals.token, datos: globales.mensajes(24, "Notificación")});
         }
     }).catch(err=>{        
         funcionesGlobales.registrarError("registrarDispositivoEquipo/RegistroNotificacion", err);
-        res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "equipo")});  
+        if(devolverMensaje)
+            res.json({token: res.locals.token,datos: globales.mensajes(23, "creando", "equipo")});  
     });
 }
 
-exports.removerDispositivoEnEquipo = async function(req, res){
+exports.removerDispositivoEnEquipo = async function(req, res, devolverMensaje = true){
     fireBase.existeDispositivoEquipo(req.body)
         .then(dispositivo =>{
             if(dispositivo.length > 0){
                 fireBase.removerDispositivoEquipo(req.body)
                 .then(notificacion=>{
-                    res.json({token: res.locals.token, datos: globales.mensajes(-10)});
+                    if(devolverMensaje)
+                        res.json({token: res.locals.token, datos: globales.mensajes(-10)});
                 }).catch(err =>{
                     funcionesGlobales.registrarError("removerDispositivoEquipo/RegistroNotificacion", err)
-                    res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "equipo")});  
+                    if(devolverMensaje)
+                        res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "equipo")});  
                 });
             }else{
-                res.json({token: res.locals.token, datos: globales.mensajes(18, "Notificación")});
+                if(devolverMensaje)
+                    res.json({token: res.locals.token, datos: globales.mensajes(18, "Notificación")});
             }
         }).catch(err=>{        
             funcionesGlobales.registrarError("removerDispositivoEquipo/RegistroNotificacion", err);
-            res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "equipo")});  
+            if(devolverMensaje)
+                res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "equipo")});  
         });
 }
 

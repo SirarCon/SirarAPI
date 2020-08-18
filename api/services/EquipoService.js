@@ -65,8 +65,8 @@ exports.ingresarMultiplesEquiposCompeticion = async function(req, res){
     })
 }
 
-exports.registrarDispositivoEquipo = async function(req, res){
-    await registroNotificacion.registrarDispositivoEnEquipo(req, res);
+exports.registrarDispositivoEquipo = async function(req, res, devolverMensaje = true){
+    await registroNotificacion.registrarDispositivoEnEquipo(req, res, devolverMensaje);
     await migrarAlertasCompetencias(req, res);
 }
 
@@ -77,8 +77,8 @@ async function migrarAlertasCompetencias(req, res){
         registroNotificacion.registrarDispositivoEnCompetencia);
 }
 
-exports.removerDispositivoEquipo = async function(req, res){
-    registroNotificacion.removerDispositivoEnEquipo(req, res);
+exports.removerDispositivoEquipo = async function(req, res, devolverMensaje = true){
+    registroNotificacion.removerDispositivoEnEquipo(req, res, devolverMensaje);
     await removerAlertasCompetencias(req, res)
 }
 
@@ -142,18 +142,18 @@ exports.iterarEquipos = async function (token, equipos){
  }
 
  async function migracionAlertasEquipos(req, res, removerRegistrarEnEquipo){
-    Equipo.find()
+    await Equipo.find()
     .where({atletas: req.body.atleta})
-    .select({_id})
+    .select({_id: 1})
     .then(async equipos=>{
-       await funcionesGlobales.asyncForEach(equipos , async (id, indice, equipos) => { 
+       await funcionesGlobales.asyncForEach(equipos , async (equipoId, indice, equipos) => { 
            let tReq ={
                body:{
                    token: req.body.token,
-                   equipo: id
+                   equipo: equipoId._id
                }                
            }
-           await removerRegistrarEnEquipo(tReq, res); 
+           await removerRegistrarEnEquipo(tReq, res, false); 
        })
     })
     .catch(err=>{
