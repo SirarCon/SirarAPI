@@ -122,3 +122,42 @@ async function populateCompetencia(competencia){
                                           {path: "fase", select: "descripcion"}
                                         ]);
 }
+
+
+exports.listarCompetenciasEnEquipo = async function(req){
+    return await EquipoC.aggregate([
+        {
+            $match: { 
+                atletas: Number(req.params.idAtleta),
+            }
+         },
+          {  $lookup: {
+                 "localField": "competencia",
+                 "from": "competencias",
+                 "foreignField": "_id",
+                 "as":  "competencia"
+            },
+         },
+         {
+             $unwind: "$competencia"
+         },
+         {
+             $lookup: {
+              "localField": "competencia.evento",
+              "from": "eventos",
+              "foreignField": "_id",
+              "as": "evento"
+              }
+          },
+          {
+              $unwind: "$evento"
+          },
+         {
+             $group: { 
+                     _id: {_id: "$evento._id", nombre: "$evento.nombre"},
+                     competencia: {$push: "$competencia"}
+             }
+         },
+        
+     ]).exec();
+}

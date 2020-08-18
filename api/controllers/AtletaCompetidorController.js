@@ -391,6 +391,8 @@ exports.listarCompetenciasPorAtleta = async function(req, res){
         },
        
     ]).exec().then(async competencias=> {
+        let competenciasEnEquipo = competenciaService.listarCompetenciasEnEquipo(req);
+        competencias = competencias.concat(competenciasEnEquipo);
         competencias = await Prueba.populate(competencias,
              [{path: "competencia.prueba", 
                 select: "_id nombre tipo tipoMarcador deporte"
