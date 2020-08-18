@@ -65,12 +65,49 @@ exports.ingresarMultiplesEquiposCompeticion = async function(req, res){
 }
 
 exports.registrarDispositivoEquipo = async function(req, res){
-    registroNotificacion.registrarDispositivoEnEquipo(req, res);
-    registroNotificacion.migrarDispositivoAtletaCompetencia(res, req.body);
+    await registroNotificacion.registrarDispositivoEnEquipo(req, res);
+    await migrarAlertasCompetencias(req, res);
+}
+
+// //Migra las competencias "viejas" o donde el equipo ya se encontraba registrado
+// //luego de darle seguir a un equipo
+async function migrarAlertasCompetencias(req, res){
+    await buscarCompetenciasEquipos(req, res,
+        registroNotificacion.registrarDispositivoEnCompetencia);
 }
 
 exports.removerDispositivoEquipo = async function(req, res){
     registroNotificacion.removerDispositivoEnEquipo(req, res);
+    await removerAlertasCompetencias(req, res)
+}
+
+// //Remueve las competencias "viejas" o donde el equipo ya se encontraba registrado
+// //luego de dejar de seguir a un equipo
+async function removerAlertasCompetencias(req, res){
+    await buscarCompetenciasEquipos(req, res,
+        registroNotificacion.removerDispositivoEnCompetencia);
+}
+
+
+async function buscarCompetenciasEquipos(req, res, registrarRemover){
+    EquipoC.find()
+    .where({"equipo" : req.body.equipo})
+    .select({"competencia": 1, _id: 0})
+    .exec()
+    .then(async competencias =>{
+        let idCompetencias = Array.from(new Set(competencias));
+        await funcionesGlobales.asyncForEach(idCompetencias , async (idComp, indice, deportes) => { 
+            let tReq ={
+                body:{
+                    token: req.body.token,
+                    competencia: idComp.competencia
+                }                
+            }
+            await registrarRemover(tReq, res, false);
+        })
+    }).catch(err=>{
+        funcionesGlobales.registrarError("buscarCompetenciasAltetas/EquipoService", err);
+    })
 }
 
 exports.removerDispositivoEquipoDeCompetencia = async function(res, equipoC) {

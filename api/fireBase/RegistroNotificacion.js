@@ -135,6 +135,9 @@ exports.removerDispositivoEnCompetencia = async function(req, res, devolverMensa
     });
 }
 
+
+//Migra los dispositivos que tienen un atleta, a las competencias luego de que se ingresa
+//el atleta a la competencia.
 exports.migrarDispositivoAtletaCompetencia = async function(res, atletaC){
     prepararDispositivoCompetencia(module.exports.registrarDispositivoEnCompetencia,
                                     fireBase.existeDispositivoAtleta, res, atletaC);
@@ -145,6 +148,8 @@ exports.removerDispositivoAtletaCompetencia = async function(res, atletaC){
                                     fireBase.existeDispositivoAtleta, res, atletaC);
 }
 
+//Migra los dispositivos que tienen un equipo, a las competencias luego de que se ingresa
+//el equipo a la competencia.
 exports.migrarDispositivoEquipoCompetencia = async function(res, equipoC){
     prepararDispositivoCompetencia(module.exports.registrarDispositivoEnCompetencia,
                                     fireBase.existeDispositivoEquipo, res, equipoC);
@@ -163,6 +168,7 @@ async function prepararDispositivoCompetencia(ejecutar, existeParticipante, res,
                 {
                     equipo: participante.equipo 
                 };
+        
         let dispositivos = await existeParticipante(body, true);
         dispositivos.forEach(dispositivo => {
             let req ={

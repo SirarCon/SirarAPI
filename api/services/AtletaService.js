@@ -67,13 +67,51 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
 
 
 exports.registrarDispositivoAtleta = async function(req, res){
-    registroNotificacion.registrarDispositivoEnAtleta(req, res);
-    registroNotificacion.migrarDispositivoAtletaCompetencia(res, req.body);
+    await registroNotificacion.registrarDispositivoEnAtleta(req, res);
+    await migrarAlertasCompetencias(req, res);
+}
+
+// //Migra las competencias "viejas" o donde el alteta ya se encontraba registrado
+// //luego de darle seguir a un atleta
+async function migrarAlertasCompetencias(req, res){
+    await buscarCompetenciasAltetas(req, res,
+        registroNotificacion.registrarDispositivoEnCompetencia);
 }
 
 exports.removerDispositivoAtleta = async function(req, res){
-    registroNotificacion.removerDispositivoEnAtleta(req, res);
+    await registroNotificacion.removerDispositivoEnAtleta(req, res);
+    await removerAlertasCompetencias(req, res)
 }
+
+// //Remueve las competencias "viejas" o donde el alteta ya se encontraba registrado
+// //luego de dejar de seguir a un atleta
+async function removerAlertasCompetencias(req, res){
+    await buscarCompetenciasAltetas(req, res,
+        registroNotificacion.removerDispositivoEnCompetencia);
+}
+
+
+async function buscarCompetenciasAltetas(req, res, registrarRemover){
+    AtletaC.find()
+    .where({"atleta" : req.body.atleta})
+    .select({"competencia": 1, _id: 0})
+    .exec()
+    .then(async competencias =>{
+        let idCompetencias = Array.from(new Set(competencias));
+        await funcionesGlobales.asyncForEach(idCompetencias , async (idComp, indice, deportes) => { 
+            let tReq ={
+                body:{
+                    token: req.body.token,
+                    competencia: idComp.competencia
+                }                
+            }
+            await registrarRemover(tReq, res, false);
+        })
+    }).catch(err=>{
+        funcionesGlobales.registrarError("buscarCompetenciasAltetas/AtletaService", err);
+    })
+}
+
 
 exports.removerDispositivoAtletaDeCompetencia = async function(res, atletaC) {
     registroNotificacion.removerDispositivoAtletaCompetencia(res, atletaC);
