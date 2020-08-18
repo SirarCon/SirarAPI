@@ -125,10 +125,18 @@ async function populateCompetencia(competencia){
 
 
 exports.listarCompetenciasEnEquipo = async function(req){
-    return await EquipoC.aggregate([
+    return await EquipoC
+    .aggregate([
+        {  $lookup: {
+            "localField": "equipo",
+            "from": "equipos",
+            "foreignField": "_id",
+            "as":  "equipo"
+        },
+        },
         {
             $match: { 
-                atletas: Number(req.params.idAtleta),
+                "equipo.atletas": { $in: [Number(req.params.idAtleta)]},
             }
          },
           {  $lookup: {
