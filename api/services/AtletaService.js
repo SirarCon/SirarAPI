@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'),
 Competencia = mongoose.model('Competencia'),
 AtletaC = mongoose.model('AtletaCompetidor'),
+equipoService = require("./EquipoService"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 notificacionHelper = require("../fireBase/NotificacionHelper"),
 registroNotificacion = require("../fireBase/RegistroNotificacion"),
@@ -69,6 +70,7 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
 exports.registrarDispositivoAtleta = async function(req, res){
     await registroNotificacion.registrarDispositivoEnAtleta(req, res);
     await migrarAlertasCompetencias(req, res);
+    await equipoService.migrarAlertasEquipos(req, res);
 }
 
 // //Migra las competencias "viejas" o donde el alteta ya se encontraba registrado
@@ -81,6 +83,7 @@ async function migrarAlertasCompetencias(req, res){
 exports.removerDispositivoAtleta = async function(req, res){
     await registroNotificacion.removerDispositivoEnAtleta(req, res);
     await removerAlertasCompetencias(req, res)
+    await equipoService.removermigracionAlertasEquipos(req, res);
 }
 
 // //Remueve las competencias "viejas" o donde el alteta ya se encontraba registrado

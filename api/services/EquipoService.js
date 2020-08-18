@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'),
 Competencia = mongoose.model('Competencia'),
 EquipoC = mongoose.model('EquipoCompetidor'),
+Equipo = mongoose.model('Equipo'),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 notificacionHelper = require("../fireBase/NotificacionHelper"),
 registroNotificacion = require("../fireBase/RegistroNotificacion"),
@@ -128,4 +129,34 @@ exports.iterarEquipos = async function (token, equipos){
 
  exports.tieneNotificacion = async function(token , equipoId){
     return await notificacionHelper.tieneNotificacionEquipo(token, equipoId);
+ }
+
+ exports.migrarAlertasEquipos = async function(req, res){
+    await migracionAlertasEquipos(req, res,
+        module.exports.registrarDispositivoEquipo);
+ }
+
+ exports.removermigracionAlertasEquipos = async function(req, res){
+   await migracionAlertasEquipos(req, res,
+        module.exports.removerDispositivoEquipo);
+ }
+
+ async function migracionAlertasEquipos(req, res, removerRegistrarEnEquipo){
+    Equipo.find()
+    .where({atletas: req.body.atleta})
+    .select({_id})
+    .then(async equipos=>{
+       await funcionesGlobales.asyncForEach(equipos , async (id, indice, equipos) => { 
+           let tReq ={
+               body:{
+                   token: req.body.token,
+                   equipo: id
+               }                
+           }
+           await removerRegistrarEnEquipo(tReq, res); 
+       })
+    })
+    .catch(err=>{
+       funcionesGlobales.registrarError("migracionAlertasEquipos/EquipoService", err)
+    })
  }
