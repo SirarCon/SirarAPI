@@ -180,6 +180,7 @@ exports.modificarAtletas = async function(req, res){
             .then(async equipo=>{
                 equipo = await Equipo.populate(equipo, [{path: "atletas", select: "_id nombre"},
                                                         {path: "deporte"}])
+                equipoService.migrarRemoverAlerta(req, res, req.params.agregar);
                 res.json({token: res.locals.token, datos: globales.mensajes(-3, null, null, equipo)});                   
             }).catch(err=>{
                 funcionesGlobales.registrarError("modificarAtleta/EquipoController", err)

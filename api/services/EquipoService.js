@@ -141,6 +141,15 @@ exports.iterarEquipos = async function (token, equipos){
         module.exports.removerDispositivoEquipo);
  }
 
+exports.migrarRemoverAlerta = async function(req, res, agregar){
+   if(agregar == 1){
+       module.exports.migrarAlertasEquipos(req. res);
+   }else{
+       module.exports.removermigracionAlertasEquipos(req, res);
+   }
+}
+
+
  async function migracionAlertasEquipos(req, res, removerRegistrarEnEquipo){
     await Equipo.find()
     .where({atletas: req.body.atleta})
