@@ -149,6 +149,18 @@ exports.migrarRemoverAlerta = async function(req, res, agregar){
    }
 }
 
+exports.migrarAlertasAlCrearEquipo = async function(req, res){
+    let atletas = req.body.atletas;
+    await funcionesGlobales.asyncForEach(atletas , async (idAtleta, indice, atletas) => { 
+        let tReq ={
+            body:{
+                atleta: idAtleta,
+            }                
+        }
+        await migrarAlertasEquipos(tReq, res);
+    });
+}
+
 
  async function migracionAlertasEquipos(req, res, removerRegistrarEnEquipo){
     await Equipo.find()

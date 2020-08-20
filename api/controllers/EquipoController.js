@@ -29,6 +29,7 @@ exports.crearEquipo = async function(req, res){
                if(evento){
                 var nuevoEquipo = new Equipo(req.body);   
                 nuevoEquipo.save().then(equipo =>{ 
+                    equipoService.migrarAlertasAlCrearEquipo(req, res);
                     res.json({token: res.locals.token, datos: globales.mensajes(-4, equipo._id)});
                   }).catch(async err=>{  
                     if(!err.code || !err.code == 11000){ //Si no es por llave duplicada, borro la imagen adjunta                            
