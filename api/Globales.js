@@ -57,9 +57,14 @@ let transporter = nodemailer.createTransport({
 });
 module.exports.emailTransporter =  transporter;
 
+//Para desbloquear aplicaciones no confiables:
+//https://github.com/nodemailer/nodemailer/issues/515
+//redirige a:
+//https://accounts.google.com/DisplayUnlockCaptcha
+
 module.exports.emailOptions = function(correo, subject, message){    
     let mailOptions = {
-        from: "casasolalonso@gmail.com",
+        from: "sirarconcr@gmail.com",
         to: correo,
         subject: subject,     
         html: message
