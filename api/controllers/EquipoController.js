@@ -171,6 +171,8 @@ exports.modificarMedalla = async function(req, res){
 };
 
 exports.modificarAtletas = async function(req, res){
+    if(req.params.agregar != 1)//Remover alertas antes de remover atleta
+    equipoService.migrarRemoverAlerta(req, res, req.params.agregar);
     var modificar = req.params.agregar == 1 ? {$push:{ atletas: req.body.atleta}} : {$pull:{ atletas: req.body.atleta } };
     Atleta.findOne()
     .where({_id: req.body.atleta})    
@@ -181,7 +183,8 @@ exports.modificarAtletas = async function(req, res){
             .then(async equipo=>{
                 equipo = await Equipo.populate(equipo, [{path: "atletas", select: "_id nombre"},
                                                         {path: "deporte"}])
-                equipoService.migrarRemoverAlerta(req, res, req.params.agregar);
+                if(req.params.agregar == 1)//Crear alertas luego de remover atleta
+                    equipoService.migrarRemoverAlerta(req, res, req.params.agregar);
                 res.json({token: res.locals.token, datos: globales.mensajes(-3, null, null, equipo)});                   
             }).catch(err=>{
                 funcionesGlobales.registrarError("modificarAtleta/EquipoController", err)

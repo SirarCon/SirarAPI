@@ -142,10 +142,16 @@ exports.iterarEquipos = async function (token, equipos){
  }
 
 exports.migrarRemoverAlerta = async function(req, res, agregar){
+    let tReq ={
+        body:{
+            atleta: req.body.atleta,
+            token: req.header('tokenDispositivo'),
+        }                
+    }
    if(agregar == 1){
-       module.exports.migrarAlertasEquipos(req. res);
+       await module.exports.migrarAlertasEquipos(tReq, res);
    }else{
-       module.exports.removermigracionAlertasEquipos(req, res);
+       await module.exports.removermigracionAlertasEquipos(tReq, res);
    }
 }
 
@@ -155,6 +161,7 @@ exports.migrarAlertasAlCrearEquipo = async function(req, res){
         let tReq ={
             body:{
                 atleta: idAtleta,
+                token: req.header('tokenDispositivo'),
             }                
         }
         await migrarAlertasEquipos(tReq, res);
