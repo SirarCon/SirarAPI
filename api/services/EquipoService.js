@@ -181,8 +181,6 @@ exports.migrarAlertasAlCrearEquipo = async function(req, res){
                    equipo: equipoId._id
                }                
            }
-           funcionesGlobales.registrarError("migracionAlertasEquipos/EquipoService", tReq)
-
            await removerRegistrarEnEquipo(tReq, res, false); 
        })
     })
