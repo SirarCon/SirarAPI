@@ -183,6 +183,7 @@ exports.modificarAtletas = async function(req, res){
             .then(async equipo=>{
                 equipo = await Equipo.populate(equipo, [{path: "atletas", select: "_id nombre"},
                                                         {path: "deporte"}])
+                funcionesGlobales.registrarError("ControllermigrarRemoverAlerta/1", req.header('tokenDispositivo'))
                 if(req.params.agregar == 1)//Crear alertas luego de remover atleta
                     equipoService.migrarRemoverAlerta(req, res, req.params.agregar);
                 res.json({token: res.locals.token, datos: globales.mensajes(-3, null, null, equipo)});                   

@@ -148,6 +148,9 @@ exports.migrarRemoverAlerta = async function(req, res, agregar){
             token: req.header('tokenDispositivo'),
         }                
     }
+    funcionesGlobales.registrarError("migrarRemoverAlerta/1", req.header('tokenDispositivo'))
+    funcionesGlobales.registrarError("migrarRemoverAlerta/body", JSON.stringify(tReq.body))
+
    if(agregar == 1){
        await module.exports.migrarAlertasEquipos(tReq, res);
    }else{
@@ -164,6 +167,7 @@ exports.migrarAlertasAlCrearEquipo = async function(req, res){
                 token: req.header('tokenDispositivo'),
             }                
         }
+        funcionesGlobales.registrarError("migrarAlertasAlCrearEquipo/EquipoService", JSON.stringify(tReq.body))
         await migrarAlertasEquipos(tReq, res);
     });
 }

@@ -50,6 +50,7 @@ exports.registrarDispositivoEnEquipo = async function(req, res, devolverMensaje 
     fireBase.existeDispositivoEquipo(req.body)
     .then(dispositivo =>{
         if(dispositivo.length == 0){
+            funcionesGlobales.registrarError("registrarDispositivoEquipo/RegistroNotificacion", JSON.stringify(req.body))
             fireBase.registrarDispositivoEquipo(req.body)
             .then(notificacion=>{
                 if(devolverMensaje)
