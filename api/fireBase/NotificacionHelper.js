@@ -65,6 +65,10 @@ exports.notificarCambioMarcadorEquipo = async function(Model, equipoC){
     info.competencia._id, retornarDatosDesdeCompetencia(info.competencia));
 }
 
+exports.obtenerNotificacionesAtleta = async function(body){
+    return fireBase.obtenerNotificacionesAtleta(body);
+}
+
 //#region funcionesAyuda
 
 async function obtenerInfoPartipante(Model, participante, pathParticipante){

@@ -29,6 +29,14 @@ exports.enviarNotificaciones = async function(Modelo, mensaje, dispositivo, obje
     })
 }
 
+exports.obtenerNotificaciones = async function(Modelo, dispoostivo){
+  return Modelo
+        .find()
+        .where(dispoostivo)
+        .select({token: 1})
+        .exec()
+}
+
 function mensajeaEnviar(titulo, mensaje, objeto){
   var mensaje ={
                   notification: {
