@@ -27,11 +27,17 @@ exports.registrarDispositivoEnAtleta = async function(req, res){
 
 exports.removerDispositivoEnAtleta = async function(req, res){
     fireBase.existeDispositivoAtleta(req.body)
-        .then(dispositivo =>{
-            if(dispositivo.length > 0){
-                fireBase.removerDispositivoAtleta(req.body)
-                .then(notificacion=>{
-                    res.json({token: res.locals.token, datos: globales.mensajes(-10)});
+        .then( dispositivo =>{
+            if(dispositivo.length > 0){         
+                equipoService.migrarRemoverAlerta(req, res, 0)
+                .then(()=>{       
+                    fireBase.removerDispositivoAtleta(req.body)
+                    .then(notificacion=>{
+                        res.json({token: res.locals.token, datos: globales.mensajes(-10)});
+                    }).catch(err =>{
+                        funcionesGlobales.registrarError("removerDispositivoAtleta/RegistroNotificacion", err)
+                        res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "atleta")});  
+                    });
                 }).catch(err =>{
                     funcionesGlobales.registrarError("removerDispositivoAtleta/RegistroNotificacion", err)
                     res.json({token: res.locals.token,datos: globales.mensajes(23, "borrando", "atleta")});  
