@@ -8,6 +8,7 @@ pruebaModel = require("../models/PruebaModel"),
 fase = require("../models/FaseModel"),
 ateltaC = require("../models/AtletaCompetidorModel"),
 equipoC = require("../models/EquipoCompetidorModel"),
+equipo = require("../models/EquipoModel"),
 notificacionCompetencia = require("../models/NotificacionCompetenciaModel"),
 controller = require("../controllers/CompetenciaController"),
 expressRequestMock = require('express-request-mock');
