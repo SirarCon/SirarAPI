@@ -44,7 +44,9 @@ module.exports ={
       if(filename && filename !== "") {
       fs.readFile(filename, function(err, data){
             if (err){ 
-                module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", err + " " + filename);
+              //Se comenta para que no llene de mensajes de error por no encontrar el archivo
+              //Descomentar si existe un error y se quiere saber la razón
+                //module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", err + " " + filename);
                 reject("");
               } 
             else{ 
@@ -56,6 +58,7 @@ module.exports ={
         resolve("");
       }
     }).catch((err)=>{ 
+      if(err != "")
         module.exports.registrarError("leerArchivoAsync/FuncionesGlobales", err) 
       return "";
      });

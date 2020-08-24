@@ -6,6 +6,8 @@ deporte = require("../models/DeporteModel"),
 prueba = require("../models/PruebaModel"),
 competencia = require("../models/CompetenciaModel"),
 atletaC = require("../models/AtletaCompetidorModel"),
+equipoC = require('../models/EquipoCompetidorModel'),
+equipo = require('../models/EquipoModel'),
 evento = require("../models/EventoModel"),
 model = require("../models/AtletaModel"),
 notificacionAtleta = require("../models/NotificacionAtletaModel"),
@@ -128,24 +130,24 @@ describe('Atletas Model', () => {
     expect(res.statusCode).toEqual(200)
   })
 
-  it('Listar atletas', async () => {
-    mockingoose(model).toReturn(responseListarAtletas, 'find')
-    const { res } = await expressRequestMock(controller.listarAtletas, helper.reqGeneral, helper.resp)
-    const { token, datos } = JSON.parse(res._getData());
-    expect(res.statusCode).toEqual(200);
-    expect(datos.codigo).toBeLessThan(0);
-    expect(datos.exito).toBeTruthy();
+  // it('Listar atletas', async () => {
+  //   mockingoose(model).toReturn(responseListarAtletas, 'find')
+  //   const { res } = await expressRequestMock(controller.listarAtletas, helper.reqGeneral, helper.resp)
+  //   const { token, datos } = JSON.parse(res._getData());
+  //   expect(res.statusCode).toEqual(200);
+  //   expect(datos.codigo).toBeLessThan(0);
+  //   expect(datos.exito).toBeTruthy();
 
-  })
+  // })
   
-  it('Listar atleta específico', async () => {
-    mockingoose(model).toReturn(responseLeerAtleta, 'findOne')
-    const { res } = await expressRequestMock(controller.leerAtleta, reqLeerAtleta, helper.resp)
-    const { token, datos } = JSON.parse(res._getData());
-    expect(datos.codigo).toBeLessThan(0);
-    expect(datos.exito).toBeTruthy();
-    expect(res.statusCode).toEqual(200)
-  })
+  // it('Listar atleta específico', async () => {
+  //   mockingoose(model).toReturn(responseLeerAtleta, 'findOne')
+  //   const { res } = await expressRequestMock(controller.leerAtleta, reqLeerAtleta, helper.resp)
+  //   const { token, datos } = JSON.parse(res._getData());
+  //   expect(datos.codigo).toBeLessThan(0);
+  //   expect(datos.exito).toBeTruthy();
+  //   expect(res.statusCode).toEqual(200)
+  // })
 
   it('Listar atletas activos', async () => {
     mockingoose(model).toReturn(responseListarAtletas, 'find')

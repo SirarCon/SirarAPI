@@ -70,7 +70,7 @@ CompetenciaSchema.pre('save',  async function(next) {
     })
 });
 
-CompetenciaSchema.method('todaInformacion',function (){
+CompetenciaSchema.method('todaInformacion',function (tieneAlerta){
     return {
         _id: this._id,
         evento: this.evento,
@@ -82,7 +82,8 @@ CompetenciaSchema.method('todaInformacion',function (){
         recinto: this.recinto,
         ciudad: this.ciudad,
         enVivo: this.enVivo,
-        activo: this.activo,        
+        activo: this.activo,    
+        tieneAlerta: tieneAlerta,    
     }
 });
 CompetenciaSchema.method('infoPublica', function (tieneAlerta){
@@ -99,6 +100,24 @@ CompetenciaSchema.method('infoPublica', function (tieneAlerta){
         enVivo: this.enVivo,
         activo: this.activo,        
         tieneAlerta : tieneAlerta,
+    }
+});
+
+CompetenciaSchema.method('infoAlerta', function (tieneAlerta){
+    return {
+        _id: this._id,
+        evento: this.evento,
+        prueba: this.prueba,
+        fechaHora: this.fechaHora,
+        genero: this.genero,
+        descripcion: this.descripcion,
+        fase: this.fase,
+        recinto: this.recinto,
+        ciudad: this.ciudad,
+        enVivo: this.enVivo,
+        activo: this.activo,        
+        nombreEvento: this.evento.nombre,
+        tieneAlerta: tieneAlerta,
     }
 });
 

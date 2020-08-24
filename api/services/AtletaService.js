@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'),
 Competencia = mongoose.model('Competencia'),
 AtletaC = mongoose.model('AtletaCompetidor'),
+equipoService = require("./EquipoService"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 notificacionHelper = require("../fireBase/NotificacionHelper"),
 registroNotificacion = require("../fireBase/RegistroNotificacion"),
@@ -67,12 +68,53 @@ exports.agregarAtleta = async function(req, res, devolverMensaje = true){
 
 
 exports.registrarDispositivoAtleta = async function(req, res){
-    registroNotificacion.registrarDispositivoEnAtleta(req, res);
+    await registroNotificacion.registrarDispositivoEnAtleta(req, res);
+    await migrarAlertasCompetencias(req, res);
+    await equipoService.migrarAlertasEquipos(req, res);
+}
+
+// //Migra las competencias "viejas" o donde el alteta ya se encontraba registrado
+// //luego de darle seguir a un atleta
+async function migrarAlertasCompetencias(req, res){
+    await buscarCompetenciasAltetas(req, res,
+        registroNotificacion.registrarDispositivoEnCompetencia);
 }
 
 exports.removerDispositivoAtleta = async function(req, res){
-    registroNotificacion.removerDispositivoEnAtleta(req, res);
+    await registroNotificacion.removerDispositivoEnAtleta(req, res);
+    await removerAlertasCompetencias(req, res)
+    await equipoService.removermigracionAlertasEquipos(req, res);
 }
+
+// //Remueve las competencias "viejas" o donde el alteta ya se encontraba registrado
+// //luego de dejar de seguir a un atleta
+async function removerAlertasCompetencias(req, res){
+    await buscarCompetenciasAltetas(req, res,
+        registroNotificacion.removerDispositivoEnCompetencia);
+}
+
+
+async function buscarCompetenciasAltetas(req, res, registrarRemover){
+    AtletaC.find()
+    .where({"atleta" : req.body.atleta})
+    .select({"competencia": 1, _id: 0})
+    .exec()
+    .then(async competencias =>{
+        let idCompetencias = Array.from(new Set(competencias));
+        await funcionesGlobales.asyncForEach(idCompetencias , async (idComp, indice, deportes) => { 
+            let tReq ={
+                body:{
+                    token: req.body.token,
+                    competencia: idComp.competencia
+                }                
+            }
+            await registrarRemover(tReq, res, false);
+        })
+    }).catch(err=>{
+        funcionesGlobales.registrarError("buscarCompetenciasAltetas/AtletaService", err);
+    })
+}
+
 
 exports.removerDispositivoAtletaDeCompetencia = async function(res, atletaC) {
     registroNotificacion.removerDispositivoAtletaCompetencia(res, atletaC);
@@ -91,6 +133,17 @@ exports.iterarAtletas = async function (token, atletas){
      });
      return atletas;
  }
+
+ 
+ exports.iterarAtletasAdmin = async function (token, atletas){
+    await funcionesGlobales.asyncForEach(atletas ,async (element, indice, atletas) => {
+         atletas[indice].fotoUrl = await funcionesGlobales.leerArchivoAsync(element.fotoUrl);               
+         var tieneNotificacion = await module.exports.tieneNotificacion(token, element._id)
+          atletas[indice] = element.todaInformacion(tieneNotificacion);
+     });
+     return atletas;
+ }
+
 
 exports.tieneNotificacion = async function(token ,atletaId){
     return await notificacionHelper.tieneNotificacionAtleta(token, atletaId);

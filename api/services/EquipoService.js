@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'),
 Competencia = mongoose.model('Competencia'),
 EquipoC = mongoose.model('EquipoCompetidor'),
+Equipo = mongoose.model('Equipo'),
 funcionesGlobales = require("../FuncionesGlobales.js"),
 notificacionHelper = require("../fireBase/NotificacionHelper"),
 registroNotificacion = require("../fireBase/RegistroNotificacion"),
@@ -64,12 +65,50 @@ exports.ingresarMultiplesEquiposCompeticion = async function(req, res){
     })
 }
 
-exports.registrarDispositivoEquipo = async function(req, res){
-    registroNotificacion.registrarDispositivoEnEquipo(req, res);
+exports.registrarDispositivoEquipo = async function(req, res, devolverMensaje = true){
+    await registroNotificacion.registrarDispositivoEnEquipo(req, res, devolverMensaje);
+    await migrarAlertasCompetencias(req, res);
 }
 
-exports.removerDispositivoEquipo = async function(req, res){
-    registroNotificacion.removerDispositivoEnEquipo(req, res);
+// //Migra las competencias "viejas" o donde el equipo ya se encontraba registrado
+// //luego de darle seguir a un equipo
+async function migrarAlertasCompetencias(req, res){
+    await buscarCompetenciasEquipos(req, res,
+        registroNotificacion.registrarDispositivoEnCompetencia);
+}
+
+exports.removerDispositivoEquipo = async function(req, res, devolverMensaje = true){
+    registroNotificacion.removerDispositivoEnEquipo(req, res, devolverMensaje);
+    await removerAlertasCompetencias(req, res)
+}
+
+// //Remueve las competencias "viejas" o donde el equipo ya se encontraba registrado
+// //luego de dejar de seguir a un equipo
+async function removerAlertasCompetencias(req, res){
+    await buscarCompetenciasEquipos(req, res,
+        registroNotificacion.removerDispositivoEnCompetencia);
+}
+
+
+async function buscarCompetenciasEquipos(req, res, registrarRemover){
+    EquipoC.find()
+    .where({"equipo" : req.body.equipo})
+    .select({"competencia": 1, _id: 0})
+    .exec()
+    .then(async competencias =>{
+        let idCompetencias = Array.from(new Set(competencias));
+        await funcionesGlobales.asyncForEach(idCompetencias , async (idComp, indice, deportes) => { 
+            let tReq ={
+                body:{
+                    token: req.body.token,
+                    competencia: idComp.competencia
+                }                
+            }
+            await registrarRemover(tReq, res, false);
+        })
+    }).catch(err=>{
+        funcionesGlobales.registrarError("buscarCompetenciasAltetas/EquipoService", err);
+    })
 }
 
 exports.removerDispositivoEquipoDeCompetencia = async function(res, equipoC) {
@@ -91,3 +130,65 @@ exports.iterarEquipos = async function (token, equipos){
  exports.tieneNotificacion = async function(token , equipoId){
     return await notificacionHelper.tieneNotificacionEquipo(token, equipoId);
  }
+
+ exports.migrarAlertasEquipos = async function(req, res){
+    await migracionAlertasEquipos(req, res,
+        module.exports.registrarDispositivoEquipo);
+ }
+
+ exports.removermigracionAlertasEquipos = async function(req, res){
+   await migracionAlertasEquipos(req, res,
+        module.exports.removerDispositivoEquipo);
+ }
+
+exports.migrarRemoverAlerta = async function(req, res, agregar){
+    let tReq ={
+        body:{
+            atleta: req.body.atleta,
+        }                
+    }
+
+   if(agregar == 1){
+       await module.exports.migrarAlertasEquipos(tReq, res);
+   }else{
+       await module.exports.removermigracionAlertasEquipos(tReq, res);
+   }
+}
+
+exports.migrarAlertasAlCrearEquipo = async function(req, res){
+    let atletas = req.body.atletas;
+    await funcionesGlobales.asyncForEach(atletas , async (atleta, indice, atletas) => { 
+        let tReq={
+            body:{
+                atleta: atleta,
+            }
+        }
+       module.exports.migrarRemoverAlerta(tReq, res, 1);
+    })
+
+}
+
+async function migracionAlertasEquipos(req, res, removerRegistrarEnEquipo){
+    let tokensAtleta = await notificacionHelper.obtenerNotificacionesAtleta(req.body)
+    await Equipo.find()
+    .where({atletas: req.body.atleta})
+    .select({_id: 1})
+    .then(async equipos=>{
+        await funcionesGlobales.asyncForEach(equipos , async (equipoId, indice, equipos) => { 
+            await funcionesGlobales.asyncForEach(tokensAtleta , async (token, indice, tokensAtleta) => {         
+                let tReq ={
+                    body:{
+                        token: token.token,
+                        equipo: equipoId._id
+                    }                
+                }
+                console.log(JSON.stringify(tReq))
+                await removerRegistrarEnEquipo(tReq, res, false);
+            }) 
+        })
+    })
+    .catch(err=>{
+        funcionesGlobales.registrarError("migracionAlertasEquipos/EquipoService", err)
+})
+}
+

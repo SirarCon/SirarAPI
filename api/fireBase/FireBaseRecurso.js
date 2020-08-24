@@ -26,6 +26,11 @@ exports.enviarNotificacionesAtleta = async function(mensaje, idAtleta, objeto){
   return db.enviarNotificaciones(NotificacionAtleta, mensaje, modelos.getAtleta(idAtleta), objeto);
 };
 
+exports.obtenerNotificacionesAtleta = async function(body){
+  let modelo = modelos.getDispositivoSinTokenAtleta(body);
+  return db.obtenerNotificaciones(NotificacionAtleta, modelo);
+}
+
 //-------------------------------- Equipo -------------------------------------
 
 exports.registrarDispositivoEquipo = async function(body){

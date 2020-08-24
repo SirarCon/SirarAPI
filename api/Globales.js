@@ -42,7 +42,10 @@ module.exports.rutaImagenesAtletas= inicializarGLobal(rutaImagenesAtletas, "imag
 module.exports.rutaImagenesDeportes = inicializarGLobal(rutaImagenesDeportes, "imagenes/imagenesDeportes/");
 module.exports.rutaImagenesFederaciones = inicializarGLobal(rutaImagenesFederaciones, "imagenes/imagenesFederaciones/");
 module.exports.rutaImagenesEventos = inicializarGLobal(rutaImagenesEventos, "imagenes/imagenesEventos/");
+
+// module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirarpwa.herokuapp.com");
 module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirartest.herokuapp.com");
+
 
 let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',//'smtp.ethereal.email',
@@ -55,9 +58,14 @@ let transporter = nodemailer.createTransport({
 });
 module.exports.emailTransporter =  transporter;
 
+//Para desbloquear aplicaciones no confiables:
+//https://github.com/nodemailer/nodemailer/issues/515
+//redirige a:
+//https://accounts.google.com/DisplayUnlockCaptcha
+
 module.exports.emailOptions = function(correo, subject, message){    
     let mailOptions = {
-        from: "casasolalonso@gmail.com",
+        from: "sirarconcr@gmail.com",
         to: correo,
         subject: subject,     
         html: message

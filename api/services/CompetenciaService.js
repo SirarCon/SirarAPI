@@ -42,6 +42,25 @@ exports.iterarCompetencias = async function (token, competencias){
      return competencias;
  }
 
+ exports.tienenNotificacion = async function (token, competenciasEvento){
+     //Se tiene que iterar sobre el arreglo de competencias
+     //Vienen agrupadas por evento
+    await funcionesGlobales.asyncForEach(competenciasEvento ,async (compEven, indice, competenciasEvento) => {
+        await funcionesGlobales.asyncForEach(compEven.competencia ,async (element, indice, competencia) => {
+          let tieneNotificacion = await module.exports.tieneNotificacion(token, element._id);
+          competencia[indice] = await mostrarInformacionCompetencia(element, tieneNotificacion);;
+        })
+     });
+     return competenciasEvento;
+ }
+
+ async function mostrarInformacionCompetencia(competencia, tieneNotificacion){
+    return {
+            ...competencia,
+            tieneAlerta: tieneNotificacion,
+        }
+}
+
  exports.tieneNotificacion = async function(token , competenciaId){
     return await notificacionHelper.tieneNotificacionCompetencia(token, competenciaId);
  }
@@ -102,4 +121,51 @@ async function populateCompetencia(competencia){
                                          [{path: "prueba", select: "nombre tipo"},
                                           {path: "fase", select: "descripcion"}
                                         ]);
+}
+
+
+exports.listarCompetenciasEnEquipo = async function(req){
+    return await EquipoC
+    .aggregate([
+        {  $lookup: {
+            "localField": "equipo",
+            "from": "equipos",
+            "foreignField": "_id",
+            "as":  "equipo"
+        },
+        },
+        {
+            $match: { 
+                "equipo.atletas": { $in: [Number(req.params.idAtleta)]},
+            }
+         },
+          {  $lookup: {
+                 "localField": "competencia",
+                 "from": "competencias",
+                 "foreignField": "_id",
+                 "as":  "competencia"
+            },
+         },
+         {
+             $unwind: "$competencia"
+         },
+         {
+             $lookup: {
+              "localField": "competencia.evento",
+              "from": "eventos",
+              "foreignField": "_id",
+              "as": "evento"
+              }
+          },
+          {
+              $unwind: "$evento"
+          },
+         {
+             $group: { 
+                     _id: {_id: "$evento._id", nombre: "$evento.nombre"},
+                     competencia: {$push: "$competencia"}
+             }
+         },
+        
+     ]).exec();
 }

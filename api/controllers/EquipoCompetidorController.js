@@ -4,7 +4,9 @@ Prueba = mongoose.model('Prueba'),
 Fase = mongoose.model('Fase'),
 globales =  require("../Globales.js"),
 funcionesGlobales = require("../FuncionesGlobales.js"),
-equipoService = require("../services/EquipoService");
+equipoService = require("../services/EquipoService"),
+competenciaService = require("../services/CompetenciaService");
+
 
 //todo: no se que significa este comentario: ver update de equipo (deporte no cambia)
 exports.ingresarEquipoACompetencia = async function(req, res){
@@ -390,6 +392,7 @@ exports.listarCompetenciasPorEquipo = async function(req, res){
             } 
         ]);
             competencias = await Fase.populate(competencias, [{path: "competencia.fase", select: "_id, descripcion"} ]);
+            competencias = await competenciaService.tienenNotificacion(req.header('tokenDispositivo'), competencias);
         res.json({token: res.locals.token, datos: globales.mensajes(-1, null, null, competencias)});  
     }).catch(err => {
         funcionesGlobales.registrarError("listarCompetenciasPorEquipo/EquipoCompetidorController", err)
