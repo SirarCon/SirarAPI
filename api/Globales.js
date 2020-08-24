@@ -44,7 +44,7 @@ module.exports.rutaImagenesFederaciones = inicializarGLobal(rutaImagenesFederaci
 module.exports.rutaImagenesEventos = inicializarGLobal(rutaImagenesEventos, "imagenes/imagenesEventos/");
 
 // module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirarpwa.herokuapp.com");
-module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirartest.herokuapp.com");
+module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirar-con.web.app");
 
 
 let transporter = nodemailer.createTransport({
