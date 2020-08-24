@@ -1,4 +1,5 @@
 const fireBase = require("../fireBase/FireBaseRecurso"),
+equipoService = require("../services/EquipoService"),
 globales = require("../Globales"),
 funcionesGlobales = require("../FuncionesGlobales");
 
@@ -9,6 +10,7 @@ exports.registrarDispositivoEnAtleta = async function(req, res){
             if(dispositivo.length == 0){
                 fireBase.registrarDispositivoAtleta(req.body)
                 .then(notificacion=>{
+                    await equipoService.migrarRemoverAlerta(req, res, 1);
                     res.json({token: res.locals.token, datos: globales.mensajes(-9, "Atleta")});
                 }).catch(err =>{
                     funcionesGlobales.registrarError("registrarDispositivoAtleta/RegistroNotificacion", err)
