@@ -1,6 +1,6 @@
 'use strict';
 var mongoose = require('mongoose'),
-Error =mongoose.model('Error'),
+Error = mongoose.model('Error'),
 Contador = mongoose.model('Contador'),
 Mensaje = mongoose.model('Mensaje'),
 Pais = mongoose.model('Pais'),
