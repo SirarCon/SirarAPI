@@ -1,7 +1,7 @@
 {
   "name": "con",
   "version": "1.0.0",
-  "description": "It is a REST Service for the CONCR",
+  "description": "Servicio REST para el CONCR",
   "main": "server.js",
   "scripts": {
     "test": "jest"
@@ -9,7 +9,7 @@
   "jest": {
     "testEnvironment": "node"
   },
-  "author": "William/Jonathan",
+  "author": "William Casasola/Jonathan Varela",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
