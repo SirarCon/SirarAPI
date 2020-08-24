@@ -756,7 +756,7 @@ exports.Datos = async function(){
         cuarto = new Fase({ "_id": 3, "descripcion" : "4to lugar", "siglas": "4 L" }),
         quinto = new Fase({ "_id": 4, "descripcion" : "5to lugar", "siglas": "5 L" }),
         sexto = new Fase({ "_id": 5, "descripcion" : "6to lugar", "siglas": "6 L" }),
-        setimo = new Fase({ "_id": 6, "descripcion" : "7to lugar", "siglas": "7 L" }),
+        septimo = new Fase({ "_id": 6, "descripcion" : "7to lugar", "siglas": "7 L" }),
         octavo = new Fase({ "_id": 7, "descripcion" : "8vo lugar", "siglas": "8 L" }),
         quintoysetimo = new Fase({ "_id": 8, "descripcion" : "Partido 5to y 7mo lugar", "siglas": "5 y 7 L" }),
         semiFinal = new Fase({ "_id": 9, "descripcion" : "Semifinal", "siglas": "SF"}),
@@ -767,7 +767,8 @@ exports.Datos = async function(){
         regular =  new Fase({ "_id": 14, "descripcion" : "Regular", "siglas": "Regular"});
         
         var fases = [
-        final, semiFinal, cuartosfinal, octavosfinal, dieciseisavosfinal, grupos, regular,
+        final, tercer, cuarto, quinto,sexto, septimo, octavo, quintoysetimo,
+         semiFinal, cuartosfinal, octavosfinal, dieciseisavosfinal, grupos, regular,
         ]
 
         fases.forEach(elemento => {
