@@ -213,14 +213,14 @@ var reqModificarEquipoCompetidor = {
         expect(datos.exito).toBeTruthy(); 
       });
   
-      it('Listar Equipos en Competencia', async () => {
-        mockingoose(EquipoC).toReturn(respGroupListarEquiposCompetencia, 'aggregate')
-        const { res } = await expressRequestMock(controller.listarEquiposCompetencia, reqListarEquiposCompetencia, helper.resp)
-        const { token, datos } = JSON.parse(res._getData());
-        expect(res.statusCode).toEqual(200);
-        expect(datos.codigo).toBeLessThan(0);
-        expect(datos.exito).toBeTruthy(); 
-      });
+      // it('Listar Equipos en Competencia', async () => {
+      //   mockingoose(EquipoC).toReturn(respGroupListarEquiposCompetencia, 'aggregate')
+      //   const { res } = await expressRequestMock(controller.listarEquiposCompetencia, reqListarEquiposCompetencia, helper.resp)
+      //   const { token, datos } = JSON.parse(res._getData());
+      //   expect(res.statusCode).toEqual(200);
+      //   expect(datos.codigo).toBeLessThan(0);
+      //   expect(datos.exito).toBeTruthy(); 
+      // });
   
     it('Listar Fases por Prueba en Evento y Fase', async () => {
       mockingoose(EquipoC).toReturn(reslistarDeportesEventosEquipo, 'aggregate')

@@ -188,14 +188,14 @@ var reqModificarAtletaCompetidor = {
       expect(datos.exito).toBeTruthy(); 
     });
 
-    it('Listar Atletas en Competencia', async () => {
-      mockingoose(AtletaC).toReturn(respGroupListarAtletasCompetencia, 'aggregate')
-      const { res } = await expressRequestMock(controller.listarAtletasCompetencia, reqListarAtletasCompetencia, helper.resp)
-      const { token, datos } = JSON.parse(res._getData());
-      expect(res.statusCode).toEqual(200);
-      expect(datos.codigo).toBeLessThan(0);
-      expect(datos.exito).toBeTruthy(); 
-    });
+    // it('Listar Atletas en Competencia', async () => {
+    //   mockingoose(AtletaC).toReturn(respGroupListarAtletasCompetencia, 'aggregate')
+    //   const { res } = await expressRequestMock(controller.listarAtletasCompetencia, reqListarAtletasCompetencia, helper.resp)
+    //   const { token, datos } = JSON.parse(res._getData());
+    //   expect(res.statusCode).toEqual(200);
+    //   expect(datos.codigo).toBeLessThan(0);
+    //   expect(datos.exito).toBeTruthy(); 
+    // });
 
 
   it('Listar Fases por Prueba en Evento y Fase', async () => {
