@@ -10,7 +10,7 @@ const rutaImagenesDeportes = Symbol.for("SIRAR.GLOBAL.rutaImagenesDeportes");
 const rutaImagenesFederaciones = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESFEDERACIONES");
 const rutaImagenesEventos = Symbol.for("SISRAR.GLOBAL.RUTAIMAGENESEVENTOS"); 
 const urlPwa =Symbol.for("SIRAR.GLOBAL.URLPWA");
-const esPruebas = false;
+const esPruebas = true;
 
 function inicializarGLobal(variableGlobal, valor){
     var existeVarGlobal = (SimbolosGlobales.indexOf(variableGlobal) > -1);
