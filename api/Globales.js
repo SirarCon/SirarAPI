@@ -10,6 +10,7 @@ const rutaImagenesDeportes = Symbol.for("SIRAR.GLOBAL.rutaImagenesDeportes");
 const rutaImagenesFederaciones = Symbol.for("SIRAR.GLOBAL.RUTAIMAGENESFEDERACIONES");
 const rutaImagenesEventos = Symbol.for("SISRAR.GLOBAL.RUTAIMAGENESEVENTOS"); 
 const urlPwa =Symbol.for("SIRAR.GLOBAL.URLPWA");
+const esPruebas = false;
 
 function inicializarGLobal(variableGlobal, valor){
     var existeVarGlobal = (SimbolosGlobales.indexOf(variableGlobal) > -1);
@@ -35,7 +36,10 @@ function inicializarGLobal(variableGlobal, valor){
 //desarrollo:
 //module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb") 
 //pruebas:
-module.exports.nombreBD = inicializarGLobal(nombreBD, "mongodb://root:sirarcon1234@ds245132.mlab.com:45132/sirardbpruebas") 
+module.exports.nombreBD = 
+            inicializarGLobal(nombreBD,
+                esPruebas ? "mongodb://root:sirarcon1234@ds245132.mlab.com:45132/sirardbpruebas"
+                          : "mongodb://root:sirarcon1234@ds121871.mlab.com:21871/sirardb");
 module.exports.tokenGeneral = inicializarGLobal(tokenGeneral, "d89fgk");
 module.exports.rutaImagenesPerfil = inicializarGLobal(rutaImagenesPerfil, "imagenes/imagenesPerfil/");
 module.exports.rutaImagenesAtletas= inicializarGLobal(rutaImagenesAtletas, "imagenes/imagenesAtletas/");
@@ -43,8 +47,9 @@ module.exports.rutaImagenesDeportes = inicializarGLobal(rutaImagenesDeportes, "i
 module.exports.rutaImagenesFederaciones = inicializarGLobal(rutaImagenesFederaciones, "imagenes/imagenesFederaciones/");
 module.exports.rutaImagenesEventos = inicializarGLobal(rutaImagenesEventos, "imagenes/imagenesEventos/");
 
-// module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirarpwa.herokuapp.com");
-module.exports.urlPwa = inicializarGLobal(urlPwa, "https://sirar-con.web.app");
+module.exports.urlPwa = inicializarGLobal(urlPwa,
+                        esPruebas ? "https://sirar-con.web.app"
+                                : "https://sirarpwa.herokuapp.com");
 
 
 let transporter = nodemailer.createTransport({
